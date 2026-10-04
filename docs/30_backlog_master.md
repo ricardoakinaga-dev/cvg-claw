@@ -1,8 +1,17 @@
+# CLAW-01 v2 / Fase 0 — 2026-10-04
+
+- [x] Discovery 0026 v2 com contexto veterinário e mapa de integração do `cvg-his-v4`.
+- [x] Re-selo local `NO_GO` descartado; `npm audit fix` aplicado (0 vulnerabilidades).
+- [ ] Certificação Phase 11 passada 1 no contêiner Playwright + PostgreSQL descartável.
+- [ ] Parecer do crítico independente fresh-context para o novo candidato; passada 2; commit do selo; CI `Verify` verde.
+- [ ] Responder às 6 perguntas abertas da Discovery 0026. Staging/produção `NO_GO`.
+
 # CLAW-00/CLAW-01 — cvg-claw — 2026-10-04
 
 - [x] Renomear projeto para `cvg-claw` nos documentos vivos e no pacote raiz; histórico preservado.
+- [x] Renomear pasta local para `/home/ricardo/cvg-claw`; re-selo local preservado. Ver [recibo](04_audit/evidence/CLAW-00-sync-20261004.md).
 - [x] Discovery [0026](00_discovery/0026_cvg_claw_hospital_autonomous_agent.md) em `DRAFT`.
-- [ ] Configurar remote do novo repositório GitHub e fazer push com histórico completo (antigo como `legacy`).
+- [x] Configurar remote e enviar histórico completo para `origin/main` em `9fd105c` (antigo como `legacy`); hash remoto confirmado em 2026-10-04.
 - [ ] Responder às 7 perguntas abertas da Discovery 0026 e validar casos de uso com o setor piloto.
 - [ ] Task própria com SPEC: `serviceName` da telemetria para `cvg-claw` (manter a chave de lock das migrações).
 - [ ] Recertificar após a renomeação (bytes de `package.json`/lock mudaram). Staging/produção `NO_GO`.

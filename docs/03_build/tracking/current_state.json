@@ -4,7 +4,7 @@
   "program": "AUD20-REM-v2",
   "currentTask": "AUD20-10",
   "currentStatus": "READY_FOR_NEXT_STEP",
-  "nextAction": "o usuário cria o repositório GitHub dedicado; configurar o novo `origin` (antigo como `legacy`) e fazer push com histórico completo; responder às perguntas abertas da Discovery 0026; decidir o re-selo local e recertificar antes de qualquer piloto.",
+  "nextAction": "rodar a passada 1 da certificação Phase 11 no contêiner `playwright:v1.59.1-noble` com PostgreSQL descartável; obter parecer do crítico independente fresh-context vinculado ao novo candidato; rodar a passada 2 e commitar o selo; responder às 6 perguntas abertas da Discovery 0026.",
   "releaseBoundary": {
     "staging": "NO_GO",
     "production": "NO_GO"

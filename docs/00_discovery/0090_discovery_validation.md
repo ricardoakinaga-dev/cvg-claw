@@ -4,9 +4,10 @@
 
 `BLOCKED` para `DISCOVERY_READY`; nenhum PRD ou BUILD admitido:
 [0026 — cvg-claw](0026_cvg_claw_hospital_autonomous_agent.md),
-SHA-256 `4164b6f03308c952c479b51bfbf75fa70352ac402da59b686f2f208c3980aace`. Bloqueio: 7 perguntas abertas (hospital/setor piloto,
-sistema de gestão hospitalar e acesso, convênios, IdP, donos de produto/DPO/técnico,
-linha de base e prioridade dos casos de uso).
+SHA-256 `ac4d2959c3eeea4c46a9b5641cf2b7c56f4df8e864aec1c129f567515cbca7f2`. Versão 2: setor piloto (faturamento), sistema de gestão (`cvg-his-v4`,
+veterinário) e identidade (login do ERP) respondidos. Bloqueio: 6 perguntas
+abertas (hospital e faturistas, natureza do convênio, donos de produto/DPO/técnico,
+linha de base, prioridade F01–F04, aceite da proposta de identidade).
 
 ## Proposta NQP-07 / IMP50-22 — 2026-09-24
 

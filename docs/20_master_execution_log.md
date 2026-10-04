@@ -1,3 +1,13 @@
+# CLAW-01 v2 e preparação da recertificação — 2026-10-04
+
+- Discovery 0026 v2: HIS veterinário `cvg-his-v4`, piloto de faturamento (F01–F04 mapeados na OpenAPI/eventos do HIS), identidade via token emitido pelo HIS e API key de serviço; 6 perguntas abertas. Re-selo local `NO_GO` descartado; `npm audit fix` (0 vulnerabilidades). Próximo: certificação em duas passadas com crítico independente. Staging/produção `NO_GO`.
+
+# CLAW-00-SYNC-20261004 — push e renomeação local — 2026-10-04
+
+- status: `COMPLETED`; `git push -u origin main` enviou o histórico e criou `origin/main` em `9fd105c9838700bf9ad90c16a09917650018199c` (confirmado remotamente).
+- Pasta renomeada para `/home/ricardo/cvg-claw`; remote `legacy` e 61 arquivos locais de certificação preservados. Registros desta rodada ficam locais sem novo commit; staging/produção `NO_GO`.
+- Evidência: [recibo](04_audit/evidence/CLAW-00-sync-20261004.md); próxima ação: responder às perguntas abertas da Discovery 0026; decidir o re-selo local e recertificar antes de qualquer piloto; manter staging/produção `NO_GO`.
+
 # CLAW-00 — renomeação para cvg-claw e Discovery CLAW-01 — 2026-10-04
 
 - Projeto renomeado para `cvg-claw` (pacote raiz, lock, AGENTS, README de docs, CURRENT, novo README raiz); histórico, evidências, certificação e identificadores de código preservados. [Discovery 0026](00_discovery/0026_cvg_claw_hospital_autonomous_agent.md) aberta em `DRAFT` com níveis de autonomia N0–N3, casos de uso candidatos e 7 perguntas abertas. Selo precisa de recertificação. Staging/produção `NO_GO`.

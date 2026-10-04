@@ -5205,3 +5205,19 @@ PASS`; suíte integral `289 PASS` arquivos/12 skipped e `2.256 PASS`
 - progress: a mudança de `package.json`/lock altera bytes do candidato, então o selo commitado deixa de cobrir o HEAD até recertificar; o re-selo local `NO_GO` (`b0f7c17a`) segue não commitado e intocado.
 - next_action: o usuário cria o repositório GitHub dedicado; configurar o novo `origin` (antigo como `legacy`) e fazer push com histórico completo; responder às perguntas abertas da Discovery 0026; decidir o re-selo local e recertificar antes de qualquer piloto.
 - verification: typecheck/Prettier/`docs:check`; nenhum dado real, push, deploy ou egress.
+
+# CLAW-00-SYNC-20261004 — push e pasta local concluídos — 2026-10-04
+
+- current_engine: `DISCOVERY` (CLAW-01) em paralelo a `AUDIT -> PLAN` (AUD20); task canônica `AUD20-10` `READY_FOR_NEXT_STEP`; staging/produção `NO_GO`.
+- status: `COMPLETED` para a operação CLAW-00-SYNC-20261004.
+- last_completed_action: executar `git push -u origin main`, confirmar `9fd105c9838700bf9ad90c16a09917650018199c` no GitHub e renomear a pasta para `/home/ricardo/cvg-claw`; re-selo local preservado por SHA-256 e sem commit.
+- next_action: responder às perguntas abertas da Discovery 0026; decidir o re-selo local e recertificar antes de qualquer piloto; manter staging/produção `NO_GO`.
+- evidence: [recibo de sincronização e renomeação](04_audit/evidence/CLAW-00-sync-20261004.md).
+- verification: hash remoto igual ao local, upstream `origin/main`, destino local existente e 61 arquivos de certificação intactos; registros locais sem novo commit. Nenhuma recertificação ou promoção nesta rodada.
+
+# CLAW-01 v2 e preparação da recertificação — 2026-10-04
+
+- current_engine: `DISCOVERY` (CLAW-01) em paralelo a `AUDIT -> PLAN` (AUD20); task canônica `AUD20-10` `READY_FOR_NEXT_STEP`; staging/produção `NO_GO`.
+- last_completed_action: respostas do usuário registradas (piloto em faturamento; sistema de gestão `cvg-his-v4`, HIS veterinário; login do próprio ERP); levantamento read-only do `cvg-his-v4` (OpenAPI, eventos, RBAC, api-keys) e [Discovery 0026 v2](00_discovery/0026_cvg_claw_hospital_autonomous_agent.md) com casos F01–F04, proposta de identidade e correção regulatória (veterinário). Re-selo local `NO_GO` descartado por decisão do usuário; `npm audit fix` aplicado (fastify 5.12.5, fast-uri 3.1.8/4.2.1, undici 7.30.0, brace-expansion 5.0.12; 0 vulnerabilidades; typecheck e testes da API PASS).
+- next_action: rodar a passada 1 da certificação Phase 11 no contêiner `playwright:v1.59.1-noble` com PostgreSQL descartável; obter parecer do crítico independente fresh-context vinculado ao novo candidato; rodar a passada 2 e commitar o selo; responder às 6 perguntas abertas da Discovery 0026.
+- verification: `docs:check`/Prettier/typecheck; nenhum dado real, deploy ou egress; `cvg-his-v4` apenas lido.
