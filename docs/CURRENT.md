@@ -499,7 +499,7 @@ da próxima ação primária AUD20-17.
 
 ## Próxima ação
 
-- Próxima ação: rodar a passada 1 da certificação Phase 11 no contêiner `playwright:v1.59.1-noble` com PostgreSQL descartável; obter parecer do crítico independente fresh-context vinculado ao novo candidato; rodar a passada 2 e commitar o selo; responder às 6 perguntas abertas da Discovery 0026.
+- Próxima ação: rodar novamente a passada 1 da certificação no contêiner de paridade; obter o parecer do crítico independente fresh-context para o candidato resultante; rodar a passada 2 e commitar o selo; responder às 6 perguntas abertas da Discovery 0026.
 
 - Re-certificação executada em 2026-09-26 com PostgreSQL descartável: `certificationId phase11-fa05bd7ebd77b19e-muj6fvqf`, `CONDITIONAL_GO`/`AAA_CANDIDATE`, 35/35 gates, 16/16 invariantes, `certification:verify:phase11` PASS; ver [recibo](04_audit/evidence/AUD20/AUD20-recert-pg-20260926.md).
 

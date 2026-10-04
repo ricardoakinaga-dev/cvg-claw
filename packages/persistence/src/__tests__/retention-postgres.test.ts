@@ -1104,7 +1104,9 @@ describeWithPostgres('AUD20-04 inbound dedupe retention', () => {
         'msg_recent_tombstone',
         old,
         'f'.repeat(64),
-        new Date('2026-09-01T12:00:00.000Z')
+        // Minimization uses the PostgreSQL clock, so the recent tombstone must
+        // stay inside the 30-day horizon relative to the real run time.
+        new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)
       ]
     )
 

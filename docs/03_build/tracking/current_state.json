@@ -4,7 +4,7 @@
   "program": "AUD20-REM-v2",
   "currentTask": "AUD20-10",
   "currentStatus": "READY_FOR_NEXT_STEP",
-  "nextAction": "rodar a passada 1 da certificação Phase 11 no contêiner `playwright:v1.59.1-noble` com PostgreSQL descartável; obter parecer do crítico independente fresh-context vinculado ao novo candidato; rodar a passada 2 e commitar o selo; responder às 6 perguntas abertas da Discovery 0026.",
+  "nextAction": "rodar novamente a passada 1 da certificação no contêiner de paridade; obter o parecer do crítico independente fresh-context para o candidato resultante; rodar a passada 2 e commitar o selo; responder às 6 perguntas abertas da Discovery 0026.",
   "releaseBoundary": {
     "staging": "NO_GO",
     "production": "NO_GO"

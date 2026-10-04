@@ -1,3 +1,7 @@
+# Certificação passada 1 e correção de teste com data fixa — 2026-10-04
+
+- Passada 1 no contêiner de paridade: 31/35 gates (e2e/verify PASS). `postgres`/`coverage` falharam por bomba-relógio em `retention-postgres.test.ts` (tombstone "recente" fixo em 2026-09-01 vs horizonte de 30 dias no relógio do PostgreSQL); teste corrigido para data relativa, 13/13 PASS. Pendente: crítico independente e passada 2. Staging/produção `NO_GO`.
+
 # CLAW-01 v2 e preparação da recertificação — 2026-10-04
 
 - Discovery 0026 v2: HIS veterinário `cvg-his-v4`, piloto de faturamento (F01–F04 mapeados na OpenAPI/eventos do HIS), identidade via token emitido pelo HIS e API key de serviço; 6 perguntas abertas. Re-selo local `NO_GO` descartado; `npm audit fix` (0 vulnerabilidades). Próximo: certificação em duas passadas com crítico independente. Staging/produção `NO_GO`.
