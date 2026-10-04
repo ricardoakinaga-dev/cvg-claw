@@ -1,6 +1,6 @@
-# Documentacao de construcao — cvg-agent-secretary-v2
+# Documentacao de construcao — cvg-claw
 
-Este diretorio contem a documentacao operacional para construir a Esmeralda V2, a `cvg-agent-secretary-v2`.
+Este diretorio contem a documentacao operacional do `cvg-claw`, agente autonomo governado para tarefas hospitalares. O projeto evolui a Esmeralda V2 (`cvg-agent-secretary-v2`), que passa a ser o primeiro preset de agente (secretaria) sobre o mesmo kernel. Documentos e evidencias anteriores mantem o nome original e permanecem historicos. Discovery do novo escopo: [0026](00_discovery/0026_cvg_claw_hospital_autonomous_agent.md).
 
 Estado atual: [CURRENT](CURRENT.md). Revisão incremental mais recente:
 [NQP-03 request-context](04_audit/evidence/PLAN50-20260923/nqp03-request-context-review-20260924.md),

@@ -1,3 +1,11 @@
+# CLAW-00 — renomeação para cvg-claw e Discovery CLAW-01 — 2026-10-04
+
+- Projeto renomeado para `cvg-claw` (pacote raiz, lock, AGENTS, README de docs, CURRENT, novo README raiz); histórico, evidências, certificação e identificadores de código preservados. [Discovery 0026](00_discovery/0026_cvg_claw_hospital_autonomous_agent.md) aberta em `DRAFT` com níveis de autonomia N0–N3, casos de uso candidatos e 7 perguntas abertas. Selo precisa de recertificação. Staging/produção `NO_GO`.
+
+# AUD-20261004 — auditoria read-only e roteiro de produção — 2026-10-04
+
+- Gates locais (Node `22.23.2`): typecheck/lint/Prettier/`certification:verify:phase11` PASS; suíte `2.681 PASS`/`1 FAIL`/`194 skip`; `npm audit` 4 vulns (1 moderada, 3 altas). Selo local não commitado `b0f7c17a` = `NO_GO` (baselines visuais no host); CI `Verify` vermelho em `main`. Lacunas de produção: provider de modelo, canal e IdP não compostos; web sem token trusted; nginx sem TLS/headers; sem manifests de deploy. Staging/produção `NO_GO`.
+
 # Regeneração de baselines visuais e selo final do candidato b2a77032 — 2026-09-28
 
 - CI vermelho apenas em 9 testes de screenshot (`visual-shell` × 3 browsers); todo o resto verde. Causa: rendering do runner vs baselines (produto inalterado). Regeneração com `--update-snapshots` no container oficial `playwright:1.59.1-noble` contra os servidores locais; 15/15 passam na imagem de paridade; commit `7549bcb` empurrado com E2E verde no CI; selo final do candidato `b2a77032694b15305cd3e2f2853ec55591d3e244f29808d0ae3b0deb96ef57e3` com PostgreSQL descartável.

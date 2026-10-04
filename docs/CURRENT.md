@@ -1,5 +1,7 @@
 # CURRENT — índice canônico de estado
 
+- Projeto: `cvg-claw` (renomeado em 2026-10-04 a partir de `cvg-agent-secretary-v2`); Discovery do novo escopo em [0026](00_discovery/0026_cvg_claw_hospital_autonomous_agent.md) (`DRAFT`). Documentos anteriores mantêm o nome original.
+
 - Documento: `docs/CURRENT.md`; criado por `AUD19-02` (programa `AUD19-REM`).
 - Avaliação transversal de base: [auditoria 0569](04_audit/0569_repository_audit_2026-09-23.md), complementada pela [revisão incremental 0571](04_audit/0571_implementation_state_review_2026-09-23.md) após o BUILD query-parser; ambas usam a [base F01–F30 da auditoria 0568](04_audit/0568_full_repository_audit_2026-09-21.md). A revisão 0571 não recalcula as notas 0569. A [reauditoria 0567](04_audit/0567_aud19_delivery_reaudit_2026-09-20.md) permanece histórica. Ordem e gates operacionais: [plano 0335](03_build/0335_aud20260921_executive_plan.md), [roadmap 0336](03_build/0336_aud20260921_roadmap.md) e [backlog 0337](03_build/0337_aud20260921_backlog.md). A auditoria 0566, AUD19 e 0333/0334 permanecem históricos.
 - Planejamento complementar das 50 melhorias: [plano 0339](03_build/0339_plan50_executive_plan_20260923.md), [roadmap 0340](03_build/0340_plan50_roadmap_20260923.md) e [backlog candidato 0341](03_build/0341_plan50_backlog_20260923.md). A reativação local de `AUD20-10/17/20` em 2026-09-23 está registrada; gates e dependências permanecem obrigatórios.
@@ -497,7 +499,7 @@ da próxima ação primária AUD20-17.
 
 ## Próxima ação
 
-- Próxima ação: observar o `Verify` final desta rodada e o `Security`; obter os insumos do item B (owners/credenciais dos gates 1–4, ambiente/janela de 5/7, autorização/participantes de 6) e conduzir o sign-off (8) sobre o candidato certificado vigente em `certification/current.json`; executar os P2 estruturais da [AUD20-22](04_audit/evidence/AUD20/AUD20-22-production-hardening-2026-09-27.md) (release de claim no shutdown, paginação real e observabilidade de produção) em tasks próprias com SPEC; manter `AUD20-19` sem sessão autorizada, 141 vínculos sem adjudicação e staging/produção `NO_GO`.
+- Próxima ação: o usuário cria o repositório GitHub dedicado; configurar o novo `origin` (antigo como `legacy`) e fazer push com histórico completo; responder às perguntas abertas da Discovery 0026; decidir o re-selo local e recertificar antes de qualquer piloto.
 
 - Re-certificação executada em 2026-09-26 com PostgreSQL descartável: `certificationId phase11-fa05bd7ebd77b19e-muj6fvqf`, `CONDITIONAL_GO`/`AAA_CANDIDATE`, 35/35 gates, 16/16 invariantes, `certification:verify:phase11` PASS; ver [recibo](04_audit/evidence/AUD20/AUD20-recert-pg-20260926.md).
 

@@ -2,7 +2,7 @@
 
 ## Proposito
 
-Este repositorio segue o padrao CVG de engenharia orientada por documentacao, gates e execucao controlada. O Codex deve operar como agente de engenharia disciplinado para construir a Esmeralda V2, nao como gerador solto de codigo.
+Este repositorio segue o padrao CVG de engenharia orientada por documentacao, gates e execucao controlada. O Codex deve operar como agente de engenharia disciplinado para construir o `cvg-claw` (agente autonomo governado do hospital, evoluido da Esmeralda V2), nao como gerador solto de codigo.
 
 ## Working Agreements
 

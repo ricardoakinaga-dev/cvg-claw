@@ -1,5 +1,5 @@
 {
-  "name": "cvg-agent-secretary-v2",
+  "name": "cvg-claw",
   "version": "1.0.0",
   "description": "Enterprise agent secretary runtime for CVG operations",
   "private": true,

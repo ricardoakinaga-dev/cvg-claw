@@ -1,5 +1,13 @@
 # 0090 — Discovery Validation
 
+## Proposta CLAW-01 / cvg-claw — 2026-10-04
+
+`BLOCKED` para `DISCOVERY_READY`; nenhum PRD ou BUILD admitido:
+[0026 — cvg-claw](0026_cvg_claw_hospital_autonomous_agent.md),
+SHA-256 `4164b6f03308c952c479b51bfbf75fa70352ac402da59b686f2f208c3980aace`. Bloqueio: 7 perguntas abertas (hospital/setor piloto,
+sistema de gestão hospitalar e acesso, convênios, IdP, donos de produto/DPO/técnico,
+linha de base e prioridade dos casos de uso).
+
 ## Proposta NQP-07 / IMP50-22 — 2026-09-24
 
 `BLOCKED` para `DISCOVERY_READY`; nenhum PRD ou BUILD admitido:

@@ -1,4 +1,6 @@
-# AGENTS.md — cvg-agent-secretary-v2
+# AGENTS.md — cvg-claw
+
+Projeto `cvg-claw`: agente autonomo governado para tarefas hospitalares, evoluido a partir da `cvg-agent-secretary-v2` (Esmeralda V2). O historico e as evidencias anteriores permanecem preservados com o nome original.
 
 Este repositorio opera pelo pipeline CVG documentado em `docs/07_agents/AGENTS.md`.
 
@@ -19,6 +21,7 @@ Regras principais:
 - Nao responder RAG sem fonte institucional aprovada.
 - Nao executar acao clinica, financeira ou prontuario definitivo.
 - Toda acao sensivel exige approval ou handoff.
+- Autonomia em niveis (N0 informar, N1 preparar com aprovacao, N2 executar acao reversivel de baixo risco, N3 sempre bloqueado); nenhuma capability sobe de nivel sem PRD/SPEC e decisao humana registrada.
 - Ao final de qualquer rodada, atualizar runtime state, execution log, backlog quando aplicavel e evidencias.
 
 Fonte operacional completa: `docs/07_agents/AGENTS.md`.

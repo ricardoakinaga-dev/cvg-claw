@@ -1,3 +1,21 @@
+# CLAW-00/CLAW-01 — cvg-claw — 2026-10-04
+
+- [x] Renomear projeto para `cvg-claw` nos documentos vivos e no pacote raiz; histórico preservado.
+- [x] Discovery [0026](00_discovery/0026_cvg_claw_hospital_autonomous_agent.md) em `DRAFT`.
+- [ ] Configurar remote do novo repositório GitHub e fazer push com histórico completo (antigo como `legacy`).
+- [ ] Responder às 7 perguntas abertas da Discovery 0026 e validar casos de uso com o setor piloto.
+- [ ] Task própria com SPEC: `serviceName` da telemetria para `cvg-claw` (manter a chave de lock das migrações).
+- [ ] Recertificar após a renomeação (bytes de `package.json`/lock mudaram). Staging/produção `NO_GO`.
+
+# AUD-20261004 — auditoria read-only — 2026-10-04
+
+- [ ] **P0**: resolver selo local `NO_GO` (re-selar na imagem do CI ou restaurar o commitado) e deixar `Verify` verde em `main`.
+- [ ] **P0**: `npm audit fix` (fastify ≥5.12.5, fast-uri) + recertificação.
+- [ ] **P1**: SPEC/BUILD compondo provider real (`openai-compatible`) no worker atrás de flag; hoje só `deterministic-v1`.
+- [ ] **P1**: SPEC/BUILD compondo canal `evolution` (WhatsApp) e IdP/gateway que emita `x-cvg-operator-token` para o web.
+- [ ] **P1**: manifests de deploy (compose/k8s), job de migração, TLS/CSP/HSTS no edge, backups.
+- [ ] **P2**: desacoplar `tests/promotion-expectation.test.js` do selo vivo. Staging/produção `NO_GO`.
+
 # Baselines visuais (E2E do CI) — 2026-09-28
 
 - [x] Investigado o vermelho do CI: 9 falhas, todas `toHaveScreenshot` em `visual-shell` × 3 browsers; reproducibilidade confirmada na imagem oficial do runner; 28 baselines regeneradas, E2E verde no CI.
