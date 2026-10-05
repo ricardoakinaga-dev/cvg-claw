@@ -2,7 +2,7 @@
 
 - Projeto: `cvg-claw` (renomeado em 2026-10-04 a partir de `cvg-agent-secretary-v2`); Discovery do novo escopo em [0026](00_discovery/0026_cvg_claw_hospital_autonomous_agent.md) (`DRAFT`). Documentos anteriores mantêm o nome original.
 
-- Plano corrente até produção: [roadmap em ondas 0346](03_build/0346_claw_waves_roadmap_20261005.md) e [backlog 0347](03_build/0347_claw_waves_backlog_20261005.md), a partir da [auditoria 0575](04_audit/0575_repository_audit_2026-10-05.md) (nota geral 60/100). Onda 1 (base sólida) admitida e executada localmente em 2026-10-05; commit, crítico, selo e push pendentes de autorização.
+- Plano corrente até produção: [roadmap em ondas 0346](03_build/0346_claw_waves_roadmap_20261005.md) e [backlog 0347](03_build/0347_claw_waves_backlog_20261005.md), a partir da [auditoria 0575](04_audit/0575_repository_audit_2026-10-05.md) (nota geral 60/100). Onda 1 (base sólida) admitida, executada e commitada em 2026-10-05; candidato congelado para o crítico; selo e push na sequência.
 
 - Documento: `docs/CURRENT.md`; criado por `AUD19-02` (programa `AUD19-REM`).
 - Avaliação transversal de base: [auditoria 0569](04_audit/0569_repository_audit_2026-09-23.md), complementada pela [revisão incremental 0571](04_audit/0571_implementation_state_review_2026-09-23.md) após o BUILD query-parser; ambas usam a [base F01–F30 da auditoria 0568](04_audit/0568_full_repository_audit_2026-09-21.md). A revisão 0571 não recalcula as notas 0569. A [reauditoria 0567](04_audit/0567_aud19_delivery_reaudit_2026-09-20.md) permanece histórica. Ordem e gates operacionais: [plano 0335](03_build/0335_aud20260921_executive_plan.md), [roadmap 0336](03_build/0336_aud20260921_roadmap.md) e [backlog 0337](03_build/0337_aud20260921_backlog.md). A auditoria 0566, AUD19 e 0333/0334 permanecem históricos.
@@ -501,7 +501,7 @@ da próxima ação primária AUD20-17.
 
 ## Próxima ação
 
-- Próxima ação: autorizar o commit da Onda 1 (CLAW-W1-01 a W1-04) e congelar o novo candidato (CLAW-W1-05); obter o parecer do crítico independente para esse candidato, rodar a passada 2 no contêiner de paridade, commitar o selo e fazer push (CLAW-W1-06); decidir a renovação da política de tombstone antes de 2026-12-31 (CLAW-W1-07); responder às 6 perguntas abertas da Discovery 0026 (CLAW-W2-01).
+- Próxima ação: obter o parecer do crítico independente no opencode para o candidato congelado da Onda 1 (pedido em `docs/04_audit/evidence/CLAW-W1/`); rodar a passada 2 no contêiner de paridade, commitar o selo com recibo só em `docs/04_audit/evidence/` e fazer push (CLAW-W1-06); decidir a renovação da política de tombstone antes de 2026-12-31 (CLAW-W1-07); responder às 6 perguntas abertas da Discovery 0026 (CLAW-W2-01).
 
 - Re-certificação executada em 2026-09-26 com PostgreSQL descartável: `certificationId phase11-fa05bd7ebd77b19e-muj6fvqf`, `CONDITIONAL_GO`/`AAA_CANDIDATE`, 35/35 gates, 16/16 invariantes, `certification:verify:phase11` PASS; ver [recibo](04_audit/evidence/AUD20/AUD20-recert-pg-20260926.md).
 

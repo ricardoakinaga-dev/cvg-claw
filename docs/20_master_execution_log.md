@@ -1,3 +1,7 @@
+# CLAW-W1-05 — commit da Onda 1 e congelamento do candidato — 2026-10-05
+
+- Decisões do usuário: commit autorizado; crítico independente pelo opencode; `git push` autorizado. Onda 1 commitada em `6fec2a6`; este commit congela a governança. Binding do novo candidato e pedido ao crítico em `docs/04_audit/evidence/CLAW-W1/`. Staging/produção `NO_GO`.
+
 # CLAW-W1 — auditoria 0575, roadmap em ondas e Onda 1 local — 2026-10-05
 
 - Decisão humana: plano em ondas até produção, atualização da documentação existente e execução da Onda 1 ([recibo](04_audit/evidence/CLAW-W1/CLAW-W1-admission-20261005.md)).

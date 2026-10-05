@@ -5243,3 +5243,11 @@ PASS`; suíte integral `289 PASS` arquivos/12 skipped e `2.256 PASS`
 - next_action: autorizar o commit da Onda 1 (CLAW-W1-01 a W1-04) e congelar o novo candidato (CLAW-W1-05); obter o parecer do crítico independente para esse candidato, rodar a passada 2 no contêiner de paridade, commitar o selo e fazer push (CLAW-W1-06); decidir a renovação da política de tombstone antes de 2026-12-31 (CLAW-W1-07); responder às 6 perguntas abertas da Discovery 0026 (CLAW-W2-01).
 - evidence: [admissão](04_audit/evidence/CLAW-W1/CLAW-W1-admission-20261005.md), [varredura](04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md).
 - verification: ver execution log de 2026-10-05; nenhum dado real, commit, push ou deploy.
+
+# Onda 1 commitada e candidato congelado para o crítico — 2026-10-05
+
+- current_engine: `AUDIT -> PLAN -> BUILD`; task canônica `CLAW-W1` `WAITING_HUMAN_APPROVAL` (parecer do crítico); staging/produção `NO_GO`.
+- last_completed_action: decisões do usuário registradas (commit autorizado, crítico no opencode, push autorizado); Onda 1 commitada em `6fec2a6`; governança congelada neste commit para o crítico.
+- next_action: obter o parecer do crítico independente no opencode para o candidato congelado da Onda 1 (pedido em `docs/04_audit/evidence/CLAW-W1/`); rodar a passada 2 no contêiner de paridade, commitar o selo com recibo só em `docs/04_audit/evidence/` e fazer push (CLAW-W1-06); decidir a renovação da política de tombstone antes de 2026-12-31 (CLAW-W1-07); responder às 6 perguntas abertas da Discovery 0026 (CLAW-W2-01).
+- evidence: [decisões e pedido ao crítico](04_audit/evidence/CLAW-W1/).
+- verification: typecheck, lint, `docs:check`, Prettier e suíte (2.682 PASS/194 skips/0 falhas) PASS antes do commit; nenhum dado real ou deploy.
