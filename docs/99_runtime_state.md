@@ -5228,3 +5228,10 @@ PASS`; suíte integral `289 PASS` arquivos/12 skipped e `2.256 PASS`
 - last_completed_action: passada 1 (`phase11-38625e150c00d1e0-muuf0t0r`, commit `498ae11`) no contêiner `playwright:v1.59.1-noble` + `postgres:16-alpine` descartável: 31/35 gates PASS (e2e e verify PASS na imagem de paridade); `postgres`/`coverage` FAIL pelo mesmo teste, `independent_critic` e closure FAIL. Causa raiz: `retention-postgres.test.ts` fixava o tombstone "recente" em `2026-09-01`, mas a minimização usa o relógio do PostgreSQL com horizonte de 30 dias, então o teste passou a falhar a partir de 2026-10-01 (produto correto). Correção só no teste: data relativa ao momento da execução; 13/13 PASS em PostgreSQL descartável. Pacote `NO_GO` descartado; resíduo do runner: 6 papéis, contêiner removido.
 - next_action: rodar novamente a passada 1 da certificação no contêiner de paridade; obter o parecer do crítico independente fresh-context para o candidato resultante; rodar a passada 2 e commitar o selo; responder às 6 perguntas abertas da Discovery 0026.
 - verification: lint/Prettier do teste PASS; nenhum dado real, deploy ou egress.
+
+# Passada 1 PASS local (33/35) e congelamento para o crítico — 2026-10-04
+
+- current_engine: `AUDIT -> PLAN`; task canônica `AUD20-10` `READY_FOR_NEXT_STEP`; staging/produção `NO_GO`.
+- last_completed_action: reexecutar a passada 1 no contêiner de paridade (`phase11-9aa3401dfcfa9b77-muugfayu`, commit `af5f348`): **33/35 gates e 16/16 invariantes PASS**; só `independent_critic` e `PHASE11_FORMAL_CLOSURE` pendentes. Pacote da passada 1 descartado; governança congelada neste commit para o parecer do crítico.
+- next_action: obter o parecer do crítico independente fresh-context vinculado ao candidato congelado (pedido em `docs/04_audit/evidence/CLAW-reseal/`); rodar a passada 2 no contêiner de paridade e commitar o selo com o recibo só em `docs/04_audit/evidence/`; responder às 6 perguntas abertas da Discovery 0026.
+- verification: PostgreSQL descartável removido (resíduo 6 papéis); nenhum dado real, deploy ou egress.

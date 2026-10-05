@@ -3,7 +3,7 @@
 - [x] Discovery 0026 v2 com contexto veterinário e mapa de integração do `cvg-his-v4`.
 - [x] Re-selo local `NO_GO` descartado; `npm audit fix` aplicado (0 vulnerabilidades).
 - [x] Certificação Phase 11 passada 1 no contêiner Playwright + PostgreSQL descartável (31/35; teste com data fixa corrigido).
-- [ ] Reexecutar a passada 1 após a correção.
+- [x] Reexecutar a passada 1 após a correção (33/35 gates, 16/16 invariantes).
 - [ ] Varredura de outras datas fixas em testes de retenção/horizonte (ex.: `retention-postgres.test.ts` linhas 28–30, 517–652) para evitar novas bombas-relógio.
 - [ ] Parecer do crítico independente fresh-context para o novo candidato; passada 2; commit do selo; CI `Verify` verde.
 - [ ] Responder às 6 perguntas abertas da Discovery 0026. Staging/produção `NO_GO`.

@@ -1,3 +1,7 @@
+# Passada 1 PASS local (33/35) e congelamento para o crítico — 2026-10-04
+
+- Passada 1 reexecutada no contêiner de paridade: 33/35 gates e 16/16 invariantes; pendentes só o crítico independente e o fechamento formal. Governança congelada para o parecer. Staging/produção `NO_GO`.
+
 # Certificação passada 1 e correção de teste com data fixa — 2026-10-04
 
 - Passada 1 no contêiner de paridade: 31/35 gates (e2e/verify PASS). `postgres`/`coverage` falharam por bomba-relógio em `retention-postgres.test.ts` (tombstone "recente" fixo em 2026-09-01 vs horizonte de 30 dias no relógio do PostgreSQL); teste corrigido para data relativa, 13/13 PASS. Pendente: crítico independente e passada 2. Staging/produção `NO_GO`.
