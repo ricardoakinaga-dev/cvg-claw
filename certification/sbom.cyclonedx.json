@@ -1,13 +1,13 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:04f2eb0d-708e-48ef-a95c-128bf6b3eef2",
+  "serialNumber": "urn:uuid:4da2c98e-ef57-4159-a602-37d61403a806",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-09-28T00:24:22.345Z",
+    "timestamp": "2026-10-05T13:10:39.477Z",
     "component": {
       "type": "application",
-      "name": "cvg-agent-secretary-v2",
+      "name": "cvg-claw",
       "version": "1.0.0"
     },
     "tools": [
@@ -4795,12 +4795,12 @@
     {
       "type": "library",
       "name": "brace-expansion",
-      "version": "5.0.9",
-      "purl": "pkg:npm/brace-expansion@5.0.9",
+      "version": "5.0.12",
+      "purl": "pkg:npm/brace-expansion@5.0.12",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "49c43822ebc8105d533253fb66dfaf8c9ffff7394f6f64837315b13376e4f2ceade8619d27b28ed5d09c4e274e3c929e3d6df42c4ff6713ef00b23e1a3dfd6c6"
+          "content": "628bd0debce168b308ac38cd0cc90d4b4d6d79af77aa11211b9c72f1febe47497e770dca8bee6c0a822823de368ae2d94c75a881692d830543854d3d88d12299"
         }
       ],
       "licenses": [
@@ -5926,12 +5926,12 @@
     {
       "type": "library",
       "name": "fast-uri",
-      "version": "3.1.6",
-      "purl": "pkg:npm/fast-uri@3.1.6",
+      "version": "3.1.8",
+      "purl": "pkg:npm/fast-uri@3.1.8",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "ec871a975bc510caf4a276d5cc40c8ade336d88e24856f9fcf240fc2f005581a758b076c852651b0be238d1bcf1bd24fd6e8aa30746da3e614e91dbf0b30f3e5"
+          "content": "19932d6544cd4693952040a85f02cd652e7150613e99535b4c1f21ffb4708764c559c05088fcd3832662d39045f543192a42c9bfc5c14494e553bce0f3e65f32"
         }
       ],
       "licenses": [
@@ -5955,12 +5955,12 @@
     {
       "type": "library",
       "name": "fastify",
-      "version": "5.12.3",
-      "purl": "pkg:npm/fastify@5.12.3",
+      "version": "5.12.5",
+      "purl": "pkg:npm/fastify@5.12.5",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "ade67cc1c7b954d09cb9f22df4056dcd96b72f8bb58fc7ac8a49fb38480758b5694692f947b636f97ce3ef439492fe730dfcd40315d94fa72ee11b74cebdc428"
+          "content": "381da4d5d971b39fcd00006a78a5761541e4483d816c436c09a93cc942d57329a7ddf1c83c355af532374839c9496612965666498b995f2da04e7b13f92badd4"
         }
       ],
       "licenses": [
@@ -6042,12 +6042,12 @@
     {
       "type": "library",
       "name": "fastify/node_modules/fast-json-stringify/node_modules/fast-uri",
-      "version": "4.1.4",
-      "purl": "pkg:npm/fastify/node_modules/fast-json-stringify/node_modules/fast-uri@4.1.4",
+      "version": "4.2.1",
+      "purl": "pkg:npm/fastify/node_modules/fast-json-stringify/node_modules/fast-uri@4.2.1",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "74e0d7ac8c654bd25276002784850a3a8b0a575a0cb54d95b55c3ced045a1f3ca5e63c4edbdd088b9b4465f09fcdf58d1e2de3296c0149d423d2a232b2175975"
+          "content": "4e61d081ec231ed32ad44e50280d2d384d32798190b36e4a642ff3889a6e6d1b56235e56f767babcf17275639e6415513921c1630fd0843f5de4e79f743e8b0e"
         }
       ],
       "licenses": [
@@ -10073,12 +10073,12 @@
     {
       "type": "library",
       "name": "undici",
-      "version": "7.29.0",
-      "purl": "pkg:npm/undici@7.29.0",
+      "version": "7.30.0",
+      "purl": "pkg:npm/undici@7.30.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "203c5f95e2e699b4ac91f5925004e23759df9f6ac3baf9cc3aa6f909647dda221fa2303451dfae94e000110e7b2cfafdad69acade5327f9970c9aa3eec634d57"
+          "content": "764ad05de1d26a86a69c8b6561b9b31b4c0562b3346700f108883403b68a8d3cb2861f6cbd1cc234513357e566d39ff27a18c2ce30d9df52977c6123612ced0d"
         }
       ],
       "licenses": [

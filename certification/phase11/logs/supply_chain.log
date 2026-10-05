@@ -1,21 +1,21 @@
 $ npm run sbom && npm run licenses:check
-# certificationId=phase11-fb12c14ae87bf7e2-mukhf88l
-# candidateId=fb12c14ae87bf7e2a130f83d18d818277d23ca3aa977d6d5b61265f3bf9706c4
-# commit=b3b715eed95fd24b802f174b919e338aa6ac8b7a
-# treeHash=f014283e4ed9dbd63c31413fbef5fca27b5952d609185554d6967c494f8905e2
+# certificationId=phase11-72fa77fcda6fad8c-muv8q8tu
+# candidateId=72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267
+# commit=dfe2c1dd992a96a55dd41f5c516352a82f587cbf
+# treeHash=d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569
 # gate=supply_chain
 # profile=CONTROLLED_LOCAL
 # databaseConfigured=false
 # realEffects=disabled
-# exitCode=0 durationMs=271
+# exitCode=0 durationMs=283
 
 
-> cvg-agent-secretary-v2@1.0.0 sbom
+> cvg-claw@1.0.0 sbom
 > node scripts/generate-sbom.mjs
 
-{"event":"sbom.generated","path":"certification/sbom.cyclonedx.json","components":374,"sha256":"58ae542b3cd339f942fd2c1b4ba50d013b07fc1f961881f04b1fae9d812b555a"}
+{"event":"sbom.generated","path":"certification/sbom.cyclonedx.json","components":374,"sha256":"79862550d24f6aaec34e896500524a11e1d3efd44624bd2375c8bc29b948aea5"}
 
-> cvg-agent-secretary-v2@1.0.0 licenses:check
+> cvg-claw@1.0.0 licenses:check
 > node scripts/check-licenses.mjs
 
 {"event":"licenses.checked","total":374,"internal":21,"denied":0,"unclassified":0,"invalidExceptions":0}

@@ -1,13 +1,13 @@
 $ node scripts/phase11-self-test.mjs
-# certificationId=phase11-fb12c14ae87bf7e2-mukhf88l
-# candidateId=fb12c14ae87bf7e2a130f83d18d818277d23ca3aa977d6d5b61265f3bf9706c4
-# commit=b3b715eed95fd24b802f174b919e338aa6ac8b7a
-# treeHash=f014283e4ed9dbd63c31413fbef5fca27b5952d609185554d6967c494f8905e2
+# certificationId=phase11-72fa77fcda6fad8c-muv8q8tu
+# candidateId=72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267
+# commit=dfe2c1dd992a96a55dd41f5c516352a82f587cbf
+# treeHash=d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569
 # gate=certification_self_test
 # profile=CONTROLLED_LOCAL
 # databaseConfigured=false
 # realEffects=disabled
-# exitCode=0 durationMs=92
+# exitCode=0 durationMs=95
 
 {
   "schemaVersion": 1,

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "phase11-critic-report",
   "critic": {
-    "identity": "opencode-independent-critic-phase11-r7-20260927",
+    "identity": "CLAW-W1 FINAL — fresh independent Critic — openai/gpt-6.1-sol",
     "freshContext": true,
     "builderIdentity": "cvg-lead-agent",
     "independence": {
@@ -19,105 +19,136 @@
     }
   },
   "binding": {
-    "candidateId": "fb12c14ae87bf7e2a130f83d18d818277d23ca3aa977d6d5b61265f3bf9706c4",
-    "commit": "b4478f7da2c89da01409f697f9f4a07aed3d6756",
-    "treeHash": "f014283e4ed9dbd63c31413fbef5fca27b5952d609185554d6967c494f8905e2"
+    "candidateId": "72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267",
+    "commit": "185f82168a11e813c218f2e6da1c49b671bf451f",
+    "treeHash": "d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569"
   },
   "fingerprint": {
     "algorithm": "sha256-candidate-v1",
-    "before": "53a489840a5f7c2ad0438e316387bc3033f968fbba2aeaccaed34d44be7f91a4",
-    "after": "53a489840a5f7c2ad0438e316387bc3033f968fbba2aeaccaed34d44be7f91a4"
+    "before": "ad6087e1cad09d16ec532dc5e893a21e4d4e7759f4f30d1bec6cab4a6ec11865",
+    "after": "ad6087e1cad09d16ec532dc5e893a21e4d4e7759f4f30d1bec6cab4a6ec11865"
   },
   "verdict": {
     "status": "PASS",
-    "summary": "Parecer independente fresh-context do candidato final congelado fb12c14ae87bf7e2@b4478f7d, emitido apenas sobre artefatos e sem escrita. O HEAD e a cadeia de commits confirmam o estado congelado; o binding oficial (candidateId/treeHash) e o fingerprint 53a489840a5f7c2a conferem. O delta desde o candidato selado anterior (5c663a5f@6575919) é exclusivamente documental/governança: report do crítico (evidência, excluída), certification/** (excluído) e seis docs em escopo, sem nenhum path de produto, teste, script, migration ou configuração — amostra de categorias distintas conferida byte a byte no worktree contra o commit. A evidência comportamental do pacote anterior (35/35 gates, 16/16 invariantes, unit/coverage/PostgreSQL/e2e/mutation) transfere porque os bytes de produto são idênticos e o re-selo regenera os artefatos candidate-bound. Nenhum defeito material P0/P1 sobrevive; ressalvas P2 de empacotamento/metadado registradas. Veredito PASS autoriza o selo final como AAA_CANDIDATE local; staging/produção permanecem NO_GO pelos 8 gates externos NOT_VALIDATED/PENDING e o sign-off humano segue pendente."
+    "summary": "Maior lacuna: não há nesta entrada prova executável atual dos 14 critérios Phase 11.2 nem de 35 gates; passada 2, validação deste JSON e certificação final continuam necessárias. PASS significa somente admissibilidade do delta para essa passada. Observações: li integralmente as 994 linhas do patch candidato e o patch dos helpers, confrontando os testes e blocos atuais do lock com fontes reais. Não identifiquei P0/P1 ou regressão material demonstrada no delta candidato. Pedido e complemento, considerados juntos, explicitam a sincronização do lock com o manifest agent-evals e os helpers fora do candidato. P2 observado, não bloqueante neste escopo: certify-pass.sh registra o exit da certificação, mas não o propaga; comandos posteriores e o echo final podem devolver sucesso após falha. Seu exit isolado não pode provar certificação; exigir resultados e verificação oficiais. A política implementada continua vencendo em 2027-01-01T02:59:59.000Z; a renovação documental não a estende. Hipóteses não verificadas: compatibilidade comportamental das dependências após atualização e execução bem-sucedida das suítes; dependem da passada 2. Hashes/tamanhos e igualdade frozen/live são medições factuais dos receipts do Lead, não recomputações minhas. before/after são valores declarados, com after condicionado à conferência pós-retorno pelo Lead, inclusive sentinel completo; não atesto ausência de mutação por medição própria. Usei exclusivamente Read absoluto, sem escrita, shell, delegação, histórico .gauntlet, pareceres anteriores ou busca de justificativa Builder. Independência limitada a I1: papel separado e contexto novo, sem session ID exposto ou família distinta comprovada. Staging/produção permanecem NO_GO."
   },
   "findings": {
     "P0": 0,
     "P1": 0,
-    "P2": 3
+    "P2": 1
   },
   "checks": [
     {
-      "id": "CHECK-1-head-e-binding-final",
+      "id": "C1-binding-declarado-e-receipts",
       "status": "PASS",
-      "method": "Leitura do HEAD b4478f7da2c89da01409f697f9f4a07aed3d6756 e sua cadeia; worktree contém exatamente o estado do commit congelado. Binding oficial conferido: candidateId fb12c14ae87bf7e2a130f83d18d818277d23ca3aa977d6d5b61265f3bf9706c4, treeHash f014283e4ed9dbd63c31413fbef5fca27b5952d609185554d6967c494f8905e2, fingerprint sha256-candidate-v1=53a489840a5f7c2ad0438e316387bc3033f968fbba2aeaccaed34d44be7f91a4, dirty=false, 1212 arquivos.",
+      "method": "Confrontei pedido, receipts e regras lidas em scripts/lib/certification-rules.mjs e critic-evidence.mjs. Receipt registra 1217 arquivos, igualdade integral frozen/live, binding congelado e reprodução de 2414ae1538227881cb294abd051d3ce593c266c59f7f0c6e6173a417f9b49ecd em f8c2639. HEAD posterior altera apenas evidências segundo a medição. PASS de coerência e suporte documental ao binding, não recomputação independente de hashes.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-delta-preflight-20261005.json"
+      ]
+    },
+    {
+      "id": "C2-delta-integral-e-fidelidade",
+      "status": "PASS",
+      "method": "Inspecionei patch candidato inteiro, linhas 1–994 em páginas sem truncamento, e helper patch inteiro. Delta candidato: documentos/governança, nome/descrição raiz, banco de exemplo, lock e dois testes; nenhum hunk de produto, migração, script, threshold ou configuração de teste. Complemento restringe corretamente a declaração ao escopo candidato e revela os helpers excluídos pela regra oficial. Sem P0/P1 identificado por inspeção. P2 no helper certify-pass.sh: ausência de propagação do exit da certificação, com término em echo; não aceitar sucesso do wrapper como gate.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/critic-candidate-delta-20261005.patch",
+        "docs/04_audit/evidence/CLAW-W1/critic-helper-delta-20261005.patch"
+      ]
+    },
+    {
+      "id": "C2-legitimidade-das-duas-correcoes",
+      "status": "PASS",
+      "method": "Confrontei hunks com journeys-api.test.ts, journeys.ts:850–879, retention-postgres.test.ts:1081–1202 e retention.ts:1534–1720. Slots usam próximo dia UTC: formato e Date.parse maior que agora substituem corretamente ano fixo, sem aceitar data inválida. Tombstone recente agora fica cinco dias antes do relógio Node, dentro do horizonte SQL de 30 dias; permanecem asserts de preservação, minimização e replay. Pressupõe relógios Node/PostgreSQL razoavelmente alinhados; não foi executado. A correção não elimina a expiração intencional da política.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-candidate-delta-20261005.patch",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md"
+      ]
+    },
+    {
+      "id": "C2-lock-e-manifest-workspace",
+      "status": "PASS",
+      "method": "Li todos os hunks do lock e blocos atuais em package-lock.json:1–100,2430–2519,3065–3209,4955–5024,5310–5384; confrontei package.json e packages/agent-evals/package.json. Mudanças: nome raiz, brace-expansion 5.0.12, fast-uri 3.1.8/4.2.1, fastify 5.12.5, undici 7.30.0 e agent-core 1.0.0 em agent-evals. Versões/ranges e engines lidos são coerentes com Node22.23.2. Receipt factual before/after mostra manifest agent-evals idêntico já contendo agent-core: trata-se de sincronização do lock, não nova dependência no manifest. npm ci/audit/compatibilidade runtime não foram executados.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-candidate-delta-20261005.patch",
+        "docs/04_audit/evidence/CLAW-W1/critic-delta-preflight-20261005.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md"
+      ]
+    },
+    {
+      "id": "C3-escopo-sem-certificacao-por-inferencia",
+      "status": "PASS",
+      "method": "Comparei os 14 critérios congelados com o delta e limites dos receipts. Execução atual NÃO ATESTADA para P11.2-PROMPT, CANONICAL, CALCULUS, ORCHESTRATION, FENCING, EFFECT, LINEAGE, REDTEAM, POSTGRES, CONSOLE, PREFLIGHT, SUPPLY, EXTERNAL e NO-PRODUCTION-EFFECT. Não há resultados brutos atuais suficientes para marcar esses gates PASS; permanecem sujeitos à passada 2 ou evidência autorizada externa. Contagens históricas, texto da auditoria e pacote descartado não foram usados como aprovação. Este check aprova a delimitação honesta do parecer, não a execução desses critérios.",
+      "evidence": [
+        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md"
+      ]
+    },
+    {
+      "id": "C4-no-go-e-renovacao-nao-implementada",
+      "status": "PASS",
+      "method": "Estado atual mantém staging/produção NO_GO; external-gates contém três NOT_VALIDATED e humanSignoff PENDING, não oito aprovações externas. Pedido preserva os oito gates externos/humanos pendentes. Recibo de renovação limita efeito ao sintético local, releaseEligible=false e effectiveOnlyAfterCodeChange=true. Li retention.ts:47,1534–1609 e teste de borda:1310–1325: código conserva validade antiga e falha fechado após ela. Renovação para julho não constitui implementação nem autorização de produção.",
       "evidence": [
         "docs/03_build/tracking/current_state.json",
-        "docs/99_runtime_state.md"
-      ]
-    },
-    {
-      "id": "CHECK-2-delta-selado-ate-o-congelado",
-      "status": "PASS",
-      "method": "Enumeração integral do delta desde o candidato selado 5c663a5f@6575919: report do crítico (evidência, excluída), certification/** (excluído) e seis docs de governança em escopo (CURRENT.md, runtime state, execution log, backlog, current_state.json e o recibo novo). Nenhum path de apps/**, packages/**, tests/**, scripts/**, migration ou configuração mudou; amostra de categorias distintas conferida byte a byte.",
-      "evidence": [
-        "docs/99_runtime_state.md",
-        "docs/20_master_execution_log.md",
-        "docs/30_backlog_master.md",
-        "docs/04_audit/evidence/AUD20/AUD20-reseal-5c663a5f-20260927.md",
-        "docs/03_build/tracking/current_state.json"
-      ]
-    },
-    {
-      "id": "CHECK-3-evidencia-de-produto-transfere",
-      "status": "PASS",
-      "method": "O pacote anterior (phase11-5c663a5f921ab490-mukeqq99) tem 35/35 gates PASS e 16/16 invariantes PASS sobre os mesmos bytes de produto; a transferência é sustentável e o re-selo regenera os artefatos candidate-bound (manifest, logs, mutation, ponteiro, report).",
-      "evidence": [
-        "docs/04_audit/evidence/AUD20/AUD20-reseal-5c663a5f-20260927.md",
-        "docs/04_audit/evidence/AUD20/AUD20-22-production-hardening-2026-09-27.md",
-        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json"
-      ]
-    },
-    {
-      "id": "CHECK-4-escopo-e-exclusoes",
-      "status": "PASS",
-      "method": "docs/04_audit/evidence/** e certification/phase11/** são excluídos do candidato; docs/99_runtime_state.md é in-scope (explica a evolução 3d98a220->fb12c14a). Nenhuma persistência em docs in-scope deve ocorrer após certificar sem novo selo.",
-      "evidence": [
-        "docs/99_runtime_state.md",
-        "docs/03_build/tracking/current_state.json"
-      ]
-    },
-    {
-      "id": "CHECK-5-barra-externa-permanece-bloqueada",
-      "status": "PASS",
-      "method": "certification/external-gates.json registra modelProvider/channel/externalIdentity NOT_VALIDATED e humanSignoff PENDING; nothing nesta transferência altera o boundary staging/produção NO_GO.",
-      "evidence": [
         "certification/external-gates.json",
-        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json"
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/CLAW-W1-07-tombstone-policy-renewal-decision-20261005.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md"
+      ]
+    },
+    {
+      "id": "C5-procedimento-independente-read-only",
+      "status": "PASS",
+      "method": "Revisão FINAL em contexto novo, identidade de papel distinta de cvg-lead-agent; nenhuma identidade de sessão única foi exposta. Apenas Read com caminhos absolutos; nenhum write/shell/delegação, parecer anterior, .gauntlet ou justificativa Builder buscada. Prosa histórica incidental do delta foi tratada como objeto documental, não conclusão herdada. I1 máximo, sem prova de família distinta. before/after informado é declaração vinculada ao preflight e sujeito à medição Lead pós-retorno; sentinel completo não foi lido nem recomputado por mim. PASS do procedimento observado, não de teste mecânico de imutabilidade.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json"
+      ]
+    },
+    {
+      "id": "C6-schema-e-rastreabilidade-do-relatorio",
+      "status": "PASS",
+      "method": "Conferência estrutural manual contra CriticReportSchema strict em scripts/lib/critic-evidence.mjs: campos, enums, limites, critérios, findings e binding. Toda evidence é declarada em artifacts e fica em docs/ ou certification/; fontes de código são descritas somente nos métodos. Digests/tamanhos provêm dos receipts medidos pelo Lead; os dois receipts usam digests/tamanhos fornecidos no packet. Todos os artifacts listados foram lidos. Não executei safeParse, verificador nem hashing próprio: Lead deve salvar sem alteração, conferir sentinel e validar este JSON antes da passada 2.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-delta-preflight-20261005.json"
       ]
     }
   ],
   "artifacts": [
     {
-      "path": "docs/03_build/tracking/current_state.json",
-      "sha256": "a13a5915daff164218894ec99b07ddbaa77f0970357da41beb6454509d2f44a5",
-      "size": 1552
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
+      "sha256": "56efaf276840b66aa9a5b9d5c38dfeea99520baaf91c95db0b9ee2f0e70092cf",
+      "size": 2919
     },
     {
-      "path": "docs/99_runtime_state.md",
-      "sha256": "ef60b88e4a83d7922e854f9c805aafe1ab1e5aaec551614909a4f2e071253f45",
-      "size": 432512
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md",
+      "sha256": "e9eca83d41e37cca9cefb06185981cdeb83d1859a33e672bd5fb62a4a6cab356",
+      "size": 2629
     },
     {
-      "path": "docs/20_master_execution_log.md",
-      "sha256": "8009af92828d8271009f78c170e0214896caf9ed7ce65ecfa4b765fd9e6e8865",
-      "size": 461943
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-candidate-delta-20261005.patch",
+      "sha256": "c3ca3a98b476ed485b32a3a46dabac1a1eb4f56b8b554e509d5419a59cae935d",
+      "size": 86189
     },
     {
-      "path": "docs/30_backlog_master.md",
-      "sha256": "2c0ba9411a4b0b0372cb36383d8b285d36b503b55646c02b1a601d22d762d867",
-      "size": 221900
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-helper-delta-20261005.patch",
+      "sha256": "b328a015ea3c88f3c1e52f201e46ae8d72cabc7eafee94015fd809db342ea4ac",
+      "size": 2296
     },
     {
-      "path": "docs/04_audit/evidence/AUD20/AUD20-reseal-5c663a5f-20260927.md",
-      "sha256": "978eee3bc83d0770f33dc1d8f2e4b85e5eb542add0ff5eabc7473af9ae0a5dd3",
-      "size": 2527
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+      "sha256": "ad8d8fdf0a746615f184dab251c37d10447182a634f65dda5b3c345b57833f7d",
+      "size": 6308
     },
     {
-      "path": "docs/04_audit/evidence/AUD20/AUD20-22-production-hardening-2026-09-27.md",
-      "sha256": "71b95285a7d17996a12c5bac7b4d6a84d86db1e034c7e15927d452d78513f8ad",
-      "size": 13039
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-delta-preflight-20261005.json",
+      "sha256": "6584f33be7794892cef5e5093e93ffd5671e55561590aab47a45be6ac8721d61",
+      "size": 2490
     },
     {
       "path": "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
@@ -128,6 +159,16 @@
       "path": "certification/external-gates.json",
       "sha256": "ccaecccf62b52cb02ce278ec84dd15cf3a0f13ca2d691f7ca20f9b86fed60ca9",
       "size": 361
+    },
+    {
+      "path": "docs/03_build/tracking/current_state.json",
+      "sha256": "f5901420ee52539e5ff5268d899d2b9fd18a244e0dda919dd878cb1e4ced9435",
+      "size": 1310
+    },
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/CLAW-W1-07-tombstone-policy-renewal-decision-20261005.json",
+      "sha256": "ddc816bd01c3881bc0cbdeeef05bf9cc5d1b572cd823f9a564cfe7c75857b705",
+      "size": 1461
     }
   ],
   "disclaimers": {

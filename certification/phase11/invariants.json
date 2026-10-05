@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "kind": "phase11-invariants",
-  "certificationId": "phase11-fb12c14ae87bf7e2-mukhf88l",
-  "candidateCommit": "b3b715eed95fd24b802f174b919e338aa6ac8b7a",
-  "generatedAt": "2026-09-28T00:30:49.519Z",
+  "certificationId": "phase11-72fa77fcda6fad8c-muv8q8tu",
+  "candidateCommit": "dfe2c1dd992a96a55dd41f5c516352a82f587cbf",
+  "generatedAt": "2026-10-05T13:17:14.856Z",
   "invariants": [
     {
       "id": "INV-001",

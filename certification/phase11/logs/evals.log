@@ -1,26 +1,31 @@
 $ npm run test:evals && npx tsx scripts/phase10-eval-report.ts
-# certificationId=phase11-fb12c14ae87bf7e2-mukhf88l
-# candidateId=fb12c14ae87bf7e2a130f83d18d818277d23ca3aa977d6d5b61265f3bf9706c4
-# commit=b3b715eed95fd24b802f174b919e338aa6ac8b7a
-# treeHash=f014283e4ed9dbd63c31413fbef5fca27b5952d609185554d6967c494f8905e2
+# certificationId=phase11-72fa77fcda6fad8c-muv8q8tu
+# candidateId=72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267
+# commit=dfe2c1dd992a96a55dd41f5c516352a82f587cbf
+# treeHash=d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569
 # gate=evals
 # profile=CONTROLLED_LOCAL
 # databaseConfigured=false
 # realEffects=disabled
-# exitCode=0 durationMs=4955
+# exitCode=0 durationMs=5248
 
 
-> cvg-agent-secretary-v2@1.0.0 test:evals
+> cvg-claw@1.0.0 test:evals
 > vitest run packages/agent-evals --no-file-parallelism --maxWorkers=2
 
 
- RUN  v4.1.11 /home/ricardo/cvg-agent-secretary-v2
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/home/ricardo/cvg-claw[39m
 
+ [32m✓[39m packages/agent-evals/src/__tests__/eval-contract.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m packages/agent-evals/src/__tests__/agent-evals.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m packages/agent-evals/src/__tests__/branches-b-20260925.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m packages/agent-evals/src/__tests__/integrated-holdout.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m packages/agent-evals/src/__tests__/datasets-coverage-20260925.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 14[2mms[22m[39m
 
- Test Files  5 passed (5)
-      Tests  46 passed (46)
-   Start at  21:29:27
-   Duration  4.02s (transform 313ms, setup 0ms, import 816ms, tests 92ms, environment 2.61s)
+[2m Test Files [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m      Tests [22m [1m[32m46 passed[39m[22m[90m (46)[39m
+[2m   Start at [22m 13:15:50
+[2m   Duration [22m 4.24s[2m (transform 331ms, setup 0ms, import 857ms, tests 93ms, environment 2.76s)[22m
 
 {"event":"evals.completed","verdict":"PASS","scenarios":56,"taskSuccessRate":1,"policyViolationRate":0,"unsafeActionRate":0,"adversarialPassRate":1}
 

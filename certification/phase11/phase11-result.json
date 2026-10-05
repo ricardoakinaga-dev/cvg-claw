@@ -2,20 +2,20 @@
   "schemaVersion": 2,
   "phase": "11",
   "kind": "phase11-result",
-  "certificationId": "phase11-fb12c14ae87bf7e2-mukhf88l",
-  "commit": "b3b715eed95fd24b802f174b919e338aa6ac8b7a",
-  "timestamp": "2026-09-28T00:30:49.600Z",
+  "certificationId": "phase11-72fa77fcda6fad8c-muv8q8tu",
+  "commit": "dfe2c1dd992a96a55dd41f5c516352a82f587cbf",
+  "timestamp": "2026-10-05T13:17:14.949Z",
   "candidate": {
     "schemaVersion": "phase11-candidate-v2",
-    "candidateId": "fb12c14ae87bf7e2a130f83d18d818277d23ca3aa977d6d5b61265f3bf9706c4",
-    "commit": "b3b715eed95fd24b802f174b919e338aa6ac8b7a",
-    "treeHash": "f014283e4ed9dbd63c31413fbef5fca27b5952d609185554d6967c494f8905e2",
-    "gitTreeHash": "23fb0a296f8ab203c64914142ee2ca8e8a1b8dd9",
+    "candidateId": "72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267",
+    "commit": "dfe2c1dd992a96a55dd41f5c516352a82f587cbf",
+    "treeHash": "d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569",
+    "gitTreeHash": "c867c8e359d3dbd61c98914cd74fb97915ff4bab",
     "branch": "main",
     "dirty": false,
     "untrackedFiles": [],
-    "createdAt": "2026-09-28T00:01:07.572Z",
-    "fileCount": 1212,
+    "createdAt": "2026-10-05T12:43:12.870Z",
+    "fileCount": 1217,
     "files": [
       {
         "path": ".dockerignore",
@@ -25,8 +25,8 @@
       },
       {
         "path": ".env.example",
-        "sha256": "b958d313be64f3a428203d59064b108e18a9320e101f9e70347b8c776ed8b6a7",
-        "size": 1618,
+        "sha256": "89ee22c45100ffbd9fc04fdd9aec9c08f4d140095df5fcfb635212dff4e9bc12",
+        "size": 1590,
         "tracked": true
       },
       {
@@ -79,8 +79,8 @@
       },
       {
         "path": "AGENTS.md",
-        "sha256": "efed4adda7cff2351d23a9d87be911fcabe7dc65bbfed626f7f1cdc7361ee3bb",
-        "size": 896,
+        "sha256": "2b7f28d3c42f7a7c6fc9a1d96c48110c2dc3b43aa212d3bb11ac7e228c28f884",
+        "size": 1305,
         "tracked": true
       },
       {
@@ -183,6 +183,12 @@
         "path": "Dockerfile",
         "sha256": "0f581e1ac0c3bdbde0453bfe310f973d8334e3b07197d76d8a560277f4118a3c",
         "size": 2930,
+        "tracked": true
+      },
+      {
+        "path": "README.md",
+        "sha256": "7892d75f7b3472aeb8ac4aaa86bd8113a8b123dd66e02e7ffbfef6f1d5ceecca",
+        "size": 1969,
         "tracked": true
       },
       {
@@ -325,8 +331,8 @@
       },
       {
         "path": "apps/api/src/__tests__/journeys-api.test.ts",
-        "sha256": "2477e961b1327174c92ff8779c11ee357443a596249e174f03a6e3013822e59f",
-        "size": 1964,
+        "sha256": "6a156990236511abb67efea48366567099bdd52c917efe4bdc267afa4181d6de",
+        "size": 2232,
         "tracked": true
       },
       {
@@ -1452,9 +1458,15 @@
         "tracked": true
       },
       {
+        "path": "docs/00_discovery/0026_cvg_claw_hospital_autonomous_agent.md",
+        "sha256": "ac4d2959c3eeea4c46a9b5641cf2b7c56f4df8e864aec1c129f567515cbca7f2",
+        "size": 12796,
+        "tracked": true
+      },
+      {
         "path": "docs/00_discovery/0090_discovery_validation.md",
-        "sha256": "335aa0c44896a6b5f35daaacf071a13e244566ea5e9d50728fe86259fc7a95ed",
-        "size": 12300,
+        "sha256": "9d1d9c221365cc85633cc7d86ab3b68afda8c292bd73fa6e37d7c0d84a1db77f",
+        "size": 12861,
         "tracked": true
       },
       {
@@ -1957,14 +1969,14 @@
       },
       {
         "path": "docs/03_build/0301_roadmap.md",
-        "sha256": "d62f78862599ce56ceb839c3d67bfb525fe5580e756b551ee6f62fc01c0f7a9f",
-        "size": 6967,
+        "sha256": "7defab1804ef0c9b9ee7824fa0b8b655e907c09c64694dd23dcfb61f7972d00a",
+        "size": 7336,
         "tracked": true
       },
       {
         "path": "docs/03_build/0302_backlog_master.md",
-        "sha256": "02b69da75eca09019fc4be5b0bbc2d401868fe6b92f0ab9b115c018ae84dec62",
-        "size": 9057,
+        "sha256": "1ac1cfc13b5d33bbeced926940ad3a077b60a9a5820170a9b834030d3b81ca2e",
+        "size": 9344,
         "tracked": true
       },
       {
@@ -2262,6 +2274,18 @@
         "tracked": true
       },
       {
+        "path": "docs/03_build/0346_claw_waves_roadmap_20261005.md",
+        "sha256": "781ae314e920c6a23bd9d0e2369b566b559ce30c87a13868a9da451c24b6e82c",
+        "size": 9755,
+        "tracked": true
+      },
+      {
+        "path": "docs/03_build/0347_claw_waves_backlog_20261005.md",
+        "sha256": "38477783d263a3751b49ed54feb27780f524e879e5b787ad8a2606149e813f88",
+        "size": 14856,
+        "tracked": true
+      },
+      {
         "path": "docs/03_build/phase_0/acceptance_tests.md",
         "sha256": "a099f576da919daed8289e07d8830d9dcff353ce4ef3953a2f67674aae84ecdb",
         "size": 1620,
@@ -2377,8 +2401,8 @@
       },
       {
         "path": "docs/03_build/tracking/current_state.json",
-        "sha256": "a13a5915daff164218894ec99b07ddbaa77f0970357da41beb6454509d2f44a5",
-        "size": 1552,
+        "sha256": "f5901420ee52539e5ff5268d899d2b9fd18a244e0dda919dd878cb1e4ced9435",
+        "size": 1310,
         "tracked": true
       },
       {
@@ -3000,6 +3024,12 @@
         "tracked": true
       },
       {
+        "path": "docs/04_audit/0575_repository_audit_2026-10-05.md",
+        "sha256": "dd082d1da2a35ccbc72c96b9c3399074bdc426d6cec834643ea05c855c8bd93a",
+        "size": 6284,
+        "tracked": true
+      },
+      {
         "path": "docs/04_audit/pilot_report_template.md",
         "sha256": "7a9aa9f17a1737741abe8eda3de3a13bb4ab4799325dd3e2c4ad8f297a11cba2",
         "size": 1593,
@@ -3115,8 +3145,8 @@
       },
       {
         "path": "docs/07_agents/AGENTS.md",
-        "sha256": "f62502666c51bebf8b43d551c67e2651e650c9e4889f09b9c7cd45fdc7e97607",
-        "size": 4958,
+        "sha256": "d61ec23e923a02e522851d6140d5b6cafafcb1d851ea829a1743d267e3d6f8d0",
+        "size": 5022,
         "tracked": true
       },
       {
@@ -3667,26 +3697,26 @@
       },
       {
         "path": "docs/20_master_execution_log.md",
-        "sha256": "8009af92828d8271009f78c170e0214896caf9ed7ce65ecfa4b765fd9e6e8865",
-        "size": 461943,
+        "sha256": "3e0302f797728fbf542db80458ec2098dd7707db859b77c1f6589d6b4d9536c6",
+        "size": 467123,
         "tracked": true
       },
       {
         "path": "docs/30_backlog_master.md",
-        "sha256": "2c0ba9411a4b0b0372cb36383d8b285d36b503b55646c02b1a601d22d762d867",
-        "size": 221900,
+        "sha256": "8199e1645405dc1a70ebe265e1df6ef3bd95a596d0a4721c3bfbee10c7f7e3da",
+        "size": 225738,
         "tracked": true
       },
       {
         "path": "docs/99_runtime_state.md",
-        "sha256": "ef60b88e4a83d7922e854f9c805aafe1ab1e5aaec551614909a4f2e071253f45",
-        "size": 432512,
+        "sha256": "ba75d6eef64c2bf175125ca4b11b24d430315de9aa9a7f0ee98c1498d8ea24fe",
+        "size": 444536,
         "tracked": true
       },
       {
         "path": "docs/BACKLOG_PRODUCAO.md",
-        "sha256": "30189074660099700b5a6756d05f80c66984c4afb7df3ef4b25fcf35edb6d73b",
-        "size": 35184,
+        "sha256": "839cebcbcc7a2e0c4d3583cb37d1ec143772b2f7a6b3f698b928b8e9aa22c60d",
+        "size": 35426,
         "tracked": true
       },
       {
@@ -3697,8 +3727,8 @@
       },
       {
         "path": "docs/CURRENT.md",
-        "sha256": "88bc1562bfa6aec65736e312a2a0bf579ee3d2d163e0fc8811d0e4008ed46eb7",
-        "size": 48146,
+        "sha256": "3614b0873b86bf6bd5cf256a07c59dd3bce5016fc42a09be9e4af26afe82307c",
+        "size": 48539,
         "tracked": true
       },
       {
@@ -3709,8 +3739,8 @@
       },
       {
         "path": "docs/README.md",
-        "sha256": "0b307ba08e4b77e3740f76bde9e6abafd7c916525f274f216b2d897984265f59",
-        "size": 29000,
+        "sha256": "66df6f8ccf279f0d331c5f6a47eb9fa23fc6eafa1023e8c36893c7f100c8e5b7",
+        "size": 29308,
         "tracked": true
       },
       {
@@ -3721,8 +3751,8 @@
       },
       {
         "path": "docs/ROADMAP_PRODUCAO.md",
-        "sha256": "78f19f260e02a30429dbe0ac2d6b95ea7ca62f01d762bfd64432931be9c0fb25",
-        "size": 7110,
+        "sha256": "78ffd8ea694e7a18514e72f78ceac5c475c30622b26f6ad23338264ba6020678",
+        "size": 7352,
         "tracked": true
       },
       {
@@ -3985,13 +4015,13 @@
       },
       {
         "path": "package-lock.json",
-        "sha256": "2e2f399537321228d3fc2d659eb5a7819e08b60b3fc8cde0fc60beec6880bf80",
-        "size": 186576,
+        "sha256": "3c556e75b07f563cd9ffa1c81f726e2d442421697921abd046a0004dc3cf6af0",
+        "size": 186586,
         "tracked": true
       },
       {
         "path": "package.json",
-        "sha256": "7ebd4586785acbb46b1a6ced6ebd311d23e973b149bc476d1f469a3dff5da254",
+        "sha256": "adb6c3a696c8a0c88123c75cb53c5480e1cf8b999688e16940c180f1ef6c8841",
         "size": 6009,
         "tracked": true
       },
@@ -5365,8 +5395,8 @@
       },
       {
         "path": "packages/persistence/src/__tests__/retention-postgres.test.ts",
-        "sha256": "72a3fe95b9d651eef67b0aedf08cb16dc528664c29b5b111292f39f975f2dd0d",
-        "size": 44164,
+        "sha256": "8d229872eb051dd6c8338382b39c7a253278f866765f9b3e44a377653390ae90",
+        "size": 44327,
         "tracked": true
       },
       {
@@ -6985,8 +7015,8 @@
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/console-desktop-chromium-linux.png",
-        "sha256": "496725d1a79105eeef7531c7f3fce7260b60bde33b51a6c94cae69068e5056b9",
-        "size": 375015,
+        "sha256": "246dc8166840fdbefbc0bb2d7b3a292a16d0dd7609d9a569f12ad2ca18446bcb",
+        "size": 301544,
         "tracked": true
       },
       {
@@ -7003,164 +7033,164 @@
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/console-mobile-chromium-linux.png",
-        "sha256": "92d0549d484585e28c51d043bbbf6e025eba11c44f29f35c8af0e4537c765cdf",
-        "size": 145181,
+        "sha256": "2090b161230e312c47f8b039b93f2e60d3856f4c73696b9825a51fbb12c760d3",
+        "size": 164351,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/console-mobile-firefox-linux.png",
-        "sha256": "1f433e69f1ad8b5483c0a4f190236958ff25c684b138968691329e954a0d9edd",
-        "size": 98951,
+        "sha256": "de1c49b46626f0d173d89912a16e2ff0ab87d4accb6510522f1a582544355623",
+        "size": 96908,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/console-mobile-webkit-linux.png",
-        "sha256": "804947afb7695a729482428af56e0d59e44be2401997f388ac336c838f1c9ef8",
-        "size": 116019,
+        "sha256": "b61c556d59e074aa596f8eabd1609c9108569a994689cc48b9bd3d782e3186af",
+        "size": 116369,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/console-tablet-chromium-linux.png",
-        "sha256": "d1dbd118a893ec7c7b89a1d22ed7cf7b2eab4ab2de707c68719c1f26f2193830",
-        "size": 258357,
+        "sha256": "ec49f93b2451f6ad463301ddbd7957aee0485756b6e523518ae10f0c0a8576bc",
+        "size": 213412,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/console-tablet-firefox-linux.png",
-        "sha256": "e162d608141bc775e1c8a13f82def9c6f3ae16913e29dcbb7deee4548f9a0007",
-        "size": 146404,
+        "sha256": "6166ba90a80e69c2c1023369d1f6b100b7bb85b188ab1b513cac7292f2cf8c5c",
+        "size": 140751,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/console-tablet-webkit-linux.png",
-        "sha256": "4d17f13dbed14214d298b0fad1314fc9425f03375e73fa10cf242850eee13cdc",
-        "size": 169460,
+        "sha256": "d0f0fb30a11eb5e92ac6031b338fb262387d9e51396a25a0fc76ed687392a89b",
+        "size": 163539,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/console-wide-tablet-chromium-linux.png",
-        "sha256": "3c27e99721c5f90ab1e2aab2a68fed3eda9b5a1d91af1c4d7a4719264123c5ab",
-        "size": 308773,
+        "sha256": "b2c823cbdd21ab6298c174ff5a6948b6a0c227e1d15647a26880c7efcc36151c",
+        "size": 297151,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/console-wide-tablet-firefox-linux.png",
-        "sha256": "6c103a65fd50ce9e80f9c90b123d7c2db6e8cde8273eca98a703e7580f50999e",
-        "size": 172690,
+        "sha256": "c96c4628df27eb0f59c9498fcb2a096b7a2852586d1a43f29365d62dc38da6c9",
+        "size": 168730,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/console-wide-tablet-webkit-linux.png",
-        "sha256": "25ed9b5fb12aefd22352f4d90b470153141f2db329d9fb14152e6b63388d9eab",
-        "size": 199632,
+        "sha256": "09d94e918ca79b9650ef33342c8b262290e35d6dd18ff91ae8a67cecc87705cf",
+        "size": 195213,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/dead-letter-panel-1024-chromium-linux.png",
-        "sha256": "7c6fa0bc4951f0f2033d404913f7d3801bf77fe3967dd6f926525c7aff90bb09",
-        "size": 39740,
+        "sha256": "05b553a049aaa94fba3df7a8f383321d645b8ff3cbcd6f1aa8da83a11eb02662",
+        "size": 35570,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/dead-letter-panel-1024-firefox-linux.png",
-        "sha256": "9d6d87c806a608e91da0d58a8f95ac7987ee77a45519d7d96947aa67140f334a",
-        "size": 49327,
+        "sha256": "780aaf461ff3e2a5b2ccc19be37ec5b380e1ef2b17445ec0cc3cc72d4ab479a7",
+        "size": 45435,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/dead-letter-panel-1024-webkit-linux.png",
-        "sha256": "ff2057cc4b3c3e44f48022046039727245f765aeba8c8277d960a91aa970603e",
-        "size": 43222,
+        "sha256": "945f5fe68b44fb27af5b5c6f10e85407462147146dc0a1c6d79123ad7904375e",
+        "size": 40201,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/dead-letter-panel-375-chromium-linux.png",
-        "sha256": "11d2362d4ea9774381199d92984c8362072f01594acf7e6f02fd6def2ad7ae17",
-        "size": 34623,
+        "sha256": "e6cf4a607b4a753bc9a23bb24ae84f88b4f1b544c6d173f470468e3e797bbe05",
+        "size": 31334,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/dead-letter-panel-375-firefox-linux.png",
-        "sha256": "e9ffcbfe100926d7d2c0d5f3592e6a3e769c861c04b6fe785bca3d474c368207",
-        "size": 44945,
+        "sha256": "9e6a93c306ea6359da5204d10d51b0ce731bf277d8cd00a6a5c82590a802b9ac",
+        "size": 42538,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/dead-letter-panel-375-webkit-linux.png",
-        "sha256": "d98062b2b26753a17fbb95fcf0ff954c77a9ff910b04413106d23f401ae5ba9b",
-        "size": 40234,
+        "sha256": "1b7f985aadb639c94734c40246480c054f567ab8fd291bb5b6b145401035292f",
+        "size": 37634,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-chromium-linux.png",
-        "sha256": "5975f790a9b275954538c4d8cd2b3858f293c059c907f2964a038f726a556ecc",
-        "size": 367616,
+        "sha256": "a0cdb8c6c2102e75444ff790e162a80f598f3c51346d5729aee5b05b5ec3e516",
+        "size": 341760,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-firefox-linux.png",
-        "sha256": "f11eb10b2d024aa67dcebfb93771c4df28b919a8b43b8638a344956295165870",
-        "size": 436677,
+        "sha256": "115d848c6909b5d95a162d2b5de361d4893a82c8f097673be0a0960581fa4ff7",
+        "size": 424862,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-mobile-chromium-linux.png",
-        "sha256": "19794a06c402f22e2ad934e66877ef4e75160c04a8f9a760c3ef0b72568d3c81",
-        "size": 350787,
+        "sha256": "1e0c7ecbea9b3603749a5efc5889dcc7c73f34296b4c40501733656dc618dc36",
+        "size": 326087,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-mobile-firefox-linux.png",
-        "sha256": "5bbe5dcb0f21770929aa74cfc6a1c825b1f06d386a674728d77c047366ad3261",
-        "size": 400816,
+        "sha256": "cd67e8cf434411eaf69d261f291889870483f754940005ec477c7c2bb1c45b17",
+        "size": 392683,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-mobile-webkit-linux.png",
-        "sha256": "6dffe8322949a425cc83a5171b80ddbace02e1f5e1911ec0cfde318252bf1b6c",
-        "size": 414076,
+        "sha256": "3357a7424c579a2fe20fc97f9bfbd29c58ffb2da706e3167da4974b0c54df1fc",
+        "size": 411928,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-tablet-chromium-linux.png",
-        "sha256": "0609f81439c755a30202de0ceb3597f5dde97f0b9bfa414abe7381fa552a9003",
-        "size": 367402,
+        "sha256": "7921ef4090540e89c28ccf4a368087529c7fb36731a6faf00a9f7baeb8ac4934",
+        "size": 339455,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-tablet-firefox-linux.png",
-        "sha256": "c89b41a81c6ee6b12c1c8666551b8b54bf77b772f589693745bcc8f835fb620e",
-        "size": 430486,
+        "sha256": "29ceae2515805d0362215bf1374071949976b6fd286c5f1f2e3f95fb9977205a",
+        "size": 419562,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-tablet-webkit-linux.png",
-        "sha256": "576fc5f032d8064df9036846eb88d006830a7ce67f5d369f0d3452333fa419ab",
-        "size": 432694,
+        "sha256": "1f31340c7f02d412d26462e07aee31e7dcbb68bc23178abf96d5b74c51371cbf",
+        "size": 423496,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-webkit-linux.png",
-        "sha256": "0adeba0ba0dd55a01bfa42c9580061b08f717f08f1269103cb294e98706944ac",
-        "size": 433718,
+        "sha256": "954f212c17f3480910c3fb48312caa2d493e20af42dd12e244cd306ed090dcd6",
+        "size": 428079,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-uncertain-reconciliation-chromium-linux.png",
-        "sha256": "a3a938b9626463ebed94dae697b3200335d59d0204736135ac907a4fb52f1f24",
-        "size": 401901,
+        "sha256": "d5aff4ebe9baaa28b2087134e80d77f6703d529afd24482d038510a218ed18b4",
+        "size": 372074,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-uncertain-reconciliation-firefox-linux.png",
-        "sha256": "419deaf2774d6a000ba5dfe176a3bd630f00833cc9d96a1dc620901d4e98dd4f",
-        "size": 481199,
+        "sha256": "9a905300766c61d7b57dd8f6e00ad8377ca85ea847dce38a004e3a4e967d8afd",
+        "size": 466814,
         "tracked": true
       },
       {
         "path": "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-uncertain-reconciliation-webkit-linux.png",
-        "sha256": "0df12d1393b939ba1c4dc2eceda5583413b50e304113b166ccf702c88875f7ba",
-        "size": 473263,
+        "sha256": "7ec3e4bdba7e21304e4b871f3cf760d994c16db6865ea2f5a7325914cf4bb436",
+        "size": 465477,
         "tracked": true
       },
       {
@@ -8538,162 +8568,162 @@
       "command": "npm run format:check",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 17356,
+      "durationMs": 25590,
       "log": "certification/phase11/logs/format.log",
-      "logSha256": "b36864f90a40a8eca6d033c7806f17715a78666bc61bd135d6fbd1893193f6b1"
+      "logSha256": "ef59c3b51a761b6b213b09359aff36dcdcb9f8381a5ef350a5e06b9cfb0f69dd"
     },
     {
       "id": "typecheck",
       "command": "npm run typecheck",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 10559,
+      "durationMs": 12414,
       "log": "certification/phase11/logs/typecheck.log",
-      "logSha256": "4ed03748a0562ac1eb85def2bdf0ba6321defe03a8f7cb784d304dd103fd64b1"
+      "logSha256": "d1e3dab4a348906c2f0944c51a16c1e97e405a79970f74bc9cc444dce02721e3"
     },
     {
       "id": "lint",
       "command": "npm run lint",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 8189,
+      "durationMs": 8924,
       "log": "certification/phase11/logs/lint.log",
-      "logSha256": "fd0f5514f10624513bc6e5afde06247e424e4ad48ed14374a24b0146b3137b70"
+      "logSha256": "0dd8c5f1462f28f0b8e3e271bd68ecaa746e0d2c335e86e734915b82296950ec"
     },
     {
       "id": "build",
       "command": "npm run build",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 11019,
+      "durationMs": 12120,
       "log": "certification/phase11/logs/build.log",
-      "logSha256": "4766ca02d1aacbc16db01816e29681187735ac566af6fd858b69d5527fb5413f"
+      "logSha256": "973d3ae8f6c6ff9556c24b1ec51cb253408ca3f71bf57ece627b900de0f09be7"
     },
     {
       "id": "unit",
       "command": "npm test -- --reporter=default --reporter=json --outputFile=certification/phase11/logs/unit-report.json",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 285822,
+      "durationMs": 319791,
       "log": "certification/phase11/logs/unit.log",
-      "logSha256": "8ba607fbd2031b5569e64bc7776cb24a8c01a5888f1ef5e654a918c56cfad980"
+      "logSha256": "61a818952400889ca8f552714a9a89085a50a7211de6eb5d5463e55a51bef97a"
     },
     {
       "id": "coverage",
       "command": "npm run test:coverage",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 392344,
+      "durationMs": 397789,
       "log": "certification/phase11/logs/coverage.log",
-      "logSha256": "c2e5a8365393b461cef210b1b32dffd92ec31e59270c04b0ab961436fe65454f"
+      "logSha256": "4bb588651c39f8d3bb11f99975be998187732e744483000feb3e8e7827dae620"
     },
     {
       "id": "security",
       "command": "npm run audit:security",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 673,
+      "durationMs": 710,
       "log": "certification/phase11/logs/security.log",
-      "logSha256": "be26fa22903020033239f97058b36930668f1cc180687767842fdb98ed8b176b"
+      "logSha256": "c8540b118b5f7e04ec5f5c56a8b9b1f358c1700d4df9aa2f249a7473521c9d73"
     },
     {
       "id": "supply_chain",
       "command": "npm run sbom && npm run licenses:check",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 271,
+      "durationMs": 283,
       "log": "certification/phase11/logs/supply_chain.log",
-      "logSha256": "2af3e8e93f4c5e408454d9dfd03f38436bd2adc80e8663e60258a5ce5e26fd4e"
+      "logSha256": "009588cf4820990f82bb2dc33523b370b5edadaaa811a33d0fc5837232d46bde"
     },
     {
       "id": "worker_startup",
       "command": "npm run test:worker:startup",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 1397,
+      "durationMs": 1296,
       "log": "certification/phase11/logs/worker_startup.log",
-      "logSha256": "2e4e8f26e22079c7069b342573e488026888225d679807577ce54e98f13c3978"
+      "logSha256": "b8a070bf2530521477337931d4077c7422773f826bd2114db3974169ad71ecd5"
     },
     {
       "id": "postgres",
       "command": "npm run test:postgres -- --reporter=default --reporter=json --outputFile=certification/phase11/logs/postgres-report.json",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 85860,
+      "durationMs": 87371,
       "log": "certification/phase11/logs/postgres.log",
-      "logSha256": "a09d9324c1c742dbdca1b9b7db39e8ac1f9d6b53c95fadda74ef8a31866bf102"
+      "logSha256": "e05e36b5581a82c77bfac36acabda0c8574d5e2c14129f5305c5453c7630a91d"
     },
     {
       "id": "e2e",
       "command": "npm run test:e2e",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 217756,
+      "durationMs": 221992,
       "log": "certification/phase11/logs/e2e.log",
-      "logSha256": "b81076633957cb2c0625292f57f7afe58f9a24e48c4ec668223074c16044e812"
+      "logSha256": "392780b9f5b936104ff308afcbd4daedf4ffafe11b4901fe2a1c4c9e6e1ee8d9"
     },
     {
       "id": "evals",
       "command": "npm run test:evals && npx tsx scripts/phase10-eval-report.ts",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 4955,
+      "durationMs": 5248,
       "log": "certification/phase11/logs/evals.log",
-      "logSha256": "63f1a41671bef8b43ff69d8ffe36d6919f8611c1a25a4cf0434eaafd82921990"
+      "logSha256": "0421dfd75ae328b5135a3424e5de114b937298b055fb11992f0a40f1b37958d6"
     },
     {
       "id": "chaos",
       "command": "npm run test:chaos -- --reporter=json --outputFile=certification/chaos-report.json",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 3398,
+      "durationMs": 3511,
       "log": "certification/phase11/logs/chaos.log",
-      "logSha256": "2634140b70f6ff0ca62c12ce42ed505dfcc5a3e6379a0326efcf33cedf151bf4"
+      "logSha256": "a9566b28cc259d9e8112b59e2a6a5ac1e8b58174c62551f951930a40330e555b"
     },
     {
       "id": "load",
       "command": "npx tsx scripts/phase10-load.ts --events=10000",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 8720,
+      "durationMs": 10173,
       "log": "certification/phase11/logs/load.log",
-      "logSha256": "0ff4f4961f8ef2ed995bc15bef34dd6020cae868c5f685561a4d1355c844dad8"
+      "logSha256": "7caa2f02d052616df2ef9f94d4b7e07822c543a1b16623873b2b865145356c32"
     },
     {
       "id": "recovery",
       "command": "npm test -- --run packages/agent-runtime/src/__tests__/runtime-execution-recovery.test.ts apps/worker/src/__tests__/outbox-recovery.test.ts apps/worker/src/__tests__/worker-sweeps.test.ts",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 3865,
+      "durationMs": 3835,
       "log": "certification/phase11/logs/recovery.log",
-      "logSha256": "3c710813975943feb4297e4ee9910131c405707ce5b6cc89e612d0a61a779dbb"
+      "logSha256": "5257c34194c846a193f07e1d3497665d6a4ee17dd46d79d7ac163b9714a48572"
     },
     {
       "id": "bypass_audit",
       "command": "node scripts/phase11-bypass-audit.mjs",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 46,
+      "durationMs": 40,
       "log": "certification/phase11/logs/bypass_audit.log",
-      "logSha256": "0877b9db3a2300214392be8282dc06c552ad5ba7f870dd4ecdc04babec5bfaff"
+      "logSha256": "fe626bc6f606b1dc650c18ebdd19d88da6df667aa3fa828b16e79b4a5d215e75"
     },
     {
       "id": "certification_self_test",
       "command": "node scripts/phase11-self-test.mjs",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 92,
+      "durationMs": 95,
       "log": "certification/phase11/logs/certification_self_test.log",
-      "logSha256": "e2e4c222c5941b6fb28c7cec31855775b1a2f66ab7557050a31dbdac9400ac02"
+      "logSha256": "343fe901e36b230d2fefe3ff41fc3e1d649e1271cae52e86b1c97915bce9e06e"
     },
     {
       "id": "phase10_historical_verification",
       "command": "node scripts/phase10-verify.mjs --historical --base certification/logs/historical/2026-09-11-phase10",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 83,
+      "durationMs": 86,
       "log": "certification/phase11/logs/phase10_historical_verification.log",
-      "logSha256": "598500a827cfa7ac15b515f77806ed57d7a43cb8b3ae6a5dfe81009b618536ad"
+      "logSha256": "3f21bf5df35bcf33f972eec9bb771fec2b4d411ddd3d08a9ca9a6f3146f184d7"
     },
     {
       "id": "evidence_graph",
@@ -8721,108 +8751,108 @@
       "command": "npm run verify",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 668520,
+      "durationMs": 868890,
       "log": "certification/phase11/logs/verify.log",
-      "logSha256": "059d95ef63d077f7c5a2674c04be98787d0db8aecabbc8f0ddaaf78fae49ae51"
+      "logSha256": "d18993dd0b273a3d5037036dcd334481b629d42e9654ec502b304aa526c69a72"
     },
     {
       "id": "production_preflight",
       "command": "node scripts/production-preflight.mjs --profile=PRODUCTION --expect=REJECT",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 32,
+      "durationMs": 35,
       "log": "certification/phase11/logs/production_preflight.log",
-      "logSha256": "148503c8687405fb1fac5c46948861da248ecb4983162f0296330521c99598e0"
+      "logSha256": "96e94c1a32dcb40dbb2d8dbd64541d2a499007a5a714b1640aec284a389f9b24"
     },
     {
       "id": "evidence_reports",
       "command": "node scripts/phase11-2-evidence-check.mjs --reports",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 93,
+      "durationMs": 98,
       "log": "certification/phase11/logs/evidence_reports.log",
-      "logSha256": "ad3e9eda13f22a7255131b48a20b6ac54ddf86635d880c36931281dd940bbe0f"
+      "logSha256": "230dbb7332f969a83f5a6d288e8ab7ef220b72fe9f8d9dd0ccfa88c5dd9ef705"
     },
     {
       "id": "independent_critic",
       "command": "node scripts/phase11-2-evidence-check.mjs --critic",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 292,
+      "durationMs": 308,
       "log": "certification/phase11/logs/independent_critic.log",
-      "logSha256": "8a6f0c5f2e8775d7fb3313decda1df8f0eb44de831755ebfe5a18cca661bed92"
+      "logSha256": "d34a84260ba986dbc83601c11db456ccb57dc273d4b01b232c73b4fff61a8ecd"
     },
     {
       "id": "mutation_sentinel",
       "command": "node scripts/mutation-sentinel.mjs --fail-on-gaps --out=certification/phase11/mutation-raw-report.json",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 46268,
+      "durationMs": 46968,
       "log": "certification/phase11/logs/mutation_sentinel.log",
-      "logSha256": "31c157ac5722d2b2a2d5804ca2c2931b392d10dbd20eb5c6fb7a72d9ecdacb1e"
+      "logSha256": "c269930a6f33e48190eb532ddd208ec6e5680f1502ac424ae62d21361f826154"
     },
     {
       "id": "trace_lineage",
       "command": "npm test -- --run apps/api/src/__tests__/orchestration-observability.test.ts packages/observability/src/__tests__/observability.test.ts",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 3139,
+      "durationMs": 2949,
       "log": "certification/phase11/logs/trace_lineage.log",
-      "logSha256": "cc2a48d53bb2605cdd0f61c13d1d3cbb151662630c4abfdc75ae72f811ffbcd0"
+      "logSha256": "693eee7f5fc3ca3e5479e52fcb8bf32411ffc2f3cf2c72c8004efb8e6394df37"
     },
     {
       "id": "governance_redteam",
       "command": "npm test -- --run packages/policy-engine/src/__tests__/policy-engine-branch-hardening.test.ts packages/platform/src/__tests__/tool-invocation-boundary-hardening.test.ts packages/platform/src/__tests__/critical-safety-preflight.test.ts",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 2897,
+      "durationMs": 2940,
       "log": "certification/phase11/logs/governance_redteam.log",
-      "logSha256": "8f42a98edd61555dd4f46b973842b0a620f691035de0533173105c7c917cf901"
+      "logSha256": "af0a1d1bed90bf59a82e59c0c1a1672ce1f0af6e0890359824c5ab6d2890a4a1"
     },
     {
       "id": "tenant_redteam",
       "command": "npm test -- --run apps/api/src/__tests__/tenant-inbound-isolation.test.ts packages/persistence/src/__tests__/tenant-isolation.test.ts",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 2950,
+      "durationMs": 3053,
       "log": "certification/phase11/logs/tenant_redteam.log",
-      "logSha256": "7b215a2ba112a4a097255ba0c75cb8265bef769a318c3221cec01ea1889ce4a5"
+      "logSha256": "7f48225d50e1d4b8cd737c752dced664a2a37deda59a035c2567596bbdbeec1c"
     },
     {
       "id": "certification_redteam",
       "command": "node scripts/phase11-2-redteam.mjs --suite=certification && npm test -- --run apps/api/src/__tests__/aud17-connected-redteam.test.ts",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 2165,
+      "durationMs": 2226,
       "log": "certification/phase11/logs/certification_redteam.log",
-      "logSha256": "a7ae122e6722bedaedd6c56ef2ec8e4bd34fe2c869511e9d68ae4d5ad861550a"
+      "logSha256": "e432066d45e47d32de9fd88b21f55b08f53d30fe21a7ec976662541c47eadbbb"
     },
     {
       "id": "adversarial_proof",
       "command": "node scripts/phase11-2-redteam.mjs --suite=all",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 88,
+      "durationMs": 92,
       "log": "certification/phase11/logs/adversarial_proof.log",
-      "logSha256": "2b461d532073c5a8602b1b27de166dde073980fdf5a41d21f5b65e55bb1c42b1"
+      "logSha256": "aec11fe94faa5e74e6e060b0de5fb116e8083bb913a670952ad0eae14354d20a"
     },
     {
       "id": "outbox_replay",
       "command": "npm test -- --run packages/persistence/src/__tests__/outbox-durability.test.ts apps/worker/src/__tests__/outbox-recovery.test.ts",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 2611,
+      "durationMs": 2591,
       "log": "certification/phase11/logs/outbox_replay.log",
-      "logSha256": "860f70f47afc35600c70b18f977cfc4c0b82abda3072668283e1d314a630e2e1"
+      "logSha256": "3cca42f48a36f6a8dfe223ef3d2dd786410e6b6b498b28a0ad042cd9e404bba6"
     },
     {
       "id": "clone_verify",
       "command": "node scripts/phase11-2-redteam.mjs --suite=clone",
       "status": "PASS",
       "exitCode": 0,
-      "durationMs": 85,
+      "durationMs": 83,
       "log": "certification/phase11/logs/clone_verify.log",
-      "logSha256": "a46c8dfed52d1e6616ac9795690e7c35c41cf9974914101f957e5f0e735f6858"
+      "logSha256": "58e5f4f04833acaf99af15e215b5803ae0403fcb6f0898a92c0bedb3906828fa"
     },
     {
       "id": "PHASE11_FORMAL_CLOSURE",
@@ -9256,9 +9286,9 @@
   "evals": {
     "schemaVersion": 1,
     "kind": "phase11-evals-report",
-    "certificationId": "phase11-fb12c14ae87bf7e2-mukhf88l",
-    "candidateCommit": "b3b715eed95fd24b802f174b919e338aa6ac8b7a",
-    "generatedAt": "2026-09-28T00:30:49.397Z",
+    "certificationId": "phase11-72fa77fcda6fad8c-muv8q8tu",
+    "candidateCommit": "dfe2c1dd992a96a55dd41f5c516352a82f587cbf",
+    "generatedAt": "2026-10-05T13:17:14.726Z",
     "gateId": "evals",
     "status": "PASS",
     "command": "npm run test:evals && npx tsx scripts/phase10-eval-report.ts",
@@ -9276,8 +9306,8 @@
       },
       "partition": "core",
       "seed": "core-v1",
-      "startedAt": "2026-09-28T00:29:32.441Z",
-      "finishedAt": "2026-09-28T00:29:32.447Z",
+      "startedAt": "2026-10-05T13:15:55.512Z",
+      "finishedAt": "2026-10-05T13:15:55.518Z",
       "corpus": {
         "id": "core-v1",
         "scenarios": 56,
@@ -9446,9 +9476,9 @@
   "chaos": {
     "schemaVersion": 1,
     "kind": "phase11-chaos-report",
-    "certificationId": "phase11-fb12c14ae87bf7e2-mukhf88l",
-    "candidateCommit": "b3b715eed95fd24b802f174b919e338aa6ac8b7a",
-    "generatedAt": "2026-09-28T00:30:49.397Z",
+    "certificationId": "phase11-72fa77fcda6fad8c-muv8q8tu",
+    "candidateCommit": "dfe2c1dd992a96a55dd41f5c516352a82f587cbf",
+    "generatedAt": "2026-10-05T13:17:14.726Z",
     "gateId": "chaos",
     "status": "PASS",
     "command": "npm run test:chaos -- --reporter=json --outputFile=certification/chaos-report.json",
@@ -9481,7 +9511,7 @@
         "updated": 0,
         "didUpdate": false
       },
-      "startTime": 1790555372815,
+      "startTime": 1791206155898,
       "success": true,
       "testResults": [
         {
@@ -9509,11 +9539,11 @@
               "tags": []
             }
           ],
-          "startTime": 1790555372815,
-          "endTime": 1790555372815,
+          "startTime": 1791206155898,
+          "endTime": 1791206155898,
           "status": "passed",
           "message": "",
-          "name": "/home/ricardo/cvg-agent-secretary-v2/packages/chaos/src/__tests__/chaos-postgres.test.ts"
+          "name": "/home/ricardo/cvg-claw/packages/chaos/src/__tests__/chaos-postgres.test.ts"
         },
         {
           "assertionResults": [
@@ -9524,7 +9554,7 @@
               "fullName": "chaos: outbox and side effects CHAOS-01 worker crash before side effect: lease expires and another worker claims",
               "status": "passed",
               "title": "CHAOS-01 worker crash before side effect: lease expires and another worker claims",
-              "duration": 4.809819000000061,
+              "duration": 4.891518000000133,
               "failureMessages": [],
               "meta": {},
               "tags": []
@@ -9536,7 +9566,7 @@
               "fullName": "chaos: outbox and side effects CHAOS-02 worker crash after provider response: retry does not duplicate the effect",
               "status": "passed",
               "title": "CHAOS-02 worker crash after provider response: retry does not duplicate the effect",
-              "duration": 1.295819000000165,
+              "duration": 1.3214399999999387,
               "failureMessages": [],
               "meta": {},
               "tags": []
@@ -9548,7 +9578,7 @@
               "fullName": "chaos: outbox and side effects CHAOS-03 worker crash after external effect before ack: exactly one external effect",
               "status": "passed",
               "title": "CHAOS-03 worker crash after external effect before ack: exactly one external effect",
-              "duration": 1.8474740000001475,
+              "duration": 1.8917519999999968,
               "failureMessages": [],
               "meta": {},
               "tags": []
@@ -9560,7 +9590,7 @@
               "fullName": "chaos: outbox and side effects CHAOS-14 duplicate worker claim: only one owner at a time",
               "status": "passed",
               "title": "CHAOS-14 duplicate worker claim: only one owner at a time",
-              "duration": 0.30631900000003043,
+              "duration": 0.31646900000009737,
               "failureMessages": [],
               "meta": {},
               "tags": []
@@ -9572,7 +9602,7 @@
               "fullName": "chaos: providers and latency CHAOS-06 provider timeout is bounded by the deadline",
               "status": "passed",
               "title": "CHAOS-06 provider timeout is bounded by the deadline",
-              "duration": 105.759458,
+              "duration": 104.83341100000007,
               "failureMessages": [],
               "meta": {},
               "tags": []
@@ -9584,7 +9614,7 @@
               "fullName": "chaos: providers and latency CHAOS-07 provider 429 is retried with bounded backoff",
               "status": "passed",
               "title": "CHAOS-07 provider 429 is retried with bounded backoff",
-              "duration": 1.3402510000000802,
+              "duration": 1.1135039999999208,
               "failureMessages": [],
               "meta": {},
               "tags": []
@@ -9596,7 +9626,7 @@
               "fullName": "chaos: providers and latency CHAOS-08 provider 503 fails closed with provider_unavailable",
               "status": "passed",
               "title": "CHAOS-08 provider 503 fails closed with provider_unavailable",
-              "duration": 0.6178989999998521,
+              "duration": 0.4808949999999186,
               "failureMessages": [],
               "meta": {},
               "tags": []
@@ -9608,7 +9638,7 @@
               "fullName": "chaos: providers and latency CHAOS-15 network latency: slow success still completes inside the deadline",
               "status": "passed",
               "title": "CHAOS-15 network latency: slow success still completes inside the deadline",
-              "duration": 51.02073900000005,
+              "duration": 50.82383899999991,
               "failureMessages": [],
               "meta": {},
               "tags": []
@@ -9620,7 +9650,7 @@
               "fullName": "chaos: channels and idempotency CHAOS-09 duplicate webhook produces a single inbound event",
               "status": "passed",
               "title": "CHAOS-09 duplicate webhook produces a single inbound event",
-              "duration": 2.3952209999999923,
+              "duration": 2.7570929999999407,
               "failureMessages": [],
               "meta": {},
               "tags": []
@@ -9632,7 +9662,7 @@
               "fullName": "chaos: channels and idempotency CHAOS-10 out-of-order webhooks are all accepted without loss",
               "status": "passed",
               "title": "CHAOS-10 out-of-order webhooks are all accepted without loss",
-              "duration": 0.7216710000000148,
+              "duration": 0.7227649999999812,
               "failureMessages": [],
               "meta": {},
               "tags": []
@@ -9644,7 +9674,7 @@
               "fullName": "chaos: channels and idempotency CHAOS-13 replayed token is rejected by the replay store",
               "status": "passed",
               "title": "CHAOS-13 replayed token is rejected by the replay store",
-              "duration": 0.2129259999999249,
+              "duration": 0.1989610000000539,
               "failureMessages": [],
               "meta": {},
               "tags": []
@@ -9656,7 +9686,7 @@
               "fullName": "chaos: channels and idempotency CHAOS-16 channel provider outage: retry sends exactly once",
               "status": "passed",
               "title": "CHAOS-16 channel provider outage: retry sends exactly once",
-              "duration": 1.9098699999999553,
+              "duration": 1.8690999999998894,
               "failureMessages": [],
               "meta": {},
               "tags": []
@@ -9668,7 +9698,7 @@
               "fullName": "chaos: approvals and tenants CHAOS-11 expired approval fails closed during execution",
               "status": "passed",
               "title": "CHAOS-11 expired approval fails closed during execution",
-              "duration": 1.6157129999999142,
+              "duration": 1.7482050000000982,
               "failureMessages": [],
               "meta": {},
               "tags": []
@@ -9680,7 +9710,7 @@
               "fullName": "chaos: approvals and tenants CHAOS-12 tenant mismatch is denied across approval and policy boundaries",
               "status": "passed",
               "title": "CHAOS-12 tenant mismatch is denied across approval and policy boundaries",
-              "duration": 0.923565999999937,
+              "duration": 0.9566710000001422,
               "failureMessages": [],
               "meta": {},
               "tags": []
@@ -9692,17 +9722,17 @@
               "fullName": "chaos ledger records every scenario with an explicit status",
               "status": "passed",
               "title": "records every scenario with an explicit status",
-              "duration": 0.21806599999990794,
+              "duration": 0.2930550000000949,
               "failureMessages": [],
               "meta": {},
               "tags": []
             }
           ],
-          "startTime": 1790555374292,
-          "endTime": 1790555374467.218,
+          "startTime": 1791206157469,
+          "endTime": 1791206157644.293,
           "status": "passed",
           "message": "",
-          "name": "/home/ricardo/cvg-agent-secretary-v2/packages/chaos/src/__tests__/chaos.test.ts"
+          "name": "/home/ricardo/cvg-claw/packages/chaos/src/__tests__/chaos.test.ts"
         },
         {
           "assertionResults": [
@@ -9713,7 +9743,7 @@
               "fullName": "chaos fault primitives scripts fetch responses and exhausts deterministically",
               "status": "passed",
               "title": "scripts fetch responses and exhausts deterministically",
-              "duration": 3.3142899999999145,
+              "duration": 3.9112120000000914,
               "failureMessages": [],
               "meta": {},
               "tags": []
@@ -9725,7 +9755,7 @@
               "fullName": "chaos fault primitives delays and aborts",
               "status": "passed",
               "title": "delays and aborts",
-              "duration": 2.2570839999999635,
+              "duration": 1.2973949999999377,
               "failureMessages": [],
               "meta": {},
               "tags": []
@@ -9737,17 +9767,17 @@
               "fullName": "chaos fault primitives records pass, fail and not-executed scenarios",
               "status": "passed",
               "title": "records pass, fail and not-executed scenarios",
-              "duration": 1.0993440000000874,
+              "duration": 1.157434999999964,
               "failureMessages": [],
               "meta": {},
               "tags": []
             }
           ],
-          "startTime": 1790555375804,
-          "endTime": 1790555375811.0994,
+          "startTime": 1791206158993,
+          "endTime": 1791206158999.1575,
           "status": "passed",
           "message": "",
-          "name": "/home/ricardo/cvg-agent-secretary-v2/packages/chaos/src/__tests__/faults-coverage.test.ts"
+          "name": "/home/ricardo/cvg-claw/packages/chaos/src/__tests__/faults-coverage.test.ts"
         }
       ]
     }
@@ -9755,9 +9785,9 @@
   "load": {
     "schemaVersion": 1,
     "kind": "phase11-load-report",
-    "certificationId": "phase11-fb12c14ae87bf7e2-mukhf88l",
-    "candidateCommit": "b3b715eed95fd24b802f174b919e338aa6ac8b7a",
-    "generatedAt": "2026-09-28T00:30:49.397Z",
+    "certificationId": "phase11-72fa77fcda6fad8c-muv8q8tu",
+    "candidateCommit": "dfe2c1dd992a96a55dd41f5c516352a82f587cbf",
+    "generatedAt": "2026-10-05T13:17:14.726Z",
     "gateId": "load",
     "status": "PASS",
     "command": "npx tsx scripts/phase10-load.ts --events=10000",
@@ -9767,31 +9797,31 @@
     "raw": {
       "schemaVersion": 1,
       "kind": "phase10-load-report",
-      "generatedAt": "2026-09-28T00:29:44.556Z",
+      "generatedAt": "2026-10-05T13:16:09.209Z",
       "scope": "in-memory outbox contract; synthetic payloads; not a production benchmark",
       "events": 10000,
       "workers": 2,
-      "enqueueMs": 691.81,
-      "drainMs": 7392.41,
-      "totalMs": 8086.86,
-      "throughputPerSecond": 1236.57,
+      "enqueueMs": 720.44,
+      "drainMs": 8784.67,
+      "totalMs": 9507.29,
+      "throughputPerSecond": 1051.82,
       "processed": 10000,
       "loss": 0,
       "duplicates": 0,
       "latencyMs": {
-        "p50": 1.37,
-        "p95": 2.17,
-        "p99": 2.738,
-        "max": 6.728
+        "p50": 1.601,
+        "p95": 2.851,
+        "p99": 3.767,
+        "max": 8.531
       }
     }
   },
   "recovery": {
     "schemaVersion": 1,
     "kind": "phase11-recovery-report",
-    "certificationId": "phase11-fb12c14ae87bf7e2-mukhf88l",
-    "candidateCommit": "b3b715eed95fd24b802f174b919e338aa6ac8b7a",
-    "generatedAt": "2026-09-28T00:30:49.397Z",
+    "certificationId": "phase11-72fa77fcda6fad8c-muv8q8tu",
+    "candidateCommit": "dfe2c1dd992a96a55dd41f5c516352a82f587cbf",
+    "generatedAt": "2026-10-05T13:17:14.726Z",
     "gateId": "recovery",
     "status": "PASS",
     "command": "npm test -- --run packages/agent-runtime/src/__tests__/runtime-execution-recovery.test.ts apps/worker/src/__tests__/outbox-recovery.test.ts apps/worker/src/__tests__/worker-sweeps.test.ts",
@@ -9806,9 +9836,9 @@
   "postgres": {
     "schemaVersion": 1,
     "kind": "phase11-postgres-report",
-    "certificationId": "phase11-fb12c14ae87bf7e2-mukhf88l",
-    "candidateCommit": "b3b715eed95fd24b802f174b919e338aa6ac8b7a",
-    "generatedAt": "2026-09-28T00:30:49.397Z",
+    "certificationId": "phase11-72fa77fcda6fad8c-muv8q8tu",
+    "candidateCommit": "dfe2c1dd992a96a55dd41f5c516352a82f587cbf",
+    "generatedAt": "2026-10-05T13:17:14.726Z",
     "gateId": "postgres",
     "status": "PASS",
     "command": "npm run test:postgres -- --reporter=default --reporter=json --outputFile=certification/phase11/logs/postgres-report.json",
@@ -9824,9 +9854,9 @@
   "integrations": {
     "schemaVersion": 1,
     "kind": "phase11-integration-report",
-    "certificationId": "phase11-fb12c14ae87bf7e2-mukhf88l",
-    "candidateCommit": "b3b715eed95fd24b802f174b919e338aa6ac8b7a",
-    "generatedAt": "2026-09-28T00:30:49.398Z",
+    "certificationId": "phase11-72fa77fcda6fad8c-muv8q8tu",
+    "candidateCommit": "dfe2c1dd992a96a55dd41f5c516352a82f587cbf",
+    "generatedAt": "2026-10-05T13:17:14.727Z",
     "mode": "CONTROLLED_LOCAL",
     "realEffects": false,
     "realData": false,
