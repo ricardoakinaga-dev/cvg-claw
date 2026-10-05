@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "kind": "claw-w1-git-publication-receipt",
+  "observedAt": "2026-10-05T21:32:44Z",
+  "task": "CLAW-W1-06",
+  "currentEngine": "AUDIT",
+  "status": "READY_FOR_NEXT_STEP",
+  "authorization": "User explicitly requested git commit and push to https://github.com/ricardoakinaga-dev/cvg-claw",
+  "lastCompletedAction": "Verify the existing Phase 11 seal and publish the two previously created local commits to origin/main; confirm the remote branch hash",
+  "nextAction": "Observe the Verify and Security workflows for the published branch; keep CLAW-W1-06 open until both pass",
+  "git": {
+    "branch": "main",
+    "remote": "https://github.com/ricardoakinaga-dev/cvg-claw.git",
+    "initialWorktreeClean": true,
+    "publishedCommits": [
+      {
+        "commit": "dfe2c1dd992a96a55dd41f5c516352a82f587cbf",
+        "subject": "docs(audit): independent critic PASS for wave 1 candidate 72fa77fc"
+      },
+      {
+        "commit": "58f8f5f1fc4b219be36c1b70539e42d61ca1a7d0",
+        "subject": "chore(certification): seal phase11 72fa77fc (CONDITIONAL_GO/AAA_CANDIDATE)"
+      }
+    ],
+    "pushCommand": "git push origin main",
+    "pushExitCode": 0,
+    "remoteMainConfirmed": "58f8f5f1fc4b219be36c1b70539e42d61ca1a7d0",
+    "postPushWorktreeClean": true
+  },
+  "verification": {
+    "runtime": "v22.23.2",
+    "command": "npm run certification:verify:phase11",
+    "exitCode": 0,
+    "status": "PASS",
+    "failures": [],
+    "certificationId": "phase11-72fa77fcda6fad8c-muv8q8tu",
+    "candidateId": "72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267"
+  },
+  "diffReview": {
+    "commitsAndPathsInspected": true,
+    "fullWhitespaceCheck": "FAIL: trailing spaces in immutable generated logs and raw Git patch evidence",
+    "whitespaceCheckExcludingGeneratedLogsAndRawPatches": "PASS",
+    "sealedEvidenceReformatted": false
+  },
+  "ciAtObservation": [
+    {
+      "workflow": "Verify",
+      "status": "in_progress",
+      "url": "https://github.com/ricardoakinaga-dev/cvg-claw/actions/runs/37376536752"
+    },
+    {
+      "workflow": "Security",
+      "status": "queued",
+      "url": "https://github.com/ricardoakinaga-dev/cvg-claw/actions/runs/37376536727"
+    }
+  ],
+  "persistence": {
+    "mode": "Evidence-only operational receipt",
+    "reason": "Runtime state, execution log, backlog, CURRENT and other candidate files remain frozen as specified in the seal receipt. This evidence records the actual action, status, backlog condition and next step without changing the certified candidate.",
+    "receiptToBeCommittedAndPushedSeparately": true
+  },
+  "backlog": {
+    "CLAW-W1-06": "IN_PROGRESS: critic, pass 2, seal commit and seal push completed; green CI not yet observed"
+  },
+  "releaseBoundary": {
+    "staging": "NO_GO",
+    "production": "NO_GO"
+  },
+  "noProductionEffect": true
+}
