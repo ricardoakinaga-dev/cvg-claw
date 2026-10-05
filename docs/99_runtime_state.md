@@ -5235,3 +5235,11 @@ PASS`; suíte integral `289 PASS` arquivos/12 skipped e `2.256 PASS`
 - last_completed_action: reexecutar a passada 1 no contêiner de paridade (`phase11-9aa3401dfcfa9b77-muugfayu`, commit `af5f348`): **33/35 gates e 16/16 invariantes PASS**; só `independent_critic` e `PHASE11_FORMAL_CLOSURE` pendentes. Pacote da passada 1 descartado; governança congelada neste commit para o parecer do crítico.
 - next_action: obter o parecer do crítico independente fresh-context vinculado ao candidato congelado (pedido em `docs/04_audit/evidence/CLAW-reseal/`); rodar a passada 2 no contêiner de paridade e commitar o selo com o recibo só em `docs/04_audit/evidence/`; responder às 6 perguntas abertas da Discovery 0026.
 - verification: PostgreSQL descartável removido (resíduo 6 papéis); nenhum dado real, deploy ou egress.
+
+# Onda 1 (base sólida) executada localmente — 2026-10-05
+
+- current_engine: `AUDIT -> PLAN -> BUILD`; task canônica `CLAW-W1` `WAITING_HUMAN_APPROVAL` (commit, crítico, selo e push); staging/produção `NO_GO`.
+- last_completed_action: auditoria [0575](04_audit/0575_repository_audit_2026-10-05.md) registrada (60/100); roadmap em ondas [0346](03_build/0346_claw_waves_roadmap_20261005.md) e backlog [0347](03_build/0347_claw_waves_backlog_20261005.md) publicados; varredura com relógio +400 dias corrigiu `journeys-api.test.ts` e classificou 5 artefatos; achado de produto: janela da política de tombstone expira em 2027-01-01 (CLAW-W1-07); renomeação de baixo risco em `package.json` e `.env.example`. O candidato `2414ae15` deixou de valer.
+- next_action: autorizar o commit da Onda 1 (CLAW-W1-01 a W1-04) e congelar o novo candidato (CLAW-W1-05); obter o parecer do crítico independente para esse candidato, rodar a passada 2 no contêiner de paridade, commitar o selo e fazer push (CLAW-W1-06); decidir a renovação da política de tombstone antes de 2026-12-31 (CLAW-W1-07); responder às 6 perguntas abertas da Discovery 0026 (CLAW-W2-01).
+- evidence: [admissão](04_audit/evidence/CLAW-W1/CLAW-W1-admission-20261005.md), [varredura](04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md).
+- verification: ver execution log de 2026-10-05; nenhum dado real, commit, push ou deploy.

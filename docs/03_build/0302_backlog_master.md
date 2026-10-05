@@ -1,5 +1,9 @@
 # 0302 — Backlog Master
 
+## Backlog corrente em ondas — 2026-10-05
+
+Consultar [0347](0347_claw_waves_backlog_20261005.md) e [roadmap 0346](0346_claw_waves_roadmap_20261005.md). Itens `CLAW-W1-*` a `CLAW-W8-*` e trilha `CLAW-G-*`; só a Onda 1 está admitida. 0345 e as seções abaixo permanecem históricas.
+
 ## Backlog incremental corrente — 2026-09-24
 
 Consultar [0343](0343_post_query_backlog_20260923.md),

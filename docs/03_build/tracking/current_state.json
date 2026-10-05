@@ -4,7 +4,7 @@
   "program": "AUD20-REM-v2",
   "currentTask": "AUD20-10",
   "currentStatus": "READY_FOR_NEXT_STEP",
-  "nextAction": "obter o parecer do crítico independente fresh-context vinculado ao candidato congelado (pedido em `docs/04_audit/evidence/CLAW-reseal/`); rodar a passada 2 no contêiner de paridade e commitar o selo com o recibo só em `docs/04_audit/evidence/`; responder às 6 perguntas abertas da Discovery 0026.",
+  "nextAction": "autorizar o commit da Onda 1 (CLAW-W1-01 a W1-04) e congelar o novo candidato (CLAW-W1-05); obter o parecer do crítico independente para esse candidato, rodar a passada 2 no contêiner de paridade, commitar o selo e fazer push (CLAW-W1-06); decidir a renovação da política de tombstone antes de 2026-12-31 (CLAW-W1-07); responder às 6 perguntas abertas da Discovery 0026 (CLAW-W2-01).",
   "releaseBoundary": {
     "staging": "NO_GO",
     "production": "NO_GO"

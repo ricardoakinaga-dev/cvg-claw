@@ -53,10 +53,13 @@ describe('controlled journey API', () => {
         headers
       })
       expect(slotResponse.statusCode).toBe(200)
-      expect(
-        slotResponse.json<{ data: { slots: Array<{ startsAt: string }> } }>()
-          .data.slots[0]!.startsAt
-      ).toMatch(/^2026-/)
+      const firstSlotStartsAt = slotResponse.json<{
+        data: { slots: Array<{ startsAt: string }> }
+      }>().data.slots[0]!.startsAt
+      // Slots are built from the run clock (next UTC day onward), so the
+      // assertion is relative to now instead of a fixed calendar year.
+      expect(firstSlotStartsAt).toMatch(/^\d{4}-\d{2}-\d{2}T/)
+      expect(Date.parse(firstSlotStartsAt)).toBeGreaterThan(Date.now())
     } finally {
       await app.close()
     }

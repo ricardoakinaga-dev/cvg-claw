@@ -1,7 +1,7 @@
 {
   "name": "cvg-claw",
   "version": "1.0.0",
-  "description": "Enterprise agent secretary runtime for CVG operations",
+  "description": "cvg-claw: governed autonomous agent runtime for hospital operations",
   "private": true,
   "workspaces": [
     "apps/*",

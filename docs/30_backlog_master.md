@@ -1,3 +1,13 @@
+# CLAW-W1 — Onda 1 (base sólida) — 2026-10-05
+
+- [x] Auditoria [0575](04_audit/0575_repository_audit_2026-10-05.md) registrada (nota geral 60/100).
+- [x] Roadmap em ondas [0346](03_build/0346_claw_waves_roadmap_20261005.md) e backlog [0347](03_build/0347_claw_waves_backlog_20261005.md) publicados; ponteiros atualizados.
+- [x] CLAW-W1-03: varredura com relógio +400 dias; `journeys-api.test.ts` corrigido; artefatos classificados. Ver [relatório](04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md). Substitui o item de varredura de datas fixas de CLAW-01 v2.
+- [x] CLAW-W1-04: descrição do pacote e banco do `.env.example` renomeados.
+- [ ] CLAW-W1-05: commit autorizado e novo candidato congelado com pedido ao crítico.
+- [ ] CLAW-W1-06: parecer do crítico, passada 2, selo, push, `Verify`/`Security` verdes.
+- [ ] CLAW-W1-07: decisão humana sobre a janela da política de tombstone (expira em 2027-01-01). Staging/produção `NO_GO`.
+
 # CLAW-01 v2 / Fase 0 — 2026-10-04
 
 - [x] Discovery 0026 v2 com contexto veterinário e mapa de integração do `cvg-his-v4`.

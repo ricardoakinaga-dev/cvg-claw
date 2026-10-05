@@ -1,3 +1,12 @@
+# CLAW-W1 — auditoria 0575, roadmap em ondas e Onda 1 local — 2026-10-05
+
+- Decisão humana: plano em ondas até produção, atualização da documentação existente e execução da Onda 1 ([recibo](04_audit/evidence/CLAW-W1/CLAW-W1-admission-20261005.md)).
+- Auditoria [0575](04_audit/0575_repository_audit_2026-10-05.md): nota geral 60/100; gates Node `22.23.2`: typecheck, lint, Prettier, `docs:check`, `npm audit` (0) e `test:coverage` (2.682 PASS/194 skips/0 falhas; 93,02/90,19/91,23/93,49%) PASS.
+- Plano: [roadmap 0346](03_build/0346_claw_waves_roadmap_20261005.md) e [backlog 0347](03_build/0347_claw_waves_backlog_20261005.md); ponteiros em 0301, 0302, `CURRENT.md`, `ROADMAP_PRODUCAO.md` e `BACKLOG_PRODUCAO.md`.
+- CLAW-W1-03: suíte com relógio +400 dias, 6 falhas; 1 real corrigida em `journeys-api.test.ts` e 5 artefatos do método. Achado de produto: `INBOUND_TOMBSTONE_POLICY_VALID_UNTIL` expira em 2027-01-01 (CLAW-W1-07, decisão humana). [Relatório](04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md).
+- CLAW-W1-04: descrição do pacote e banco `cvg_claw` no `.env.example`; tags `cvg-aud19-*` preservadas por vínculo a evidências.
+- O candidato `2414ae15` deixou de valer. Pendentes de autorização: commit, novo candidato, crítico, passada 2, selo e push. Nenhum dado real, deploy ou egress; staging/produção `NO_GO`.
+
 # Passada 1 PASS local (33/35) e congelamento para o crítico — 2026-10-04
 
 - Passada 1 reexecutada no contêiner de paridade: 33/35 gates e 16/16 invariantes; pendentes só o crítico independente e o fechamento formal. Governança congelada para o parecer. Staging/produção `NO_GO`.

@@ -1,3 +1,5 @@
+> Atualização 2026-10-05: o plano corrente até produção é o [roadmap em ondas 0346](03_build/0346_claw_waves_roadmap_20261005.md) com o [backlog 0347](03_build/0347_claw_waves_backlog_20261005.md). Este documento permanece histórico.
+
 > Atualização13/09/2026: [reauditoria M1](04_audit/0562_prod_m1_reaudit_2026-09-13.md) encontrou e corrigiu oito lacunas adicionais. Revisão CONDITIONAL PASS; tarefas afetadas REVIEW e produção NO-GO. [Pacote de decisões e sequência](02_spec/prod20260913_decision_packet.md). O conteúdo abaixo preserva o planejamento/diagnóstico histórico; estados atuais nos backlogs canônicos.
 
 # Roadmap para produção — PROD-20260913

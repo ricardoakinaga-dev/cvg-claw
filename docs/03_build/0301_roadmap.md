@@ -1,5 +1,9 @@
 # 0301 — Roadmap
 
+## Roadmap corrente em ondas — 2026-10-05
+
+Consultar [0346](0346_claw_waves_roadmap_20261005.md), com [backlog 0347](0347_claw_waves_backlog_20261005.md) e [auditoria 0575](../04_audit/0575_repository_audit_2026-10-05.md). Oito ondas, de base sólida até produção controlada; a Onda 1 foi admitida em 2026-10-05. 0344 e as seções abaixo permanecem históricas.
+
 ## Roadmap incremental corrente — 2026-09-24
 
 Consultar [0342](0342_post_query_roadmap_20260923.md), com
