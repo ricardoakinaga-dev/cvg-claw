@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "kind": "critic-read-only-preflight",
+  "observedAt": "2026-10-05T12:02:09.012Z",
+  "runtime": "v22.23.2",
+  "procedure": "Read-only Git tree/blob enumeration filtered by isCandidateExcluded; computeCandidateId, computeCandidateTreeHash and fingerprintCandidateFiles from repository libraries; compare complete frozen and live file records. No tests or certification executed.",
+  "head": "d68b1911543328fd49b9e0b8db672c5f9d2a475f",
+  "gitStatusPorcelain": "",
+  "remoteMain": "d68b1911543328fd49b9e0b8db672c5f9d2a475f",
+  "push": { "command": "git push origin main", "exitCode": 0 },
+  "historical": {
+    "commit": "f8c2639d47831e4058e0807e5ce3d414a846298c",
+    "candidateId": "2414ae1538227881cb294abd051d3ce593c266c59f7f0c6e6173a417f9b49ecd",
+    "treeHash": "0e984dc75c6619d59d611910d0ed2d58f4aecd737119b7a6a3bc8c5096a765ce",
+    "fingerprint": "02cde40a6ce757ff4cdb55ceb148a63301b61bb476ebc7907fd23dde3dce14d8",
+    "fileCount": 1214
+  },
+  "frozen": {
+    "commit": "185f82168a11e813c218f2e6da1c49b671bf451f",
+    "candidateId": "72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267",
+    "treeHash": "d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569",
+    "fingerprint": "ad6087e1cad09d16ec532dc5e893a21e4d4e7759f4f30d1bec6cab4a6ec11865",
+    "fileCount": 1217
+  },
+  "live": {
+    "candidateId": "72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267",
+    "treeHash": "d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569",
+    "fingerprint": "ad6087e1cad09d16ec532dc5e893a21e4d4e7759f4f30d1bec6cab4a6ec11865",
+    "fileCount": 1217
+  },
+  "frozenVsLiveFilesIdentical": true,
+  "gitDiffNameStatus3dc0093To185f821": [
+    "M\t.env.example",
+    "M\tAGENTS.md",
+    "A\tREADME.md",
+    "M\tapps/api/src/__tests__/journeys-api.test.ts",
+    "A\tdocs/00_discovery/0026_cvg_claw_hospital_autonomous_agent.md",
+    "M\tdocs/00_discovery/0090_discovery_validation.md",
+    "M\tdocs/03_build/0301_roadmap.md",
+    "M\tdocs/03_build/0302_backlog_master.md",
+    "A\tdocs/03_build/0346_claw_waves_roadmap_20261005.md",
+    "A\tdocs/03_build/0347_claw_waves_backlog_20261005.md",
+    "M\tdocs/03_build/tracking/current_state.json",
+    "A\tdocs/04_audit/0575_repository_audit_2026-10-05.md",
+    "M\tdocs/04_audit/evidence/AUD19/AUD19-08-critic-report.json",
+    "A\tdocs/04_audit/evidence/CLAW-00-sync-20261004.md",
+    "A\tdocs/04_audit/evidence/CLAW-20261004/AUD-20261004-audit-and-production-steps.md",
+    "A\tdocs/04_audit/evidence/CLAW-20261004/session-handoff-20261004.md",
+    "A\tdocs/04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md",
+    "A\tdocs/04_audit/evidence/CLAW-W1/CLAW-W1-admission-20261005.md",
+    "A\tdocs/04_audit/evidence/CLAW-W1/clock-shift.mjs",
+    "A\tdocs/04_audit/evidence/CLAW-reseal/certify-pass.sh",
+    "A\tdocs/04_audit/evidence/CLAW-reseal/critic-request-20261004.md",
+    "M\tdocs/07_agents/AGENTS.md",
+    "M\tdocs/20_master_execution_log.md",
+    "M\tdocs/30_backlog_master.md",
+    "M\tdocs/99_runtime_state.md",
+    "M\tdocs/BACKLOG_PRODUCAO.md",
+    "M\tdocs/CURRENT.md",
+    "M\tdocs/README.md",
+    "M\tdocs/ROADMAP_PRODUCAO.md",
+    "M\tpackage-lock.json",
+    "M\tpackage.json",
+    "M\tpackages/persistence/src/__tests__/retention-postgres.test.ts"
+  ],
+  "gitDiffNameStatus185f821ToHead": [
+    "A\tdocs/04_audit/evidence/CLAW-W1/CLAW-W1-07-tombstone-policy-renewal-decision-20261005.json",
+    "A\tdocs/04_audit/evidence/CLAW-W1/critic-request-20261005.md"
+  ],
+  "artifactDigests": [
+    { "path": "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md", "sha256": "56efaf276840b66aa9a5b9d5c38dfeea99520baaf91c95db0b9ee2f0e70092cf", "size": 2919 },
+    { "path": "docs/04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md", "sha256": "eb9092cb4aa3685c80f2a4f5b5afdd780a842f7f3b420479b7ed4eddc5d77200", "size": 4054 },
+    { "path": "docs/04_audit/evidence/CLAW-W1/clock-shift.mjs", "sha256": "f55a04c6373726d26aad8bda076fca0ae98d1e083abfa39ee58397d84cdbc6a4", "size": 439 },
+    { "path": "docs/04_audit/evidence/CLAW-W1/CLAW-W1-admission-20261005.md", "sha256": "38226dcd86c2f4c369c75a8066bbd39490b09cabe2c1278136a091ea11a568d7", "size": 1273 },
+    { "path": "docs/04_audit/evidence/CLAW-W1/CLAW-W1-07-tombstone-policy-renewal-decision-20261005.json", "sha256": "ddc816bd01c3881bc0cbdeeef05bf9cc5d1b572cd823f9a564cfe7c75857b705", "size": 1461 },
+    { "path": "docs/04_audit/evidence/CLAW-reseal/critic-request-20261004.md", "sha256": "5c7e356214269e74170cf5115ec5d6896f5a6383e3c392f979313a89fcc3c582", "size": 2143 },
+    { "path": "docs/03_build/0347_claw_waves_backlog_20261005.md", "sha256": "38477783d263a3751b49ed54feb27780f524e879e5b787ad8a2606149e813f88", "size": 14856 },
+    { "path": "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json", "sha256": "1d477beef8340674c009032168fa7d0c4b99b9af8697af0472903ebb2b9735a6", "size": 4436 },
+    { "path": "docs/02_spec/aaa_quality_contract.md", "sha256": "aec324018513c43a3e949663e41769f2d59180c6812d7430bd5980fb4a357097", "size": 31985 },
+    { "path": "certification/external-gates.json", "sha256": "ccaecccf62b52cb02ce278ec84dd15cf3a0f13ca2d691f7ca20f9b86fed60ca9", "size": 361 },
+    { "path": "docs/03_build/tracking/current_state.json", "sha256": "f5901420ee52539e5ff5268d899d2b9fd18a244e0dda919dd878cb1e4ced9435", "size": 1310 },
+    { "path": "docs/99_runtime_state.md", "sha256": "ba75d6eef64c2bf175125ca4b11b24d430315de9aa9a7f0ee98c1498d8ea24fe", "size": 444536 },
+    { "path": "docs/20_master_execution_log.md", "sha256": "3e0302f797728fbf542db80458ec2098dd7707db859b77c1f6589d6b4d9536c6", "size": 467123 },
+    { "path": "docs/30_backlog_master.md", "sha256": "8199e1645405dc1a70ebe265e1df6ef3bd95a596d0a4721c3bfbee10c7f7e3da", "size": 225738 }
+  ],
+  "limitations": [
+    "Git and digest commands were executed by the lead because the critic has no shell access. The critic must independently inspect named artifacts and state this limitation.",
+    "The old pass 1 package was discarded by its producer; its prose is historical evidence, not a current executable acceptance result.",
+    "Only the evidence directory is updated during this review. Governance files remain frozen; final certification and production gates are not evaluated by this preflight."
+  ]
+}

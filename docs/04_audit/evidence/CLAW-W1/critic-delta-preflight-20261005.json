@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "kind": "critic-git-content-preflight",
+  "observedAt": "2026-10-05T12:11:38.753Z",
+  "runtime": "v22.23.2",
+  "baseCommit": "3dc0093f87dc168a8382f7e901fce328d31cba1a",
+  "candidateCommit": "185f82168a11e813c218f2e6da1c49b671bf451f",
+  "candidateFingerprint": "ad6087e1cad09d16ec532dc5e893a21e4d4e7759f4f30d1bec6cab4a6ec11865",
+  "candidatePatchExact": true,
+  "procedure": "Raw git diff --binary --no-ext-diff --no-textconv; candidate diff excludes only docs/04_audit/evidence/**. Exact bytes compared with a second stdout-only invocation. Git show of the agent-evals workspace manifest at both commits; SHA-256 and equality measured, no tests executed.",
+  "artifacts": [
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-candidate-delta-20261005.patch",
+      "sha256": "c3ca3a98b476ed485b32a3a46dabac1a1eb4f56b8b554e509d5419a59cae935d",
+      "size": 86189
+    },
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-helper-delta-20261005.patch",
+      "sha256": "b328a015ea3c88f3c1e52f201e46ae8d72cabc7eafee94015fd809db342ea4ac",
+      "size": 2296
+    },
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md",
+      "sha256": "e9eca83d41e37cca9cefb06185981cdeb83d1859a33e672bd5fb62a4a6cab356",
+      "size": 2629
+    }
+  ],
+  "agentEvalsManifest": {
+    "path": "packages/agent-evals/package.json",
+    "beforeSha256": "b1f92c8f2f3302c6476bf128e5a205f956bde31eb7721e7a67e75f014215ce80",
+    "afterSha256": "b1f92c8f2f3302c6476bf128e5a205f956bde31eb7721e7a67e75f014215ce80",
+    "identical": true,
+    "before": {
+      "name": "@cvg/agent-evals",
+      "version": "1.0.0",
+      "private": true,
+      "main": "src/index.ts",
+      "types": "src/index.ts",
+      "dependencies": {
+        "@cvg/agent-core": "1.0.0",
+        "@cvg/policy-engine": "1.0.0",
+        "@cvg/shared": "1.0.0",
+        "zod": "^4.3.6"
+      }
+    },
+    "after": {
+      "name": "@cvg/agent-evals",
+      "version": "1.0.0",
+      "private": true,
+      "main": "src/index.ts",
+      "types": "src/index.ts",
+      "dependencies": {
+        "@cvg/agent-core": "1.0.0",
+        "@cvg/policy-engine": "1.0.0",
+        "@cvg/shared": "1.0.0",
+        "zod": "^4.3.6"
+      }
+    }
+  },
+  "limitations": [
+    "Raw Git output and hashes were collected by the lead; the critic cannot execute commands and must judge content independently.",
+    "No new test, PostgreSQL, E2E or certification result is produced by this artifact."
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "kind": "claw-w1-independent-critic-review-receipt",
+  "date": "2026-10-05",
+  "task": "CLAW-W1-06",
+  "currentEngine": "AUDIT",
+  "status": "READY_FOR_NEXT_STEP",
+  "scope": "Frozen-candidate delta admissibility for certification pass 2; not final certification or release approval",
+  "lastCompletedAction": "Execute authorized push; reproduce historical and frozen candidate bindings; obtain fresh read-only final critic report, preserve returned JSON and validate with the official critic evidence checker",
+  "nextAction": "Run certification pass 2 in the Playwright parity container and verify its actual result with certification:verify:phase11; then commit the seal with the receipt only under evidence and push to complete CLAW-W1-06",
+  "binding": {
+    "candidateId": "72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267",
+    "commit": "185f82168a11e813c218f2e6da1c49b671bf451f",
+    "treeHash": "d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569",
+    "fingerprint": "ad6087e1cad09d16ec532dc5e893a21e4d4e7759f4f30d1bec6cab4a6ec11865",
+    "fileCount": 1217,
+    "historicalCandidateReproduced": "2414ae1538227881cb294abd051d3ce593c266c59f7f0c6e6173a417f9b49ecd"
+  },
+  "push": {
+    "command": "git push origin main",
+    "exitCode": 0,
+    "remote": "https://github.com/ricardoakinaga-dev/cvg-claw.git",
+    "remoteMainVerified": "d68b1911543328fd49b9e0b8db672c5f9d2a475f",
+    "observation": "The additional tombstone decision commit appeared after initial inspection and was included in the push; it changes only an excluded evidence file"
+  },
+  "reviews": [
+    {
+      "round": 1,
+      "sessionId": "ses_ef40cfecbffecZ0SoGdKLoXsfn",
+      "report": "docs/04_audit/evidence/CLAW-W1/critic-report-r1-20261005.json",
+      "reportSha256": "2482072a05705d9209cd16aebc4e729509122f2ebaba1f9212d874dda17011a1",
+      "verdict": "FAIL",
+      "disposition": "Preserved: required content diff evidence was missing; supplied raw Git diff without changing the candidate",
+      "officialCheckerExitCode": 1,
+      "officialCheckerFailures": ["CRITIC:verdict:critic verdict is FAIL"],
+      "candidateSentinelUnchanged": true,
+      "fullWorktreeBefore": "cdf679772eeed4524a8dddafdc2e40883354ab245d612fae2fe11884c2222612",
+      "fullWorktreeAfter": "cdf679772eeed4524a8dddafdc2e40883354ab245d612fae2fe11884c2222612",
+      "postReviewObservedAt": "2026-10-05T12:07:50.707Z"
+    },
+    {
+      "round": 2,
+      "sessionId": "ses_ef404e06fffetUT1OhtleuQHZy",
+      "report": "docs/04_audit/evidence/CLAW-W1/critic-report-r2-20261005.json",
+      "reportSha256": "f015033a520d78f8df5dbb44ea2cafd4a348383244df51ee5bcf814cc3aa7232",
+      "verdict": "FAIL",
+      "disposition": "INVALID for final acceptance: critic declared unexpected grep expansion into an excluded patch; preserved and replaced by a fresh exact-path Read-only review",
+      "officialCheckerExitCode": 1,
+      "officialCheckerFailures": ["CRITIC:verdict:critic verdict is FAIL"],
+      "candidateSentinelUnchanged": true,
+      "fullWorktreeBefore": "2ab5549e713eac753033bbf8d0253b9644d851d7d9fa8d035e4bb674e6b5d10b",
+      "fullWorktreeAfter": "2ab5549e713eac753033bbf8d0253b9644d851d7d9fa8d035e4bb674e6b5d10b",
+      "postReviewObservedAt": "2026-10-05T12:15:11.291Z"
+    },
+    {
+      "round": 3,
+      "sessionId": "ses_ef400b581ffeEwZpAY6sb4NueX",
+      "report": "docs/04_audit/evidence/AUD19/AUD19-08-critic-report.json",
+      "reportSha256": "55f39d11fe970d403377c5e64fa58daa30ba979b60c4c94e8090dd9577ba5a10",
+      "reportSize": 12434,
+      "verdict": "PASS",
+      "findings": { "P0": 0, "P1": 0, "P2": 1 },
+      "independence": "Fresh OpenCode task without task_id, separate read-only role; I1 declared by critic, no distinct model family attested",
+      "observedToolsFromHostSessionDatabase": ["read"],
+      "candidateSentinelUnchanged": true,
+      "fullWorktreeBefore": "1ed57525e84554311f991a98f61e34c1db201f7c53dd4c16a40d8e2b64b73ace",
+      "fullWorktreeAfter": "1ed57525e84554311f991a98f61e34c1db201f7c53dd4c16a40d8e2b64b73ace",
+      "fullWorktreeFileCount": 4061,
+      "postReviewObservedAt": "2026-10-05T12:21:05.326Z",
+      "returnPreservation": {
+        "comparisonSource": "Final assistant text read through read-only opencode db query of the exact critic session",
+        "jsonValueIdentical": true,
+        "textIdenticalExceptTerminalLineFeed": true,
+        "returnedTextSha256": "d6cce9682a463be3c290764f3fe04dd54f31f4d9f944015a2fa82ed89a129aae",
+        "returnedTextSize": 12433,
+        "observation": "No JSON field, wording or formatting changed; file has the terminal LF added by apply_patch"
+      }
+    }
+  ],
+  "verification": [
+    {
+      "command": "node scripts/phase11-2-evidence-check.mjs --critic",
+      "runtime": "v22.23.2",
+      "exitCode": 0,
+      "status": "PASS",
+      "checksPassed": 10,
+      "artifactDigestsVerified": 10,
+      "criticChecks": 8,
+      "failures": []
+    },
+    {
+      "command": "npm run docs:check",
+      "runtime": "v22.23.2",
+      "exitCode": 0,
+      "status": "PASS",
+      "observation": "Before this receipt: 2216 links, 652 JSONs, zero broken links/invalid JSON; semantic and nextAction checks valid"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "status": "PASS"
+    }
+  ],
+  "ciObserved": [
+    {
+      "workflow": "Security",
+      "headSha": "d68b1911543328fd49b9e0b8db672c5f9d2a475f",
+      "conclusion": "success",
+      "url": "https://github.com/ricardoakinaga-dev/cvg-claw/actions/runs/37306663075"
+    },
+    {
+      "workflow": "Verify",
+      "headSha": "d68b1911543328fd49b9e0b8db672c5f9d2a475f",
+      "conclusion": "failure",
+      "failedStep": "Phase 11 certification integrity",
+      "url": "https://github.com/ricardoakinaga-dev/cvg-claw/actions/runs/37306663048"
+    }
+  ],
+  "backlogProgress": {
+    "CLAW-W1-06": "IN_PROGRESS: push and independent critic complete; pass 2, seal commit, final push and green CI pending",
+    "CLAW-W1-07": "Decision receipt exists; implementation and new policy validity are not proved by this review"
+  },
+  "governancePersistence": {
+    "mode": "Evidence-only handoff under frozen governance",
+    "reason": "Editing runtime state, execution log, backlog, CURRENT or current_state would alter the frozen candidate and cited artifact digests. This receipt records actual progress, log, status and next action until certification completes.",
+    "frozenFilesChanged": false
+  },
+  "remainingLimitations": [
+    "certify-pass.sh does not propagate the certification process exit code and has no bounded readiness wait; inspect actual certification outputs and run the official verifier",
+    "Policy code still expires at 2027-01-01T02:59:59.000Z; documentary renewal is not implementation",
+    "Critic had no shell/hash execution; deterministic measurements and post-review verification were performed by the lead",
+    "No product suite, PostgreSQL, E2E or final certification executed in this audit round",
+    "All new review evidence and the canonical report remain local and uncommitted"
+  ],
+  "releaseBoundary": { "staging": "NO_GO", "production": "NO_GO" },
+  "noProductionEffect": true
+}

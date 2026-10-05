@@ -1,0 +1,327 @@
+{
+  "schemaVersion": 1,
+  "kind": "phase11-critic-report",
+  "critic": {
+    "identity": "gauntlet-critic:CLAW-W1:20261005:openai/gpt-6.1-sol",
+    "freshContext": true,
+    "builderIdentity": "cvg-lead-agent",
+    "independence": {
+      "criteria": [
+        "fresh-context",
+        "separate-identity",
+        "artifact-only-input",
+        "no-worktree-write",
+        "no-builder-justification"
+      ],
+      "builderJustificationIncluded": false,
+      "builderConclusionReused": false,
+      "writeAccessToWorktree": false
+    }
+  },
+  "binding": {
+    "candidateId": "72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267",
+    "commit": "185f82168a11e813c218f2e6da1c49b671bf451f",
+    "treeHash": "d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569"
+  },
+  "fingerprint": {
+    "algorithm": "sha256-candidate-v1",
+    "before": "ad6087e1cad09d16ec532dc5e893a21e4d4e7759f4f30d1bec6cab4a6ec11865",
+    "after": "ad6087e1cad09d16ec532dc5e893a21e4d4e7759f4f30d1bec6cab4a6ec11865"
+  },
+  "verdict": {
+    "status": "FAIL",
+    "summary": "BLOCKED quanto à conclusão integral de admissibilidade do delta para a passada 2. O FAIL representa esse bloqueio no schema solicitado. Maior lacuna: o preflight contém a lista integral de paths/status do Git, mas não o diff de conteúdo nem os bytes anteriores de package-lock.json e das demais fontes alteradas. A inspeção do conteúdo atual permite avaliar as correções de testes e conferir as versões declaradas de dependências, porém não demonstrar que todo o delta do lock se limita ao declarado, nem excluir outras alterações dentro dos mesmos arquivos. C2 exige essa fidelidade; não a inferi do pedido ou de alegações de execução. Para desbloquear, fornecer um artefato factual, com hash/tamanho, contendo o diff de conteúdo 3dc0093→185f821, incluindo o lock completo; não é necessário fornecer justificativa do builder. Achado P2 concreto: a frase 'Nenhum ... script ... mudou' do pedido é excessivamente ampla, pois a própria lista Git registra a adição de clock-shift.mjs e certify-pass.sh em evidências. Esses helpers estão fora do escopo do candidato pelas regras oficiais, mas essa distinção precisa constar da declaração. Não identifiquei P0/P1 comprovado de produto nas fontes inspecionadas; ausência de comprovação integral não equivale a comprovação de ausência de regressão. As duas correções temporais são coerentes com os consumidores atuais, e o recibo de tombstone não implementa a renovação. Esta revisão não certifica 35/35 gates, não fecha a Onda 1, não aprova CI nem autoriza staging/produção. Resultados antigos, descartados e contagens em Markdown foram tratados somente como alegações históricas, não como resultados atuais. Não executei shell, testes, scripts ou validação Zod, não recalculei hashes e não escrevi arquivos. Digests e medições Git são os fornecidos pelo Lead sob Node v22.23.2. Não tenho identificador único de sessão exposto; usei identidade explícita deste papel, distinta de cvg-lead-agent, com o modelo informado nesta sessão. A independência é de contexto e papel, no máximo I1: família distinta do builder não foi demonstrada; não alego I2/I3. O filesystem é compartilhado. Não observei mutação durante minhas leituras, mas não medi o sentinel pós-revisão. fingerprint.after repete exclusivamente o sentinel declarado, sujeito à conferência pós-retorno do Lead, e não é uma medição minha. O sentinel integral informado pelo usuário, cdf679772eeed4524a8dddafdc2e40883354ab245d612fae2fe11884c2222612 em 4055 arquivos, também não foi recalculado ou lido por mim. O Lead deve conferir ambos os sentinels, os digests e o schema antes de qualquer aceitação."
+  },
+  "findings": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 1
+  },
+  "checks": [
+    {
+      "id": "C2-delta-integral-e-package-lock",
+      "status": "FAIL",
+      "method": "Observação: o preflight, linhas 32–69, oferece name-status, não hunks, versões anteriores ou registros individuais do lock. Li package.json, packages/agent-evals/package.json e trechos do lock: raiz, workspaces, fastify 5.12.5, fast-uri 3.1.8/4.2.1, undici 7.30.0 e brace-expansion 5.0.12. Os manifests atuais conferem nesses pontos; agent-evals declara policy-engine no manifest e no lock. Isso não prova quando essa entrada surgiu nem que não existem outros deltas. Bloqueador: falta diff de conteúdo factual 3dc0093→185f821, especialmente do lock, para conferir integralmente a declaração e os demais arquivos alterados. Hipótese não promovida a fato: alterações adicionais de dependências podem existir. Não há regressão adicional comprovada. P2 observado: o pedido afirma que nenhum script mudou, mas a lista Git mostra dois helpers adicionados em evidências; exclusão do candidato não torna essa frase literalmente correta.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
+        "docs/04_audit/evidence/CLAW-reseal/critic-request-20261004.md",
+        "docs/04_audit/evidence/CLAW-W1/clock-shift.mjs"
+      ]
+    },
+    {
+      "id": "C1-binding-e-metodo-historico",
+      "status": "PASS",
+      "method": "Comparei os valores do pedido com frozen/live/historical do receipt. Frozen e live registram candidateId, treeHash, fingerprint e 1217 arquivos idênticos; historical reproduz 2414ae1538227881cb294abd051d3ce593c266c59f7f0c6e6173a417f9b49ecd em f8c2639. Inspecionei isCandidateExcluded, collectCandidateFiles, computeCandidateId e computeCandidateTreeHash em certification-rules.mjs e fingerprintCandidateFiles em critic-evidence.mjs: exclusões oficiais, registros ordenados e discriminadores de schema são coerentes com o método descrito. Os dois paths adicionados entre o congelado e HEAD estão sob a exclusão oficial de evidências. PASS da coerência do binding fornecido, não de recomputação independente: os hashes, a identidade integral frozen/live e o estado Git/remoto foram medidos pelo Lead.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+        "docs/04_audit/evidence/CLAW-reseal/critic-request-20261004.md",
+        "docs/02_spec/aaa_quality_contract.md"
+      ]
+    },
+    {
+      "id": "C2-legitimidade-das-correcoes-de-testes",
+      "status": "PASS",
+      "method": "Li integralmente journeys-api.test.ts e retention-postgres.test.ts. A primeira alteração exige prefixo ISO e Date.parse(startsAt)>Date.now(), compatível com buildJourneySlots em journeys.ts: geração por Date.UTC a partir do próximo dia UTC. Não é prova completa de ISO estrito, mas NaN não satisfaz a comparação e o contrato temporal fica melhor que um ano fixo. A segunda usa Date.now()-5 dias para o tombstone recente e mantém a expectativa de preservação. Conferi retention.ts: a minimização consulta transaction_timestamp(), calcula cutoff de 30 dias e mantém os testes de expiração. Não observei novo skip, remoção de guard ou redução de threshold nesses testes. Limites: não executei testes; Node e PostgreSQL ainda precisam de relógios compatíveis, e a comparação de slots usa relógio de parede. PASS apenas da legitimidade estática das alterações visíveis, não da fidelidade integral do diff, bloqueada no check anterior.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
+        "docs/04_audit/evidence/CLAW-reseal/critic-request-20261004.md",
+        "docs/04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json"
+      ]
+    },
+    {
+      "id": "C3-atual-historico-e-escopo-da-decisao",
+      "status": "PASS",
+      "method": "O receipt declara que não executou testes ou certificação; os pedidos e registros recentes descrevem passada 1 descartada e verificações anteriores ao commit. Não usei essas contagens como aceitação atual. Li clock-shift.mjs: desloca Date.now() e o construtor sem argumentos, preserva datas explícitas e adapta instanceof; não desloca PostgreSQL, mtime ou processos sem preload. O relatório de varredura apresenta resultados narrados e classificações, sem logs brutos suficientes para verificá-los nesta revisão. Sua classificação não foi promovida a gate PASS. A falta de gates atuais não é, isoladamente, o bloqueador deste parecer de delta; o bloqueador é a impossibilidade de concluir C2 integralmente. Resultados atuais da passada 2 permanecem por produzir e verificar.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
+        "docs/04_audit/evidence/CLAW-reseal/critic-request-20261004.md",
+        "docs/04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/clock-shift.mjs"
+      ]
+    },
+    {
+      "id": "C4-NO_GO-externos-e-tombstone",
+      "status": "PASS",
+      "method": "Conferi current_state.json: staging/production NO_GO. external-gates.json registra provider, channel e identity NOT_VALIDATED e humanSignoff PENDING; não enumera sozinho os oito gates. A .env.example mantém as oito flags externas false e efeitos reais desabilitados. O backlog mantém ondas futuras PLANNED. O recibo de renovação restringe o efeito a CONTROLLED_LOCAL_SYNTHETIC_ONLY, effectiveOnlyAfterCodeChange=true e releaseEligible=false. Inspecionei retention.ts: validade continua 2027-01-01T02:59:59.000Z e a janela é checada contra o banco; aprovação nova ainda não está implementada. Não inferi autenticação externa da sessão humana ou vigência de código a partir do status APPROVED do recibo.",
+      "evidence": [
+        "docs/03_build/tracking/current_state.json",
+        "certification/external-gates.json",
+        "docs/03_build/0347_claw_waves_backlog_20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/CLAW-W1-07-tombstone-policy-renewal-decision-20261005.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md"
+      ]
+    },
+    {
+      "id": "C5-independencia-e-somente-leitura",
+      "status": "PASS",
+      "method": "Atuei como crítico fresco por inspeção direta, com ferramentas de leitura e busca. Li AGENTS.md e docs/07_agents/AGENTS.md; não apliquei instruções de atualização que exigiriam escrita, incompatíveis com esta revisão selada. Não executei shell, não deleguei, não escrevi, não li .gauntlet/ ou o relatório anterior e não solicitei rationale do builder. Alegações incidentais em registros foram tratadas como históricas, sem reutilizar conclusões. Identidade explícita de papel distinta do builder, pois não há ID único de sessão exposto. Limites: isolamento de filesystem e família distinta de modelo não demonstrados; independência no máximo I1. Nenhuma mutação foi observada, mas a conferência pós-retorno dos sentinels pertence ao Lead; igualdade declarada de before/after não prova essa conferência.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json"
+      ]
+    },
+    {
+      "id": "C6-schema-artifacts-e-evidence",
+      "status": "PASS",
+      "method": "Inspecionei CriticReportSchema e verifyCriticReport em scripts/lib/critic-evidence.mjs: objetos strict, status PASS/FAIL, contagens inteiras, digests hex, raízes permitidas, ausência de autocitação e obrigação de declarar check.evidence em artifacts. Este retorno usa apenas esses campos; cada evidence aponta para artifact declarado sob docs/ ou certification/. Fontes de código foram descritas em method e ancoradas no pedido/preflight, não citadas em evidence. Digests/tamanhos são os medidos no receipt; o digest/tamanho do próprio receipt foi fornecido pelo usuário. Não recalculei bytes e não executei o validador. PASS da conformação estática desta resposta, sujeito à validação executável e conferência de digests pelo Lead.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md"
+      ]
+    },
+    {
+      "id": "P11.2-PROMPT-delta-scope",
+      "status": "PASS",
+      "method": "Resultado restrito à incidência direta do delta: a lista factual Git não contém arquivos das seis fontes de prompt ou seu mecanismo de integridade. Não consultei justificativas ou parecer anterior. O alvo de identidade byte a byte e hash binding das seis fontes não foi executado ou certificado nesta revisão; permanece para a passada 2.",
+      "evidence": [
+        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json"
+      ]
+    },
+    {
+      "id": "P11.2-CANONICAL-delta-scope",
+      "status": "PASS",
+      "method": "Resultado da separação de escopo, não do gate de certificação: o pedido vincula explicitamente um novo candidato, substitui o pedido anterior e solicita passada 2. A alteração do relatório crítico anterior consta da lista Git, mas não foi lida ou reutilizada. Não verifiquei o pacote canonical atual, manifesto ou ponteiro de certificação e não os considero válidos para 72fa77fc por herança. Candidate binding deste parecer é distinto de fechamento canonical.",
+      "evidence": [
+        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+        "docs/03_build/tracking/current_state.json"
+      ]
+    },
+    {
+      "id": "P11.2-CALCULUS-delta-scope",
+      "status": "PASS",
+      "method": "Na lista Git não há alteração direta do calculus ou dos verificadores. Inspecionei o verificador do crítico: FAIL, checks falhos ou P0/P1 impedem aprovação; hashes e evidence são checados. Este retorno mantém FAIL diante da lacuna material. Não executei negative-validation, rejeição de false GO, stale/dirty/tampered ou profile escalation. PASS somente da disciplina de não substituir esses testes por declarações.",
+      "evidence": [
+        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+        "docs/02_spec/aaa_quality_contract.md"
+      ]
+    },
+    {
+      "id": "P11.2-ORCHESTRATION-delta-scope",
+      "status": "PASS",
+      "method": "A lista factual Git não contém alteração direta de runtime, budgets, replan ou recovery. Isso delimita o impacto direto, não demonstra terminação segura ou continuidade após restart. Efeitos indiretos das dependências não estão integralmente excluídos, pois o lock permanece sob bloqueio C2. Nenhum teste de orchestration foi executado ou declarado PASS por mim.",
+      "evidence": [
+        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json"
+      ]
+    },
+    {
+      "id": "P11.2-FENCING-delta-scope",
+      "status": "PASS",
+      "method": "A lista Git não mostra mudanças diretas em implementação de lease, fencing, CAS ou migrações. Li o teste de retention, que continua incluindo isolamento de tenant e concorrência; não executei essas provas nem inferi cobertura dos races de aprovação/claim. PASS de delimitação estática do impacto direto; o gate de fencing continua não avaliado nesta revisão.",
+      "evidence": [
+        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+        "docs/04_audit/evidence/CLAW-reseal/critic-request-20261004.md"
+      ]
+    },
+    {
+      "id": "P11.2-EFFECT-delta-scope",
+      "status": "PASS",
+      "method": "A lista Git não contém alteração direta de journal/outbox/chaos ou idempotência de efeitos. No teste de retention lido permanecem preservação de UNCERTAIN, replay negado e rollback de lote, sem execução nesta sessão. O recibo mantém UNCERTAIN_never_expires_automatically e no_destructive_purge. PASS de fronteira do delta; effectively-once e crash-awareness não estão certificados, e impacto indireto de dependências permanece sob C2.",
+      "evidence": [
+        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+        "docs/04_audit/evidence/CLAW-W1/CLAW-W1-07-tombstone-policy-renewal-decision-20261005.json"
+      ]
+    },
+    {
+      "id": "P11.2-LINEAGE-delta-scope",
+      "status": "PASS",
+      "method": "A lista Git não contém alteração direta de tracing/redaction/evidence graph. O pedido, o receipt e este relatório distinguem binding de candidato, histórico e autorização futura. Não reconstruí um percurso inbound→response nem executei trace tests. PASS somente da delimitação e preservação documental dessas fronteiras; o alvo end-to-end permanece para execução atual.",
+      "evidence": [
+        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md"
+      ]
+    },
+    {
+      "id": "P11.2-REDTEAM-delta-scope",
+      "status": "PASS",
+      "method": "A lista Git não apresenta alteração direta de policy, identity, approval ou suites de red team. O teste journeys usa fixtures sintéticas e headers controlados; isso não constitui prova de identidade confiável em produção. Não executei cross-tenant, injection ou approval replay. PASS da delimitação do impacto direto, não desses negativos; mudanças indiretas de dependências não estão integralmente descartadas.",
+      "evidence": [
+        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md"
+      ]
+    },
+    {
+      "id": "P11.2-POSTGRES-delta-scope",
+      "status": "PASS",
+      "method": "Li o teste PostgreSQL alterado, incluindo describe.skip quando falta TEST_DATABASE_URL, migrações, tenant isolation, replay, rollback, batches e janela de aprovação. A correção do tombstone recente é compatível com o relógio do banco no consumidor inspecionado. Não executei PostgreSQL, RLS, restore ou migrações 0019/0020/0021; os resultados 13/13 e 33/35 narrados são históricos. PASS da avaliação estática da correção, não do gate PostgreSQL/recovery.",
+      "evidence": [
+        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "docs/04_audit/evidence/CLAW-reseal/critic-request-20261004.md",
+        "docs/04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json"
+      ]
+    },
+    {
+      "id": "P11.2-CONSOLE-delta-scope",
+      "status": "PASS",
+      "method": "A lista factual Git não contém alteração direta de web, Playwright, screenshots ou baselines. Não realizei crítica visual, inspeção de screenshots ou execução em 375/768/1440; não considero a matriz visual aprovada por este parecer. PASS somente da delimitação do impacto direto do delta; possíveis impactos indiretos de dependências exigem a passada 2.",
+      "evidence": [
+        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json"
+      ]
+    },
+    {
+      "id": "P11.2-PREFLIGHT-delta-scope",
+      "status": "PASS",
+      "method": "Inspecionei .env.example: permanece development/memory como exemplo local, flags de aprovação externa e efeitos reais false, policy deny_by_default e stores duráveis declarados. A lista Git não contém alteração direta do script production-preflight. Não executei startup negativo ou production:preflight. PASS da fronteira local do exemplo e da delimitação estática, não da proteção production-like comprovada em runtime.",
+      "evidence": [
+        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+        "docs/03_build/tracking/current_state.json"
+      ]
+    },
+    {
+      "id": "P11.2-SUPPLY-delta-admissibility",
+      "status": "FAIL",
+      "method": "O lock é superfície executável de supply chain. As versões declaradas do audit fix estão presentes e os trechos atuais têm resolved/integrity; raiz e agent-evals conferem com os manifests lidos. Porém não há diff de conteúdo que permita provar a extensão integral dessas alterações ou se entradas adicionais foram regeneradas. Bloqueio de revisão, não vulnerabilidade comprovada. Não executei npm ci, audit, SBOM, licenses, secret scan, CI ou verificação histórica Phase 10; nenhum desses gates foi inferido de 'npm audit fix' ou contagens em Markdown. A passada 2 continua responsável por sua execução atual.",
+      "evidence": [
+        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "docs/02_spec/aaa_quality_contract.md",
+        "docs/04_audit/evidence/CLAW-reseal/critic-request-20261004.md",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json"
+      ]
+    },
+    {
+      "id": "P11.2-EXTERNAL-boundary",
+      "status": "PASS",
+      "method": "Inspecionei external-gates.json, current_state.json, backlog e recibo de renovação. Nenhum deles apresenta aprovação operacional externa como efeito deste parecer; o recibo explicitamente não autoriza staging/produção e exige nova política para dados reais. PASS da separação de qualificação externa. Não validei provider/canal/identidade/RAG/RPO-RTO/piloto/rollback/signoff e não autentiquei autoridade humana externa.",
+      "evidence": [
+        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "certification/external-gates.json",
+        "docs/03_build/tracking/current_state.json",
+        "docs/03_build/0347_claw_waves_backlog_20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/CLAW-W1-07-tombstone-policy-renewal-decision-20261005.json"
+      ]
+    },
+    {
+      "id": "P11.2-NO-PRODUCTION-EFFECT-review-boundary",
+      "status": "PASS",
+      "method": "Nesta revisão executei apenas leitura/busca, sem rede externa, execução, deploy, conexão a banco ou mutação. Fixtures e configurações examinadas são controladas/sintéticas; current_state mantém NO_GO. PASS das ações desta revisão e das fronteiras explicitamente inspecionadas. Não é auditoria independente de toda a atividade histórica do Lead; o sentinel integral pós-retorno ainda precisa ser conferido.",
+      "evidence": [
+        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "docs/03_build/tracking/current_state.json",
+        "docs/04_audit/evidence/CLAW-W1/CLAW-W1-admission-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+      "sha256": "ad8d8fdf0a746615f184dab251c37d10447182a634f65dda5b3c345b57833f7d",
+      "size": 6308
+    },
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
+      "sha256": "56efaf276840b66aa9a5b9d5c38dfeea99520baaf91c95db0b9ee2f0e70092cf",
+      "size": 2919
+    },
+    {
+      "path": "docs/04_audit/evidence/CLAW-reseal/critic-request-20261004.md",
+      "sha256": "5c7e356214269e74170cf5115ec5d6896f5a6383e3c392f979313a89fcc3c582",
+      "size": 2143
+    },
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md",
+      "sha256": "eb9092cb4aa3685c80f2a4f5b5afdd780a842f7f3b420479b7ed4eddc5d77200",
+      "size": 4054
+    },
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/clock-shift.mjs",
+      "sha256": "f55a04c6373726d26aad8bda076fca0ae98d1e083abfa39ee58397d84cdbc6a4",
+      "size": 439
+    },
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/CLAW-W1-admission-20261005.md",
+      "sha256": "38226dcd86c2f4c369c75a8066bbd39490b09cabe2c1278136a091ea11a568d7",
+      "size": 1273
+    },
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/CLAW-W1-07-tombstone-policy-renewal-decision-20261005.json",
+      "sha256": "ddc816bd01c3881bc0cbdeeef05bf9cc5d1b572cd823f9a564cfe7c75857b705",
+      "size": 1461
+    },
+    {
+      "path": "docs/03_build/0347_claw_waves_backlog_20261005.md",
+      "sha256": "38477783d263a3751b49ed54feb27780f524e879e5b787ad8a2606149e813f88",
+      "size": 14856
+    },
+    {
+      "path": "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+      "sha256": "1d477beef8340674c009032168fa7d0c4b99b9af8697af0472903ebb2b9735a6",
+      "size": 4436
+    },
+    {
+      "path": "docs/02_spec/aaa_quality_contract.md",
+      "sha256": "aec324018513c43a3e949663e41769f2d59180c6812d7430bd5980fb4a357097",
+      "size": 31985
+    },
+    {
+      "path": "certification/external-gates.json",
+      "sha256": "ccaecccf62b52cb02ce278ec84dd15cf3a0f13ca2d691f7ca20f9b86fed60ca9",
+      "size": 361
+    },
+    {
+      "path": "docs/03_build/tracking/current_state.json",
+      "sha256": "f5901420ee52539e5ff5268d899d2b9fd18a244e0dda919dd878cb1e4ced9435",
+      "size": 1310
+    }
+  ],
+  "disclaimers": {
+    "syntheticOnly": true,
+    "productionBlocked": true
+  }
+}

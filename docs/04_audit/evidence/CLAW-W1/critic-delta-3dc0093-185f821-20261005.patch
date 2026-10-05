@@ -1,0 +1,1418 @@
+diff --git a/.env.example b/.env.example
+index 3d2e612..9b18058 100644
+--- a/.env.example
++++ b/.env.example
+@@ -1,7 +1,7 @@
+ NODE_ENV=development
+ API_PERSISTENCE_MODE=memory
+-DATABASE_URL=postgres://user:password@localhost:5432/cvg_agent_secretary_v2
+-DATABASE_MIGRATION_URL=postgres://migration_user:password@localhost:5432/cvg_agent_secretary_v2
++DATABASE_URL=postgres://user:password@localhost:5432/cvg_claw
++DATABASE_MIGRATION_URL=postgres://migration_user:password@localhost:5432/cvg_claw
+ CVG_PRODUCTION_PREFLIGHT_ATTESTATION_FILE=
+ CVG_PRODUCTION_PREFLIGHT_ATTESTATION_SHA256=
+ INBOUND_TENANT_ID=tenant_00000000-0000-4000-8000-000000000001
+diff --git a/AGENTS.md b/AGENTS.md
+index fb850b9..9e6ff4f 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -1,4 +1,6 @@
+-# AGENTS.md — cvg-agent-secretary-v2
++# AGENTS.md — cvg-claw
++
++Projeto `cvg-claw`: agente autonomo governado para tarefas hospitalares, evoluido a partir da `cvg-agent-secretary-v2` (Esmeralda V2). O historico e as evidencias anteriores permanecem preservados com o nome original.
+ 
+ Este repositorio opera pelo pipeline CVG documentado em `docs/07_agents/AGENTS.md`.
+ 
+@@ -19,6 +21,7 @@ Regras principais:
+ - Nao responder RAG sem fonte institucional aprovada.
+ - Nao executar acao clinica, financeira ou prontuario definitivo.
+ - Toda acao sensivel exige approval ou handoff.
++- Autonomia em niveis (N0 informar, N1 preparar com aprovacao, N2 executar acao reversivel de baixo risco, N3 sempre bloqueado); nenhuma capability sobe de nivel sem PRD/SPEC e decisao humana registrada.
+ - Ao final de qualquer rodada, atualizar runtime state, execution log, backlog quando aplicavel e evidencias.
+ 
+ Fonte operacional completa: `docs/07_agents/AGENTS.md`.
+diff --git a/README.md b/README.md
+new file mode 100644
+index 0000000..87f4bc7
+--- /dev/null
++++ b/README.md
+@@ -0,0 +1,40 @@
++# cvg-claw
++
++Agente autônomo governado para tarefas hospitalares. O cvg-claw planeja e executa tarefas de várias etapas para as equipes do hospital, dentro de níveis de autonomia explícitos, com aprovação humana e trilha de auditoria.
++
++O projeto evolui a Esmeralda V2 (`cvg-agent-secretary-v2`). A secretária do paciente passa a ser o primeiro preset de agente sobre o mesmo kernel. O histórico e as evidências anteriores mantêm o nome original.
++
++## Estado
++
++- Discovery do novo escopo: [docs/00_discovery/0026](docs/00_discovery/0026_cvg_claw_hospital_autonomous_agent.md) (`DRAFT`).
++- Estado operacional: [docs/CURRENT.md](docs/CURRENT.md) e [docs/99_runtime_state.md](docs/99_runtime_state.md).
++- Staging e produção: `NO_GO`. Nenhum dado real é usado.
++
++## Níveis de autonomia
++
++| Nível         | O agente faz                                                      |
++| ------------- | ----------------------------------------------------------------- |
++| N0 — Informar | Consulta, resume e alerta                                         |
++| N1 — Preparar | Monta rascunho; um humano aprova                                  |
++| N2 — Executar | Ação reversível de baixo risco, com limites                       |
++| N3 — Nunca    | Diagnóstico, prescrição, prontuário definitivo, efeito financeiro |
++
++## Estrutura
++
++- `apps/api`, `apps/worker`, `apps/web`: API, worker durável e console de operação.
++- `packages/`: kernel do agente, runtime, políticas, aprovações, gateways de modelo e canal, persistência, observabilidade e workflows.
++- `docs/`: pipeline CVG (`DISCOVERY -> PRD -> SPEC -> BUILD -> AUDIT`). Regras para agentes em [AGENTS.md](AGENTS.md).
++- `certification/`: pacote de certificação Phase 11.
++
++## Desenvolvimento
++
++Requer Node `22.23.2` (ver `.nvmrc`).
++
++```bash
++npm ci
++npm run typecheck && npm run lint
++npm test
++npm run verify   # gate completo
++```
++
++Testes de PostgreSQL usam `TEST_DATABASE_URL` com um banco descartável.
+diff --git a/apps/api/src/__tests__/journeys-api.test.ts b/apps/api/src/__tests__/journeys-api.test.ts
+index d7ace7b..8de9dc4 100644
+--- a/apps/api/src/__tests__/journeys-api.test.ts
++++ b/apps/api/src/__tests__/journeys-api.test.ts
+@@ -53,10 +53,13 @@ describe('controlled journey API', () => {
+         headers
+       })
+       expect(slotResponse.statusCode).toBe(200)
+-      expect(
+-        slotResponse.json<{ data: { slots: Array<{ startsAt: string }> } }>()
+-          .data.slots[0]!.startsAt
+-      ).toMatch(/^2026-/)
++      const firstSlotStartsAt = slotResponse.json<{
++        data: { slots: Array<{ startsAt: string }> }
++      }>().data.slots[0]!.startsAt
++      // Slots are built from the run clock (next UTC day onward), so the
++      // assertion is relative to now instead of a fixed calendar year.
++      expect(firstSlotStartsAt).toMatch(/^\d{4}-\d{2}-\d{2}T/)
++      expect(Date.parse(firstSlotStartsAt)).toBeGreaterThan(Date.now())
+     } finally {
+       await app.close()
+     }
+diff --git a/docs/00_discovery/0026_cvg_claw_hospital_autonomous_agent.md b/docs/00_discovery/0026_cvg_claw_hospital_autonomous_agent.md
+new file mode 100644
+index 0000000..12a32da
+--- /dev/null
++++ b/docs/00_discovery/0026_cvg_claw_hospital_autonomous_agent.md
+@@ -0,0 +1,126 @@
++# Discovery proposta CLAW-01 — cvg-claw, agente autônomo governado do hospital
++
++## Registro
++
++- ID: DISCOVERY-CLAW-01
++- Versão: 2 (contexto veterinário, piloto e integração com o `cvg-his-v4`)
++- Responsável pela proposta: executor local; dono de produto do cvg-claw a designar
++- Atualização: 2026-10-04
++- Origem: decisão do usuário de evoluir a `cvg-agent-secretary-v2` (Esmeralda V2) para o `cvg-claw`, com repositório GitHub dedicado
++- Tier proposto: T1_PROGRAM; risco operacional HIGH (dados pessoais e financeiros de tutores; efeitos em faturamento)
++
++## Estado
++
++- task proposta: CLAW-01
++- fase: DISCOVERY
++- disposição local: DRAFT; nenhum gate `DISCOVERY_READY` registrado
++- execução permitida nesta etapa: leitura e documentação local
++- PRD, SPEC e BUILD do novo escopo: não admitidos
++- dados reais, integração externa, staging e produção: NO_GO
++- relação com o programa corrente: AUD20 e o piloto da secretária continuam; esta Discovery não reabre nem substitui tasks AUD20
++
++## Decisões e fatos registrados na v2 (2026-10-04)
++
++- **Hospital veterinário.** O sistema de gestão é o `cvg-his-v4`, desenvolvido pelo próprio usuário (repositório local `/home/ricardo/cvg-his-v4`; "HIS veterinário V4").
++- **Setor do primeiro piloto:** faturamento/convênios (decisão do usuário).
++- **Identidade:** login e senha na própria plataforma do ERP (`cvg-his-v4`), que é a autoridade de identidade.
++- No `cvg-his-v4`, "convênio" hoje é **só uma forma de pagamento** (`insurance` em vendas de balcão, conta contábil `1.1.05-convenios`). Não há fluxo de autorização prévia, guia ou glosa. Por isso UC-C01/UC-C02 abaixo foram reescritos para o que o HIS realmente tem.
++
++## Problema
++
++O hospital tem tarefas administrativas e operacionais de alto volume, repetitivas e espalhadas entre setores e sistemas: autorização de convênio, glosas, pendências de alta, regulação de leitos, chamados internos, agendamento interno e comunicação entre equipes. Hoje essas tarefas dependem de pessoas que consultam vários sistemas, montam documentos e acompanham prazos manualmente.
++
++A Esmeralda V2 atende só a conversa com paciente (secretária). O cvg-claw propõe um agente que **planeja e executa tarefas** de várias etapas para as equipes do hospital, sempre dentro de limites de autonomia explícitos, com aprovação humana e trilha de auditoria.
++
++A visão original já previa isso: "A Esmeralda V2 deve nascer como `Agent Platform Hospitalar`, nao como bot de WhatsApp" ([README](../README.md)).
++
++## Hipótese de valor
++
++- Reduzir o tempo de ciclo de tarefas administrativas (por exemplo, guia de convênio preparada antes do paciente chegar).
++- Reduzir glosas e perdas por prazo.
++- Liberar as equipes de consulta e redigitação entre sistemas.
++- Manter cada ação rastreável, com um humano responsável.
++
++Métricas candidatas (linha de base a medir no setor piloto): tempo médio por tarefa, volume tratado por pessoa, taxa de glosa, pendências vencidas, taxa de aprovação dos rascunhos do agente sem edição e incidentes.
++
++## Níveis de autonomia (proposta)
++
++| Nível         | O agente faz                                                  | Condição                                                                                                   |
++| ------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
++| N0 — Informar | Consulta, resume, alerta                                      | Somente leitura, com escopo de tenant/setor                                                                |
++| N1 — Preparar | Monta rascunho; humano aprova antes de qualquer efeito        | `approval-engine` obrigatório                                                                              |
++| N2 — Executar | Ação reversível, de baixo risco, com limite de volume e custo | Capability promovida por PRD/SPEC + decisão humana; journal e compensação                                  |
++| N3 — Nunca    | Bloqueado sempre                                              | Diagnóstico, prescrição, triagem com decisão, prontuário definitivo, liberação de exame, efeito financeiro |
++
++Regra: nenhuma capability sobe de nível sem PRD/SPEC próprio e decisão humana registrada. As capabilities hoje negadas (`clinical.diagnose`, `clinical.prescribe`, `patient.record.write`, `exam.release`, `finance.write`) permanecem N3.
++
++## Casos de uso candidatos (a validar com o hospital)
++
++| ID     | Caso                                                    | Setor                     | Nível inicial       | Sistemas envolvidos                               |
++| ------ | ------------------------------------------------------- | ------------------------- | ------------------- | ------------------------------------------------- |
++| UC-C01 | Detectar atendimento encerrado sem faturamento completo | Faturamento               | N0                  | `cvg-his-v4` (encounters, billing)                |
++| UC-C02 | Preparar rascunho de conta/orçamento para revisão       | Faturamento               | N1                  | `cvg-his-v4` (billing estimate/items)             |
++| UC-C03 | Acompanhar pendências da alta                           | Enfermagem/administrativo | N0                  | Sistema de gestão hospitalar/prontuário (leitura) |
++| UC-C04 | Painel e alertas de leitos                              | Regulação/NIR             | N0                  | Sistema de gestão hospitalar                      |
++| UC-C05 | Abrir e encaminhar chamados internos                    | TI/manutenção/hotelaria   | N2 (após piloto N1) | Ferramenta de chamados                            |
++| UC-C06 | Agendamento interno e lembretes às equipes              | Administrativo            | N1                  | Agenda corporativa, canal interno                 |
++| UC-C07 | Secretária do paciente (Esmeralda)                      | Recepção/central          | N1 (escopo atual)   | Canal WhatsApp, agenda                            |
++
++## Piloto de faturamento: mapa de integração com o `cvg-his-v4`
++
++Levantamento read-only do `cvg-his-v4` (OpenAPI com 433 caminhos em `apps/api/src/openapi.yaml`, catálogo de eventos em `packages/modules/event-bus/src/event-catalog.ts`, RBAC em `packages/rbac`):
++
++| Caso do piloto                                                   | Gatilho no HIS                                     | Leitura                                                                              | Efeito (só após aprovação)                             | Nível |
++| ---------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------ | ----- |
++| F01 — Atendimento encerrado sem conta ou com itens não faturados | eventos `encounter.closed`, `inpatient.discharged` | `GET /billing/{encounterId}`, `/billing/{encounterId}/items`, leitura do atendimento | nenhum; alerta para a equipe                           | N0    |
++| F02 — Rascunho de conta/orçamento                                | F01 ou pedido do faturista                         | `/billing/estimate`, itens do atendimento                                            | criar itens/conta em `draft` via `POST /billing/items` | N1    |
++| F03 — Recebíveis vencidos e cobrança                             | rotina diária                                      | `GET /financial/aging`, `/financial/receivables`                                     | rascunho de mensagem ao tutor; envio só com aprovação  | N1    |
++| F04 — Divergências de conciliação (cartão/PIX/convênio)          | eventos `payment.*`, `receivable.*`                | `/financial/reconciliation`, `/financial/reconciliation/cards`                       | nenhum; relatório para o financeiro                    | N0    |
++
++Fora do piloto (N3): `PATCH /billing/{encounterId}/status` para `settled`, `/financial/receivables/{id}/settle`, pagamentos, estornos e qualquer lançamento no ledger.
++
++### Identidade e acesso
++
++- **Operador → cvg-claw:** o `cvg-his-v4` continua dono do login (usuário/senha + MFA). Proposta: o backend do HIS emite, para o usuário já logado, o token curto `x-cvg-operator-token` (HMAC com `kid`, audiência `cvg-api`, 5 min) que o cvg-claw já valida no modo `trusted` (`CVG_OPERATOR_IDENTITY_KEYRING`). A tela do cvg-claw pode abrir dentro do HIS. Isso fecha a lacuna do web sem token apontada na auditoria AUD-20261004.
++- **cvg-claw → HIS:** conta de serviço com API key do módulo `api-keys` do HIS, com permissões mínimas (`billing.read`, `encounters.read`, `inpatient.read` e leitura financeira; `billing.manage` só para F02 e só depois da aprovação). Cada chamada leva o operador que aprovou e o id de correlação, para aparecer na auditoria dos dois lados.
++- O `cvg-his-v4` também tem cliente OIDC (`packages/modules/auth/src/oidc.ts`); fica como alternativa futura se o hospital adotar um IdP.
++
++## O que a base atual já cobre
++
++- Orquestrador com objetivo → plano → etapas, limite de iterações e controle de replanejamento (migrações 0019–0023).
++- `policy-engine` que nega por padrão, com capabilities e grants.
++- `approval-engine` com aprovações persistentes; outbox, effect journal e idempotência.
++- Handoff e human takeover (INV-014); multi-tenant com RLS; trilha de auditoria e tracing.
++- ADRs de plataforma: control plane/data plane, versões imutáveis de agente, secrets por referência, capability gateway ([docs/platform/adr](../platform/adr)).
++- Preset de agente (`packages/platform/src/secretary-preset.ts`), modelo para um preset hospitalar.
++
++## Lacunas conhecidas
++
++1. Provider de LLM real não composto no worker (hoje `deterministic-v1`); sem ele não há planejamento autônomo.
++2. Ferramentas tipadas para a API do `cvg-his-v4` (cliente gerado a partir do OpenAPI, só os endpoints do piloto) e consumidor dos eventos do HIS.
++3. Emissão do `x-cvg-operator-token` pelo `cvg-his-v4` (mudança no HIS) e mapeamento dos papéis do RBAC do HIS para capabilities do cvg-claw.
++4. Catálogo de capabilities hospitalar com dono por capability.
++5. Observabilidade de produção da API e botão de parada global operado pelo hospital.
++
++## Riscos
++
++- **Regulatório (veterinário):** a LGPD vale para os dados dos tutores (pessoais e financeiros), com base legal, DPO e registro de tratamento; o dado de saúde do animal não é dado sensível de pessoa, mas segue confidencial. Atos privativos do médico-veterinário (diagnóstico, prescrição) ficam N3. A regra de dispositivo médico da ANVISA (RDC 657/2022) é de saúde humana e não se aplica ao escopo do piloto; confirmar com o jurídico se houver produto de uso veterinário regulado.
++- **Escopo:** ampliar antes do piloto da secretária mantém tudo em `NO_GO`. Recomendação: piloto da secretária primeiro, Discovery do cvg-claw em paralelo.
++- **Integração:** o HIS é próprio, então não há dependência de fornecedor; o risco passa a ser acoplamento entre os dois repositórios. Mitigar com contrato versionado (OpenAPI + eventos) e testes de contrato. O `cvg-his-v4` está em HEAD destacado (`fdc591ae`); a integração deve mirar um release identificado do HIS.
++- **Governança:** o processo atual (recibos vinculados a hash e crítica independente em toda mudança) não escala para o escopo hospitalar; propor rigor por nível de risco.
++- **Responsabilidade:** cada tipo de ação autônoma precisa de um dono humano nomeado.
++
++## Perguntas abertas (bloqueiam `DISCOVERY_READY`)
++
++Respondidas na v2: setor piloto (faturamento), sistema de gestão (`cvg-his-v4`), identidade (login do ERP).
++
++1. Qual o hospital veterinário (nome/unidades) e quem são os faturistas participantes do piloto?
++2. "Convênio" no hospital inclui planos de saúde pet com autorização prévia ou glosa, ou é só forma de pagamento como no HIS hoje?
++3. Quem é o dono de produto, o DPO e o responsável técnico do cvg-claw?
++4. Qual o volume mensal e a linha de base: atendimentos encerrados, contas com itens faltando, recebíveis vencidos, tempo de fechamento de conta?
++5. A prioridade entre F01–F04 está correta (F01 e F03 primeiro)?
++6. Aceita a proposta de identidade (HIS emite o token do operador; cvg-claw usa API key de serviço no HIS)?
++
++## Próximo passo
++
++Responder às perguntas abertas, validar F01–F04 com o faturamento e registrar a validação em `0090_discovery_validation.md`. Só então abrir o PRD do piloto de faturamento. Mudanças no `cvg-his-v4` (emissão do token) seguem o processo daquele repositório.
+diff --git a/docs/00_discovery/0090_discovery_validation.md b/docs/00_discovery/0090_discovery_validation.md
+index 9919f23..ee4a99d 100644
+--- a/docs/00_discovery/0090_discovery_validation.md
++++ b/docs/00_discovery/0090_discovery_validation.md
+@@ -1,5 +1,14 @@
+ # 0090 — Discovery Validation
+ 
++## Proposta CLAW-01 / cvg-claw — 2026-10-04
++
++`BLOCKED` para `DISCOVERY_READY`; nenhum PRD ou BUILD admitido:
++[0026 — cvg-claw](0026_cvg_claw_hospital_autonomous_agent.md),
++SHA-256 `ac4d2959c3eeea4c46a9b5641cf2b7c56f4df8e864aec1c129f567515cbca7f2`. Versão 2: setor piloto (faturamento), sistema de gestão (`cvg-his-v4`,
++veterinário) e identidade (login do ERP) respondidos. Bloqueio: 6 perguntas
++abertas (hospital e faturistas, natureza do convênio, donos de produto/DPO/técnico,
++linha de base, prioridade F01–F04, aceite da proposta de identidade).
++
+ ## Proposta NQP-07 / IMP50-22 — 2026-09-24
+ 
+ `BLOCKED` para `DISCOVERY_READY`; nenhum PRD ou BUILD admitido:
+diff --git a/docs/03_build/0301_roadmap.md b/docs/03_build/0301_roadmap.md
+index 4fff91e..c8d8f45 100644
+--- a/docs/03_build/0301_roadmap.md
++++ b/docs/03_build/0301_roadmap.md
+@@ -1,5 +1,9 @@
+ # 0301 — Roadmap
+ 
++## Roadmap corrente em ondas — 2026-10-05
++
++Consultar [0346](0346_claw_waves_roadmap_20261005.md), com [backlog 0347](0347_claw_waves_backlog_20261005.md) e [auditoria 0575](../04_audit/0575_repository_audit_2026-10-05.md). Oito ondas, de base sólida até produção controlada; a Onda 1 foi admitida em 2026-10-05. 0344 e as seções abaixo permanecem históricas.
++
+ ## Roadmap incremental corrente — 2026-09-24
+ 
+ Consultar [0342](0342_post_query_roadmap_20260923.md), com
+diff --git a/docs/03_build/0302_backlog_master.md b/docs/03_build/0302_backlog_master.md
+index 4e8d880..efea1bf 100644
+--- a/docs/03_build/0302_backlog_master.md
++++ b/docs/03_build/0302_backlog_master.md
+@@ -1,5 +1,9 @@
+ # 0302 — Backlog Master
+ 
++## Backlog corrente em ondas — 2026-10-05
++
++Consultar [0347](0347_claw_waves_backlog_20261005.md) e [roadmap 0346](0346_claw_waves_roadmap_20261005.md). Itens `CLAW-W1-*` a `CLAW-W8-*` e trilha `CLAW-G-*`; só a Onda 1 está admitida. 0345 e as seções abaixo permanecem históricas.
++
+ ## Backlog incremental corrente — 2026-09-24
+ 
+ Consultar [0343](0343_post_query_backlog_20260923.md),
+diff --git a/docs/03_build/0346_claw_waves_roadmap_20261005.md b/docs/03_build/0346_claw_waves_roadmap_20261005.md
+new file mode 100644
+index 0000000..a6cb659
+--- /dev/null
++++ b/docs/03_build/0346_claw_waves_roadmap_20261005.md
+@@ -0,0 +1,105 @@
++# 0346 — Roadmap cvg-claw em ondas até produção
++
++Fontes: [auditoria 0575](../04_audit/0575_repository_audit_2026-10-05.md), [Discovery 0026](../00_discovery/0026_cvg_claw_hospital_autonomous_agent.md), [backlog 0347](0347_claw_waves_backlog_20261005.md), [roadmap 0344](0344_post_audit_roadmap_20260925.md) e [CURRENT](../CURRENT.md).
++
++Este roadmap substitui 0344 como sequência corrente a partir de 2026-10-05. 0344, 0342, 0340 e `ROADMAP_PRODUCAO.md` permanecem como histórico e referência. Ondas são dependências, não datas: uma onda só começa quando o gate de saída da anterior estiver registrado. Cada onda entrega algo verificável e deixa o sistema em estado estável.
++
++Regras que valem para todas as ondas:
++
++- Pipeline `DISCOVERY -> PRD -> SPEC -> BUILD -> AUDIT`; nenhum BUILD sem task registrada e gate aprovado.
++- Somente dados sintéticos até a Onda 6, e dados reais só com autorização humana registrada.
++- N3 (diagnóstico, prescrição, prontuário definitivo, liberação de exame, efeito financeiro) fica bloqueado em todas as ondas.
++- Nenhuma capability sobe de nível sem PRD/SPEC próprio e decisão humana registrada.
++- Staging fica `NO_GO` até o gate da Onda 5; produção fica `NO_GO` até o gate da Onda 8.
++
++## Visão geral
++
++| Onda | Nome                        | Entrega verificável                                                                     | Gate de saída                                                                               |
++| ---- | --------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
++| 1    | Base sólida                 | Repositório verde, plano registrado, testes sem bombas-relógio, selo do código atual    | Suíte PASS com relógio +400 dias; selo Phase 11 do candidato atual; `Verify` verde          |
++| 2    | Produto definido            | Discovery validada, PRD do piloto de faturamento, SPECs de autonomia e integração       | `0090` Discovery, PRD validation e SPEC validation aprovados por humano                     |
++| 3    | Núcleo do agente hospitalar | Autonomia N0–N3 no código, catálogo de faturamento, limites e parada global             | Negativos provam N3 inexecutável; coverage ≥90%; crítica independente                       |
++| 4    | Integrações em sandbox      | LLM real atrás de flag, cliente do `cvg-his-v4`, token de operador, ferramentas F01–F04 | Fluxo ponta a ponta com HIS sintético: evento → plano → rascunho → aprovação → efeito draft |
++| 5    | Plataforma de staging       | Manifests, migração, TLS, rate limit compartilhado, observabilidade, backup             | Staging `GO` com dados sintéticos; `production:preflight` PASS em staging                   |
++| 6    | Homologação e piloto N0     | Gates externos, LGPD, piloto assistido de F01 e F04 com faturistas                      | Métricas N0 contra linha de base; zero incidente; decisão humana de seguir                  |
++| 7    | Piloto N1                   | F02 e F03 com rascunho e aprovação humana                                               | Taxa de aprovação sem edição e incidentes dentro da meta do PRD                             |
++| 8    | Produção controlada         | Recertificação por digest, atestação assinada, sign-off e deploy                        | `promotion:check` elegível; sign-off humano; deploy autorizado                              |
++
++Caminho crítico: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8. A trilha de governança (G) roda em paralelo a partir da Onda 2.
++
++## Onda 1 — Base sólida
++
++**Objetivo:** partir de um repositório verde e honesto antes de qualquer escopo novo.
++
++- **Entrada:** auditoria 0575; candidato `2414ae15` congelado para o crítico.
++- **Entregas:** auditoria e plano registrados (W1-01, W1-02); testes sem datas que expiram (W1-03); renomeação de baixo risco concluída (W1-04); novo candidato congelado com pedido ao crítico (W1-05); parecer, passada 2, selo, push e CI verde (W1-06); decisão sobre a janela da política de tombstone (W1-07).
++- **Gate de saída:** suíte unitária PASS com o relógio adiantado 400 dias, salvo artefatos classificados; `certification:verify:phase11` PASS no candidato atual; `Verify` e `Security` verdes em `origin/main`.
++- **Decisões humanas:** forma do crítico independente (opencode ou subagente de contexto novo, só leitura); autorização de commit e `git push`; renovação da janela da política de tombstone, que expira em 2027-01-01 (W1-07).
++
++## Onda 2 — Produto definido
++
++**Objetivo:** transformar a Discovery 0026 em produto e engenharia aprovados para o piloto de faturamento.
++
++- **Entrada:** Onda 1 concluída.
++- **Entregas:** respostas às 6 perguntas e `DISCOVERY_READY` (W2-01); PRD do piloto F01–F04 com linha de base (W2-02); SPEC do modelo de autonomia N0–N3 (W2-03); SPEC do catálogo de capabilities de faturamento (W2-04); SPEC do contrato com o `cvg-his-v4` (W2-05).
++- **Gate de saída:** `0090_discovery_validation.md`, `0090_prd_validation.md` e `0190_spec_validation.md` do novo escopo aprovados com revisão humana.
++- **Decisões humanas:** dono de produto, DPO, responsável técnico, prioridade F01–F04, proposta de identidade.
++
++## Onda 3 — Núcleo do agente hospitalar
++
++**Objetivo:** levar ao código o modelo de autonomia e as capabilities do piloto, ainda sem integração externa.
++
++- **Entrada:** SPECs W2-03 e W2-04 aprovadas.
++- **Entregas:** enum N0–N3 único e uma só fonte de política (W3-01); capabilities de faturamento com dono e nível (W3-02); limites de volume e custo para N2 e parada global auditada (W3-03); preset de agente de faturamento sobre o kernel (W3-04); `server.ts` modularizado por rota sem mudança de comportamento (W3-05).
++- **Gate de saída:** evals e testes negativos provam que nenhuma capability N3 executa por nenhum caminho; coverage ≥90% nos quatro eixos; crítica independente PASS.
++
++## Onda 4 — Integrações em sandbox
++
++**Objetivo:** ligar o agente ao mundo real em ambiente controlado, com dados sintéticos.
++
++- **Entrada:** Onda 3 concluída; SPEC W2-05 aprovada.
++- **Entregas:** provider de LLM real atrás de flag, com evals holdout (W4-01); cliente tipado do `cvg-his-v4` e testes de contrato (W4-02); consumidor idempotente de eventos do HIS (W4-03); emissão do `x-cvg-operator-token` pelo HIS e console sem headers simulados em modo `trusted` (W4-04); ferramentas F01–F04 (W4-05).
++- **Gate de saída:** fluxo ponta a ponta contra um `cvg-his-v4` local com dados sintéticos, auditado nos dois lados, com aprovação humana antes de qualquer escrita.
++- **Decisões humanas:** provider de LLM e contrato de tratamento de dados com o fornecedor.
++
++## Onda 5 — Plataforma de staging
++
++**Objetivo:** ter um ambiente de staging operável, observável e recuperável.
++
++- **Entrada:** Onda 4 concluída.
++- **Entregas:** manifests de `api`, `worker` e `web` com `--read-only` e secret manager (W5-01); job de migração separado (W5-02); TLS, CSP e HSTS na borda (W5-03); rate limit compartilhado (W5-04); exportação OTel, dashboards, alertas e SLO (W5-05); backup com PITR e restore medido (W5-06); imagem por digest e deploy automatizado de staging (W5-07).
++- **Gate de saída:** staging `GO` com dados sintéticos; `production:preflight` PASS em staging; restore medido contra RPO/RTO acordados.
++- **Decisões humanas:** provedor de infraestrutura, metas de RPO/RTO e SLO.
++
++## Onda 6 — Homologação e piloto N0
++
++**Objetivo:** primeiro contato com o setor de faturamento, só leitura e alerta.
++
++- **Entrada:** Onda 5 concluída.
++- **Entregas:** dossiês dos gates externos aplicáveis (provider, identidade, RPO/RTO, rollback, sessão de acessibilidade) (W6-01); LGPD com base legal, registro de tratamento e parecer do DPO (W6-02); piloto assistido de F01 e F04 (W6-03).
++- **Gate de saída:** métricas N0 medidas contra a linha de base do PRD; zero incidente de dado ou de ação; decisão humana registrada para seguir à Onda 7.
++- **Decisões humanas:** autorização de dados reais no piloto e lista de faturistas participantes.
++
++## Onda 7 — Piloto N1
++
++**Objetivo:** o agente prepara, o humano aprova.
++
++- **Entrada:** Onda 6 concluída.
++- **Entregas:** F02 (rascunho de conta em `draft` no HIS) e F03 (rascunho de cobrança ao tutor) com aprovação humana obrigatória (W7-01); painel de métricas do piloto (W7-02).
++- **Gate de saída:** taxa de aprovação sem edição, tempo de ciclo e incidentes dentro das metas do PRD; nenhum efeito sem aprovação no journal.
++
++## Onda 8 — Produção controlada
++
++**Objetivo:** liberar o piloto como produção, com escopo limitado e reversível.
++
++- **Entrada:** Onda 7 concluída.
++- **Entregas:** recertificação Phase 11 do digest de produção (W8-01); atestação externa assinada com os gates `APPROVED` (W8-02); `production:preflight` e `promotion:check` elegíveis, sign-off e deploy (W8-03); processo de promoção N2 capability a capability (W8-04).
++- **Gate de saída:** deploy autorizado do digest avaliado; runbooks de rollback ensaiados; dono humano nomeado por capability.
++
++## Trilha G — governança proporcional ao risco (paralela, a partir da Onda 2)
++
++- **G-01:** propor rigor por nível de risco (recibo hash-bound e crítico só para mudanças de risco alto), como pede a Discovery 0026; requer decisão humana.
++- **G-02:** arquivar runtime state e execution log por mês, mantendo o arquivo corrente curto e com a entrada mais recente no topo.
++- **G-03:** reduzir `CURRENT.md` a estado corrente, movendo o histórico de AUD20-17 para evidência.
++
++A trilha G não altera gates nem o status de release.
+diff --git a/docs/03_build/0347_claw_waves_backlog_20261005.md b/docs/03_build/0347_claw_waves_backlog_20261005.md
+new file mode 100644
+index 0000000..5f4fc55
+--- /dev/null
++++ b/docs/03_build/0347_claw_waves_backlog_20261005.md
+@@ -0,0 +1,161 @@
++# 0347 — Backlog cvg-claw em ondas
++
++Fontes: [roadmap 0346](0346_claw_waves_roadmap_20261005.md), [auditoria 0575](../04_audit/0575_repository_audit_2026-10-05.md), [Discovery 0026](../00_discovery/0026_cvg_claw_hospital_autonomous_agent.md) e [backlog master](../30_backlog_master.md).
++
++Formato de cada item: o que, onde, como, dependência e critério de pronto (`docs/07_agents/AGENTS.md`). Itens das Ondas 2 a 8 estão `PLANNED`: planejado não é autorização de código. Cada BUILD exige SPEC aprovada e admissão própria. A Onda 1 foi admitida pelo usuário em 2026-10-05 ([recibo](../04_audit/evidence/CLAW-W1/CLAW-W1-admission-20261005.md)). Staging e produção permanecem `NO_GO`.
++
++## Onda 1 — Base sólida (admitida)
++
++### CLAW-W1-01 — Registrar a auditoria 0575
++
++- **O que:** gravar no repositório a auditoria de 2026-10-05 com notas por item e achados A1–A12.
++- **Onde:** `docs/04_audit/0575_repository_audit_2026-10-05.md`.
++- **Como:** somente documentação; números conferidos com os gates executados.
++- **Dependência:** nenhuma.
++- **Critério de pronto:** arquivo criado e linkado em `CURRENT.md`; `docs:check` PASS.
++- **Estado (2026-10-05):** executado.
++
++### CLAW-W1-02 — Roadmap e backlog em ondas
++
++- **O que:** publicar o roadmap 0346 e este backlog; apontar masters, `CURRENT.md`, backlog master e `ROADMAP_PRODUCAO.md` para eles.
++- **Onde:** `docs/03_build/0346_*`, `docs/03_build/0347_*`, `docs/03_build/0301_roadmap.md`, `docs/03_build/0302_backlog_master.md`, `docs/CURRENT.md`, `docs/30_backlog_master.md`, `docs/ROADMAP_PRODUCAO.md`.
++- **Como:** documentos novos; nos existentes, só um parágrafo de ponteiro no topo, sem reescrever histórico.
++- **Dependência:** CLAW-W1-01.
++- **Critério de pronto:** links válidos; `docs:check` PASS.
++- **Estado (2026-10-05):** executado.
++
++### CLAW-W1-03 — Eliminar testes que expiram com o tempo
++
++- **O que:** encontrar testes que falham quando o relógio avança e corrigi-los, sem alterar código de produto.
++- **Onde:** testes Vitest em `apps/`, `packages/` e `tests/`; receita de varredura em `docs/04_audit/evidence/CLAW-W1/`.
++- **Como:** rodar a suíte com `Date` adiantado 400 dias por um preload (`NODE_OPTIONS=--import`); para cada falha, trocar a data fixa por uma data relativa ao relógio injetado ou ao momento da execução; registrar a receita para reuso.
++- **Dependência:** nenhuma.
++- **Critério de pronto:** suíte PASS com relógio real; com relógio +400 dias, toda falha corrigida ou classificada como artefato do método; zero mudança em código de produto; achado A9 fechado para o lado Node.
++- **Estado (2026-10-05):** executado. Uma bomba-relógio real corrigida (`journeys-api.test.ts`) e 5 artefatos classificados. Ver [relatório da varredura](../04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md).
++
++### CLAW-W1-04 — Concluir a renomeação de baixo risco
++
++- **O que:** remover resíduos do nome antigo que não estão vinculados a evidência.
++- **Onde:** `package.json` (descrição) e `.env.example` (nome do banco local).
++- **Como:** só texto e configuração de exemplo. As tags `cvg-aud19-*` de imagem ficam, porque scripts e recibos de digest dependem delas; o upstream `secretary-api` do nginx muda junto com os manifests em CLAW-W5-01; `serviceName` da telemetria segue a task própria do backlog master.
++- **Dependência:** nenhuma.
++- **Critério de pronto:** `npm ci` aceita o lock sem mudança; typecheck, lint e testes PASS.
++- **Estado (2026-10-05):** executado (descrição do pacote e banco `cvg_claw` no `.env.example`).
++
++### CLAW-W1-05 — Congelar o novo candidato e atualizar o pedido ao crítico
++
++- **O que:** como W1-01 a W1-04 mudam bytes fora das exclusões, o candidato `2414ae15` deixa de valer; congelar o novo candidato e registrar o pedido.
++- **Onde:** `docs/04_audit/evidence/CLAW-W1/`.
++- **Como:** commit local dos itens W1-01 a W1-04; calcular candidateId, treeHash e fingerprint com `scripts/lib/certification-rules.mjs`; descrever o delta.
++- **Dependência:** W1-01 a W1-04.
++- **Critério de pronto:** pedido com binding conferível e delta completo; worktree limpo.
++
++### CLAW-W1-06 — Parecer, passada 2, selo, push e CI verde
++
++- **O que:** fechar o ciclo de certificação do candidato atual.
++- **Onde:** `docs/04_audit/evidence/AUD19/AUD19-08-critic-report.json`, `certification/`, GitHub Actions.
++- **Como:** crítico independente de contexto novo, só leitura; passada 2 com [certify-pass.sh](../04_audit/evidence/CLAW-reseal/certify-pass.sh) na imagem Playwright; commit do selo com recibo só em `docs/04_audit/evidence/`; `git push`.
++- **Dependência:** W1-05; decisão humana sobre a forma do crítico e autorização de push.
++- **Critério de pronto:** `certification:verify:phase11` PASS; `promotion:check` inelegível só pelos gates externos; `Verify` e `Security` verdes em `origin/main`.
++
++### CLAW-W1-07 — Renovar a janela de aprovação da política de tombstone
++
++- **O que:** a constante `INBOUND_TOMBSTONE_POLICY_VALID_UNTIL` (`packages/persistence/src/retention.ts:47`) expira em `2027-01-01T02:59:59Z`. A partir daí a minimização de tombstones inbound falha fechado e os testes PostgreSQL que a exercitam falham.
++- **Onde:** `packages/persistence/src/retention.ts` e a aprovação da política de retenção em `docs/02_spec/`.
++- **Como:** decisão humana de renovar a política com nova janela e nova aprovação registrada; depois, task própria para atualizar a constante e os testes de borda.
++- **Dependência:** decisão humana; prazo antes de 2026-12-31.
++- **Critério de pronto:** nova janela aprovada e vigente; gate PostgreSQL PASS; teste de expiração atualizado para a nova data.
++
++## Onda 2 — Produto definido (PLANNED)
++
++### CLAW-W2-01 — Validar a Discovery 0026
++
++- **O que:** responder às 6 perguntas abertas e registrar `DISCOVERY_READY`.
++- **Onde:** `docs/00_discovery/0026_*.md` e `0090_discovery_validation.md`.
++- **Como:** sessão com o usuário e o setor de faturamento; respostas registradas com data e responsável.
++- **Dependência:** Onda 1.
++- **Critério de pronto:** validação aprovada por humano; dono de produto, DPO e responsável técnico nomeados.
++
++### CLAW-W2-02 — PRD do piloto de faturamento
++
++- **O que:** produto F01–F04, com métricas e linha de base medida.
++- **Onde:** `docs/01_prd/`.
++- **Como:** `prd-engine`; métricas: tempo de fechamento de conta, contas com itens faltando, recebíveis vencidos, taxa de aprovação sem edição, incidentes.
++- **Dependência:** W2-01.
++- **Critério de pronto:** `0090_prd_validation.md` aprovado.
++
++### CLAW-W2-03 — SPEC do modelo de autonomia N0–N3
++
++- **O que:** um único enum de autonomia, o mapeamento capability → nível, limites de volume e custo para N2 e a parada global.
++- **Onde:** `docs/02_spec/`; alvo de código `packages/shared`, `packages/policy`, `packages/policy-engine`.
++- **Como:** resolver a duplicidade entre `AutonomyLevel` (`level_1_collect`, `level_2_suggest`) e o modelo de capabilities; definir migração sem perda de negativos existentes.
++- **Dependência:** W2-02.
++- **Critério de pronto:** SPEC aprovada; negativos N3 enumerados.
++
++### CLAW-W2-04 — SPEC do catálogo de capabilities de faturamento
++
++- **O que:** capabilities `encounter.read`, `billing.read`, `billing.draft`, `receivable.read`, `reconciliation.read`, `message.draft` ao tutor, com nível, risco e dono.
++- **Onde:** `docs/02_spec/`; alvo `packages/policy-engine/src/capabilities.ts`.
++- **Como:** derivar do mapa F01–F04 da Discovery; efeitos financeiros seguem N3.
++- **Dependência:** W2-03.
++- **Critério de pronto:** SPEC aprovada; cada capability com dono humano.
++
++### CLAW-W2-05 — SPEC do contrato com o `cvg-his-v4`
++
++- **O que:** subconjunto versionado da OpenAPI do HIS, eventos consumidos, conta de serviço e emissão do token de operador.
++- **Onde:** `docs/02_spec/`; HIS em release identificado (hoje HEAD destacado `fdc591ae`).
++- **Como:** contrato versionado e testes de contrato nos dois repositórios.
++- **Dependência:** W2-02.
++- **Critério de pronto:** SPEC aprovada nos dois lados.
++
++## Onda 3 — Núcleo do agente hospitalar (PLANNED)
++
++| ID         | O que                                               | Onde                                                           | Dependência | Critério de pronto                                                     |
++| ---------- | --------------------------------------------------- | -------------------------------------------------------------- | ----------- | ---------------------------------------------------------------------- |
++| CLAW-W3-01 | Enum N0–N3 único; uma só fonte de política          | `packages/shared`, `packages/policy`, `packages/policy-engine` | W2-03       | Negativos antigos e novos PASS; nenhum caminho N3 executável           |
++| CLAW-W3-02 | Capabilities de faturamento com dono e nível        | `packages/policy-engine`                                       | W2-04       | Catálogo validado por zod; grants deny-by-default                      |
++| CLAW-W3-03 | Limites de volume/custo N2 e parada global auditada | `packages/policy-engine`, `apps/api`, `apps/worker`            | W3-01       | Parada global testada sob carga; evento de auditoria por ativação      |
++| CLAW-W3-04 | Preset do agente de faturamento                     | `packages/platform`                                            | W3-02       | Preset versionado e imutável; evals do preset PASS                     |
++| CLAW-W3-05 | Modularizar `apps/api/src/server.ts` por rota       | `apps/api/src/routes`                                          | W3-01       | Sem mudança de comportamento; suíte e e2e PASS; arquivo < 1.500 linhas |
++
++## Onda 4 — Integrações em sandbox (PLANNED)
++
++| ID         | O que                                                                          | Onde                                    | Dependência  | Critério de pronto                                                     |
++| ---------- | ------------------------------------------------------------------------------ | --------------------------------------- | ------------ | ---------------------------------------------------------------------- |
++| CLAW-W4-01 | Provider de LLM real atrás de flag, com evals holdout                          | `apps/worker`, `packages/model-gateway` | Onda 3       | Evals holdout PASS; flag desligada por padrão; custo por tarefa medido |
++| CLAW-W4-02 | Cliente tipado do HIS gerado da OpenAPI e testes de contrato                   | `packages/tools` ou pacote novo         | W2-05        | Contrato PASS contra HIS local com dados sintéticos                    |
++| CLAW-W4-03 | Consumidor idempotente de eventos do HIS                                       | `apps/worker`                           | W4-02        | Reentrega e restart sem duplicar efeito                                |
++| CLAW-W4-04 | Token de operador emitido pelo HIS; console sem headers simulados em `trusted` | `cvg-his-v4`, `apps/web`                | W2-05        | Login do HIS abre o console; header forjado rejeitado                  |
++| CLAW-W4-05 | Ferramentas F01/F04 (N0) e F02/F03 (N1)                                        | `packages/tools`, `packages/workflows`  | W4-02, W3-02 | Ponta a ponta sandbox com aprovação antes de qualquer escrita          |
++
++## Onda 5 — Plataforma de staging (PLANNED)
++
++| ID         | O que                                              | Onde                                | Dependência | Critério de pronto                                |
++| ---------- | -------------------------------------------------- | ----------------------------------- | ----------- | ------------------------------------------------- |
++| CLAW-W5-01 | Manifests `api`/`worker`/`web` read-only, secrets  | `deploy/`                           | Onda 4      | Subida limpa em staging; upstream renomeado       |
++| CLAW-W5-02 | Job de migração separado                           | `deploy/`, `packages/persistence`   | W5-01       | Migração idempotente com `DATABASE_MIGRATION_URL` |
++| CLAW-W5-03 | TLS, CSP, HSTS e headers na borda                  | `deploy/nginx.web.conf`             | W5-01       | Scan de headers PASS                              |
++| CLAW-W5-04 | Rate limit compartilhado                           | `apps/api/src/rate-limit.ts`        | W5-01       | Limite vale com 2+ réplicas                       |
++| CLAW-W5-05 | Exportação OTel, dashboards, alertas, SLO          | `packages/observability`, `deploy/` | W5-01       | Alerta disparado e atendido em ensaio             |
++| CLAW-W5-06 | Backup com PITR e restore medido                   | infraestrutura                      | W5-02       | RPO/RTO medidos dentro da meta                    |
++| CLAW-W5-07 | Imagem por digest e deploy automatizado de staging | `.github/workflows`                 | W5-01       | Deploy reproduzível pelo digest                   |
++
++## Ondas 6 a 8 (PLANNED)
++
++| ID         | O que                                                    | Dependência  | Critério de pronto                                      |
++| ---------- | -------------------------------------------------------- | ------------ | ------------------------------------------------------- |
++| CLAW-W6-01 | Dossiês dos gates externos aplicáveis                    | Onda 5       | Cada gate `APPROVED` por responsável nomeado            |
++| CLAW-W6-02 | LGPD: base legal, registro de tratamento, parecer do DPO | W2-01        | Parecer assinado                                        |
++| CLAW-W6-03 | Piloto assistido N0 (F01, F04)                           | W6-01, W6-02 | Métricas contra linha de base; zero incidente           |
++| CLAW-W7-01 | Piloto N1 (F02, F03) com aprovação obrigatória           | Onda 6       | Metas do PRD atingidas; nenhum efeito sem aprovação     |
++| CLAW-W7-02 | Painel de métricas do piloto                             | W7-01        | Métricas visíveis ao dono de produto                    |
++| CLAW-W8-01 | Recertificação Phase 11 do digest de produção            | Onda 7       | `certification:verify:phase11` PASS no digest           |
++| CLAW-W8-02 | Atestação externa assinada                               | W8-01        | Gates `APPROVED` com assinatura verificável             |
++| CLAW-W8-03 | Preflight, promotion check, sign-off e deploy            | W8-02        | Deploy autorizado do digest avaliado; rollback ensaiado |
++| CLAW-W8-04 | Processo de promoção N2 capability a capability          | W8-03        | Cada promoção com PRD/SPEC e decisão humana             |
++
++## Trilha G (PLANNED, paralela)
++
++- **CLAW-G-01:** governança proporcional ao risco; requer decisão humana.
++- **CLAW-G-02:** arquivamento mensal de runtime state e execution log.
++- **CLAW-G-03:** `CURRENT.md` reduzido ao estado corrente.
+diff --git a/docs/03_build/tracking/current_state.json b/docs/03_build/tracking/current_state.json
+index 4956c82..b90583e 100644
+--- a/docs/03_build/tracking/current_state.json
++++ b/docs/03_build/tracking/current_state.json
+@@ -4,7 +4,7 @@
+   "program": "AUD20-REM-v2",
+   "currentTask": "AUD20-10",
+   "currentStatus": "READY_FOR_NEXT_STEP",
+-  "nextAction": "observar o `Verify` final desta rodada e o `Security`; obter os insumos do item B (owners/credenciais dos gates 1–4, ambiente/janela de 5/7, autorização/participantes de 6) e conduzir o sign-off (8) sobre o candidato certificado vigente em `certification/current.json`; executar os P2 estruturais da [AUD20-22](04_audit/evidence/AUD20/AUD20-22-production-hardening-2026-09-27.md) (release de claim no shutdown, paginação real e observabilidade de produção) em tasks próprias com SPEC; manter `AUD20-19` sem sessão autorizada, 141 vínculos sem adjudicação e staging/produção `NO_GO`.",
++  "nextAction": "obter o parecer do crítico independente no opencode para o candidato congelado da Onda 1 (pedido em `docs/04_audit/evidence/CLAW-W1/`); rodar a passada 2 no contêiner de paridade, commitar o selo com recibo só em `docs/04_audit/evidence/` e fazer push (CLAW-W1-06); decidir a renovação da política de tombstone antes de 2026-12-31 (CLAW-W1-07); responder às 6 perguntas abertas da Discovery 0026 (CLAW-W2-01).",
+   "releaseBoundary": {
+     "staging": "NO_GO",
+     "production": "NO_GO"
+diff --git a/docs/04_audit/0575_repository_audit_2026-10-05.md b/docs/04_audit/0575_repository_audit_2026-10-05.md
+new file mode 100644
+index 0000000..f55920d
+--- /dev/null
++++ b/docs/04_audit/0575_repository_audit_2026-10-05.md
+@@ -0,0 +1,63 @@
++# 0575 — Auditoria do repositório cvg-claw — 2026-10-05
++
++## Escopo e critério
++
++- **ID:** `AUD-20261005-CLAW`.
++- **Objeto:** repositório `cvg-claw` em `main`, commit `3b62f15`, avaliado como base para o agente hospitalar (Discovery [0026](../00_discovery/0026_cvg_claw_hospital_autonomous_agent.md)).
++- **Método:** leitura das fontes canônicas ([AGENTS operacional](../07_agents/AGENTS.md), [CURRENT](../CURRENT.md), [runtime state](../99_runtime_state.md), [backlog master](../30_backlog_master.md)), inspeção de código e execução local de gates sob Node `22.23.2`. Sem escrita no repositório durante a auditoria, sem dados reais, sem commit, push ou deploy.
++- **Escala:** 90–100 excelente; 75–89 bom com lacunas menores; 60–74 aceitável com lacunas que pedem plano; 40–59 fraco; 0–39 ausente ou bloqueante. A nota geral é média ponderada e não substitui nenhum gate obrigatório.
++- **Relatório completo entregue ao usuário:** documento compartilhado "Auditoria cvg-claw — Relatório Completo" (claude.ai); este arquivo é o registro canônico no repositório.
++
++## Verificações executadas
++
++| Verificação                      | Resultado                                                                                    |
++| -------------------------------- | -------------------------------------------------------------------------------------------- |
++| typecheck, lint, Prettier        | PASS                                                                                         |
++| `docs:check` (Node 22.23.2)      | PASS; 2.159 links, 647 JSONs                                                                 |
++| `docs:check` (Node 24 do host)   | FAIL esperado por `node_runtime_mismatch`                                                    |
++| `npm audit`                      | 0 vulnerabilidades                                                                           |
++| `test:coverage` (sem PostgreSQL) | 307 arquivos PASS/12 skipped; 2.682 testes PASS/194 skips/0 falhas                           |
++| Coverage                         | statements 93,02%, branches 90,19%, functions 91,23%, lines 93,49%                           |
++| PostgreSQL, E2E, certificação    | Não reexecutados; valem os recibos de 2026-10-04 (passada 1: 33/35 gates, 16/16 invariantes) |
++
++## Notas
++
++| #   | Item                         | Peso | Nota |
++| --- | ---------------------------- | ---- | ---- |
++| 1   | Governança e processo CVG    | 8    | 70   |
++| 2   | Documentação                 | 7    | 60   |
++| 3   | Produto e Discovery cvg-claw | 9    | 30   |
++| 4   | Arquitetura e código         | 11   | 76   |
++| 5   | Testes e qualidade           | 11   | 88   |
++| 6   | Segurança de aplicação       | 11   | 74   |
++| 7   | Guardrails de autonomia      | 10   | 62   |
++| 8   | CI/CD e supply chain         | 7    | 66   |
++| 9   | Certificação e release       | 5    | 55   |
++| 10  | Infraestrutura e deploy      | 7    | 30   |
++| 11  | Integrações reais            | 6    | 15   |
++| 12  | Observabilidade              | 3    | 60   |
++| 13  | Dados e conformidade         | 5    | 68   |
++|     | **Nota geral ponderada**     | 100  | 60   |
++
++Leitura: a base de engenharia está perto de 80; a prontidão do cvg-claw para piloto está perto de 30.
++
++## Achados
++
++| #   | Severidade | Achado                                                                                        | Onde                                                                        |
++| --- | ---------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
++| A1  | Alta       | Discovery 0026 em `DRAFT`, 6 perguntas abertas; sem PRD nem SPEC                              | `docs/00_discovery/0026_*.md`                                               |
++| A2  | Alta       | Worker só compõe o modelo sintético `deterministic-v1`                                        | `apps/worker/src/kernel-composition.ts`                                     |
++| A3  | Alta       | Console web envia identidade em headers simulados; sem emissor de `x-cvg-operator-token`      | `apps/web/src/api/client.ts`                                                |
++| A4  | Alta       | N0–N3 só existe na documentação; o código usa `level_1_collect`/`level_2_suggest` em `policy` | `packages/shared/src/enums.ts`, `packages/policy`, `packages/policy-engine` |
++| A5  | Alta       | Sem manifests de deploy, TLS/CSP/HSTS, job de migração ou backup                              | `deploy/nginx.web.conf`                                                     |
++| A6  | Média      | CI `Verify` vermelho; 4 commits sem push; `certification/current.json` aponta para `b3b715e`  | `certification/current.json`                                                |
++| A7  | Média      | Catálogo de capabilities sem faturamento nem contexto veterinário                             | `packages/policy-engine/src/capabilities.ts`                                |
++| A8  | Média      | Rate limit em memória, sem efeito com várias réplicas                                         | `apps/api/src/rate-limit.ts`                                                |
++| A9  | Média      | 136 arquivos de teste com datas fixas; uma já quebrou o gate em 2026-10-01                    | `retention-postgres.test.ts` e outros                                       |
++| A10 | Média      | Estado, log e backlog somam 1,1 MB; `docs/` tem 3.132 arquivos                                | `docs/99_*`, `docs/20_*`, `docs/30_*`                                       |
++| A11 | Baixa      | Arquivos acima de 3 mil linhas                                                                | `apps/api/src/server.ts`, `orchestration.ts`, `postgres.ts`                 |
++| A12 | Baixa      | Renomeação incompleta (descrição do pacote, banco do `.env.example`, upstream do nginx)       | `package.json`, `.env.example`, `deploy/nginx.web.conf`                     |
++
++## Encaminhamento
++
++O plano em ondas está no [roadmap 0346](../03_build/0346_claw_waves_roadmap_20261005.md) e no [backlog 0347](../03_build/0347_claw_waves_backlog_20261005.md). Staging e produção permanecem `NO_GO`.
+diff --git a/docs/04_audit/evidence/AUD19/AUD19-08-critic-report.json b/docs/04_audit/evidence/AUD19/AUD19-08-critic-report.json
+index d46d2ae..97de1e8 100644
+--- a/docs/04_audit/evidence/AUD19/AUD19-08-critic-report.json
++++ b/docs/04_audit/evidence/AUD19/AUD19-08-critic-report.json
+@@ -2,7 +2,7 @@
+   "schemaVersion": 1,
+   "kind": "phase11-critic-report",
+   "critic": {
+-    "identity": "opencode-independent-critic-phase11-r7-20260927",
++    "identity": "opencode-independent-critic-phase11-r8-20260928",
+     "freshContext": true,
+     "builderIdentity": "cvg-lead-agent",
+     "independence": {
+@@ -19,69 +19,59 @@
+     }
+   },
+   "binding": {
+-    "candidateId": "fb12c14ae87bf7e2a130f83d18d818277d23ca3aa977d6d5b61265f3bf9706c4",
+-    "commit": "b4478f7da2c89da01409f697f9f4a07aed3d6756",
+-    "treeHash": "f014283e4ed9dbd63c31413fbef5fca27b5952d609185554d6967c494f8905e2"
++    "candidateId": "b0f7c17a97c7f7d7a6a481b68a8deb754050122e2379ceb93192ff37eca50430",
++    "commit": "3dc0093f87dc168a8382f7e901fce328d31cba1a",
++    "treeHash": "f815a3d52a2047e84333527316e8136c30d24adbb05474ab7754acccdd6fd50f"
+   },
+   "fingerprint": {
+     "algorithm": "sha256-candidate-v1",
+-    "before": "53a489840a5f7c2ad0438e316387bc3033f968fbba2aeaccaed34d44be7f91a4",
+-    "after": "53a489840a5f7c2ad0438e316387bc3033f968fbba2aeaccaed34d44be7f91a4"
++    "before": "be14631b0a6aa096959a1360f02c486b0bca104ea904020777e1b56f41ef2312",
++    "after": "be14631b0a6aa096959a1360f02c486b0bca104ea904020777e1b56f41ef2312"
+   },
+   "verdict": {
+     "status": "PASS",
+-    "summary": "Parecer independente fresh-context do candidato final congelado fb12c14ae87bf7e2@b4478f7d, emitido apenas sobre artefatos e sem escrita. O HEAD e a cadeia de commits confirmam o estado congelado; o binding oficial (candidateId/treeHash) e o fingerprint 53a489840a5f7c2a conferem. O delta desde o candidato selado anterior (5c663a5f@6575919) é exclusivamente documental/governança: report do crítico (evidência, excluída), certification/** (excluído) e seis docs em escopo, sem nenhum path de produto, teste, script, migration ou configuração — amostra de categorias distintas conferida byte a byte no worktree contra o commit. A evidência comportamental do pacote anterior (35/35 gates, 16/16 invariantes, unit/coverage/PostgreSQL/e2e/mutation) transfere porque os bytes de produto são idênticos e o re-selo regenera os artefatos candidate-bound. Nenhum defeito material P0/P1 sobrevive; ressalvas P2 de empacotamento/metadado registradas. Veredito PASS autoriza o selo final como AAA_CANDIDATE local; staging/produção permanecem NO_GO pelos 8 gates externos NOT_VALIDATED/PENDING e o sign-off humano segue pendente."
++    "summary": "Parecer independente fresh-context do candidato final congelado b0f7c17a97c7f7d7@3dc0093f87d, emitido apenas sobre artefatos e sem escrita. O HEAD e o worktree limpo conferem com o binding oficial e o fingerprint be14631b0a6aa0969. O delta desde o candidato selado anterior contém exclusivamente as 28 baselines PNG regeneradas e 5 docs de governança em escopo; nenhum arquivo de produto, packages, testes funcionais, scripts, migrations ou configs mudou, de modo que os bytes que sustentam a evidência comportamental (35/35 gates, 16/16 invariantes, unit/coverage/PostgreSQL/e2e/mutation) são idênticos e a evidência transfere. A staleness de manifest/ponteiro é o fail-closed esperado e será regenerada no re-selo. Nenhum defeito material P0/P1 sobrevive; veredito PASS autoriza o selo final como AAA_CANDIDATE local; staging/produção permanecem NO_GO pelos 8 gates externos NOT_VALIDATED/PENDING e o sign-off segue pendente."
+   },
+   "findings": {
+     "P0": 0,
+     "P1": 0,
+-    "P2": 3
++    "P2": 0
+   },
+   "checks": [
+     {
+       "id": "CHECK-1-head-e-binding-final",
+       "status": "PASS",
+-      "method": "Leitura do HEAD b4478f7da2c89da01409f697f9f4a07aed3d6756 e sua cadeia; worktree contém exatamente o estado do commit congelado. Binding oficial conferido: candidateId fb12c14ae87bf7e2a130f83d18d818277d23ca3aa977d6d5b61265f3bf9706c4, treeHash f014283e4ed9dbd63c31413fbef5fca27b5952d609185554d6967c494f8905e2, fingerprint sha256-candidate-v1=53a489840a5f7c2ad0438e316387bc3033f968fbba2aeaccaed34d44be7f91a4, dirty=false, 1212 arquivos.",
++      "method": "Leitura do HEAD 3dc0093f87dc168a8382f7e901fce328d31cba1a e do worktree limpo; binding oficial conferido: candidateId b0f7c17a97c7f7d7a6a481b68a8deb754050122e2379ceb93192ff37eca50430, treeHash f815a3d52a2047e84333527316e8136c30d24adbb05474ab7754acccdd6fd50f, fingerprint sha256-candidate-v1=be14631b0a6aa096959a1360f02c486b0bca104ea904020777e1b56f41ef2312.",
+       "evidence": [
+         "docs/03_build/tracking/current_state.json",
+         "docs/99_runtime_state.md"
+       ]
+     },
+     {
+-      "id": "CHECK-2-delta-selado-ate-o-congelado",
++      "id": "CHECK-2-delta-docs-baselines-produto-identico",
+       "status": "PASS",
+-      "method": "Enumeração integral do delta desde o candidato selado 5c663a5f@6575919: report do crítico (evidência, excluída), certification/** (excluído) e seis docs de governança em escopo (CURRENT.md, runtime state, execution log, backlog, current_state.json e o recibo novo). Nenhum path de apps/**, packages/**, tests/**, scripts/**, migration ou configuração mudou; amostra de categorias distintas conferida byte a byte.",
++      "method": "Enumeração integral do delta desde o candidato selado: apenas 28 baselines PNG em tests/e2e/visual-shell.spec.ts-snapshots/ (regeneradas no container oficial playwright:1.59.1-noble) e 5 docs de governança em escopo; nenhum path de produto, packages, tests funcionais, scripts, migrations ou configs mudou, de modo que os bytes que sustentam unit/coverage/postgres/e2e/mutation/invariantes são idênticos.",
+       "evidence": [
+         "docs/99_runtime_state.md",
+         "docs/20_master_execution_log.md",
+         "docs/30_backlog_master.md",
+-        "docs/04_audit/evidence/AUD20/AUD20-reseal-5c663a5f-20260927.md",
+-        "docs/03_build/tracking/current_state.json"
++        "docs/04_audit/evidence/AUD20/AUD20-22-production-hardening-2026-09-27.md"
+       ]
+     },
+     {
+       "id": "CHECK-3-evidencia-de-produto-transfere",
+       "status": "PASS",
+-      "method": "O pacote anterior (phase11-5c663a5f921ab490-mukeqq99) tem 35/35 gates PASS e 16/16 invariantes PASS sobre os mesmos bytes de produto; a transferência é sustentável e o re-selo regenera os artefatos candidate-bound (manifest, logs, mutation, ponteiro, report).",
++      "method": "Leitura do pacote selado anterior: 35/35 gates PASS, 16/16 invariantes PASS, decisão CONDITIONAL_GO/AAA_CANDIDATE para os mesmos bytes de produto; a staleness de manifest e ponteiro é o fail-closed esperado e será regenerada no re-selo junto com logs, mutation e report.",
+       "evidence": [
+-        "docs/04_audit/evidence/AUD20/AUD20-reseal-5c663a5f-20260927.md",
++        "docs/04_audit/evidence/AUD20/AUD20-21-production-audit-2026-09-27.md",
+         "docs/04_audit/evidence/AUD20/AUD20-22-production-hardening-2026-09-27.md",
+         "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json"
+       ]
+     },
+     {
+-      "id": "CHECK-4-escopo-e-exclusoes",
++      "id": "CHECK-4-barra-externa-permanece-bloqueada",
+       "status": "PASS",
+-      "method": "docs/04_audit/evidence/** e certification/phase11/** são excluídos do candidato; docs/99_runtime_state.md é in-scope (explica a evolução 3d98a220->fb12c14a). Nenhuma persistência em docs in-scope deve ocorrer após certificar sem novo selo.",
+-      "evidence": [
+-        "docs/99_runtime_state.md",
+-        "docs/03_build/tracking/current_state.json"
+-      ]
+-    },
+-    {
+-      "id": "CHECK-5-barra-externa-permanece-bloqueada",
+-      "status": "PASS",
+-      "method": "certification/external-gates.json registra modelProvider/channel/externalIdentity NOT_VALIDATED e humanSignoff PENDING; nothing nesta transferência altera o boundary staging/produção NO_GO.",
++      "method": "certification/external-gates.json registra modelProvider/channel/externalIdentity NOT_VALIDATED e humanSignoff PENDING; a transferência não altera o boundary staging/produção NO_GO.",
+       "evidence": [
+         "certification/external-gates.json",
+         "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json"
+@@ -91,34 +81,34 @@
+   "artifacts": [
+     {
+       "path": "docs/03_build/tracking/current_state.json",
+-      "sha256": "a13a5915daff164218894ec99b07ddbaa77f0970357da41beb6454509d2f44a5",
+-      "size": 1552
++      "sha256": "4775fba720c57eb1096ca8aa43ccfbb3aeae997219ebebdf98534bf445e94154",
++      "size": 1491
+     },
+     {
+       "path": "docs/99_runtime_state.md",
+-      "sha256": "ef60b88e4a83d7922e854f9c805aafe1ab1e5aaec551614909a4f2e071253f45",
+-      "size": 432512
++      "sha256": "4d9648ed24970fd708d6624330e4dd1e959a9cc300c162d472ba5ab986fb59c5",
++      "size": 434423
+     },
+     {
+       "path": "docs/20_master_execution_log.md",
+-      "sha256": "8009af92828d8271009f78c170e0214896caf9ed7ce65ecfa4b765fd9e6e8865",
+-      "size": 461943
++      "sha256": "85c06159221d054b35816f37ccda2e4f67b45f40fd723dac449133aa69c48659",
++      "size": 462512
+     },
+     {
+       "path": "docs/30_backlog_master.md",
+-      "sha256": "2c0ba9411a4b0b0372cb36383d8b285d36b503b55646c02b1a601d22d762d867",
+-      "size": 221900
+-    },
+-    {
+-      "path": "docs/04_audit/evidence/AUD20/AUD20-reseal-5c663a5f-20260927.md",
+-      "sha256": "978eee3bc83d0770f33dc1d8f2e4b85e5eb542add0ff5eabc7473af9ae0a5dd3",
+-      "size": 2527
++      "sha256": "060ca404d18ab4877c80ea69dcdd1d01baa02fbdd8e2558704a430f7b3392888",
++      "size": 222339
+     },
+     {
+       "path": "docs/04_audit/evidence/AUD20/AUD20-22-production-hardening-2026-09-27.md",
+       "sha256": "71b95285a7d17996a12c5bac7b4d6a84d86db1e034c7e15927d452d78513f8ad",
+       "size": 13039
+     },
++    {
++      "path": "docs/04_audit/evidence/AUD20/AUD20-21-production-audit-2026-09-27.md",
++      "sha256": "73ea49a9ce1e191c5a58375b933ab2304f787355464f438498b466b9f61a251d",
++      "size": 13686
++    },
+     {
+       "path": "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+       "sha256": "1d477beef8340674c009032168fa7d0c4b99b9af8697af0472903ebb2b9735a6",
+diff --git a/docs/04_audit/evidence/CLAW-00-sync-20261004.md b/docs/04_audit/evidence/CLAW-00-sync-20261004.md
+new file mode 100644
+index 0000000..91367ec
+--- /dev/null
++++ b/docs/04_audit/evidence/CLAW-00-sync-20261004.md
+@@ -0,0 +1,12 @@
++# CLAW-00-SYNC-20261004 — push e renomeação local
++
++- status: `COMPLETED`.
++- autorização: pedido explícito do usuário para `git push -u origin main` e renomeação da pasta local.
++- push: `origin/main` criada em `https://github.com/ricardoakinaga-dev/cvg-claw.git`; upstream local `origin/main` configurado; histórico de `main` enviado sem reescrita.
++- verificação remota: `git ls-remote origin refs/heads/main` confirmou `9fd105c9838700bf9ad90c16a09917650018199c`, igual ao `HEAD` local.
++- remote histórico: `legacy` preservado em `https://github.com/ricardoakinaga-dev/cvg-agent-secretary-v2.git`.
++- pasta local: `/home/ricardo/cvg-agent-secretary-v2` renomeada para `/home/ricardo/cvg-claw`; destino existe e caminho anterior não existe.
++- preservação: 61 arquivos modificados de certificação conferidos por SHA-256 antes/depois, sem alterações; re-selo local `NO_GO` continua sem commit.
++- registros desta rodada: documentação local sem novo commit; o topo remoto permanece `9fd105c`.
++- próxima ação: responder às perguntas abertas da Discovery 0026; decidir o re-selo local e recertificar antes de qualquer piloto; manter staging/produção `NO_GO`.
++- limite: Discovery `DRAFT`; selo commitado não cobre o pacote renomeado; staging/produção `NO_GO`.
+diff --git a/docs/04_audit/evidence/CLAW-20261004/AUD-20261004-audit-and-production-steps.md b/docs/04_audit/evidence/CLAW-20261004/AUD-20261004-audit-and-production-steps.md
+new file mode 100644
+index 0000000..5a6fbb7
+--- /dev/null
++++ b/docs/04_audit/evidence/CLAW-20261004/AUD-20261004-audit-and-production-steps.md
+@@ -0,0 +1,48 @@
++# AUD-20261004 — auditoria do repositório, passos para produção e avaliação do cvg-claw
++
++Registro do parecer entregue ao usuário em 2026-10-04 (antes da renomeação para `cvg-claw`). Os números de gates refletem o momento da auditoria; o estado posterior está na [passagem de sessão](session-handoff-20261004.md).
++
++## Veredito
++
++Não pronto para produção. Engenharia e testes maduros; faltavam selo válido, CI verde e integrações reais (modelo de IA, WhatsApp, login).
++
++## Gates na auditoria (Node 22.23.2)
++
++| Gate | Resultado |
++| --- | --- |
++| typecheck, lint, Prettier, `docs:check` | PASS |
++| `certification:verify:phase11` | PASS |
++| `npm test` | 2.681 PASS, 1 FAIL (`promotion-expectation`, acoplado ao selo local), 194 skip |
++| `npm audit` | 4 vulnerabilidades (fastify < 5.12.5; fast-uri) — corrigidas depois em `498ae11` |
++| CI `Verify` | vermelho (integridade Phase 11) |
++| `promotion:check --requested PRODUCTION` | inelegível |
++
++## Achados
++
++1. Re-selo local não commitado em `NO_GO` por causa das baselines visuais (geradas na imagem do CI, selo rodado no host). Descartado depois.
++2. Worker só usa o modelo sintético `deterministic-v1` (`apps/worker/src/kernel-composition.ts`); providers `openai-compatible`/`ollama` existem mas não estão compostos.
++3. Adapter de canal `evolution` (WhatsApp) existe mas não é usado.
++4. Painel web envia headers de simulação; em produção a API exige `x-cvg-operator-token` e não há emissor.
++5. `deploy/nginx.web.conf` sem TLS/CSP/HSTS; sem compose/k8s/IaC; sem job de migração (só `POSTGRES_AUTO_MIGRATE=true` em execução avulsa); sem backup configurado.
++6. P2 abertos: release de claim no shutdown, paginação real, observabilidade da API.
++7. Pontos fortes: preflight de produção fail-closed (RLS, deny-by-default, aprovações e journal em Postgres, efeitos reais desligados, atestação HMAC dos 8 gates externos), imagem Docker endurecida, runbooks.
++
++## Passos para produção
++
++**Fase 0 — repositório verde:** resolver o selo local; `npm audit fix` e recertificar; push com `Verify`/`Security` verdes; desacoplar `promotion-expectation` do selo vivo.
++
++**Fase 1 — integrações (cada uma com task, SPEC e aprovação):** provider de LLM real no worker atrás de flag; canal `evolution`; identidade (no cvg-claw: token emitido pelo `cvg-his-v4`); P2 de shutdown, paginação e observabilidade; fonte de RAG aprovada ou RAG fora do piloto.
++
++**Fase 2 — infraestrutura:** Postgres gerenciado com `DATABASE_URL` (RLS) e `DATABASE_MIGRATION_URL`, backup/PITR; manifests para `api`/`worker`/`web` com `--read-only` e secret manager; job de migração; TLS e headers no edge; variáveis do preflight (`NODE_ENV=production`, `CVG_WORKER_RUNTIME=kernel`, `CVG_POLICY_MODE=deny_by_default`, `CVG_ALLOW_REAL_EFFECTS=false`, `CVG_OPERATOR_IDENTITY_KEYRING`, `WEBHOOK_SIGNING_SECRET` ≥ 32, IDs de tenant/agent).
++
++**Fase 3 — 8 gates externos** ([plano](../AUD20/AUD20-external-gates-execution-plan-20260925.md)): homologar provider, canal, identidade e RAG; metas RPO/RTO com restore real; ensaio de rollback; sessão de acessibilidade `AUD20-19`.
++
++**Fase 4 — liberação:** recertificar e fixar a imagem por digest; atestação externa assinada com os 8 sinais `APPROVED`; `production:preflight` e `promotion:check` elegíveis; piloto controlado em modo assistido; sign-off humano e deploy.
++
++## Avaliação: evoluir para o cvg-claw
++
++A base serve bem: orquestrador objetivo → plano → etapas com orçamento de iterações, policy deny-by-default com capabilities, aprovações persistentes, outbox/journal idempotentes, takeover humano, multi-tenant com RLS, auditoria e ADRs de plataforma. Faltam o LLM real, ferramentas tipadas para o sistema de gestão, identidade e catálogo de capabilities do hospital.
++
++Autonomia proposta em níveis: N0 informar, N1 preparar com aprovação, N2 executar ação reversível de baixo risco, N3 nunca (clínico, prontuário, financeiro).
++
++Riscos: escopo crescer antes do primeiro piloto; peso da governança atual; responsabilidade por ação autônoma. Recomendação: levar o kernel a um piloto real primeiro, com a Discovery do cvg-claw em paralelo, e reutilizar o kernel com um preset novo em vez de reescrever. Desdobramento na [Discovery 0026](../../../00_discovery/0026_cvg_claw_hospital_autonomous_agent.md).
+diff --git a/docs/04_audit/evidence/CLAW-20261004/session-handoff-20261004.md b/docs/04_audit/evidence/CLAW-20261004/session-handoff-20261004.md
+new file mode 100644
+index 0000000..e448e1a
+--- /dev/null
++++ b/docs/04_audit/evidence/CLAW-20261004/session-handoff-20261004.md
+@@ -0,0 +1,40 @@
++# Passagem de sessão — cvg-claw — 2026-10-04
++
++Documento para retomar o trabalho em uma nova sessão (a pasta do repositório mudou de `/home/ricardo/cvg-agent-secretary-v2` para `/home/ricardo/cvg-claw`). Fica em `docs/04_audit/evidence/`, fora do escopo do candidato, para não invalidar o binding do crítico.
++
++## Onde paramos
++
++- Branch `main`. Commits locais **ainda não enviados** ao GitHub: `498ae11`, `af5f348`, `f8c2639` (e o commit desta passagem). Enviar com `git push`.
++- Candidato congelado para o crítico: `2414ae1538227881cb294abd051d3ce593c266c59f7f0c6e6173a417f9b49ecd` no commit `f8c2639`. Qualquer mudança fora de `docs/04_audit/evidence/`, `certification/phase11/` e demais exclusões de `scripts/lib/certification-rules.mjs` muda o candidato e exige novo pedido ao crítico.
++- Certificação: passada 1 com **33/35 gates e 16/16 invariantes PASS**. Faltam `independent_critic` e `PHASE11_FORMAL_CLOSURE`.
++- CI `Verify` na `main` do GitHub continua vermelho até o selo novo ser commitado.
++
++## Próximos passos, em ordem
++
++1. **Parecer do crítico independente** para o candidato `2414ae15`. Pedido com binding e delta em [critic-request-20261004.md](../CLAW-reseal/critic-request-20261004.md). Decisão pendente do usuário: rodar o crítico no opencode (como nos pareceres anteriores) ou autorizar um subagente de contexto novo, somente leitura. O parecer vai para `docs/04_audit/evidence/AUD19/AUD19-08-critic-report.json` e é validado com `node scripts/phase11-2-evidence-check.mjs --critic`.
++2. **Passada 2 da certificação** com a receita [certify-pass.sh](../CLAW-reseal/certify-pass.sh): contêiner `mcr.microsoft.com/playwright:v1.59.1-noble`, Node `22.23.2` montado do host, `postgres:16-alpine` descartável em `127.0.0.1:55441`, `PHASE11_ALLOW_DISPOSABLE_POSTGRES=1`. Uso: `bash docs/04_audit/evidence/CLAW-reseal/certify-pass.sh /caminho/do/log`. Não rodar a certificação direto no host: os testes visuais só batem na imagem de paridade do CI.
++3. Conferir `npm run certification:verify:phase11` e `npm run promotion:check` (esperado: inelegível só pelos 8 gates externos). Commitar `certification/` e um recibo **somente** em `docs/04_audit/evidence/` (não tocar `docs/99_runtime_state.md` etc. depois do selo, ou o selo fica obsoleto).
++4. `git push` e conferir `Verify`/`Security` no GitHub.
++5. Responder às 6 perguntas abertas da [Discovery 0026](../../../00_discovery/0026_cvg_claw_hospital_autonomous_agent.md) e só então abrir o PRD do piloto de faturamento.
++
++## Decisões do usuário registradas nesta sessão
++
++- Projeto renomeado para `cvg-claw`; repositório dedicado `https://github.com/ricardoakinaga-dev/cvg-claw` (o antigo é o remote `legacy`).
++- Hospital veterinário; sistema de gestão é o próprio `cvg-his-v4` (`/home/ricardo/cvg-his-v4`, lido apenas, em HEAD destacado `fdc591ae`).
++- Piloto em faturamento/convênios; login pelo próprio ERP.
++- Re-selo local `NO_GO` descartado; recertificação autorizada.
++
++## Achados ainda abertos (auditoria AUD-20261004)
++
++Ver [relatório da auditoria e passos de produção](AUD-20261004-audit-and-production-steps.md). Em resumo: provider de LLM, canal e identidade não compostos; nginx sem TLS/CSP/HSTS; sem manifests de deploy nem job de migração; P2 de shutdown/paginação/observabilidade; outras datas fixas em testes de retenção a varrer.
++
++## Execução nesta sessão (para rastreio)
++
++| Item | Resultado |
++| --- | --- |
++| Gates locais (Node 22.23.2) | typecheck, lint, Prettier, `docs:check` PASS |
++| `npm audit fix` | 4 → 0 vulnerabilidades |
++| Passada 1a (`498ae11`) | 31/35; `postgres`/`coverage` FAIL por teste com data fixa |
++| Correção (`af5f348`) | `retention-postgres.test.ts` 13/13 PASS |
++| Passada 1b (`af5f348`) | 33/35 gates, 16/16 invariantes |
++| Congelamento (`f8c2639`) | candidato `2414ae15…` |
+diff --git a/docs/04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md b/docs/04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md
+new file mode 100644
+index 0000000..82a062a
+--- /dev/null
++++ b/docs/04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md
+@@ -0,0 +1,44 @@
++# CLAW-W1-03 — varredura de testes que expiram com o tempo — 2026-10-05
++
++## Método
++
++- Node `22.23.2`; suíte unitária completa (`vitest run --no-file-parallelism --maxWorkers=2`) sem PostgreSQL.
++- O preload [clock-shift.mjs](clock-shift.mjs) (SHA-256 `f55a04c6373726d26aad8bda076fca0ae98d1e083abfa39ee58397d84cdbc6a4`) adianta `Date.now()` e `new Date()` em N dias, sem mexer em datas explícitas:
++
++```bash
++CLOCK_SHIFT_DAYS=400 NODE_OPTIONS="--import $PWD/docs/04_audit/evidence/CLAW-W1/clock-shift.mjs" \
++  npx vitest run --no-file-parallelism --maxWorkers=2
++```
++
++- Limites do método: o relógio do PostgreSQL, o `mtime` do sistema de arquivos e processos filhos com `env` próprio não são adiantados. Falhas nesses pontos são artefatos e foram classificadas uma a uma.
++
++## Resultado com relógio +400 dias (2027-11-09)
++
++Primeira rodada: 307 arquivos, 6 falharam; 2.682 testes, 6 falharam.
++
++| Teste                                                                                  | Classificação | Causa                                                                                                   |
++| -------------------------------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------- |
++| `apps/api/src/__tests__/journeys-api.test.ts` — future slots                           | **Real**      | Exigia `startsAt` em `2026-`; slots são gerados a partir de amanhã, então quebraria a partir de 2026-12-31 |
++| `packages/agent-runtime/.../orchestration-branch-hardening.test.ts` — system clock     | Artefato      | `instanceof` entre a classe do preload e `Date` original; resolvido no preload v2 (`Symbol.hasInstance`) |
++| `packages/persistence/.../retention.test.ts` — erasure ledger                          | Artefato      | Mesmo `instanceof`; resolvido no preload v2                                                             |
++| `packages/agent-runtime/.../effect-journal-edges.test.ts` — live writer lock           | Artefato      | Lock considerado velho porque o `mtime` do arquivo usa o relógio real (`effect-journal.ts:844`)         |
++| `packages/channel-gateway/.../channel-effect-journal-edges.test.ts` — journal lock     | Artefato      | Mesmo motivo (`effect-journal-file.ts:412`)                                                             |
++| `tests/aud19-external-evidence.test.js` — synthetic attestation                        | Artefato      | O script roda em processo filho com `env` próprio, sem o preload, e vê `issuedAt` no futuro              |
++
++Correção aplicada (somente teste): `journeys-api.test.ts` passa a exigir data ISO válida e posterior ao momento da execução.
++
++Reexecução dos 6 arquivos após a correção: relógio real 148/148 PASS; relógio +400 dias 145/148, com as 3 falhas restantes classificadas como artefato acima.
++
++## Revisão estática dos testes PostgreSQL
++
++Os 30 arquivos de `test:postgres` foram varridos em busca de datas fixas a partir de 2026-10-01. Há uma só, em `retention-postgres.test.ts:1318` (`2027-01-01T03:00:00Z`), que testa **de propósito** a expiração da janela aprovada da política de tombstone.
++
++As demais datas fixas são passado distante (`OLD`) ou são avaliadas contra o relógio injetado (`clock: () => NOW`), e não contra o relógio do PostgreSQL.
++
++## Achado de produto (fora do escopo de correção)
++
++`packages/persistence/src/retention.ts:47` fixa `INBOUND_TOMBSTONE_POLICY_VALID_UNTIL = '2027-01-01T02:59:59.000Z'`.
++
++A partir dessa data, `assertInboundTombstonePolicyEffective` falha fechado com o relógio do banco. Esse é o comportamento desenhado (janela de aprovação imutável), mas a minimização de tombstones inbound para em produção e os testes PostgreSQL que a exercitam passam a falhar.
++
++A renovação é decisão humana com nova aprovação da política, registrada como CLAW-W1-07 no [backlog 0347](../../../03_build/0347_claw_waves_backlog_20261005.md), com prazo antes de 2026-12-31.
+diff --git a/docs/04_audit/evidence/CLAW-W1/CLAW-W1-admission-20261005.md b/docs/04_audit/evidence/CLAW-W1/CLAW-W1-admission-20261005.md
+new file mode 100644
+index 0000000..104fdb7
+--- /dev/null
++++ b/docs/04_audit/evidence/CLAW-W1/CLAW-W1-admission-20261005.md
+@@ -0,0 +1,18 @@
++# CLAW-W1 — recibo de admissão da Onda 1 — 2026-10-05
++
++## Decisão humana
++
++Pedido do usuário nesta sessão, em 2026-10-05: "agora eu preciso de um plano dividido em etapas progressivas divididas em ondas, indo de base sólida, e incrementando o projeto aos poucos até atingir a produção, entregue esse roadmap e backlog, se já houver essa documentação atualize, e já implemente a primeira onda."
++
++## Escopo admitido
++
++- Planejamento: [roadmap 0346](../../../03_build/0346_claw_waves_roadmap_20261005.md) e [backlog 0347](../../../03_build/0347_claw_waves_backlog_20261005.md), com ponteiros nos documentos de processo.
++- BUILD da Onda 1, restrito a: auditoria 0575 (W1-01), documentos de plano (W1-02), correções somente em testes que expiram com o tempo (W1-03), renomeação de baixo risco em `package.json` e `.env.example` (W1-04) e preparação do novo pedido ao crítico (W1-05).
++
++## Fora do escopo admitido
++
++- Código de produto, migrações, thresholds, registry de gates e dados reais.
++- Commit, `git push`, crítico independente e passada 2 da certificação (W1-06): dependem de autorização própria do usuário.
++- Renovação da janela de aprovação da política de tombstone (W1-07): decisão humana.
++
++Staging e produção permanecem `NO_GO`.
+diff --git a/docs/04_audit/evidence/CLAW-W1/clock-shift.mjs b/docs/04_audit/evidence/CLAW-W1/clock-shift.mjs
+new file mode 100644
+index 0000000..a374382
+--- /dev/null
++++ b/docs/04_audit/evidence/CLAW-W1/clock-shift.mjs
+@@ -0,0 +1,16 @@
++const days = Number(process.env.CLOCK_SHIFT_DAYS ?? '0')
++const OFFSET = days * 86_400_000
++const RealDate = globalThis.Date
++class ShiftedDate extends RealDate {
++  constructor(...args) {
++    if (args.length === 0) super(RealDate.now() + OFFSET)
++    else super(...args)
++  }
++  static [Symbol.hasInstance](value) {
++    return value instanceof RealDate
++  }
++  static now() {
++    return RealDate.now() + OFFSET
++  }
++}
++globalThis.Date = ShiftedDate
+diff --git a/docs/04_audit/evidence/CLAW-reseal/certify-pass.sh b/docs/04_audit/evidence/CLAW-reseal/certify-pass.sh
+new file mode 100755
+index 0000000..6581a4b
+--- /dev/null
++++ b/docs/04_audit/evidence/CLAW-reseal/certify-pass.sh
+@@ -0,0 +1,22 @@
++#!/usr/bin/env bash
++# Phase 11 certification pass inside the CI-parity Playwright image with a disposable PostgreSQL.
++set -u
++REPO=/home/ricardo/cvg-claw
++NODE22=$HOME/.nvm/versions/node/v22.23.2
++LOG=${1:?log path}
++docker rm -f claw-cert-pg >/dev/null 2>&1
++docker run -d --name claw-cert-pg -e POSTGRES_PASSWORD=throwaway-cert-pass -p 127.0.0.1:55441:5432 postgres:16-alpine >/dev/null
++until docker exec claw-cert-pg pg_isready -U postgres >/dev/null 2>&1; do sleep 1; done
++sleep 2
++docker run --rm --network host --user "$(id -u):$(id -g)" \
++  -v "$REPO:$REPO" -v "$NODE22:/opt/node22:ro" -w "$REPO" \
++  -e HOME=/tmp/certhome -e PATH=/opt/node22/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
++  -e PLAYWRIGHT_BROWSERS_PATH=/ms-playwright \
++  -e TEST_DATABASE_URL=postgres://postgres:throwaway-cert-pass@127.0.0.1:55441/postgres \
++  -e PHASE11_ALLOW_DISPOSABLE_POSTGRES=1 \
++  mcr.microsoft.com/playwright:v1.59.1-noble \
++  bash -c 'mkdir -p $HOME && git config --global --add safe.directory '"$REPO"' && node -v && npm run certify:phase11' >"$LOG" 2>&1
++echo "certify exit $?" >>"$LOG"
++echo "roles: $(docker exec claw-cert-pg psql -U postgres -tAc "select count(*) from pg_roles where rolname not like 'pg_%' and rolname<>'postgres'")" >>"$LOG"
++docker rm -f claw-cert-pg >/dev/null 2>&1
++echo "teardown done" >>"$LOG"
+diff --git a/docs/04_audit/evidence/CLAW-reseal/critic-request-20261004.md b/docs/04_audit/evidence/CLAW-reseal/critic-request-20261004.md
+new file mode 100644
+index 0000000..356ccb6
+--- /dev/null
++++ b/docs/04_audit/evidence/CLAW-reseal/critic-request-20261004.md
+@@ -0,0 +1,30 @@
++# Pedido de parecer do crítico independente — candidato cvg-claw 2414ae15 — 2026-10-04
++
++Status deste documento: **PEDIDO**. Não é parecer e não autoriza selo.
++
++## Binding do candidato congelado
++
++- candidateId: `2414ae1538227881cb294abd051d3ce593c266c59f7f0c6e6173a417f9b49ecd`
++- commit: `f8c2639d47831e4058e0807e5ce3d414a846298c`
++- treeHash: `0e984dc75c6619d59d611910d0ed2d58f4aecd737119b7a6a3bc8c5096a765ce`
++- fingerprint (`sha256-candidate-v1`, sem exclusões extras): `02cde40a6ce757ff4cdb55ceb148a63301b61bb476ebc7907fd23dde3dce14d8`
++
++## Delta desde o último candidato com parecer (`b0f7c17a` @ `3dc0093`)
++
++1. `9fd105c` — renomeação para `cvg-claw` (nome do pacote raiz e do lock, AGENTS, README, docs) e Discovery 0026 v1.
++2. `498ae11` — `npm audit fix`: fastify 5.12.3→5.12.5, fast-uri 3.1.6→3.1.8 e 4.1.4→4.2.1, undici 7.29.0→7.30.0, brace-expansion 5.0.9→5.0.12 (só `package-lock.json`); Discovery 0026 v2.
++3. `af5f348` — teste `retention-postgres.test.ts`: tombstone "recente" passa de data fixa `2026-09-01` para 5 dias antes da execução (a minimização usa o relógio do PostgreSQL com horizonte de 30 dias). Nenhum código de produto alterado.
++4. `f8c2639` — congelamento dos documentos de governança.
++
++## Evidência da passada 1 (descartada, reproduzível)
++
++- `phase11-9aa3401dfcfa9b77-muugfayu` no commit `af5f348`, contêiner `mcr.microsoft.com/playwright:v1.59.1-noble` com Node `22.23.2` e `postgres:16-alpine` descartável: 33/35 gates e 16/16 invariantes PASS; pendentes `independent_critic` e `PHASE11_FORMAL_CLOSURE`.
++
++## O que o crítico deve entregar
++
++- `docs/04_audit/evidence/AUD19/AUD19-08-critic-report.json` no schema `phase11-critic-report` v1, com `binding` e `fingerprint` acima, `critic.freshContext: true`, identidade separada do builder (`cvg-lead-agent`), entrada só de artefatos, sem escrita no worktree durante a revisão e sem reaproveitar conclusões do builder.
++- Validar com `node scripts/phase11-2-evidence-check.mjs --critic` antes da passada 2.
++
++## Limites
++
++Staging/produção `NO_GO`. Os 8 gates externos/humanos seguem pendentes; este selo não habilita piloto.
+diff --git a/docs/07_agents/AGENTS.md b/docs/07_agents/AGENTS.md
+index c7ec0c3..269dd6a 100644
+--- a/docs/07_agents/AGENTS.md
++++ b/docs/07_agents/AGENTS.md
+@@ -2,7 +2,7 @@
+ 
+ ## Proposito
+ 
+-Este repositorio segue o padrao CVG de engenharia orientada por documentacao, gates e execucao controlada. O Codex deve operar como agente de engenharia disciplinado para construir a Esmeralda V2, nao como gerador solto de codigo.
++Este repositorio segue o padrao CVG de engenharia orientada por documentacao, gates e execucao controlada. O Codex deve operar como agente de engenharia disciplinado para construir o `cvg-claw` (agente autonomo governado do hospital, evoluido da Esmeralda V2), nao como gerador solto de codigo.
+ 
+ ## Working Agreements
+ 
+diff --git a/docs/20_master_execution_log.md b/docs/20_master_execution_log.md
+index 86baf53..0f4691d 100644
+--- a/docs/20_master_execution_log.md
++++ b/docs/20_master_execution_log.md
+@@ -1,3 +1,42 @@
++# CLAW-W1-05 — commit da Onda 1 e congelamento do candidato — 2026-10-05
++
++- Decisões do usuário: commit autorizado; crítico independente pelo opencode; `git push` autorizado. Onda 1 commitada em `6fec2a6`; este commit congela a governança. Binding do novo candidato e pedido ao crítico em `docs/04_audit/evidence/CLAW-W1/`. Staging/produção `NO_GO`.
++
++# CLAW-W1 — auditoria 0575, roadmap em ondas e Onda 1 local — 2026-10-05
++
++- Decisão humana: plano em ondas até produção, atualização da documentação existente e execução da Onda 1 ([recibo](04_audit/evidence/CLAW-W1/CLAW-W1-admission-20261005.md)).
++- Auditoria [0575](04_audit/0575_repository_audit_2026-10-05.md): nota geral 60/100; gates Node `22.23.2`: typecheck, lint, Prettier, `docs:check`, `npm audit` (0) e `test:coverage` (2.682 PASS/194 skips/0 falhas; 93,02/90,19/91,23/93,49%) PASS.
++- Plano: [roadmap 0346](03_build/0346_claw_waves_roadmap_20261005.md) e [backlog 0347](03_build/0347_claw_waves_backlog_20261005.md); ponteiros em 0301, 0302, `CURRENT.md`, `ROADMAP_PRODUCAO.md` e `BACKLOG_PRODUCAO.md`.
++- CLAW-W1-03: suíte com relógio +400 dias, 6 falhas; 1 real corrigida em `journeys-api.test.ts` e 5 artefatos do método. Achado de produto: `INBOUND_TOMBSTONE_POLICY_VALID_UNTIL` expira em 2027-01-01 (CLAW-W1-07, decisão humana). [Relatório](04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md).
++- CLAW-W1-04: descrição do pacote e banco `cvg_claw` no `.env.example`; tags `cvg-aud19-*` preservadas por vínculo a evidências.
++- O candidato `2414ae15` deixou de valer. Pendentes de autorização: commit, novo candidato, crítico, passada 2, selo e push. Nenhum dado real, deploy ou egress; staging/produção `NO_GO`.
++
++# Passada 1 PASS local (33/35) e congelamento para o crítico — 2026-10-04
++
++- Passada 1 reexecutada no contêiner de paridade: 33/35 gates e 16/16 invariantes; pendentes só o crítico independente e o fechamento formal. Governança congelada para o parecer. Staging/produção `NO_GO`.
++
++# Certificação passada 1 e correção de teste com data fixa — 2026-10-04
++
++- Passada 1 no contêiner de paridade: 31/35 gates (e2e/verify PASS). `postgres`/`coverage` falharam por bomba-relógio em `retention-postgres.test.ts` (tombstone "recente" fixo em 2026-09-01 vs horizonte de 30 dias no relógio do PostgreSQL); teste corrigido para data relativa, 13/13 PASS. Pendente: crítico independente e passada 2. Staging/produção `NO_GO`.
++
++# CLAW-01 v2 e preparação da recertificação — 2026-10-04
++
++- Discovery 0026 v2: HIS veterinário `cvg-his-v4`, piloto de faturamento (F01–F04 mapeados na OpenAPI/eventos do HIS), identidade via token emitido pelo HIS e API key de serviço; 6 perguntas abertas. Re-selo local `NO_GO` descartado; `npm audit fix` (0 vulnerabilidades). Próximo: certificação em duas passadas com crítico independente. Staging/produção `NO_GO`.
++
++# CLAW-00-SYNC-20261004 — push e renomeação local — 2026-10-04
++
++- status: `COMPLETED`; `git push -u origin main` enviou o histórico e criou `origin/main` em `9fd105c9838700bf9ad90c16a09917650018199c` (confirmado remotamente).
++- Pasta renomeada para `/home/ricardo/cvg-claw`; remote `legacy` e 61 arquivos locais de certificação preservados. Registros desta rodada ficam locais sem novo commit; staging/produção `NO_GO`.
++- Evidência: [recibo](04_audit/evidence/CLAW-00-sync-20261004.md); próxima ação: responder às perguntas abertas da Discovery 0026; decidir o re-selo local e recertificar antes de qualquer piloto; manter staging/produção `NO_GO`.
++
++# CLAW-00 — renomeação para cvg-claw e Discovery CLAW-01 — 2026-10-04
++
++- Projeto renomeado para `cvg-claw` (pacote raiz, lock, AGENTS, README de docs, CURRENT, novo README raiz); histórico, evidências, certificação e identificadores de código preservados. [Discovery 0026](00_discovery/0026_cvg_claw_hospital_autonomous_agent.md) aberta em `DRAFT` com níveis de autonomia N0–N3, casos de uso candidatos e 7 perguntas abertas. Selo precisa de recertificação. Staging/produção `NO_GO`.
++
++# AUD-20261004 — auditoria read-only e roteiro de produção — 2026-10-04
++
++- Gates locais (Node `22.23.2`): typecheck/lint/Prettier/`certification:verify:phase11` PASS; suíte `2.681 PASS`/`1 FAIL`/`194 skip`; `npm audit` 4 vulns (1 moderada, 3 altas). Selo local não commitado `b0f7c17a` = `NO_GO` (baselines visuais no host); CI `Verify` vermelho em `main`. Lacunas de produção: provider de modelo, canal e IdP não compostos; web sem token trusted; nginx sem TLS/headers; sem manifests de deploy. Staging/produção `NO_GO`.
++
+ # Regeneração de baselines visuais e selo final do candidato b2a77032 — 2026-09-28
+ 
+ - CI vermelho apenas em 9 testes de screenshot (`visual-shell` × 3 browsers); todo o resto verde. Causa: rendering do runner vs baselines (produto inalterado). Regeneração com `--update-snapshots` no container oficial `playwright:1.59.1-noble` contra os servidores locais; 15/15 passam na imagem de paridade; commit `7549bcb` empurrado com E2E verde no CI; selo final do candidato `b2a77032694b15305cd3e2f2853ec55591d3e244f29808d0ae3b0deb96ef57e3` com PostgreSQL descartável.
+diff --git a/docs/30_backlog_master.md b/docs/30_backlog_master.md
+index 1c8bfad..0888f72 100644
+--- a/docs/30_backlog_master.md
++++ b/docs/30_backlog_master.md
+@@ -1,3 +1,42 @@
++# CLAW-W1 — Onda 1 (base sólida) — 2026-10-05
++
++- [x] Auditoria [0575](04_audit/0575_repository_audit_2026-10-05.md) registrada (nota geral 60/100).
++- [x] Roadmap em ondas [0346](03_build/0346_claw_waves_roadmap_20261005.md) e backlog [0347](03_build/0347_claw_waves_backlog_20261005.md) publicados; ponteiros atualizados.
++- [x] CLAW-W1-03: varredura com relógio +400 dias; `journeys-api.test.ts` corrigido; artefatos classificados. Ver [relatório](04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md). Substitui o item de varredura de datas fixas de CLAW-01 v2.
++- [x] CLAW-W1-04: descrição do pacote e banco do `.env.example` renomeados.
++- [x] CLAW-W1-05: commit autorizado (`6fec2a6`) e novo candidato congelado; binding e pedido ao crítico em `docs/04_audit/evidence/CLAW-W1/`.
++- [ ] CLAW-W1-06: parecer do crítico, passada 2, selo, push, `Verify`/`Security` verdes.
++- [ ] CLAW-W1-07: decisão humana sobre a janela da política de tombstone (expira em 2027-01-01). Staging/produção `NO_GO`.
++
++# CLAW-01 v2 / Fase 0 — 2026-10-04
++
++- [x] Discovery 0026 v2 com contexto veterinário e mapa de integração do `cvg-his-v4`.
++- [x] Re-selo local `NO_GO` descartado; `npm audit fix` aplicado (0 vulnerabilidades).
++- [x] Certificação Phase 11 passada 1 no contêiner Playwright + PostgreSQL descartável (31/35; teste com data fixa corrigido).
++- [x] Reexecutar a passada 1 após a correção (33/35 gates, 16/16 invariantes).
++- [ ] Varredura de outras datas fixas em testes de retenção/horizonte (ex.: `retention-postgres.test.ts` linhas 28–30, 517–652) para evitar novas bombas-relógio.
++- [ ] Parecer do crítico independente fresh-context para o novo candidato; passada 2; commit do selo; CI `Verify` verde.
++- [ ] Responder às 6 perguntas abertas da Discovery 0026. Staging/produção `NO_GO`.
++
++# CLAW-00/CLAW-01 — cvg-claw — 2026-10-04
++
++- [x] Renomear projeto para `cvg-claw` nos documentos vivos e no pacote raiz; histórico preservado.
++- [x] Renomear pasta local para `/home/ricardo/cvg-claw`; re-selo local preservado. Ver [recibo](04_audit/evidence/CLAW-00-sync-20261004.md).
++- [x] Discovery [0026](00_discovery/0026_cvg_claw_hospital_autonomous_agent.md) em `DRAFT`.
++- [x] Configurar remote e enviar histórico completo para `origin/main` em `9fd105c` (antigo como `legacy`); hash remoto confirmado em 2026-10-04.
++- [ ] Responder às 7 perguntas abertas da Discovery 0026 e validar casos de uso com o setor piloto.
++- [ ] Task própria com SPEC: `serviceName` da telemetria para `cvg-claw` (manter a chave de lock das migrações).
++- [ ] Recertificar após a renomeação (bytes de `package.json`/lock mudaram). Staging/produção `NO_GO`.
++
++# AUD-20261004 — auditoria read-only — 2026-10-04
++
++- [ ] **P0**: resolver selo local `NO_GO` (re-selar na imagem do CI ou restaurar o commitado) e deixar `Verify` verde em `main`.
++- [ ] **P0**: `npm audit fix` (fastify ≥5.12.5, fast-uri) + recertificação.
++- [ ] **P1**: SPEC/BUILD compondo provider real (`openai-compatible`) no worker atrás de flag; hoje só `deterministic-v1`.
++- [ ] **P1**: SPEC/BUILD compondo canal `evolution` (WhatsApp) e IdP/gateway que emita `x-cvg-operator-token` para o web.
++- [ ] **P1**: manifests de deploy (compose/k8s), job de migração, TLS/CSP/HSTS no edge, backups.
++- [ ] **P2**: desacoplar `tests/promotion-expectation.test.js` do selo vivo. Staging/produção `NO_GO`.
++
+ # Baselines visuais (E2E do CI) — 2026-09-28
+ 
+ - [x] Investigado o vermelho do CI: 9 falhas, todas `toHaveScreenshot` em `visual-shell` × 3 browsers; reproducibilidade confirmada na imagem oficial do runner; 28 baselines regeneradas, E2E verde no CI.
+diff --git a/docs/99_runtime_state.md b/docs/99_runtime_state.md
+index 13091b8..921f0a6 100644
+--- a/docs/99_runtime_state.md
++++ b/docs/99_runtime_state.md
+@@ -5189,3 +5189,65 @@ PASS`; suíte integral `289 PASS` arquivos/12 skipped e `2.256 PASS`
+ - next_action: observar o `Verify` final desta rodada e o `Security`; obter os insumos do item B (owners/credenciais dos gates 1–4, ambiente/janela de 5/7, autorização/participantes de 6) e conduzir o sign-off (8) sobre o candidato certificado vigente em `certification/current.json`; executar os P2 estruturais da [AUD20-22](04_audit/evidence/AUD20/AUD20-22-production-hardening-2026-09-27.md) (release de claim no shutdown, paginação real e observabilidade de produção) em tasks próprias com SPEC; manter `AUD20-19` sem sessão autorizada, 141 vínculos sem adjudicação e staging/produção `NO_GO`.
+ - evidence: [relatório AUD20-22](04_audit/evidence/AUD20/AUD20-22-production-hardening-2026-09-27.md), [parecer do crítico](04_audit/evidence/AUD19/AUD19-08-critic-report.json).
+ - verification: `docs:check`/Prettier PASS sob Node `22.23.2`; nenhum dado real, deploy ou egress.
++
++# AUD-20261004 — auditoria read-only e roteiro de produção — 2026-10-04
++
++- current_engine: `AUDIT -> PLAN`; task canônica `AUD20-10` `READY_FOR_NEXT_STEP` (gates externos `WAITING_HUMAN_APPROVAL`); selo commitado (`HEAD` `77da1f4`) `CONDITIONAL_GO`/`AAA_CANDIDATE`; selo local não commitado `phase11-b0f7c17a97c7f7d7-mul487xa` `NO_GO`/`CONTROLLED_LOCAL`; staging/produção `NO_GO`.
++- last_completed_action: auditoria read-only sob Node `22.23.2`: typecheck/lint/Prettier/`certification:verify:phase11` PASS; suíte `2.681 PASS`/`1 FAIL`/`194 skip` (falha única `promotion-expectation` acoplada ao selo local); `npm audit` 4 vulnerabilidades (fastify <5.12.5 moderada; fast-uri alta); CI `Verify` vermelho em `main` (integridade Phase 11) desde `7549bcb`; `promotion:check` inelegível por `e2e`/`verify`/closure/INV-014 (drift das baselines visuais regeneradas no container do CI, rodando no host) + 8 gates externos.
++- findings: (1) selo local `NO_GO` não commitado e docs de 09-28 afirmando “selo final” sem selo válido; (2) worker usa apenas `deterministic-v1` — `openai-compatible`/`ollama` e o adapter `evolution` existem mas não estão compostos em API/worker; (3) web envia headers de simulação e não `x-cvg-operator-token` — modo `trusted` exige gateway de identidade inexistente; (4) `nginx.web.conf` sem TLS/CSP/HSTS; (5) sem manifests de deploy (compose/k8s/IaC) nem job dedicado de migração; (6) P2 abertos (claim no shutdown, paginação, observabilidade da API).
++- next_action: re-selar dentro da imagem `playwright:v1.59.1-noble` (ou descartar o selo local e restaurar o commitado), corrigir `npm audit`, deixar CI verde; depois SPEC/BUILD de composição do provider real, canal e IdP, e só então os 8 gates externos e sign-off.
++- verification: somente leitura + escrita documental; nenhum dado real, commit, push, deploy ou egress.
++
++# CLAW-00 — renomeação para cvg-claw e Discovery CLAW-01 — 2026-10-04
++
++- current_engine: `DISCOVERY` (novo escopo cvg-claw) em paralelo a `AUDIT -> PLAN` (AUD20); task canônica `AUD20-10` `READY_FOR_NEXT_STEP`; staging/produção `NO_GO`.
++- last_completed_action: por decisão do usuário, renomear o projeto para `cvg-claw` (nome do pacote raiz, `package-lock.json`, `AGENTS.md`, `docs/07_agents/AGENTS.md`, `docs/README.md`, `CURRENT.md`, novo `README.md`) e abrir a [Discovery 0026](00_discovery/0026_cvg_claw_hospital_autonomous_agent.md) em `DRAFT`. Histórico, evidências, certificação, BRIEFING e identificadores de código (lock `cvg-agent-secretary:migrations`, `serviceName` da telemetria) mantidos.
++- progress: a mudança de `package.json`/lock altera bytes do candidato, então o selo commitado deixa de cobrir o HEAD até recertificar; o re-selo local `NO_GO` (`b0f7c17a`) segue não commitado e intocado.
++- next_action: o usuário cria o repositório GitHub dedicado; configurar o novo `origin` (antigo como `legacy`) e fazer push com histórico completo; responder às perguntas abertas da Discovery 0026; decidir o re-selo local e recertificar antes de qualquer piloto.
++- verification: typecheck/Prettier/`docs:check`; nenhum dado real, push, deploy ou egress.
++
++# CLAW-00-SYNC-20261004 — push e pasta local concluídos — 2026-10-04
++
++- current_engine: `DISCOVERY` (CLAW-01) em paralelo a `AUDIT -> PLAN` (AUD20); task canônica `AUD20-10` `READY_FOR_NEXT_STEP`; staging/produção `NO_GO`.
++- status: `COMPLETED` para a operação CLAW-00-SYNC-20261004.
++- last_completed_action: executar `git push -u origin main`, confirmar `9fd105c9838700bf9ad90c16a09917650018199c` no GitHub e renomear a pasta para `/home/ricardo/cvg-claw`; re-selo local preservado por SHA-256 e sem commit.
++- next_action: responder às perguntas abertas da Discovery 0026; decidir o re-selo local e recertificar antes de qualquer piloto; manter staging/produção `NO_GO`.
++- evidence: [recibo de sincronização e renomeação](04_audit/evidence/CLAW-00-sync-20261004.md).
++- verification: hash remoto igual ao local, upstream `origin/main`, destino local existente e 61 arquivos de certificação intactos; registros locais sem novo commit. Nenhuma recertificação ou promoção nesta rodada.
++
++# CLAW-01 v2 e preparação da recertificação — 2026-10-04
++
++- current_engine: `DISCOVERY` (CLAW-01) em paralelo a `AUDIT -> PLAN` (AUD20); task canônica `AUD20-10` `READY_FOR_NEXT_STEP`; staging/produção `NO_GO`.
++- last_completed_action: respostas do usuário registradas (piloto em faturamento; sistema de gestão `cvg-his-v4`, HIS veterinário; login do próprio ERP); levantamento read-only do `cvg-his-v4` (OpenAPI, eventos, RBAC, api-keys) e [Discovery 0026 v2](00_discovery/0026_cvg_claw_hospital_autonomous_agent.md) com casos F01–F04, proposta de identidade e correção regulatória (veterinário). Re-selo local `NO_GO` descartado por decisão do usuário; `npm audit fix` aplicado (fastify 5.12.5, fast-uri 3.1.8/4.2.1, undici 7.30.0, brace-expansion 5.0.12; 0 vulnerabilidades; typecheck e testes da API PASS).
++- next_action: rodar a passada 1 da certificação Phase 11 no contêiner `playwright:v1.59.1-noble` com PostgreSQL descartável; obter parecer do crítico independente fresh-context vinculado ao novo candidato; rodar a passada 2 e commitar o selo; responder às 6 perguntas abertas da Discovery 0026.
++- verification: `docs:check`/Prettier/typecheck; nenhum dado real, deploy ou egress; `cvg-his-v4` apenas lido.
++
++# Certificação passada 1 e correção de teste com data fixa — 2026-10-04
++
++- current_engine: `AUDIT -> PLAN`; task canônica `AUD20-10` `READY_FOR_NEXT_STEP`; staging/produção `NO_GO`.
++- last_completed_action: passada 1 (`phase11-38625e150c00d1e0-muuf0t0r`, commit `498ae11`) no contêiner `playwright:v1.59.1-noble` + `postgres:16-alpine` descartável: 31/35 gates PASS (e2e e verify PASS na imagem de paridade); `postgres`/`coverage` FAIL pelo mesmo teste, `independent_critic` e closure FAIL. Causa raiz: `retention-postgres.test.ts` fixava o tombstone "recente" em `2026-09-01`, mas a minimização usa o relógio do PostgreSQL com horizonte de 30 dias, então o teste passou a falhar a partir de 2026-10-01 (produto correto). Correção só no teste: data relativa ao momento da execução; 13/13 PASS em PostgreSQL descartável. Pacote `NO_GO` descartado; resíduo do runner: 6 papéis, contêiner removido.
++- next_action: rodar novamente a passada 1 da certificação no contêiner de paridade; obter o parecer do crítico independente fresh-context para o candidato resultante; rodar a passada 2 e commitar o selo; responder às 6 perguntas abertas da Discovery 0026.
++- verification: lint/Prettier do teste PASS; nenhum dado real, deploy ou egress.
++
++# Passada 1 PASS local (33/35) e congelamento para o crítico — 2026-10-04
++
++- current_engine: `AUDIT -> PLAN`; task canônica `AUD20-10` `READY_FOR_NEXT_STEP`; staging/produção `NO_GO`.
++- last_completed_action: reexecutar a passada 1 no contêiner de paridade (`phase11-9aa3401dfcfa9b77-muugfayu`, commit `af5f348`): **33/35 gates e 16/16 invariantes PASS**; só `independent_critic` e `PHASE11_FORMAL_CLOSURE` pendentes. Pacote da passada 1 descartado; governança congelada neste commit para o parecer do crítico.
++- next_action: obter o parecer do crítico independente fresh-context vinculado ao candidato congelado (pedido em `docs/04_audit/evidence/CLAW-reseal/`); rodar a passada 2 no contêiner de paridade e commitar o selo com o recibo só em `docs/04_audit/evidence/`; responder às 6 perguntas abertas da Discovery 0026.
++- verification: PostgreSQL descartável removido (resíduo 6 papéis); nenhum dado real, deploy ou egress.
++
++# Onda 1 (base sólida) executada localmente — 2026-10-05
++
++- current_engine: `AUDIT -> PLAN -> BUILD`; task canônica `CLAW-W1` `WAITING_HUMAN_APPROVAL` (commit, crítico, selo e push); staging/produção `NO_GO`.
++- last_completed_action: auditoria [0575](04_audit/0575_repository_audit_2026-10-05.md) registrada (60/100); roadmap em ondas [0346](03_build/0346_claw_waves_roadmap_20261005.md) e backlog [0347](03_build/0347_claw_waves_backlog_20261005.md) publicados; varredura com relógio +400 dias corrigiu `journeys-api.test.ts` e classificou 5 artefatos; achado de produto: janela da política de tombstone expira em 2027-01-01 (CLAW-W1-07); renomeação de baixo risco em `package.json` e `.env.example`. O candidato `2414ae15` deixou de valer.
++- next_action: autorizar o commit da Onda 1 (CLAW-W1-01 a W1-04) e congelar o novo candidato (CLAW-W1-05); obter o parecer do crítico independente para esse candidato, rodar a passada 2 no contêiner de paridade, commitar o selo e fazer push (CLAW-W1-06); decidir a renovação da política de tombstone antes de 2026-12-31 (CLAW-W1-07); responder às 6 perguntas abertas da Discovery 0026 (CLAW-W2-01).
++- evidence: [admissão](04_audit/evidence/CLAW-W1/CLAW-W1-admission-20261005.md), [varredura](04_audit/evidence/CLAW-W1/CLAW-W1-03-time-bomb-sweep-20261005.md).
++- verification: ver execution log de 2026-10-05; nenhum dado real, commit, push ou deploy.
++
++# Onda 1 commitada e candidato congelado para o crítico — 2026-10-05
++
++- current_engine: `AUDIT -> PLAN -> BUILD`; task canônica `CLAW-W1` `WAITING_HUMAN_APPROVAL` (parecer do crítico); staging/produção `NO_GO`.
++- last_completed_action: decisões do usuário registradas (commit autorizado, crítico no opencode, push autorizado); Onda 1 commitada em `6fec2a6`; governança congelada neste commit para o crítico.
++- next_action: obter o parecer do crítico independente no opencode para o candidato congelado da Onda 1 (pedido em `docs/04_audit/evidence/CLAW-W1/`); rodar a passada 2 no contêiner de paridade, commitar o selo com recibo só em `docs/04_audit/evidence/` e fazer push (CLAW-W1-06); decidir a renovação da política de tombstone antes de 2026-12-31 (CLAW-W1-07); responder às 6 perguntas abertas da Discovery 0026 (CLAW-W2-01).
++- evidence: [decisões e pedido ao crítico](04_audit/evidence/CLAW-W1/).
++- verification: typecheck, lint, `docs:check`, Prettier e suíte (2.682 PASS/194 skips/0 falhas) PASS antes do commit; nenhum dado real ou deploy.
+diff --git a/docs/BACKLOG_PRODUCAO.md b/docs/BACKLOG_PRODUCAO.md
+index 6490e89..60f8c70 100644
+--- a/docs/BACKLOG_PRODUCAO.md
++++ b/docs/BACKLOG_PRODUCAO.md
+@@ -1,3 +1,5 @@
++> Atualização 2026-10-05: o plano corrente até produção é o [roadmap em ondas 0346](03_build/0346_claw_waves_roadmap_20261005.md) com o [backlog 0347](03_build/0347_claw_waves_backlog_20261005.md). Este documento permanece histórico.
++
+ > Atualização13/09/2026: [reauditoria M1](04_audit/0562_prod_m1_reaudit_2026-09-13.md) encontrou e corrigiu oito lacunas adicionais. Revisão CONDITIONAL PASS; tarefas afetadas REVIEW e produção NO-GO. [Pacote de decisões e sequência](02_spec/prod20260913_decision_packet.md). O conteúdo abaixo preserva o planejamento/diagnóstico histórico; estados atuais nos backlogs canônicos.
+ 
+ # Backlog para produção — visão de execução consolidada
+diff --git a/docs/CURRENT.md b/docs/CURRENT.md
+index 9e46942..02d3675 100644
+--- a/docs/CURRENT.md
++++ b/docs/CURRENT.md
+@@ -1,5 +1,9 @@
+ # CURRENT — índice canônico de estado
+ 
++- Projeto: `cvg-claw` (renomeado em 2026-10-04 a partir de `cvg-agent-secretary-v2`); Discovery do novo escopo em [0026](00_discovery/0026_cvg_claw_hospital_autonomous_agent.md) (`DRAFT`). Documentos anteriores mantêm o nome original.
++
++- Plano corrente até produção: [roadmap em ondas 0346](03_build/0346_claw_waves_roadmap_20261005.md) e [backlog 0347](03_build/0347_claw_waves_backlog_20261005.md), a partir da [auditoria 0575](04_audit/0575_repository_audit_2026-10-05.md) (nota geral 60/100). Onda 1 (base sólida) admitida, executada e commitada em 2026-10-05; candidato congelado para o crítico; selo e push na sequência.
++
+ - Documento: `docs/CURRENT.md`; criado por `AUD19-02` (programa `AUD19-REM`).
+ - Avaliação transversal de base: [auditoria 0569](04_audit/0569_repository_audit_2026-09-23.md), complementada pela [revisão incremental 0571](04_audit/0571_implementation_state_review_2026-09-23.md) após o BUILD query-parser; ambas usam a [base F01–F30 da auditoria 0568](04_audit/0568_full_repository_audit_2026-09-21.md). A revisão 0571 não recalcula as notas 0569. A [reauditoria 0567](04_audit/0567_aud19_delivery_reaudit_2026-09-20.md) permanece histórica. Ordem e gates operacionais: [plano 0335](03_build/0335_aud20260921_executive_plan.md), [roadmap 0336](03_build/0336_aud20260921_roadmap.md) e [backlog 0337](03_build/0337_aud20260921_backlog.md). A auditoria 0566, AUD19 e 0333/0334 permanecem históricos.
+ - Planejamento complementar das 50 melhorias: [plano 0339](03_build/0339_plan50_executive_plan_20260923.md), [roadmap 0340](03_build/0340_plan50_roadmap_20260923.md) e [backlog candidato 0341](03_build/0341_plan50_backlog_20260923.md). A reativação local de `AUD20-10/17/20` em 2026-09-23 está registrada; gates e dependências permanecem obrigatórios.
+@@ -497,7 +501,7 @@ da próxima ação primária AUD20-17.
+ 
+ ## Próxima ação
+ 
+-- Próxima ação: observar o `Verify` final desta rodada e o `Security`; obter os insumos do item B (owners/credenciais dos gates 1–4, ambiente/janela de 5/7, autorização/participantes de 6) e conduzir o sign-off (8) sobre o candidato certificado vigente em `certification/current.json`; executar os P2 estruturais da [AUD20-22](04_audit/evidence/AUD20/AUD20-22-production-hardening-2026-09-27.md) (release de claim no shutdown, paginação real e observabilidade de produção) em tasks próprias com SPEC; manter `AUD20-19` sem sessão autorizada, 141 vínculos sem adjudicação e staging/produção `NO_GO`.
++- Próxima ação: obter o parecer do crítico independente no opencode para o candidato congelado da Onda 1 (pedido em `docs/04_audit/evidence/CLAW-W1/`); rodar a passada 2 no contêiner de paridade, commitar o selo com recibo só em `docs/04_audit/evidence/` e fazer push (CLAW-W1-06); decidir a renovação da política de tombstone antes de 2026-12-31 (CLAW-W1-07); responder às 6 perguntas abertas da Discovery 0026 (CLAW-W2-01).
+ 
+ - Re-certificação executada em 2026-09-26 com PostgreSQL descartável: `certificationId phase11-fa05bd7ebd77b19e-muj6fvqf`, `CONDITIONAL_GO`/`AAA_CANDIDATE`, 35/35 gates, 16/16 invariantes, `certification:verify:phase11` PASS; ver [recibo](04_audit/evidence/AUD20/AUD20-recert-pg-20260926.md).
+ 
+diff --git a/docs/README.md b/docs/README.md
+index f4d6685..350d00b 100644
+--- a/docs/README.md
++++ b/docs/README.md
+@@ -1,6 +1,6 @@
+-# Documentacao de construcao — cvg-agent-secretary-v2
++# Documentacao de construcao — cvg-claw
+ 
+-Este diretorio contem a documentacao operacional para construir a Esmeralda V2, a `cvg-agent-secretary-v2`.
++Este diretorio contem a documentacao operacional do `cvg-claw`, agente autonomo governado para tarefas hospitalares. O projeto evolui a Esmeralda V2 (`cvg-agent-secretary-v2`), que passa a ser o primeiro preset de agente (secretaria) sobre o mesmo kernel. Documentos e evidencias anteriores mantem o nome original e permanecem historicos. Discovery do novo escopo: [0026](00_discovery/0026_cvg_claw_hospital_autonomous_agent.md).
+ 
+ Estado atual: [CURRENT](CURRENT.md). Revisão incremental mais recente:
+ [NQP-03 request-context](04_audit/evidence/PLAN50-20260923/nqp03-request-context-review-20260924.md),
+diff --git a/docs/ROADMAP_PRODUCAO.md b/docs/ROADMAP_PRODUCAO.md
+index efe1178..7db20f3 100644
+--- a/docs/ROADMAP_PRODUCAO.md
++++ b/docs/ROADMAP_PRODUCAO.md
+@@ -1,3 +1,5 @@
++> Atualização 2026-10-05: o plano corrente até produção é o [roadmap em ondas 0346](03_build/0346_claw_waves_roadmap_20261005.md) com o [backlog 0347](03_build/0347_claw_waves_backlog_20261005.md). Este documento permanece histórico.
++
+ > Atualização13/09/2026: [reauditoria M1](04_audit/0562_prod_m1_reaudit_2026-09-13.md) encontrou e corrigiu oito lacunas adicionais. Revisão CONDITIONAL PASS; tarefas afetadas REVIEW e produção NO-GO. [Pacote de decisões e sequência](02_spec/prod20260913_decision_packet.md). O conteúdo abaixo preserva o planejamento/diagnóstico histórico; estados atuais nos backlogs canônicos.
+ 
+ # Roadmap para produção — PROD-20260913
+diff --git a/package-lock.json b/package-lock.json
+index b830dc0..00296cd 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -1,11 +1,11 @@
+ {
+-  "name": "cvg-agent-secretary-v2",
++  "name": "cvg-claw",
+   "version": "1.0.0",
+   "lockfileVersion": 3,
+   "requires": true,
+   "packages": {
+     "": {
+-      "name": "cvg-agent-secretary-v2",
++      "name": "cvg-claw",
+       "version": "1.0.0",
+       "license": "ISC",
+       "workspaces": [
+@@ -2458,9 +2458,9 @@
+       }
+     },
+     "node_modules/brace-expansion": {
+-      "version": "5.0.9",
+-      "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.9.tgz",
+-      "integrity": "sha512-ScQ4IuvIEF1TMlP7Zt+vjJ//9zlPb2SDcxWxM3bk8s6t6GGdJ7KO1dCcTidOPJKePW30LE/2cT7wCyPho9/Wxg==",
++      "version": "5.0.12",
++      "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.12.tgz",
++      "integrity": "sha512-YovQ3rzhaLMIrDjNDMkNS01tea93qhEhG5xy8f6+R0l+dw3Ki+5sCoIoI942iuLZTHWogWktgwVDhU09iNEimQ==",
+       "dev": true,
+       "license": "MIT",
+       "dependencies": {
+@@ -3081,9 +3081,9 @@
+       }
+     },
+     "node_modules/fast-uri": {
+-      "version": "3.1.6",
+-      "resolved": "https://registry.npmjs.org/fast-uri/-/fast-uri-3.1.6.tgz",
+-      "integrity": "sha512-7Ical1vFEMr0onbVzEDIreM22I4khW+fzyQPwvAFWBp1iwdshSZRsL4jjRvPG9JP1uiqMHRto+YU6R2/CzDz5Q==",
++      "version": "3.1.8",
++      "resolved": "https://registry.npmjs.org/fast-uri/-/fast-uri-3.1.8.tgz",
++      "integrity": "sha512-GZMtZUTNRpOVIECoXwLNZS5xUGE+mVNbTB8h/7Rwh2TFWcBQiPzTgyZi05BF9UMZKkLJv8XBRJTlU7zg8+ZfMg==",
+       "funding": [
+         {
+           "type": "github",
+@@ -3097,9 +3097,9 @@
+       "license": "BSD-3-Clause"
+     },
+     "node_modules/fastify": {
+-      "version": "5.12.3",
+-      "resolved": "https://registry.npmjs.org/fastify/-/fastify-5.12.3.tgz",
+-      "integrity": "sha512-reZ8wce5VNCcufIt9AVtzZa3L4u1j8esikn7OEgHWLVpRpL5R7Y2+Xzj70OUkv5zDfzUAxXZT6cu4Rt0zr3EKA==",
++      "version": "5.12.5",
++      "resolved": "https://registry.npmjs.org/fastify/-/fastify-5.12.5.tgz",
++      "integrity": "sha512-OB2k1dlxs5/NAABqeKV2FUHkSD2BbENsCak8yULVcymn3fHIPDVa9TI3SDnJSWYSllZmSYuZXy2gTnsT+Sut1A==",
+       "funding": [
+         {
+           "type": "github",
+@@ -3170,9 +3170,9 @@
+       }
+     },
+     "node_modules/fastify/node_modules/fast-json-stringify/node_modules/fast-uri": {
+-      "version": "4.1.4",
+-      "resolved": "https://registry.npmjs.org/fast-uri/-/fast-uri-4.1.4.tgz",
+-      "integrity": "sha512-dODXrIxlS9JSdgAnhIUKOosKV1oMtU2VtVw87QRaHzyl5jxO290Ii5tEZfCfzfWNHi3jKWwBSdQj0qIyshdZdQ==",
++      "version": "4.2.1",
++      "resolved": "https://registry.npmjs.org/fast-uri/-/fast-uri-4.2.1.tgz",
++      "integrity": "sha512-TmHQgewjHtMq1E5QKA0tOE0yeYGQs25KZC/ziJpubRtWI15W92e6vPFydWOeZBVROSHBYw/QhD9d5OefdD6LDg==",
+       "funding": [
+         {
+           "type": "github",
+@@ -4965,9 +4965,9 @@
+       }
+     },
+     "node_modules/undici": {
+-      "version": "7.29.0",
+-      "resolved": "https://registry.npmjs.org/undici/-/undici-7.29.0.tgz",
+-      "integrity": "sha512-IDxfleLmmbSskfWSUATiN1nfn2rDuvnMOqb5CWR92iIfojA0Ud+ulOAAEQ57LPr9rWmsreUyf5lwyao+7GNNVw==",
++      "version": "7.30.0",
++      "resolved": "https://registry.npmjs.org/undici/-/undici-7.30.0.tgz",
++      "integrity": "sha512-dkrQXeHSaoamnItlYbmzG0wFYrM0ZwDxCIg0A7aKjTyyhh9svRzCNFEzV+Vm05/yehjCzjDZ31KXfGEjYSztDQ==",
+       "dev": true,
+       "license": "MIT",
+       "engines": {
+@@ -5335,6 +5335,7 @@
+       "name": "@cvg/agent-evals",
+       "version": "1.0.0",
+       "dependencies": {
++        "@cvg/agent-core": "1.0.0",
+         "@cvg/policy-engine": "1.0.0",
+         "@cvg/shared": "1.0.0",
+         "zod": "^4.3.6"
+diff --git a/package.json b/package.json
+index 24b6019..fd28164 100644
+--- a/package.json
++++ b/package.json
+@@ -1,7 +1,7 @@
+ {
+-  "name": "cvg-agent-secretary-v2",
++  "name": "cvg-claw",
+   "version": "1.0.0",
+-  "description": "Enterprise agent secretary runtime for CVG operations",
++  "description": "cvg-claw: governed autonomous agent runtime for hospital operations",
+   "private": true,
+   "workspaces": [
+     "apps/*",
+diff --git a/packages/persistence/src/__tests__/retention-postgres.test.ts b/packages/persistence/src/__tests__/retention-postgres.test.ts
+index 15d1da7..34f2386 100644
+--- a/packages/persistence/src/__tests__/retention-postgres.test.ts
++++ b/packages/persistence/src/__tests__/retention-postgres.test.ts
+@@ -1104,7 +1104,9 @@ describeWithPostgres('AUD20-04 inbound dedupe retention', () => {
+         'msg_recent_tombstone',
+         old,
+         'f'.repeat(64),
+-        new Date('2026-09-01T12:00:00.000Z')
++        // Minimization uses the PostgreSQL clock, so the recent tombstone must
++        // stay inside the 30-day horizon relative to the real run time.
++        new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)
+       ]
+     )
+ 

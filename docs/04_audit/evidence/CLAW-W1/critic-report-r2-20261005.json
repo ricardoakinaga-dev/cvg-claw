@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "kind": "phase11-critic-report",
+  "critic": {
+    "identity": "fresh-independent-critic-CLAW-W1-20261005-current-review; openai/gpt-6.1-sol",
+    "freshContext": true,
+    "builderIdentity": "cvg-lead-agent",
+    "independence": {
+      "criteria": [
+        "fresh-context",
+        "separate-identity",
+        "artifact-only-input",
+        "no-worktree-write",
+        "no-builder-justification"
+      ],
+      "builderJustificationIncluded": false,
+      "builderConclusionReused": false,
+      "writeAccessToWorktree": false
+    }
+  },
+  "binding": {
+    "candidateId": "72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267",
+    "commit": "185f82168a11e813c218f2e6da1c49b671bf451f",
+    "treeHash": "d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569"
+  },
+  "fingerprint": {
+    "algorithm": "sha256-candidate-v1",
+    "before": "ad6087e1cad09d16ec532dc5e893a21e4d4e7759f4f30d1bec6cab4a6ec11865",
+    "after": "ad6087e1cad09d16ec532dc5e893a21e4d4e7759f4f30d1bec6cab4a6ec11865"
+  },
+  "verdict": {
+    "status": "FAIL",
+    "summary": "P1 processual: uma busca grep dirigida a package-lock.json expandiu inesperadamente para o repositório e retornou fragmentos de lock do patch expressamente proibido critic-delta-3dc0093-185f821-20261005.patch. Não retornou conclusões históricas, nem estas foram reutilizadas; contudo, a restrição estrita de entrada não foi integralmente cumprida. Recomendo nova revisão fresh-context usando apenas Read com caminhos absolutos, antes da admissão formal da passada 2. Observações técnicas independentes: inspecionei integralmente as 994 linhas do delta permitido, sem truncamento, e os dois helpers. Não identifiquei P0/P1 técnico ou regressão material no delta. As duas correções preservam a intenção dos testes; o lock acrescenta uma dependência já declarada no manifest histórico e atual. A declaração de delta torna-se fiel quando lida com o complemento factual. P2: certify-pass.sh registra o exit da certificação, mas não o propaga e termina com echo; seu exit não comprova sucesso. P2: a minimização de tombstones ainda expira em 2027-01-01T02:59:59.000Z; a renovação documental não está implementada. Ausências de evidência: nenhum gate, suíte, banco ou validador foi executado por este crítico; não há confirmação própria pós-revisão. Fingerprints before/after repetem o valor medido pelo Lead e dependem de sua conferência posterior, inclusive do sentinel integral externo ao repo. As contagens históricas e o pacote descartado não comprovam gates atuais. Este parecer não certifica 35/35, não fecha a Onda 1 e não concede selo. Staging/produção permanecem NO_GO. Identidade declarada de papel; ID único de sessão e família distinta do Builder não comprovados."
+  },
+  "findings": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 2
+  },
+  "checks": [
+    {
+      "id": "C5:independencia-e-entrada-restrita",
+      "status": "FAIL",
+      "method": "Contexto novo e papel separado; somente ferramentas de leitura, sem shell, escrita, delegação ou busca de rationale. P1 processual observado: grep com path de arquivo retornou também fragmentos de lock do patch proibido. Nenhuma conclusão histórica foi exposta nessa saída ou utilizada, mas não posso declarar cumprimento integral da whitelist. CriticReportSchema não representa essa exceção nos literais de independence; registro-a neste check e no verdict. ID de sessão desconhecido; independência máxima declarada I1, sem família distinta comprovada. Nenhuma mutação observada; sentinel posterior cabe ao Lead.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md"
+      ]
+    },
+    {
+      "id": "C1:binding-historico-frozen-live",
+      "status": "PASS",
+      "method": "Comparei pedido, complemento e medições estruturadas do preflight com as funções de escopo e hashing em scripts/lib/certification-rules.mjs e critic-evidence.mjs. O recibo registra os hashes exigidos, 1217 arquivos frozen/live idênticos e reprodução de 2414ae15 em f8c2639. HEAD d68b191 difere do commit congelado por evidências, conforme name-status recebido. PASS para consistência e binding documental suportado por medição do Lead, não recomputação própria. Before/after são condicionados à conferência posterior do Lead; não medi o sentinel integral.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json"
+      ]
+    },
+    {
+      "id": "C2:delta-integral-lock-e-declaracao",
+      "status": "PASS",
+      "method": "Li o patch permitido completo nas janelas 1–450, 451–700 e 701–994, sem linhas truncadas; li também o helper diff completo. Conferi blocos atuais do package-lock, package.json, packages/agent-evals/package.json, .env.example, AGENTS raiz/operacional e backlog 0347. Lock: brace-expansion 5.0.12, fast-uri 3.1.8/4.2.1, fastify 5.12.5 e undici 7.30.0; URLs npm e integrities acompanham versões. @cvg/agent-core 1.0.0 já consta nos manifests before/after medidos e no atual: sincronização do lock, não nova dependência de produto. O complemento explicita essa entrada e a exclusão dos helpers. Não observei mudança de implementação, migração, threshold ou configuração de teste no delta do candidato; compatibilidade executada e npm audit atuais não foram comprovados por mim.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-candidate-delta-20261005.patch",
+        "docs/04_audit/evidence/CLAW-W1/critic-helper-delta-20261005.patch",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/critic-delta-preflight-20261005.json"
+      ]
+    },
+    {
+      "id": "C2:legitimidade-das-correcoes-de-testes",
+      "status": "PASS",
+      "method": "Inspecionei journeys-api.test.ts e packages/persistence/src/journeys.ts: buildJourneySlots gera ISO no próximo dia UTC, justificando substituir /^2026-/ por formato e instante futuro. Inspecionei retention-postgres.test.ts e retention.ts: minimização usa transaction_timestamp() e horizonte de 30 dias; fixture de cinco dias atrás substitui data fixa sem remover assertions de preservação, reinício, ledger ou replay. Datas fixas restantes usam relógio injetado ou fixtures maduras; a janela de aprovação permanece uma limitação explícita. Hipótese residual: divergência relevante entre relógios Node/PostgreSQL pode afetar a fixture relativa; não houve execução para medi-la. Não identifiquei relaxamento material dos testes.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-candidate-delta-20261005.patch",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md"
+      ]
+    },
+    {
+      "id": "C3:escopo-do-parecer-e-evidencia-executada",
+      "status": "PASS",
+      "method": "Comparei os 14 critérios da barra Phase11.2 com o delta: alterações de governança/binding e supply-chain exigem nova certificação; ausência de delta nos demais caminhos não prova seus gates. Prompt, calculus, orchestration, fencing, effect, lineage, redteam, PostgreSQL, console e preflight não recebem PASS executável deste parecer. Contagens anteriores são históricas; preflights são medições Git, não testes. P2 observado no helper: set -u, echo do exit da certificação e echo final não propagam falha; readiness também não tem prazo. Não inferir sucesso do exit do wrapper: verificar logs, resultados e validadores oficiais da passada 2. Nada foi executado por mim.",
+      "evidence": [
+        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-helper-delta-20261005.patch",
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md"
+      ]
+    },
+    {
+      "id": "C4:limites-de-release-e-tombstone",
+      "status": "PASS",
+      "method": "Conferi limites do pedido/complemento, governança no delta, .env.example e external-gates.json: não há autorização de staging/produção ou efeitos reais; externos permanecem pendentes, não aprovados. O arquivo external-gates cobre quatro estados, não comprova qualificação dos oito gates. P2 observado em retention.ts: validade ainda termina em 2027-01-01T02:59:59.000Z, com rejeição depois desse instante pelo relógio PostgreSQL. O receipt de renovação declara effectiveOnlyAfterCodeChange=true e releaseEligible=false; não implementa a nova janela. Nenhum banco, dado real ou produção foi acessado nesta revisão.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md",
+        "docs/04_audit/evidence/CLAW-W1/critic-candidate-delta-20261005.patch",
+        "docs/04_audit/evidence/CLAW-W1/CLAW-W1-07-tombstone-policy-renewal-decision-20261005.json",
+        "certification/external-gates.json"
+      ]
+    },
+    {
+      "id": "C6:schema-artifacts-e-evidence",
+      "status": "PASS",
+      "method": "Li integralmente CriticReportSchema e verifyCriticReport em scripts/lib/critic-evidence.mjs. Este JSON usa somente campos permitidos, sete checks, evidence declaradas em artifacts e raízes autorizadas; fontes de código aparecem somente em method. Digests/tamanhos foram transcritos das medições fornecidas nos receipts, incluindo seus próprios valores fornecidos no pacote; não os calculei. PASS de inspeção estrutural manual, não validação executada. node scripts/phase11-2-evidence-check.mjs --critic e conferência on-disk continuam necessários antes da passada 2; o verdict FAIL deve impedir aceitação mecânica.",
+      "evidence": [
+        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+        "docs/04_audit/evidence/CLAW-W1/critic-delta-preflight-20261005.json"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
+      "sha256": "56efaf276840b66aa9a5b9d5c38dfeea99520baaf91c95db0b9ee2f0e70092cf",
+      "size": 2919
+    },
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md",
+      "sha256": "e9eca83d41e37cca9cefb06185981cdeb83d1859a33e672bd5fb62a4a6cab356",
+      "size": 2629
+    },
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-candidate-delta-20261005.patch",
+      "sha256": "c3ca3a98b476ed485b32a3a46dabac1a1eb4f56b8b554e509d5419a59cae935d",
+      "size": 86189
+    },
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-helper-delta-20261005.patch",
+      "sha256": "b328a015ea3c88f3c1e52f201e46ae8d72cabc7eafee94015fd809db342ea4ac",
+      "size": 2296
+    },
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
+      "sha256": "ad8d8fdf0a746615f184dab251c37d10447182a634f65dda5b3c345b57833f7d",
+      "size": 6308
+    },
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/critic-delta-preflight-20261005.json",
+      "sha256": "6584f33be7794892cef5e5093e93ffd5671e55561590aab47a45be6ac8721d61",
+      "size": 2490
+    },
+    {
+      "path": "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+      "sha256": "1d477beef8340674c009032168fa7d0c4b99b9af8697af0472903ebb2b9735a6",
+      "size": 4436
+    },
+    {
+      "path": "docs/04_audit/evidence/CLAW-W1/CLAW-W1-07-tombstone-policy-renewal-decision-20261005.json",
+      "sha256": "ddc816bd01c3881bc0cbdeeef05bf9cc5d1b572cd823f9a564cfe7c75857b705",
+      "size": 1461
+    },
+    {
+      "path": "certification/external-gates.json",
+      "sha256": "ccaecccf62b52cb02ce278ec84dd15cf3a0f13ca2d691f7ca20f9b86fed60ca9",
+      "size": 361
+    }
+  ],
+  "disclaimers": {
+    "syntheticOnly": true,
+    "productionBlocked": true
+  }
+}
