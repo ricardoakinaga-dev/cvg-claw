@@ -200,9 +200,12 @@
       "status": "WAITING_HUMAN_APPROVAL",
       "evidence": [
         "docs/04_audit/evidence/AUD06/recovery-20261007/current-candidate-certification-verifier-receipt.json",
-        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass1-receipt.json"
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass1-receipt.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-adjudication.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-teardown.json"
       ],
-      "executionDisposition": "LOCAL_CERTIFICATION_PREPARATION_AUTHORIZED_PUBLICATION_PENDING"
+      "executionDisposition": "LOCAL_CERTIFICATION_PREPARATION_AUTHORIZED_PUBLICATION_PENDING",
+      "rework": "Q13 scoped quota SQL measurement correction; pass2 NO_GO retained; local build and requalification admitted by SPEC addendum"
     },
     {
       "id": "AUD06-14",

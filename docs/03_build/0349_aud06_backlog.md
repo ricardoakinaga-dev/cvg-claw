@@ -93,3 +93,11 @@ AUD06-13 WAITING_HUMAN_APPROVAL somente na fronteira de publicação/CI;
 a preparação de certificação local em cópia provisória permanece autorizada
 e deve ser concretizada antes de solicitar a decisão. Nenhum gate13 aceito.
 A sessão piloto11 segue adiada e os gates externos14 continuam sem aceite.
+
+### Q13 — reparo restrito do scanner — 2026-10-08
+
+Passada2 NO_GO com32/35 gates PASS. Crítico independente admite somente
+reparo de medição da quota pré-kernel: arquivo+tabela exatos, demais escritas
+e efeitos rejeitados, negativos e nova qualificação obrigatórios. SPEC/barra
+v6 congeladas antes de código. AUD06-13 permanece sem publicação/CI aceitos;
+11 adiado e14 sem evidência externa. Fontes runtime da stack intactas.

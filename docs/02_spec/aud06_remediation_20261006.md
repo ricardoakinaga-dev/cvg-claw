@@ -139,3 +139,22 @@ externos/nomeados ou fontes de bind mount. Preservar exit original e limites.
 Provar RED/GREEN no executável fake e com Docker real próprio, inclusive status
 0/37 e preservação de recurso externo ao runner. Q01–Q14 permanecem inalterados;
 não há nova capability ou aprovação de publicação/instituição.
+
+## Addendum corretivo Q13 — scanner de SQL pré-kernel — 2026-10-08
+
+A passada local2 foi NO_GO: o scanner acusa o INSERT de quota já admitido
+em AUD06-10, reconhecendo somente os stores de replay. A crítica independente
+classifica as escritas estáticas em api_rate_limit_buckets como infraestrutura
+de segurança pré-kernel, sem efeito clínico/financeiro. AUD06-13 admite BUILD
+limitado do scanner e testes: permitir somente essa tabela no arquivo exato
+apps/api/src/postgres-rate-limit.ts; outras escritas ou efeitos nesse arquivo
+continuam proibidos. Não acrescentar allowlist irrestrita por arquivo.
+Detectar INSERT INTO, UPDATE de tabela e DELETE FROM, inclusive outra escrita
+em CTE/statement misto; alvos dinâmicos/desconhecidos não recebem exceção.
+Provar negativos clínicos/financeiros/agendamento, variantes de case/espaço/
+comentário, quota fora do arquivo e HTTP/mensagens; preservar positivos dos
+stores anteriores e UPSERT/expiração de quota. Incluir arquivos fonte novos
+ainda não rastreados na mesma fronteira e recusar falha de inventário Git.
+Critérios Q01–Q14 permanecem obrigatórios e inalterados; este é reparo de
+medição, não admissão de efeito N3. Congelar novo candidato e repetir
+qualificação após RED/GREEN e crítica, preservando todos os recibos NO_GO.
