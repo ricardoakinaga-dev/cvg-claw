@@ -184,3 +184,42 @@ exceção de quota. Preservar valores inertes, apóstrofos dobrados, E-strings
 benignas e interpolação pura. RED/GREEN dos casos independentes e requalificação
 obrigatórios; passada3 interrompida143, com cleanup0 e recursos próprios
 ausentes, permanece sem PASS. Q01–Q14/gates reais e autoridade inalterados.
+
+### Rework estrutural Q13 — 2026-10-08
+
+Crítico fresco v8 REJECT,3P1/1P2:99 sondagens,18 PASS inseguros e5 rejeições
+benignas definitivas. Admitir reparo estrutural limitado: análise de chamadas
+por AST (opcionais, parênteses, casts, tags e expressões de template), sem
+confundir literais inertes com chamadas. Análise SQL em helper próprio, lexer
+de comentários/valores/identificadores/dollar-quote e validação do prefixo de
+INSERT/UPDATE/DELETE antes de admitir arquivo+tabela de quota. Gramática
+incerta rejeita a exceção; valores/identificadores quoted não são comandos.
+SQL literal de query deve ser inspecionado separado de expressões executáveis
+no host; reconhecer literais e composição estática, rejeitando alvo desconhecido.
+Preservar stores de replay originais, sem ampliar qualquer fronteira de domínio.
+Lead possui scanner/integrador, masters e testes de caminho público; builder
+SQL possui somente scripts/lib/bypass-sql-audit.mjs e seu teste isolado.
+Contrato helper: auditSqlWrites(text,{allowQuota,allowSecurityStore}) retorna
+lista de achados {id,reason,offset,target?}, incluindo léxico/gramática não
+resolvidos; nenhum efeito/DB/instalação. RED/GREEN independentes, revisão fresca
+e qualificação integrada obrigatórios. Q01–Q14 permanecem inalterados.
+
+A análise AST deve recusar query de expressão não resolvida, inclusive fora
+da quota. O encaminhador preexistente em
+apps/api/src/server/bootstrap-persistence.ts pode ser reconhecido somente
+como propriedade query com arrow direta client.query(text, values), argumentos
+iguais aos próprios parâmetros, sem transformação ou efeito adicional. Não é
+exceção de escrita/tabela; registrar essa passagem no relatório, manter a
+checagem dos consumidores e provar negativos para query literal ou corpo
+alterado nesse arquivo. Strings/tokens inertes não são chamadas; chamadas
+opcionais, membros computados literais, genéricos, casts, call/apply, aliases
+estáticos e tags conhecidos continuam detectáveis. Não alegar análise completa
+de efeitos construídos; revisão do artefato e guards runtime permanecem exigidos.
+
+Constantes SQL só podem ser inferidas quando únicas, const e não reatribuídas
+ou mutadas. Para o readiness existente, enumerar todas as variantes de um
+for-of sobre lista literal const de identificadores (máximo64), sem chamadas
+nas opções; nenhuma tabela ou variante recebe dispensa de análise. Lista
+mutada, tabela desconhecida ou mistura com escrita de domínio rejeita.
+Arrays/casts SQL comuns precisam ser reconhecidos pelo lexer sem esconder
+comandos subsequentes; repetir scanner sobre as59fontes reais após integração.

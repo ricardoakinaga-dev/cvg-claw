@@ -118,3 +118,13 @@ recursos/temp. RED4FAIL/65PASS e GREEN95/95. ASTs executáveis separados de
 texto SQL com placeholders e strings ordinárias/E-prefix/identificadores
 tratados distintamente; léxico não resolvido rejeitado. Crítica e nova
 certificação ainda pendentes. Sem efeito de domínio, CI ou aprovação real.
+
+### Q13 — integração estrutural AST/SQL — 2026-10-08
+
+REJECT fresco v8 preservado (3P1/1P2), RED25FAIL/76PASS e GREEN273/273.
+Scanner público59fontes PASS; helper135/135 com hashes/recibos. Primeira
+integração248PASS/scannerFAIL não é aceite. Calls por AST, lexer SQL e
+gramática validada substituem texto recomposto; readiness const expandido
+sem dispensar nenhuma tabela. Crítica fresca e certificação ainda pendentes.
+Recibos excluded atualizam a qualificação após fonte/masters congelados;
+AUD06-13 continua sem CI/publicação aceitos e11/14 continuam não qualificados.

@@ -18,6 +18,11 @@ const typescriptPackage = path.resolve(
 function copyScanner(root) {
   fs.mkdirSync(path.join(root, 'scripts'), { recursive: true })
   fs.copyFileSync(scanner, path.join(root, 'scripts/phase11-bypass-audit.mjs'))
+  fs.mkdirSync(path.join(root, 'scripts/lib'), { recursive: true })
+  fs.copyFileSync(
+    path.resolve(import.meta.dirname, '../scripts/lib/bypass-sql-audit.mjs'),
+    path.join(root, 'scripts/lib/bypass-sql-audit.mjs')
+  )
   // Parser only: no framework runner or writable target cache is shared.
   fs.mkdirSync(path.join(root, 'node_modules'), { recursive: true })
   fs.symlinkSync(
@@ -49,6 +54,66 @@ function scan(file, source, tracked = true) {
 afterEach(() => {
   for (const root of roots.splice(0))
     fs.rmSync(root, { recursive: true, force: true })
+})
+
+describe('AST calls and transparent SQL forwarding', () => {
+  it('expands every identifier in a fixed readiness table list', () => {
+    expect(
+      scan(
+        'apps/worker/src/kernel-composition.ts',
+        'const tables = ["effect_journal", "outbox_events"] as const; for (const table of tables) { client.query(`SELECT 1 FROM ${table} LIMIT 0`) }'
+      ).exitCode
+    ).toBe(0)
+  })
+
+  it.each([
+    'const tables = ["api_rate_limit_buckets", "billing_items"] as const; for (const table of tables) { client.query(`DELETE FROM ${table} WHERE id=$1`) }',
+    'const tables = ["api_rate_limit_buckets"]; tables.push("billing_items"); for (const table of tables) { client.query(`DELETE FROM ${table} WHERE id=$1`) }',
+    'let sql = "SELECT 1"; sql = "DELETE FROM billing_items"; client.query(sql)',
+    'const config = {text:"SELECT 1"}; config.text = "DELETE FROM billing_items"; client.query(config)'
+  ])(
+    'does not grant mutable or mixed-table SQL a static exemption: %s',
+    (source) => {
+      expect(scan(quotaFile, source).exitCode).toBe(1)
+    }
+  )
+  it.each([
+    String.raw`f\u0065tch("https://example.invalid")`,
+    String.raw`globalThis["f\u0065tch"]("https://example.invalid")`,
+    'const fn = fetch; fn("https://example.invalid")',
+    'const fn = fetch.bind(globalThis); fn("https://example.invalid")',
+    'const run = client.query; run("DELETE FROM billing_items")',
+    '(fetch as typeof fetch)("https://example.invalid")',
+    'fetch!.apply(globalThis,["https://example.invalid"])',
+    'client.query({text:"DELETE FROM billing_items", values:[]})',
+    'client.query(unknownStatement)'
+  ])('rejects actual executable effects or unresolved query: %s', (source) => {
+    const result = scan(quotaFile, source)
+    expect(result.exitCode).toBe(1)
+    expect(
+      result.report.findings.some((f) => f.id === 'source_parse_failed')
+    ).toBe(false)
+  })
+
+  it('recognizes only the existing pure parameter forwarder', () => {
+    const result = scan(
+      'apps/api/src/server/bootstrap-persistence.ts',
+      'const adapter = {query: (text, values) => client.query(text, values)}'
+    )
+    expect(result.exitCode).toBe(0)
+    expect(result.report.forwardingQueries).toHaveLength(1)
+    expect(result.report.forwardingQueries[0].sqlTargetExemption).toBe(false)
+  })
+
+  it.each([
+    'const adapter = {query: (text, values) => client.query("DELETE FROM billing_items", values)}',
+    'const adapter = {query: (text, values) => client.query(text + " DELETE FROM billing_items", values)}',
+    'const adapter = {query: (text, values) => { fetch("https://example.invalid"); return client.query(text, values) }}'
+  ])('does not exempt writes/effects in the forwarding file: %s', (source) => {
+    expect(
+      scan('apps/api/src/server/bootstrap-persistence.ts', source).exitCode
+    ).toBe(1)
+  })
 })
 
 describe('public bypass audit security boundaries', () => {
@@ -466,5 +531,202 @@ describe('separate executable templates and SQL lexical modes', () => {
 
   it('preserves a pure tagged-template interpolation', () => {
     expect(scan(quotaFile, 'sqlTag`SELECT ${safeValue}`').exitCode).toBe(0)
+  })
+})
+
+describe('fresh I1 v8 structural reproductions', () => {
+  it.each([
+    {
+      name: 'host-optional-fetch',
+      source: 'fetch?.("https://example.invalid")',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'host-parenthesized-fetch',
+      source: '(fetch)("https://example.invalid")',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'host-bracket-fetch',
+      source: 'globalThis["fetch"]("https://example.invalid")',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'host-generic-fetch',
+      source: 'fetch<Response>("https://example.invalid")',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'host-optional-message',
+      source: 'sendMessage?.("synthetic")',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'host-parenthesized-message',
+      source: '(sendMessage)("synthetic")',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'host-axios-post',
+      source: 'axios.post("https://example.invalid", {})',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'host-fetch-call',
+      source: 'fetch.call(globalThis,"https://example.invalid")',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'host-sql-value-optional',
+      source:
+        'client.query(`INSERT INTO api_rate_limit_buckets VALUES (\'${fetch?.("https://example.invalid")}\')`)',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'benign-fetch-string',
+      source: 'const example=\'fetch("https://example.invalid")\'',
+      expected: 0,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'benign-message-string',
+      source: 'const example=\'sendMessage("synthetic")\'',
+      expected: 0,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'benign-plain-template',
+      source: 'const example=`fetch("https://example.invalid")`',
+      expected: 0,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'unknown-opaque-quota-update',
+      source:
+        'client.query(`UPDATE api_rate_limit_buckets ${unresolvedGrammar}`)',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'unknown-incomplete-quota-update',
+      source: 'client.query("UPDATE api_rate_limit_buckets")',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'dollar-comment-value-domain-definitive',
+      source: 'client.query("SELECT $$--$$; DELETE FROM patient_records")',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'dollar-comment-domain',
+      source:
+        'client.query("INSERT INTO api_rate_limit_buckets VALUES ($$--$$); DELETE FROM billing_items WHERE id=$1")',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'dollar-select-domain',
+      source:
+        'client.query("SELECT $$--$$; DELETE FROM patient_records WHERE id=$1")',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'tagged-dollar-comment-domain',
+      source:
+        'client.query("INSERT INTO api_rate_limit_buckets VALUES ($value$--$value$); DELETE FROM billing_items WHERE id=$1")',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'dollar-inert-value',
+      source:
+        'client.query("INSERT INTO api_rate_limit_buckets VALUES ($$DELETE FROM billing_items$$)")',
+      expected: 0,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'read-only-quoted-identifier',
+      source:
+        'client.query("SELECT \\"DELETE FROM billing_items\\" FROM api_rate_limit_buckets")',
+      expected: 0,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'read-only-quoted-update-identifier',
+      source:
+        'client.query("SELECT \\"UPDATE appointments SET status\\" FROM api_rate_limit_buckets")',
+      expected: 0,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'quota-comment-external-call',
+      source:
+        'client.query(`SELECT /* ${(fetch)("https://example.invalid")} */ 1`)',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'unknown-leading-semicolon',
+      source:
+        'client.query("; INSERT INTO api_rate_limit_buckets VALUES ($$--$$); DELETE FROM billing_items")',
+      expected: 1,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'read-only-select-for-update',
+      source: 'client.query("SELECT * FROM api_rate_limit_buckets FOR UPDATE")',
+      expected: 0,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    },
+    {
+      name: 'read-only-select-for-update-of',
+      source:
+        'client.query("SELECT * FROM api_rate_limit_buckets AS q FOR UPDATE OF q")',
+      expected: 0,
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      tracked: true
+    }
+  ])('$name', ({ file, source, tracked, expected }) => {
+    const result = scan(file, source, tracked)
+    expect(result.exitCode).toBe(expected)
+    expect(
+      result.report.findings.some((f) => f.id === 'source_parse_failed')
+    ).toBe(false)
   })
 })

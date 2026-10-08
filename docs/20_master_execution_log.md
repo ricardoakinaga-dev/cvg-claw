@@ -8289,3 +8289,12 @@ commit, push ou substituição do certificado principal.
 - evidence: [recibo](04_audit/evidence/AUD06/recovery-20261007/bypass-v8-focused-receipt.json), [crítica](04_audit/evidence/AUD06/recovery-20261007/bypass-v7-reject-I1/focused-review-reject.json), [cleanup](04_audit/evidence/AUD06/recovery-20261007/local-certification-pass3-teardown.json).
 - verification: fonte dc7be3a7 anterior não qualifica o novo reparo. Nenhuma passada interrompida ou teste focado recebe aceite integrado. Source runtime da stack e runner frozen original permanecem intactos. Preservar todos os REJECT/NO_GO e selo histórico principal.
 - limitations: global FAIL/NO_GO; piloto adiado, identidade avaliada, CI/signoff reais pendentes. Nota0577 74,27 é snapshot380ccc52. Recibos futuros não concedem aprovação automaticamente.
+
+# AUD06-13 — integrador AST/SQL pronto para crítica fresca — 2026-10-08
+
+- current_engine: `AUDIT`; task `AUD06-13` `WAITING_HUMAN_APPROVAL` na fronteira de publicação; qualificação local autorizada; staging/produção `NO_GO`.
+- last_completed_action: preservar REJECT fresco v8 (3P1/1P2,99sondagens); reproduzir RED25FAIL/76PASS; integrar chamadas por AST e helper SQL com dollar-quote/gramática validada. GREEN273/273, scanner59fontes PASS e lintAST0. Builder helper135/135, RED7FAIL/127PASS e seus recibos/hashes preservados; aceite independente/novo selo ainda pendentes.
+- next_action: conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.
+- evidence: [integração](04_audit/evidence/AUD06/recovery-20261007/bypass-v9-integrated-focused-receipt.json), [helper](04_audit/evidence/AUD06/recovery-20261007/sql-structural-builder/arrays-IMPLEMENTED.json), [rejeição](04_audit/evidence/AUD06/recovery-20261007/bypass-v8-fresh-reject-I1/focused-review-reject.json).
+- verification: primeira integração248PASS mas scannerFAIL preservada, sem aceite; array casts e readiness const corrigidos com análise de todas as variantes. Encaminhador exato preexistente não concede exceção de tabela. Fonte de runtime da stack continua intacta; candidato anteriorc3847fbb STALE para a nova revisão.
+- limitations: global FAIL/NO_GO; nenhum selo principal, CI, piloto ou gate real novo. Nota0577 74,27 permanece snapshot380ccc52. Recibos excluídos do candidato registram progresso da qualificação; sua ausência/falha jamais concede PASS. Depois do congelamento, nenhuma edição de fonte/masters será feita durante a execução.
