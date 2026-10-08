@@ -96,6 +96,24 @@ for (const relativePath of files) {
   const assignedProperties = new Map()
   const mutatedObjects = new Set()
   const escapedObjects = new Set()
+  const unknownAssignedProperties = new Set()
+  const incompleteCopies = new Set()
+  const unknownValue = ts.factory.createIdentifier('__cvg_unknown_projection__')
+  const absentValue = ts.factory.createVoidExpression(
+    ts.factory.createNumericLiteral(0)
+  )
+  const memberChoices = new Map()
+  const choiceValues = new Map()
+  function memberChoice(owner, key, values) {
+    if (values.length === 1) return values[0]
+    const choices = memberChoices.get(owner) ?? new Map()
+    if (!choices.has(key))
+      choices.set(key, ts.factory.createIdentifier('__cvg_member_candidates__'))
+    memberChoices.set(owner, choices)
+    const choice = choices.get(key)
+    choiceValues.set(choice, values.length ? values : [unknownValue])
+    return choice
+  }
   // A rest/slice AST denotes one allocation, even when several consumers
   // project it. Separate ASTs denote distinct shallow copies.
   const allocations = new Map()
@@ -140,7 +158,8 @@ for (const relativePath of files) {
 
   function undefinedValue(node, seen = new Set()) {
     node = unwrap(node)
-    if (!node) return true
+    if (!node) return null
+    if (node === unknownValue || choiceValues.has(node)) return null
     if (seen.has(node)) return null
     seen.add(node)
     if (
@@ -166,38 +185,134 @@ for (const relativePath of files) {
       ? false
       : null
   }
+  // One own-member table feeds selection, binding, rest and spread reachability.
+  // Candidate stores are unioned without claiming textual execution order.
+  // Incomplete materialization is never evidence that a property is absent.
+  function materializedMembers(object, seen = new Set(), forSql = false) {
+    const entries = new Map(),
+      dependencies = new Set([object])
+    let complete = !incompleteCopies.has(object),
+      length = 0
+    const unknown = () => ({
+      entries,
+      dependencies,
+      complete: false,
+      length: null
+    })
+    if (!object || seen.has(object) || (forSql && !sqlObjectSafe(object)))
+      return unknown()
+    seen.add(object)
+    const set = (key, values) => entries.set(key, [...new Set(values)])
+    const obscure = () => {
+      complete = false
+      for (const [key, values] of entries) set(key, [...values, unknownValue])
+    }
+    if (ts.isObjectLiteralExpression(object)) {
+      for (const prop of object.properties) {
+        if (ts.isSpreadAssignment(prop)) {
+          const source = objectNode(prop.expression, new Set(seen), forSql)
+          if (!source || !ts.isObjectLiteralExpression(source)) {
+            obscure()
+            continue
+          }
+          const nested = materializedMembers(source, new Set(seen), forSql)
+          for (const dependency of nested.dependencies)
+            dependencies.add(dependency)
+          if (!nested.complete) obscure()
+          for (const [key, values] of nested.entries) set(key, values)
+        } else {
+          const key = prop.name ? propertyKey(prop.name) : null
+          if (key === null) {
+            obscure()
+            continue
+          }
+          set(
+            key,
+            ts.isPropertyAssignment(prop)
+              ? [prop.initializer]
+              : ts.isShorthandPropertyAssignment(prop)
+                ? [prop.name]
+                : ts.isMethodDeclaration(prop)
+                  ? [prop]
+                  : [unknownValue, prop]
+          )
+        }
+        if (entries.size > 64) return { ...unknown(), entries: new Map() }
+      }
+    } else if (ts.isArrayLiteralExpression(object)) {
+      for (const item of object.elements) {
+        if (ts.isSpreadElement(item)) {
+          const source = objectNode(item.expression, new Set(seen), forSql)
+          const nested =
+            source && ts.isArrayLiteralExpression(source)
+              ? materializedMembers(source, new Set(seen), forSql)
+              : null
+          if (!nested || !nested.complete || nested.length === null) {
+            obscure()
+            length = null
+            continue
+          }
+          for (const dependency of nested.dependencies)
+            dependencies.add(dependency)
+          if (length !== null) {
+            for (let index = 0; index < nested.length; index++)
+              set(
+                String(length + index),
+                nested.entries.get(String(index)) ?? [absentValue]
+              )
+            length += nested.length
+          }
+        } else if (length !== null) {
+          set(String(length++), [
+            ts.isOmittedExpression(item) ? absentValue : item
+          ])
+        }
+        if (length > 64 || entries.size > 64)
+          return { ...unknown(), entries: new Map() }
+      }
+    } else return unknown()
+    if (unknownAssignedProperties.has(object) || escapedObjects.has(object))
+      obscure()
+    for (const [key, stored] of assignedProperties.get(object) ?? []) {
+      if (forSql) return unknown()
+      set(key, [
+        ...(entries.get(key) ?? (complete ? [] : [unknownValue])),
+        ...stored
+      ])
+      if (
+        ts.isArrayLiteralExpression(object) &&
+        /^(?:0|[1-9][0-9]*)$/.test(key) &&
+        length !== null
+      )
+        length = Math.max(length, Number(key) + 1)
+      if (entries.size > 64 || length > 64)
+        return { ...unknown(), entries: new Map() }
+    }
+    return { entries, dependencies, complete, length }
+  }
   function objectRest(input, excluded, seen = new Set(), site = input) {
     const object = objectNode(input, new Set(seen), false)
-    if (!object || !ts.isObjectLiteralExpression(object) || seen.has(object))
-      return null
-    seen.add(object)
-    const properties = new Map()
-    const dependencies = [object]
-    for (const prop of object.properties) {
-      if (ts.isSpreadAssignment(prop)) {
-        const nested = objectRest(prop.expression, [], new Set(seen))
-        if (!nested) return null
-        dependencies.push(nested)
-        for (const item of nested.properties)
-          properties.set(propertyKey(item.name), item)
-      } else {
-        const key = prop.name ? propertyKey(prop.name) : null
-        if (key === null) return null
-        properties.set(key, prop)
-      }
-      if (properties.size > 64) return null
-    }
-    return allocatedCopy(
+    if (!object || !ts.isObjectLiteralExpression(object)) return unknownValue
+    const info = materializedMembers(object, seen)
+    const properties = [...info.entries]
+      .filter(([key]) => !excluded.includes(key))
+      .map(([key, values]) =>
+        ts.factory.createPropertyAssignment(
+          ts.factory.createStringLiteral(key),
+          memberChoice(object, key, values)
+        )
+      )
+    const copy = allocatedCopy(
       site,
       object,
-      () =>
-        ts.factory.createObjectLiteralExpression(
-          [...properties]
-            .filter(([key]) => !excluded.includes(key))
-            .map(([, value]) => value)
-        ),
-      dependencies
+      () => ts.factory.createObjectLiteralExpression(properties),
+      [...info.dependencies]
     )
+    // Refresh contents after stored candidates are collected, preserving the
+    // AST allocation's identity for every alias and mutation consumer.
+    copy.properties = ts.factory.createNodeArray(properties)
+    if (!info.complete) incompleteCopies.add(copy)
+    return copy
   }
   function bindingSource(decl, forSql = false) {
     const pattern = decl.parent,
@@ -219,11 +334,9 @@ for (const relativePath of files) {
           : null
       if (decl.dotDotDotToken)
         return values
-          ? allocatedCopy(decl, array, () =>
-              ts.factory.createArrayLiteralExpression(values.slice(index))
-            )
-          : null
-      const selected = values?.[index]
+          ? arrayCopy(decl, array, values.slice(index))
+          : unknownValue
+      const selected = values ? (values[index] ?? absentValue) : unknownValue
       return decl.initializer && undefinedValue(selected) === true
         ? decl.initializer
         : (selected ?? null)
@@ -246,6 +359,7 @@ for (const relativePath of files) {
       new Set(),
       forSql
     )
+    if (!selected && decl.initializer) return unknownValue
     return decl.initializer && undefinedValue(selected) === true
       ? decl.initializer
       : (selected ?? null)
@@ -257,23 +371,27 @@ for (const relativePath of files) {
       return !forSql || isConst(decl) ? decl.initializer : null
     return ts.isBindingElement(decl) ? bindingSource(decl, forSql) : null
   }
+  function arrayCopy(site, source, values) {
+    const copy = allocatedCopy(site, source, () =>
+      ts.factory.createArrayLiteralExpression(values)
+    )
+    copy.elements = ts.factory.createNodeArray(values)
+    return copy
+  }
   function arrayValues(array, seen = new Set(), forSql = false) {
-    if (seen.has(array) || (forSql && !sqlObjectSafe(array))) return null
-    seen.add(array)
-    const values = []
-    for (const item of array.elements) {
-      if (ts.isSpreadElement(item)) {
-        const source = objectNode(item.expression, new Set(seen), forSql)
-        const nested =
-          source && ts.isArrayLiteralExpression(source)
-            ? arrayValues(source, new Set(seen), forSql)
-            : null
-        if (!nested) return null
-        values.push(...nested)
-      } else values.push(ts.isOmittedExpression(item) ? null : item)
-      if (values.length > 64) return null
-    }
-    return values
+    const info = materializedMembers(array, seen, forSql)
+    if (!info.complete || info.length === null) return null
+    return Array.from({ length: info.length }, (_, index) =>
+      memberChoice(
+        array,
+        String(index),
+        projectedMemberValues(
+          info.entries.get(String(index)) ?? [absentValue],
+          seen,
+          forSql
+        )
+      )
+    )
   }
   function scalar(node, seen = new Set()) {
     node = unwrap(node)
@@ -338,6 +456,16 @@ for (const relativePath of files) {
     node = unwrap(node)
     if (!node || seen.has(node)) return []
     seen.add(node)
+    if (choiceValues.has(node))
+      return [
+        ...new Set(
+          choiceValues
+            .get(node)
+            .flatMap((value) =>
+              projectValues(value, new Set(seen), forSql, parameterDefaults)
+            )
+        )
+      ]
     if (ts.isIdentifier(node)) {
       const decl = declaration(node)
       if (forSql && mutatedSymbols.has(symbol(node))) return []
@@ -363,6 +491,24 @@ for (const relativePath of files) {
       ts.isPropertyAccessExpression(node) ||
       ts.isElementAccessExpression(node)
     ) {
+      const owners = projectValues(
+        node.expression,
+        new Set(seen),
+        forSql,
+        parameterDefaults
+      )
+      const key = member(node)
+      // Literal array materialization describes own slots. Inherited native
+      // methods still use the existing receiver/method classification path.
+      if (
+        owners.length &&
+        owners.every((owner) => ts.isArrayLiteralExpression(owner)) &&
+        key !== 'length' &&
+        key !== null &&
+        !/^(?:0|[1-9][0-9]*)$/.test(key) &&
+        owners.every((owner) => !assignedProperties.get(owner)?.has(key))
+      )
+        return [node]
       const values = selectedValues(
         node.expression,
         member(node),
@@ -371,12 +517,6 @@ for (const relativePath of files) {
         parameterDefaults
       )
       if (values.length) return values
-      const owners = projectValues(
-        node.expression,
-        new Set(seen),
-        forSql,
-        parameterDefaults
-      )
       return owners.some(
         (owner) =>
           ts.isObjectLiteralExpression(owner) ||
@@ -412,9 +552,7 @@ for (const relativePath of files) {
         return null
       })
       if (bounds.includes(null)) return []
-      const copy = allocatedCopy(node, source, () =>
-        ts.factory.createArrayLiteralExpression(values.slice(...bounds))
-      )
+      const copy = arrayCopy(node, source, values.slice(...bounds))
       return forSql && !sqlObjectSafe(copy) ? [] : [copy]
     }
     if (
@@ -441,104 +579,76 @@ for (const relativePath of files) {
       forSql,
       parameterDefaults
     )) {
-      const stored = assignedProperties.get(owner)?.get(key) ?? []
-      if (forSql && stored.length) return []
-      const value = literalPropertyValue(owner, key, new Set(), forSql)
+      if (
+        !(
+          ts.isObjectLiteralExpression(owner) ||
+          ts.isArrayLiteralExpression(owner)
+        )
+      )
+        continue
+      const value = literalPropertyValue(owner, key, new Set(seen), forSql)
       if (value) values.push(value)
-      if (!forSql) values.push(...stored)
     }
+    return projectedMemberValues(values, seen, forSql, parameterDefaults)
+  }
+  function projectedMemberValues(
+    values,
+    seen = new Set(),
+    forSql = false,
+    parameterDefaults = false
+  ) {
     return [
       ...new Set(
-        values.flatMap((value) =>
-          projectValues(value, new Set(seen), forSql, parameterDefaults)
-        )
+        values
+          .flatMap((value) =>
+            projectValues(value, new Set(seen), forSql, parameterDefaults)
+          )
+          .map((value) =>
+            value !== unknownValue &&
+            ts.isIdentifier(value) &&
+            !declaration(value) &&
+            !effects.has(value.text) &&
+            value.text !== 'query' &&
+            value.text !== 'undefined'
+              ? unknownValue
+              : value
+          )
       )
     ]
   }
   function propertyValue(node, key, seen = new Set(), forSql = true) {
     const values = selectedValues(node, key, seen, forSql)
-    return values.length === 1 ? values[0] : null
+    // An arbitrary factory result is outside this bounded materialization;
+    // retain the existing callable classification rather than inventing its
+    // members. A default consumer still records it as unknown, never absent.
+    if (!values.length && !objectNode(node, new Set(seen), forSql)) return null
+    return values.length === 1
+      ? values[0]
+      : forSql
+        ? unknownValue
+        : memberChoice(node, key, values)
   }
-  // Fold properties in runtime order. An unresolved override erases knowledge,
-  // while a later explicit property can establish it again without executing a getter.
-  function literalPropertyValue(node, key, seen = new Set(), forSql = true) {
-    if (key === null) return null
-    const object = objectNode(node, new Set(seen), forSql)
-    if (object && ts.isArrayLiteralExpression(object)) {
-      const values = arrayValues(object, new Set(seen), forSql)
-      if (!values) return null
-      if (key === 'length')
-        return ts.factory.createNumericLiteral(values.length)
-      return /^(?:0|[1-9][0-9]*)$/.test(key)
-        ? (values[Number(key)] ?? null)
-        : null
-    }
-    if (
-      !object ||
-      !ts.isObjectLiteralExpression(object) ||
-      seen.has(object) ||
-      (forSql && !sqlObjectSafe(object))
-    )
-      return null
-    seen.add(object)
-    let value = null
-    for (const prop of object.properties) {
-      if (ts.isSpreadAssignment(prop)) {
-        const spread = objectNode(prop.expression, new Set(seen), forSql)
-        if (!spread || !ts.isObjectLiteralExpression(spread)) value = null
-        else {
-          const info = propertyPresence(spread, key, new Set(seen), forSql)
-          if (info.present) value = info.value
-        }
-        continue
-      }
-      const name = prop.name ? propertyKey(prop.name) : null
-      if (name === null) {
-        value = null
-        continue
-      }
-      if (name !== key) continue
-      value = ts.isPropertyAssignment(prop)
-        ? prop.initializer
-        : ts.isShorthandPropertyAssignment(prop)
-          ? prop.name
-          : ts.isMethodDeclaration(prop)
-            ? prop
-            : null
-    }
-    return value
+  function literalPropertyValue(object, key, seen = new Set(), forSql = true) {
+    if (key === null) return unknownValue
+    const info = materializedMembers(object, seen, forSql)
+    if (ts.isArrayLiteralExpression(object) && key === 'length')
+      return info.complete && info.length !== null
+        ? ts.factory.createNumericLiteral(info.length)
+        : unknownValue
+    const values = info.entries.get(key)
+    return values
+      ? memberChoice(object, key, values)
+      : info.complete
+        ? absentValue
+        : unknownValue
   }
   function propertyPresence(object, key, seen, forSql) {
-    if (seen.has(object) || mutatedObjects.has(object))
-      return { present: true, value: null }
-    seen.add(object)
-    let present = false,
-      value = null
-    for (const prop of object.properties) {
-      if (ts.isSpreadAssignment(prop)) {
-        const spread = objectNode(prop.expression, new Set(seen), forSql)
-        const info =
-          spread && ts.isObjectLiteralExpression(spread)
-            ? propertyPresence(spread, key, new Set(seen), forSql)
-            : { present: true, value: null }
-        if (info.present) {
-          present = true
-          value = info.value
-        }
-      } else {
-        const name = prop.name ? propertyKey(prop.name) : null
-        if (name === null || name === key) {
-          present = true
-          value =
-            name === key && ts.isPropertyAssignment(prop)
-              ? prop.initializer
-              : name === key && ts.isShorthandPropertyAssignment(prop)
-                ? prop.name
-                : null
-        }
-      }
+    const info = materializedMembers(object, seen, forSql)
+    const values = info.entries.get(key)
+    return {
+      present: Boolean(values) || !info.complete,
+      value: values ? memberChoice(object, key, values) : null
     }
-    return { present, value }
   }
   function importEffect(decl) {
     let source = decl
@@ -555,6 +665,7 @@ for (const relativePath of files) {
   function callee(node, seen = new Set()) {
     node = unwrap(node)
     if (!node || seen.has(node)) return null
+    if (node === unknownValue) return 'unresolved_static_callable'
     const projected = projectValues(node, new Set(seen))
     seen.add(node)
     if (projected.length && !projected.includes(node)) {
@@ -877,23 +988,22 @@ for (const relativePath of files) {
       for (const value of assignedContainerValues.get(node) ?? [])
         reachableOrigins(value, seen, found)
     }
-    if (ts.isObjectLiteralExpression(node)) {
-      for (const prop of node.properties) {
-        if (ts.isPropertyAssignment(prop))
-          reachableOrigins(prop.initializer, seen, found)
-        else if (ts.isShorthandPropertyAssignment(prop))
-          reachableOrigins(prop.name, seen, found)
-        else if (ts.isSpreadAssignment(prop))
-          reachableOrigins(prop.expression, seen, found)
-        else if (
-          ts.isMethodDeclaration(prop) ||
-          ts.isGetAccessorDeclaration(prop) ||
-          ts.isSetAccessorDeclaration(prop)
-        )
-          reachableOrigins(prop, seen, found)
+    if (
+      ts.isObjectLiteralExpression(node) ||
+      ts.isArrayLiteralExpression(node)
+    ) {
+      // A spread copies own values, not its source container. Only references
+      // contained in the materialized copy escape; primitive copies stay distinct.
+      const info = materializedMembers(node)
+      for (const values of info.entries.values())
+        for (const value of values) reachableOrigins(value, seen, found)
+      if (!info.complete) {
+        const spreads = ts.isObjectLiteralExpression(node)
+          ? node.properties.filter(ts.isSpreadAssignment)
+          : node.elements.filter(ts.isSpreadElement)
+        for (const spread of spreads)
+          reachableOrigins(spread.expression, seen, found)
       }
-    } else if (ts.isArrayLiteralExpression(node)) {
-      for (const item of node.elements) reachableOrigins(item, seen, found)
     } else if (ts.isFunctionLike(node)) {
       // A closure exposes returned references. Captured references that are
       // only read cannot be acquired by its caller. Mutation and calls in its
@@ -941,6 +1051,11 @@ for (const relativePath of files) {
     seen.add(node)
     if (projected.length && !projected.includes(node)) {
       for (const value of projected) receiverOrigins(value, seen, found)
+      return found
+    }
+    if (ts.isGetAccessorDeclaration(node)) {
+      for (const origin of reachableOrigins(node))
+        if (origin !== node) found.add(origin)
       return found
     }
     if (ts.isIdentifier(node)) {
@@ -1020,7 +1135,10 @@ for (const relativePath of files) {
   function callableValue(node, seen = new Set()) {
     node = unwrap(node)
     if (!node || seen.has(node)) return null
+    const projected = projectValues(node, new Set(seen))
     seen.add(node)
+    if (projected.length === 1 && projected[0] !== node)
+      return callableValue(projected[0], seen)
     if (
       ts.isArrowFunction(node) ||
       ts.isFunctionExpression(node) ||
@@ -1038,7 +1156,10 @@ for (const relativePath of files) {
       ts.isPropertyAccessExpression(node) ||
       ts.isElementAccessExpression(node)
     )
-      return callableValue(propertyValue(node.expression, member(node)), seen)
+      return callableValue(
+        propertyValue(node.expression, member(node), new Set(), false),
+        seen
+      )
     return null
   }
   function boundArguments(node, seen = new Set()) {
@@ -1178,11 +1299,7 @@ for (const relativePath of files) {
               : null
           return assignedPairs(
             item.expression,
-            values
-              ? allocatedCopy(item, array, () =>
-                  ts.factory.createArrayLiteralExpression(values.slice(index))
-                )
-              : null
+            values ? arrayCopy(item, array, values.slice(index)) : unknownValue
           )
         }
         return assignedPairs(
@@ -1318,6 +1435,11 @@ for (const relativePath of files) {
             add(properties, name, pair.value)
             assignedProperties.set(owner, properties)
           }
+          if (
+            name === null ||
+            node.operatorToken.kind !== ts.SyntaxKind.EqualsToken
+          )
+            unknownAssignedProperties.add(owner)
         }
       }
     }

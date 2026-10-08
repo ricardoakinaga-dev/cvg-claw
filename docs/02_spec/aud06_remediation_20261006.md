@@ -327,3 +327,19 @@ sem inferir SQL de origem mutada ou tratar cópia distinta como alias do origina
 RED/GREEN, corpus59, novo freeze e crítica fresca obrigatórios. Helper/runtime
 intactos, passada4 não iniciada, candidato017c464a rejeitado. Q01–Q14, piloto
 adiado, publicação e gates reais permanecem inalterados.
+
+### Rework de membros armazenados e spreads Q13 — 2026-10-08
+
+Crítico fresco v13 REJECT2P1/1P2,155 execuções (137 sondagens,17replays e
+1inventário;1controle sintático inválido descartado),28.081 entradas intactas
+inclusive atime. Registrar antes de BUILD: object rest e array binding/rest
+precisam selecionar propriedades/índices literais armazenados, transportando
+callables conhecidos, bind prefixes e referências rasas. Projeção incompleta
+ou desconhecida não equivale a propriedade ausente para aplicar um default.
+Spreads conhecidos copiam os valores próprios; cópia primitiva não expõe o
+container original, mas referências internas a objetos continuam expostas.
+Manter identidades de alocação, limites conservadores, negativo de alias
+modificado e positivos de cópias distintas. RED/GREEN, corpus59, freeze e
+crítica fresca obrigatórios. Helper/runtime intactos; passada4 não iniciada;
+candidato06dab37e rejeitado. Q01–Q14, piloto adiado e autoridade de publicação
+permanecem inalterados.

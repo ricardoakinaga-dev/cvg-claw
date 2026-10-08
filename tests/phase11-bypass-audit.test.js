@@ -2204,3 +2204,258 @@ describe('v13 copy spread source dependencies', () => {
     expect(scan(quotaFile, source).exitCode).toBe(expected)
   })
 })
+
+describe('v14 stored member materialization and spread copies', () => {
+  it.each([
+    {
+      name: 'paired-array-direct',
+      source: 'const a=[fetch]; const [f]=a; f("x");',
+      expected: 1
+    },
+    {
+      name: 'paired-array-pure-stored',
+      source: 'const a=[]; a[0]=()=>1; const [f]=a; f("x");',
+      expected: 0
+    },
+    {
+      name: 'replay-assignment-1',
+      source: 'const a=[]; a[0]=fetch; const [f]=a; f("x");',
+      expected: 1
+    },
+    {
+      name: 'replay-benign-rest-array',
+      source:
+        'const q={text:"SELECT 1"};\nconst box=[]; box[0]=q.text; const [...copy]=box;\nfunction rewrite(b){b.x="DELETE FROM appointments"; b[0]="DELETE FROM appointments";}\nrewrite(copy);\nclient.query(q);',
+      expected: 0
+    },
+    {
+      name: 'replay-benign-rest-object',
+      source:
+        'const q={text:"SELECT 1"};\nconst box={}; box.x=q.text; const {...copy}=box;\nfunction rewrite(b){b.x="DELETE FROM appointments"; b[0]="DELETE FROM appointments";}\nrewrite(copy);\nclient.query(q);',
+      expected: 0
+    },
+    {
+      name: 'replay-benign-stored-default-array',
+      source:
+        'const b=[]; b[0]=()=>1; const [...c]=b;\nconst [f=()=>1]=c;\nf("x");',
+      expected: 0
+    },
+    {
+      name: 'replay-benign-stored-default-object',
+      source:
+        'const b={}; b.f=()=>1; const {...c}=b;\nconst {f=()=>1}=c;\nf("x");',
+      expected: 0
+    },
+    {
+      name: 'replay-proof-literal-rest-array',
+      source:
+        'const q={text:"SELECT 1"};\nconst box=[q]; const [...copy]=box;\nfunction rewrite(b){b[0].text="DELETE FROM appointments";}\nrewrite(copy);\nclient.query(q);',
+      expected: 1
+    },
+    {
+      name: 'replay-proof-literal-rest-object',
+      source:
+        'const q={text:"SELECT 1"};\nconst box={x:q}; const {...copy}=box;\nfunction rewrite(b){b.x.text="DELETE FROM appointments";}\nrewrite(copy);\nclient.query(q);',
+      expected: 1
+    },
+    {
+      name: 'replay-proof-object-rest',
+      source:
+        'const q={text:"SELECT 1"};\nconst {...b}=q;\nfunction change(x){x.text="DELETE FROM appointments";}\nchange(b);\nclient.query(q);',
+      expected: 0
+    },
+    {
+      name: 'replay-proof-object-spread',
+      source:
+        'const q={text:"SELECT 1"};\nconst b={...q};\nfunction change(x){x.text="DELETE FROM appointments";}\nchange(b);\nclient.query(q);',
+      expected: 0
+    },
+    {
+      name: 'replay-proof-primitive-rest',
+      source:
+        'const a=["appointments"];\nconst [...b]=a;\nfunction change(xs){ xs[0]="DELETE FROM appointments"; }\nchange(b);\nfor(const t of a){client.query(`SELECT 1 FROM ${t}`);}',
+      expected: 0
+    },
+    {
+      name: 'replay-proof-primitive-spread',
+      source:
+        'const a=["appointments"];\nconst b=[...a];\nfunction change(xs){ xs[0]="DELETE FROM appointments"; }\nchange(b);\nfor(const t of a){client.query(`SELECT 1 FROM ${t}`);}',
+      expected: 0
+    },
+    {
+      name: 'replay-proof-rest-array',
+      source:
+        'const q={text:"SELECT 1"};\nconst box=[]; box[0]=q; const [...copy]=box;\nfunction rewrite(b){b[0].text="DELETE FROM appointments";}\nrewrite(copy);\nclient.query(q);',
+      expected: 1
+    },
+    {
+      name: 'replay-proof-rest-object',
+      source:
+        'const q={text:"SELECT 1"};\nconst box={}; box.x=q; const {...copy}=box;\nfunction rewrite(b){b.x.text="DELETE FROM appointments";}\nrewrite(copy);\nclient.query(q);',
+      expected: 1
+    },
+    {
+      name: 'replay-proof-stored-default-array',
+      source:
+        'const b=[]; b[0]=fetch; const [...c]=b;\nconst [f=()=>1]=c;\nf("x");',
+      expected: 1
+    },
+    {
+      name: 'replay-proof-stored-default-object',
+      source:
+        'const b={}; b.f=fetch; const {...c}=b;\nconst {f=()=>1}=c;\nf("x");',
+      expected: 1
+    },
+    {
+      name: 'stored-object-bound-prefix',
+      source:
+        'const b={};b.q=client.query.bind(client,"DELETE FROM appointments");const {...c}=b;const {q=()=>1}=c;q("SELECT 1")',
+      expected: 1
+    },
+    {
+      name: 'stored-array-bound-prefix',
+      source:
+        'const b=[];b[0]=client.query.bind(client,"DELETE FROM appointments");const [...c]=b;const [q=()=>1]=c;q("SELECT 1")',
+      expected: 1
+    },
+    {
+      name: 'stored-object-pure-present-default',
+      source: 'const b={};b.f=()=>1;const {...c}=b;const {f=fetch}=c;f()',
+      expected: 0
+    },
+    {
+      name: 'stored-array-pure-present-default',
+      source: 'const b=[];b[0]=()=>1;const [...c]=b;const [f=fetch]=c;f()',
+      expected: 0
+    },
+    {
+      name: 'object-unknown-spread-not-absent',
+      source: 'const b={...unknown};const {f=()=>1}=b;f()',
+      expected: 1
+    },
+    {
+      name: 'array-unknown-spread-not-absent',
+      source: 'const b=[...unknown];const [f=()=>1]=b;f()',
+      expected: 1
+    },
+    {
+      name: 'object-unknown-override-not-absent',
+      source: 'const b={f:fetch,...unknown};const {f=()=>1}=b;f()',
+      expected: 1
+    },
+    {
+      name: 'array-unknown-stored-not-absent',
+      source: 'const b=[];b[0]=unknown;const [f=()=>1]=b;f()',
+      expected: 1
+    },
+    {
+      name: 'object-known-absent-default',
+      source: 'const b={};const {f=()=>1}=b;f()',
+      expected: 0
+    },
+    {
+      name: 'array-known-absent-default',
+      source: 'const b=[];const [f=()=>1]=b;f()',
+      expected: 0
+    },
+    {
+      name: 'stored-object-spread-ref',
+      source:
+        'const q={text:"SELECT 1"};const b={};b.x=q;mutate({...b});client.query(q)',
+      expected: 1
+    },
+    {
+      name: 'stored-array-spread-ref',
+      source:
+        'const q={text:"SELECT 1"};const b=[];b[0]=q;mutate([...b]);client.query(q)',
+      expected: 1
+    },
+    {
+      name: 'stored-object-spread-primitive',
+      source:
+        'const q={text:"SELECT 1"};const b={};b.x=q.text;mutate({...b});client.query(q)',
+      expected: 0
+    },
+    {
+      name: 'stored-array-spread-primitive',
+      source:
+        'const q={text:"SELECT 1"};const b=[];b[0]=q.text;mutate([...b]);client.query(q)',
+      expected: 0
+    },
+    {
+      name: 'object-spread-shallow-ref',
+      source:
+        'const q={text:"SELECT 1"};const b={x:q};mutate({...b});client.query(q)',
+      expected: 1
+    },
+    {
+      name: 'array-spread-shallow-ref',
+      source:
+        'const q={text:"SELECT 1"};const b=[q];mutate([...b]);client.query(q)',
+      expected: 1
+    },
+    {
+      name: 'object-spread-mutated-copy',
+      source:
+        'const q={text:"SELECT 1"};const b={...q};mutate(b);client.query(b)',
+      expected: 1
+    },
+    {
+      name: 'object-spread-mutated-source',
+      source:
+        'const q={text:"SELECT 1"};mutate(q);const b={...q};client.query(b)',
+      expected: 1
+    },
+    {
+      name: 'object-spread-distinct-copies',
+      source:
+        'const q={text:"SELECT 1"};const a={...q};const b={...q};mutate(a);client.query(b)',
+      expected: 0
+    },
+    {
+      name: 'object-rest-mutated-stored-source',
+      source:
+        'const b={};b.text="SELECT 1";mutate(b);const {...c}=b;client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'object-unknown-slot-not-absent',
+      source: 'const b={};b[key]=fetch;const {f=()=>1}=b;f()',
+      expected: 1
+    },
+    {
+      name: 'array-unknown-slot-not-absent',
+      source: 'const b=[];b[key]=fetch;const [f=()=>1]=b;f()',
+      expected: 1
+    },
+    {
+      name: 'object-spread-explicit-present',
+      source: 'const b={...unknown,f:()=>1};const {f=fetch}=b;f()',
+      expected: 0
+    },
+    {
+      name: 'object-over-limit-not-absent',
+      source:
+        'const b={k0:0,k1:0,k2:0,k3:0,k4:0,k5:0,k6:0,k7:0,k8:0,k9:0,k10:0,k11:0,k12:0,k13:0,k14:0,k15:0,k16:0,k17:0,k18:0,k19:0,k20:0,k21:0,k22:0,k23:0,k24:0,k25:0,k26:0,k27:0,k28:0,k29:0,k30:0,k31:0,k32:0,k33:0,k34:0,k35:0,k36:0,k37:0,k38:0,k39:0,k40:0,k41:0,k42:0,k43:0,k44:0,k45:0,k46:0,k47:0,k48:0,k49:0,k50:0,k51:0,k52:0,k53:0,k54:0,k55:0,k56:0,k57:0,k58:0,k59:0,k60:0,k61:0,k62:0,k63:0,k64:0};const {f=()=>1}=b;f()',
+      expected: 1
+    },
+    {
+      name: 'array-over-limit-not-absent',
+      source:
+        'const b=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];const [f=()=>1]=b;f()',
+      expected: 1
+    },
+    {
+      name: 'array-stored-slot-literal-index',
+      source: 'const a=[()=>1];a[0]=fetch;const [f]=a;f()',
+      expected: 1
+    },
+    {
+      name: 'object-stored-slot-spread-callable',
+      source: 'const a={};a.f=fetch;const b={...a};b.f()',
+      expected: 1
+    }
+  ])('$name', ({ source, expected }) => {
+    expect(scan(quotaFile, source).exitCode).toBe(expected)
+  })
+})

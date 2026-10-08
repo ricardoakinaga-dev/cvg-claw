@@ -213,10 +213,12 @@
         "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v11-fresh-reject-I1/report.json",
         "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v12-integrated-focused-receipt.json",
         "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v12-fresh-reject-I1/report.json",
-        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v13-builder/receipt-IMPLEMENTED.json"
+        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v13-builder/receipt-IMPLEMENTED.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v13-fresh-reject-I1/report.raw.txt",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v14-builder/receipt-IMPLEMENTED.json"
       ],
       "executionDisposition": "LOCAL_CERTIFICATION_PREPARATION_AUTHORIZED_PUBLICATION_PENDING",
-      "rework": "v13 shared origin projection/stable rest-slice identity integrated; builder RED19FAIL/28PASS, GREEN811/811, CLI70/70 and corpus59PASS; independent critique/newfreeze/canonical pending; pass4 NOT_STARTED"
+      "rework": "v14 implemented855/855 zero skips;44/44CLI; fresh independent critique and canonical required; pass4 NOT_STARTED"
     },
     {
       "id": "AUD06-14",
