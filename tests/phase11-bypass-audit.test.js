@@ -6386,3 +6386,328 @@ describe('v19 known HTTP member callable identity', () => {
     expect(result.exitCode).toBe(expected)
   })
 })
+
+describe('v20 known intrinsic callable own-store identity', () => {
+  it.each([
+    {
+      name: 'intrinsic-selected-store',
+      source: "const a=fetch.call; a.slot=sendMessage; fetch.call.slot('x');\n",
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'intrinsic-store-direct-alias',
+      source: "const a=fetch.call; a.slot=sendMessage; a.slot('x');\n",
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'own-store-direct-control',
+      source: "const a=fetch; a.slot=sendMessage; a.slot('x');\n",
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'intrinsic-selected-pure-control',
+      source: "const a=fetch.call; a.slot=()=>0; fetch.call.slot('x');\n",
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'intrinsic-distinct-store',
+      source:
+        "const a=fetch.call; a.slot=sendMessage; fetch.apply.slot?.('x');\n",
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'call-channel',
+      source: 'const a=fetch.call;a.slot=sendMessage;a.slot("x")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'call-pure',
+      source: 'const a=fetch.call;a.slot=()=>0;a.slot("x")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'call-read',
+      source: 'const a=fetch.call;a.slot=db.query;a.slot("SELECT 1")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'call-domain',
+      source:
+        'const a=fetch.call;a.slot=db.query;a.slot("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'call-inert',
+      source: 'const a=fetch.call;a.slot=sendMessage;',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-channel',
+      source: 'const a=fetch.apply;a.slot=sendMessage;a.slot("x")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-pure',
+      source: 'const a=fetch.apply;a.slot=()=>0;a.slot("x")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-read',
+      source: 'const a=fetch.apply;a.slot=db.query;a.slot("SELECT 1")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-domain',
+      source:
+        'const a=fetch.apply;a.slot=db.query;a.slot("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-inert',
+      source: 'const a=fetch.apply;a.slot=sendMessage;',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bind-channel',
+      source: 'const a=fetch.bind;a.slot=sendMessage;a.slot("x")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bind-pure',
+      source: 'const a=fetch.bind;a.slot=()=>0;a.slot("x")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bind-read',
+      source: 'const a=fetch.bind;a.slot=db.query;a.slot("SELECT 1")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bind-domain',
+      source:
+        'const a=fetch.bind;a.slot=db.query;a.slot("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bind-inert',
+      source: 'const a=fetch.bind;a.slot=sendMessage;',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'holder-channel',
+      source:
+        'const h={f:fetch.call};h.f.slot=sendMessage;fetch.call.slot("x")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'holder-pure',
+      source: 'const h={f:fetch.call};h.f.slot=()=>0;fetch.call.slot("x")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'array-channel',
+      source: 'const h=[fetch.call];h[0].slot=sendMessage;fetch.call.slot("x")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'array-pure',
+      source: 'const h=[fetch.call];h[0].slot=()=>0;fetch.call.slot("x")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'destructure-channel',
+      source: 'const {call:a}=fetch;a.slot=sendMessage;fetch.call.slot("x")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'destructure-pure',
+      source: 'const {call:a}=fetch;a.slot=()=>0;fetch.call.slot("x")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'index-channel',
+      source:
+        'const key="call";const a=fetch[key];a.slot=sendMessage;fetch.call.slot("x")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'index-pure',
+      source:
+        'const key="call";const a=fetch[key];a.slot=()=>0;fetch.call.slot("x")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'rest-channel',
+      source:
+        'const [...a]=[fetch.call];a[0].slot=sendMessage;fetch.call.slot("x")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'rest-pure',
+      source: 'const [...a]=[fetch.call];a[0].slot=()=>0;fetch.call.slot("x")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'spread-channel',
+      source:
+        'const h={...{f:fetch.call}};h.f.slot=sendMessage;fetch.call.slot("x")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'spread-pure',
+      source: 'const h={...{f:fetch.call}};h.f.slot=()=>0;fetch.call.slot("x")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-layer-bind-inert',
+      source:
+        'const op=fetch.bind;op.slot=()=>0;const f=op.call(fetch,null,"url")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-layer-bind-invoke',
+      source:
+        'const op=fetch.bind;op.slot=()=>0;const f=op.call(fetch,null,"url");f()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-layer-call-read',
+      source:
+        'const op=db.query.call;op.slot=()=>0;op.call(db.query,db,"SELECT 1")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-layer-call-domain',
+      source:
+        'const op=db.query.call;op.slot=()=>0;op.call(db.query,db,"DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-layer-apply-read',
+      source:
+        'const op=db.query.apply;op.slot=()=>0;op.call(db.query,db,["SELECT 1"])',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-layer-apply-domain',
+      source:
+        'const op=db.query.apply;op.slot=()=>0;op.call(db.query,db,["DELETE FROM appointments"])',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'stored-query-config-read',
+      source:
+        'const a=fetch.call;a.slot=db.query;const q={text:"SELECT 1"};a.slot(q);client.query(q)',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'stored-query-config-mutated',
+      source:
+        'const a=fetch.call;a.slot=db.query;const q={text:"SELECT 1"};expose(q);a.slot(q)',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'stored-prefix-domain',
+      source:
+        'const a=fetch.call;a.slot=db.query.bind(db,"DELETE FROM appointments");const h=[a];h[0].slot()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'stored-prefix-read',
+      source:
+        'const a=fetch.call;a.slot=db.query.bind(db,"SELECT 1");const h=[a];h[0].slot()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'stored-prefix-quota',
+      source:
+        'const a=fetch.call;a.slot=db.query.bind(db,"INSERT INTO api_rate_limit_buckets (namespace) VALUES ($1)");const h=[a];h[0].slot()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'stored-prefix-mixed',
+      source:
+        'const a=fetch.call;a.slot=db.query.bind(db,"SELECT 1;DELETE FROM appointments");const h=[a];h[0].slot()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'same-native-operation-channel',
+      source: 'fetch.call.slot=sendMessage;const a=query.call;a.slot("x")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'same-native-operation-pure',
+      source: 'fetch.call.slot=()=>0;const a=query.call;a.slot("x")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-selection-channel',
+      source:
+        'const f=fetch.bind(null);const a=f.call;a.slot=sendMessage;f.call.slot("x")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-selection-pure',
+      source:
+        'const f=fetch.bind(null);const a=f.call;a.slot=()=>0;f.call.slot("x")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    }
+  ])('$name', ({ source, expected, path: fixturePath }) => {
+    const result = scan(fixturePath, source)
+    expect(result.report.scannedFiles).toBe(1)
+    expect(
+      result.report.findings.some(({ id }) =>
+        ['source_parse_failed', 'source_inventory_failed'].includes(id)
+      )
+    ).toBe(false)
+    expect(result.exitCode).toBe(expected)
+  })
+})

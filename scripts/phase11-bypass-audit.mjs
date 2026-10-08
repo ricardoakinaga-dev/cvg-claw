@@ -98,6 +98,8 @@ for (const relativePath of files) {
   const externalAllocations = new Map()
   const externalCallables = new Map()
   const callableMembers = new Map()
+  const intrinsicAllocations = new Map()
+  const intrinsicCallables = new Map()
   const boundAllocations = new Map()
   const boundCallables = new Map()
   const projectingCalls = new Set()
@@ -612,7 +614,9 @@ for (const relativePath of files) {
         const stored = assignedProperties.get(owner)?.get(key) ?? []
         values.push(...stored)
         if (!stored.length) {
-          const known = externalMemberOrigin(owner, key)
+          const known =
+            intrinsicMemberOrigin(owner, key, new Set(seen)) ??
+            externalMemberOrigin(owner, key)
           if (known) values.push(known)
         }
         if (
@@ -737,6 +741,25 @@ for (const relativePath of files) {
     }
     callableMembers.set(owner, members)
     return members.get(key)
+  }
+  // Supported native operations are generic function objects, distinct from
+  // their selection receiver. Same-operation references share own stores;
+  // their descriptor, not an HTTP effect or captured receiver, drives calls.
+  function intrinsicMemberOrigin(owner, key, seen) {
+    if (!nativeFunctionMember(owner, key, seen)) return null
+    if (!intrinsicAllocations.has(key)) {
+      const origin = ts.factory.createArrowFunction(
+        undefined,
+        undefined,
+        [],
+        undefined,
+        undefined,
+        ts.factory.createNumericLiteral(0)
+      )
+      intrinsicAllocations.set(key, origin)
+      intrinsicCallables.set(origin, key)
+    }
+    return intrinsicAllocations.get(key)
   }
   // Known external callables have an identity independent of each reference
   // and of each bind allocation. Lexical declarations never share a global
@@ -1427,6 +1450,7 @@ for (const relativePath of files) {
   function intrinsicOperation(expression, seen = new Set()) {
     const target = unwrap(expression)
     if (!target || seen.has(target) || seen.size >= 64) return null
+    if (intrinsicCallables.has(target)) return intrinsicCallables.get(target)
     const projected = projectValues(target, new Set(seen))
     seen.add(target)
     if (projected.length && !projected.includes(target))

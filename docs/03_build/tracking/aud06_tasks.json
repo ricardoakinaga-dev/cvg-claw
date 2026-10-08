@@ -227,10 +227,12 @@
         "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v18-builder/receipt-IMPLEMENTED.json",
         "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v18-fresh-invalid-I1/report.json",
         "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v18-fresh-reject-I1/report.json",
-        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v19-builder/receipt-IMPLEMENTED.json"
+        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v19-builder/receipt-IMPLEMENTED.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v19-fresh-reject-I1/report.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v20-builder/receipt-IMPLEMENTED.json"
       ],
       "executionDisposition": "LOCAL_CERTIFICATION_PREPARATION_AUTHORIZED_PUBLICATION_PENDING",
-      "rework": "v19 implemented1441/1441 zero skips;42/42CLI; fresh independent critique and canonical required; pass4 NOT_STARTED"
+      "rework": "v20 implemented1489/1489 zero skips;48/48CLI; fresh independent critique and canonical required; pass4 NOT_STARTED"
     },
     {
       "id": "AUD06-14",
