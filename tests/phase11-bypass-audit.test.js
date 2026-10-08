@@ -6082,3 +6082,307 @@ describe('v18 known external callable identity', () => {
     expect(result.exitCode).toBe(expected)
   })
 })
+
+describe('v19 known HTTP member callable identity', () => {
+  it.each([
+    {
+      name: 'confirm-default-get',
+      source:
+        "import transport from 'axios';\ntransport.get.call = () => 0;\ntransport.get.call(null, 'https://synthetic.invalid');\n",
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'confirm-default-post',
+      source:
+        "import transport from 'axios';\ntransport.get.call = () => 0;\ntransport.post.call(null, 'https://synthetic.invalid');\n",
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'confirm-default-post-unmodified',
+      source:
+        "import transport from 'axios';\ntransport.post.call(null,'https://synthetic.invalid');",
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'confirm-default-selected-get',
+      source:
+        "import transport from 'axios';\nconst first=transport.get;\nconst second=transport.get;\nfirst.call=()=>0;\nsecond.call(null,'https://synthetic.invalid');",
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'confirm-default-selected-post',
+      source:
+        "import transport from 'axios';\nconst first=transport.get;\nconst second=transport.post;\nfirst.call=()=>0;\nsecond.call(null,'https://synthetic.invalid');",
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'holder-same',
+      source:
+        'import t from \'axios\';const h={f:t.get};h.f.call=()=>0;t.get.call(null,"url")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'holder-distinct',
+      source:
+        'import t from \'axios\';const h={f:t.get};h.f.call=()=>0;t.post.call(null,"url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'array-same',
+      source:
+        'import t from \'axios\';const h=[t.get];h[0].call=()=>0;t.get.call(null,"url")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'array-distinct',
+      source:
+        'import t from \'axios\';const h=[t.get];h[0].call=()=>0;t.post.call(null,"url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'destructure-same',
+      source:
+        'import t from \'axios\';const {get:f}=t;f.call=()=>0;t.get.call(null,"url")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'destructure-distinct',
+      source:
+        'import t from \'axios\';const {get:f}=t;f.call=()=>0;t.post.call(null,"url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'index-same',
+      source:
+        'import t from \'axios\';const key="get";const f=t[key];f.call=()=>0;t.get.call(null,"url")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'index-distinct',
+      source:
+        'import t from \'axios\';const key="get";const f=t[key];f.call=()=>0;t.post.call(null,"url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'rest-holder-same',
+      source:
+        'import t from \'axios\';const {...h}={f:t.get};h.f.call=()=>0;t.get.call(null,"url")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'rest-holder-distinct',
+      source:
+        'import t from \'axios\';const {...h}={f:t.get};h.f.call=()=>0;t.post.call(null,"url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'call-same',
+      source: 'import t from \'axios\';t.get.call=()=>0;t.get.call(null,"url")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'call-distinct',
+      source:
+        'import t from \'axios\';t.get.call=()=>0;t.post.call(null,"url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-same',
+      source:
+        'import t from \'axios\';t.get.apply=()=>0;t.get.apply(null,["url"])',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-distinct',
+      source:
+        'import t from \'axios\';t.get.apply=()=>0;t.post.apply(null,["url"])',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bind-same',
+      source: 'import t from \'axios\';t.get.bind=()=>0;t.get.bind(null,"url")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bind-distinct',
+      source:
+        'import t from \'axios\';t.get.bind=()=>0;const f=t.post.bind(null,"url");f()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'stored-prefix-domain',
+      source:
+        'import t from \'axios\';t.get.custom=db.query.bind(db,"DELETE FROM appointments");const h=[t.get];const f=h[0].custom;f()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'stored-prefix-read',
+      source:
+        'import t from \'axios\';t.get.custom=db.query.bind(db,"SELECT 1");const h=[t.get];const f=h[0].custom;f()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'stored-prefix-quota',
+      source:
+        'import t from \'axios\';t.get.custom=db.query.bind(db,"INSERT INTO api_rate_limit_buckets (namespace) VALUES ($1)");const h=[t.get];const f=h[0].custom;f()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'stored-prefix-mixed',
+      source:
+        'import t from \'axios\';t.get.custom=db.query.bind(db,"SELECT 1; DELETE FROM appointments");const h=[t.get];const f=h[0].custom;f()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'stored-query-domain',
+      source:
+        'import t from \'axios\';t.get.call=db.query;t.get.call("DELETE FROM appointments","SELECT 1")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'stored-query-read',
+      source:
+        'import t from \'axios\';t.get.call=db.query;t.get.call("SELECT 1")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'member-custom-pure',
+      source:
+        "import t from 'axios';t.get.custom=()=>0;const f=t.get;f.custom()",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'member-custom-query-mutated',
+      source:
+        'import t from \'axios\';t.get.custom=db.query;const q={text:"SELECT 1"};expose(q);t.get.custom(q)',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'member-custom-query-read',
+      source:
+        'import t from \'axios\';t.get.custom=db.query;const q={text:"SELECT 1"};t.get.custom(q);client.query(q)',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'same-export-member-shared',
+      source:
+        "import t from 'axios';import b from 'axios';t.get.call=()=>0;b.get.call(null,'url')",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'same-export-member-distinct',
+      source:
+        "import t from 'axios';import b from 'axios';t.get.call=()=>0;b.post.call(null,'url')",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'different-module-member-isolated',
+      source:
+        "import t from 'axios';import b from 'got';t.get.call=()=>0;b.get.call(null,'url')",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'owner-not-member',
+      source: 'import t from \'axios\';t.get.call=()=>0;t.call(null,"url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'member-direct-effect',
+      source: 'import t from \'axios\';t.get.call=()=>0;t.get("url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-bind-inert',
+      source:
+        'import t from \'axios\';t.get.call=()=>0;const f=t.post.bind(null,"url")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-bind-invoke',
+      source:
+        'import t from \'axios\';t.get.call=()=>0;const f=t.post.bind(null,"url");f()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-layer-inert',
+      source:
+        'import t from \'axios\';t.get.call=()=>0;const op=t.post.bind;const f=op.apply(t.post,[null,"url"])',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-layer-invoke',
+      source:
+        'import t from \'axios\';t.get.call=()=>0;const op=t.post.bind;const f=op.apply(t.post,[null,"url"]);f()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'distinct-bound-allocation',
+      source:
+        'import t from \'axios\';const a=t.get.bind(null),b=t.get.bind(null);a.call=()=>0;b.call(null,"url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'same-bound-alias',
+      source:
+        'import t from \'axios\';const a=t.get.bind(null),b=a;a.call=()=>0;b.call(null,"url")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'lexical-shadow',
+      source:
+        "import t from 'axios';t.get.call=()=>0;function scope(){const t={post:()=>0};t.post()}",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    }
+  ])('$name', ({ source, expected, path: fixturePath }) => {
+    const result = scan(fixturePath, source)
+    expect(result.report.scannedFiles).toBe(1)
+    expect(
+      result.report.findings.some(({ id }) =>
+        ['source_parse_failed', 'source_inventory_failed'].includes(id)
+      )
+    ).toBe(false)
+    expect(result.exitCode).toBe(expected)
+  })
+})

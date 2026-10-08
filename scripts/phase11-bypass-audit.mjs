@@ -97,6 +97,7 @@ for (const relativePath of files) {
   const mutatedObjects = new Set()
   const externalAllocations = new Map()
   const externalCallables = new Map()
+  const callableMembers = new Map()
   const boundAllocations = new Map()
   const boundCallables = new Map()
   const projectingCalls = new Set()
@@ -610,6 +611,10 @@ for (const relativePath of files) {
         if (!ts.isFunctionLike(owner)) continue
         const stored = assignedProperties.get(owner)?.get(key) ?? []
         values.push(...stored)
+        if (!stored.length) {
+          const known = externalMemberOrigin(owner, key)
+          if (known) values.push(known)
+        }
         if (
           unknownAssignedProperties.has(owner) ||
           (escapedObjects.has(owner) &&
@@ -706,6 +711,32 @@ for (const relativePath of files) {
     if (['axios', 'got', 'undici'].includes(module)) return module
     if (module === 'node-fetch') return 'fetch'
     return null
+  }
+  // The classifier already recognizes HTTP members of these callables.
+  // Selection gives each such member its own stable identity, instead of
+  // returning its owner. Intrinsic operations retain their existing path.
+  function externalMemberOrigin(owner, key) {
+    const effect = externalCallables.get(owner)
+    if (
+      !['axios', 'got', 'undici'].includes(effect) ||
+      ['call', 'apply', 'bind'].includes(key)
+    )
+      return null
+    const members = callableMembers.get(owner) ?? new Map()
+    if (!members.has(key)) {
+      const origin = ts.factory.createArrowFunction(
+        undefined,
+        undefined,
+        [],
+        undefined,
+        undefined,
+        ts.factory.createNumericLiteral(0)
+      )
+      members.set(key, origin)
+      externalCallables.set(origin, effect)
+    }
+    callableMembers.set(owner, members)
+    return members.get(key)
   }
   // Known external callables have an identity independent of each reference
   // and of each bind allocation. Lexical declarations never share a global
@@ -1218,7 +1249,9 @@ for (const relativePath of files) {
             }
         }
       }
-      if (!resolved) for (const owner of owners) found.add(owner)
+      if (!resolved)
+        for (const owner of owners)
+          if (!ts.isFunctionLike(owner)) found.add(owner)
       return found
     }
     if (
