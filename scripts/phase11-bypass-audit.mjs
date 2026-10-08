@@ -92,6 +92,7 @@ for (const relativePath of files) {
   const checker = program.getTypeChecker()
   const mutatedSymbols = new Set()
   const assignedValues = new Map()
+  const assignedContainerValues = new Map()
   const mutatedObjects = new Set()
   const symbol = (node) =>
     node.parent &&
@@ -100,7 +101,11 @@ for (const relativePath of files) {
       ? checker.getShorthandAssignmentValueSymbol(node.parent)
       : checker.getSymbolAtLocation(node)
   const declaration = (node) => {
-    const declarations = symbol(node)?.declarations
+    // TypeScript also records expando property-assignment identifiers on a
+    // function symbol. They are not additional lexical binding declarations.
+    const declarations = symbol(node)?.declarations?.filter(
+      (decl) => !ts.isIdentifier(decl)
+    )
     return declarations?.length === 1 ? declarations[0] : null
   }
   const isConst = (decl) =>
@@ -282,7 +287,7 @@ for (const relativePath of files) {
       const decl = declaration(node)
       if (symbol(node) && mutatedSymbols.has(symbol(node))) {
         const values = [
-          ...(ts.isVariableDeclaration(decl) && decl.initializer
+          ...(decl && ts.isVariableDeclaration(decl) && decl.initializer
             ? [decl.initializer]
             : []),
           ...(assignedValues.get(symbol(node)) ?? [])
@@ -304,7 +309,7 @@ for (const relativePath of files) {
           ts.isNamespaceImport(decl))
       )
         return importEffect(decl)
-      if (decl && ts.isFunctionDeclaration(decl)) return null
+      if (decl && ts.isFunctionDeclaration(decl) && decl.body) return null
       if (decl && ts.isBindingElement(decl)) {
         const container = decl.parent.parent
         if (
@@ -359,6 +364,7 @@ for (const relativePath of files) {
       return callee(base, new Set(seen))
     const baseEffect = callee(base, new Set(seen))
     if (['axios', 'got', 'undici'].includes(baseEffect)) return baseEffect
+    if (baseEffect === 'fetch' && name === 'default') return 'fetch'
     const object = objectNode(base)
     if (object && ts.isObjectLiteralExpression(object)) {
       if (mutatedObjects.has(object)) return 'unresolved_static_callable'
@@ -373,6 +379,7 @@ for (const relativePath of files) {
     seen.add(node)
     if (ts.isIdentifier(node)) {
       const decl = declaration(node)
+      if (decl && ts.isFunctionDeclaration(decl)) return decl
       if (decl && ts.isVariableDeclaration(decl))
         return mutationOrigin(decl.initializer, seen)
       if (decl && ts.isBindingElement(decl)) {
@@ -396,7 +403,14 @@ for (const relativePath of files) {
       }
       return null
     }
-    if (ts.isObjectLiteralExpression(node) || ts.isArrayLiteralExpression(node))
+    if (
+      ts.isObjectLiteralExpression(node) ||
+      ts.isArrayLiteralExpression(node) ||
+      ts.isArrowFunction(node) ||
+      ts.isFunctionExpression(node) ||
+      ts.isFunctionDeclaration(node) ||
+      ts.isMethodDeclaration(node)
+    )
       return node
     if (
       ts.isPropertyAccessExpression(node) ||
@@ -424,7 +438,8 @@ for (const relativePath of files) {
       !(
         ts.isArrowFunction(node) ||
         ts.isFunctionExpression(node) ||
-        ts.isMethodDeclaration(node)
+        ts.isMethodDeclaration(node) ||
+        ts.isFunctionDeclaration(node)
       )
     )
       return false
@@ -448,8 +463,208 @@ for (const relativePath of files) {
         pure = false
       ts.forEachChild(child, inspect)
     }
+    if (!node.body) return false
     inspect(node.body)
     return pure
+  }
+  function reachableOrigins(node, seen = new Set(), found = new Set()) {
+    node = unwrap(node)
+    if (!node || seen.has(node)) return found
+    seen.add(node)
+    // These expressions expose a primitive value, not the objects read to
+    // produce it. Their executable calls/mutations are audited separately.
+    if (
+      ts.isStringLiteralLike(node) ||
+      ts.isNumericLiteral(node) ||
+      ts.isTemplateExpression(node)
+    )
+      return found
+    if (
+      ts.isBinaryExpression(node) &&
+      [
+        ts.SyntaxKind.PlusToken,
+        ts.SyntaxKind.MinusToken,
+        ts.SyntaxKind.AsteriskToken,
+        ts.SyntaxKind.SlashToken,
+        ts.SyntaxKind.PercentToken,
+        ts.SyntaxKind.EqualsEqualsToken,
+        ts.SyntaxKind.EqualsEqualsEqualsToken,
+        ts.SyntaxKind.ExclamationEqualsToken,
+        ts.SyntaxKind.ExclamationEqualsEqualsToken,
+        ts.SyntaxKind.LessThanToken,
+        ts.SyntaxKind.GreaterThanToken,
+        ts.SyntaxKind.LessThanEqualsToken,
+        ts.SyntaxKind.GreaterThanEqualsToken
+      ].includes(node.operatorToken.kind)
+    )
+      return found
+    if (ts.isIdentifier(node)) {
+      const decl = declaration(node)
+      if (decl && ts.isVariableDeclaration(decl))
+        reachableOrigins(decl.initializer, seen, found)
+      if (decl && ts.isBindingElement(decl))
+        reachableOrigins(bindingInitializer(node), seen, found)
+      if (decl && ts.isFunctionDeclaration(decl))
+        reachableOrigins(decl, seen, found)
+      for (const value of assignedValues.get(symbol(node)) ?? [])
+        reachableOrigins(value, seen, found)
+      return found
+    }
+    if (
+      ts.isPropertyAccessExpression(node) ||
+      ts.isElementAccessExpression(node)
+    ) {
+      const value = propertyValue(
+        node.expression,
+        member(node),
+        new Set(),
+        false
+      )
+      if (value) reachableOrigins(value, seen, found)
+      else reachableOrigins(node.expression, seen, found)
+      return found
+    }
+    if (
+      ts.isObjectLiteralExpression(node) ||
+      ts.isArrayLiteralExpression(node) ||
+      ts.isArrowFunction(node) ||
+      ts.isFunctionExpression(node) ||
+      ts.isFunctionDeclaration(node) ||
+      ts.isMethodDeclaration(node)
+    ) {
+      found.add(node)
+      for (const value of assignedContainerValues.get(node) ?? [])
+        reachableOrigins(value, seen, found)
+    }
+    if (ts.isObjectLiteralExpression(node)) {
+      for (const prop of node.properties) {
+        if (ts.isPropertyAssignment(prop))
+          reachableOrigins(prop.initializer, seen, found)
+        else if (ts.isShorthandPropertyAssignment(prop))
+          reachableOrigins(prop.name, seen, found)
+        else if (ts.isSpreadAssignment(prop))
+          reachableOrigins(prop.expression, seen, found)
+        else if (ts.isMethodDeclaration(prop))
+          reachableOrigins(prop, seen, found)
+      }
+    } else if (ts.isArrayLiteralExpression(node)) {
+      for (const item of node.elements) reachableOrigins(item, seen, found)
+    } else if (ts.isFunctionLike(node)) {
+      // A closure exposes returned references. Captured references that are
+      // only read cannot be acquired by its caller. Mutation and calls in its
+      // body are still discovered by the normal whole-AST pass.
+      const returns = (body) => {
+        if (ts.isReturnStatement(body)) {
+          reachableOrigins(body.expression, seen, found)
+          return
+        }
+        if (ts.isFunctionLike(body)) return
+        ts.forEachChild(body, returns)
+      }
+      if (node.body && ts.isBlock(node.body)) returns(node.body)
+      else if (node.body) reachableOrigins(node.body, seen, found)
+    } else
+      ts.forEachChild(node, (child) => {
+        reachableOrigins(child, seen, found)
+      })
+    return found
+  }
+  function assignmentLeaves(node) {
+    node = unwrap(node)
+    if (!node) return []
+    if (ts.isObjectLiteralExpression(node))
+      return node.properties.flatMap((prop) =>
+        ts.isPropertyAssignment(prop)
+          ? assignmentLeaves(prop.initializer)
+          : ts.isShorthandPropertyAssignment(prop)
+            ? assignmentLeaves(prop.name)
+            : ts.isSpreadAssignment(prop)
+              ? assignmentLeaves(prop.expression)
+              : []
+      )
+    if (ts.isArrayLiteralExpression(node))
+      return node.elements.flatMap(assignmentLeaves)
+    if (ts.isSpreadElement(node)) return assignmentLeaves(node.expression)
+    if (
+      ts.isBinaryExpression(node) &&
+      node.operatorToken.kind === ts.SyntaxKind.EqualsToken
+    )
+      return assignmentLeaves(node.left)
+    return [node]
+  }
+  function callableValue(node, seen = new Set()) {
+    node = unwrap(node)
+    if (!node || seen.has(node)) return null
+    seen.add(node)
+    if (
+      ts.isArrowFunction(node) ||
+      ts.isFunctionExpression(node) ||
+      ts.isFunctionDeclaration(node) ||
+      ts.isMethodDeclaration(node)
+    )
+      return node
+    if (ts.isIdentifier(node)) {
+      const decl = declaration(node)
+      return decl && ts.isFunctionDeclaration(decl)
+        ? decl
+        : callableValue(bindingInitializer(node), seen)
+    }
+    if (
+      ts.isPropertyAccessExpression(node) ||
+      ts.isElementAccessExpression(node)
+    )
+      return callableValue(propertyValue(node.expression, member(node)), seen)
+    return null
+  }
+  function boundArguments(node, seen = new Set()) {
+    node = unwrap(node)
+    if (!node || seen.has(node)) return null
+    seen.add(node)
+    if (ts.isIdentifier(node)) {
+      const value = bindingInitializer(node)
+      return value ? boundArguments(value, seen) : []
+    }
+    if (ts.isCallExpression(node) && member(node.expression) === 'bind') {
+      const prior = boundArguments(unwrap(node.expression).expression, seen)
+      if (prior === null) return null
+      const prefix = []
+      for (const arg of node.arguments.slice(1)) {
+        if (ts.isSpreadElement(arg)) {
+          const array = objectNode(arg.expression, new Set(), true)
+          if (
+            !array ||
+            !ts.isArrayLiteralExpression(array) ||
+            mutatedObjects.has(array) ||
+            array.elements.some(ts.isSpreadElement)
+          )
+            return null
+          prefix.push(...array.elements)
+        } else prefix.push(arg)
+      }
+      return [...prior, ...prefix]
+    }
+    return []
+  }
+  function invocationSqlArgument(node) {
+    if (!ts.isCallExpression(node)) return node.template
+    let target = unwrap(node.expression),
+      args = [...node.arguments]
+    if (member(target) === 'call') {
+      args = args.slice(1)
+      target = unwrap(target.expression)
+    } else if (member(target) === 'apply') {
+      const array = objectNode(args[1], new Set(), true)
+      args =
+        array &&
+        ts.isArrayLiteralExpression(array) &&
+        !mutatedObjects.has(array)
+          ? [...array.elements]
+          : null
+      target = unwrap(target.expression)
+    }
+    const prefix = boundArguments(target)
+    if (prefix === null) return null
+    return prefix.length ? prefix[0] : args?.[0]
   }
   const readMethods = new Set([
     'join',
@@ -485,9 +700,71 @@ for (const relativePath of files) {
       }
     }
   }
+  for (const node of nodes) {
+    if (
+      !ts.isBinaryExpression(node) ||
+      node.operatorToken.kind < ts.SyntaxKind.FirstAssignment ||
+      node.operatorToken.kind > ts.SyntaxKind.LastAssignment
+    )
+      continue
+    for (const leaf of assignmentLeaves(node.left)) {
+      if (
+        !(
+          ts.isPropertyAccessExpression(leaf) ||
+          ts.isElementAccessExpression(leaf)
+        )
+      )
+        continue
+      const owner = mutationOrigin(leaf.expression)
+      if (owner) {
+        const values = assignedContainerValues.get(owner) ?? []
+        values.push(node.right)
+        assignedContainerValues.set(owner, values)
+      }
+    }
+  }
+  function auditCoercion(expression) {
+    for (const owner of reachableOrigins(expression)) {
+      if (!ts.isObjectLiteralExpression(owner)) continue
+      for (const name of ['toString', 'valueOf']) {
+        const info = propertyPresence(owner, name, new Set(), false)
+        const hook = propertyValue(owner, name, new Set(), false)
+        if (info.present && !pureLocalCallable(hook)) mutatedObjects.add(owner)
+      }
+      if (
+        owner.properties.some(
+          (prop) =>
+            prop.name &&
+            ts.isComputedPropertyName(prop.name) &&
+            ts.isPropertyAccessExpression(prop.name.expression) &&
+            prop.name.expression.expression.getText(file) === 'Symbol' &&
+            !symbol(prop.name.expression.expression) &&
+            prop.name.expression.name.text === 'toPrimitive'
+        )
+      )
+        mutatedObjects.add(owner)
+    }
+  }
   // Discover all mutation/escape sites before inferring any query. Aliases are
   // chased to object identities even when a different alias was already tainted.
   for (const node of nodes) {
+    if (
+      ts.isTemplateExpression(node) &&
+      !ts.isTaggedTemplateExpression(node.parent)
+    )
+      for (const span of node.templateSpans) auditCoercion(span.expression)
+    if (
+      ts.isBinaryExpression(node) &&
+      [
+        ts.SyntaxKind.PlusToken,
+        ts.SyntaxKind.MinusToken,
+        ts.SyntaxKind.AsteriskToken,
+        ts.SyntaxKind.SlashToken
+      ].includes(node.operatorToken.kind)
+    ) {
+      auditCoercion(node.left)
+      auditCoercion(node.right)
+    }
     let target = null
     if (
       ts.isBinaryExpression(node) &&
@@ -504,39 +781,72 @@ for (const relativePath of files) {
       target = node.operand
     if (ts.isDeleteExpression(node)) target = node.expression
     if (target) {
-      if (ts.isIdentifier(unwrap(target)))
-        mutatedSymbols.add(symbol(unwrap(target)))
-      const origin = mutationOrigin(target)
-      if (origin) mutatedObjects.add(origin)
+      for (const leaf of assignmentLeaves(target)) {
+        if (ts.isIdentifier(leaf)) mutatedSymbols.add(symbol(leaf))
+        const origin = mutationOrigin(leaf)
+        if (origin) mutatedObjects.add(origin)
+      }
     }
-    if (!ts.isCallExpression(node)) continue
-    const expr = unwrap(node.expression),
+    if (
+      !(
+        ts.isCallExpression(node) ||
+        ts.isNewExpression(node) ||
+        ts.isTaggedTemplateExpression(node)
+      )
+    )
+      continue
+    const expr = unwrap(
+        ts.isTaggedTemplateExpression(node) ? node.tag : node.expression
+      ),
       name = member(expr)
-    let receiver =
+    const effect = callee(expr)
+    const receiver =
       ts.isPropertyAccessExpression(expr) || ts.isElementAccessExpression(expr)
         ? expr.expression
         : expr
     const receiverObject = mutationOrigin(receiver)
-    const effect = callee(expr)
     const localMember =
       name &&
       (ts.isPropertyAccessExpression(expr) ||
         ts.isElementAccessExpression(expr))
         ? propertyValue(expr.expression, name)
         : null
+    const bindConstruction =
+      ts.isCallExpression(node) &&
+      name === 'bind' &&
+      (effects.has(effect) ||
+        effect === 'query' ||
+        Boolean(callableValue(receiver)))
+    if (bindConstruction) continue
+    const nativeRead =
+      receiverObject &&
+      ts.isArrayLiteralExpression(receiverObject) &&
+      readMethods.has(name) &&
+      !mutatedObjects.has(receiverObject)
     if (
       receiverObject &&
-      !readMethods.has(name) &&
+      !nativeRead &&
       !effects.has(effect) &&
       effect !== 'query' &&
-      !pureLocalCallable(localMember)
+      !pureLocalCallable(localMember) &&
+      !pureLocalCallable(callableValue(expr))
     )
-      mutatedObjects.add(receiverObject)
-    for (const arg of node.arguments) {
-      const origin = mutationOrigin(arg)
-      if (origin && effect !== 'query') mutatedObjects.add(origin)
+      for (const origin of reachableOrigins(receiver))
+        mutatedObjects.add(origin)
+    if (nativeRead)
+      for (const origin of reachableOrigins(receiver))
+        if (origin !== receiverObject) mutatedObjects.add(origin)
+    const args = ts.isTaggedTemplateExpression(node)
+      ? ts.isTemplateExpression(node.template)
+        ? node.template.templateSpans.map((span) => span.expression)
+        : []
+      : [...(node.arguments ?? [])]
+    for (const [index, arg] of args.entries()) {
+      if (effect === 'query' && index === 0) continue
+      for (const origin of reachableOrigins(arg)) mutatedObjects.add(origin)
     }
   }
+
   function finiteLoopValues(expression) {
     if (!ts.isIdentifier(expression)) return null
     const reference = symbol(expression)
@@ -574,7 +884,7 @@ for (const relativePath of files) {
     }
     return null
   }
-  function sqlVariants(node, seen = new Set()) {
+  function sqlVariants(node, seen = new Set(), allowConfig = true) {
     node = unwrap(node)
     if (!node || seen.has(node)) return null
     seen.add(node)
@@ -582,15 +892,23 @@ for (const relativePath of files) {
       return [node.text]
     if (ts.isIdentifier(node)) {
       const loop = finiteLoopValues(node)
-      return loop ?? sqlVariants(bindingInitializer(node, true), seen)
+      return (
+        loop ?? sqlVariants(bindingInitializer(node, true), seen, allowConfig)
+      )
     }
     if (ts.isObjectLiteralExpression(node))
-      return sqlVariants(propertyValue(node, 'text'), seen)
+      return allowConfig
+        ? sqlVariants(propertyValue(node, 'text'), seen, false)
+        : null
     if (
       ts.isPropertyAccessExpression(node) ||
       ts.isElementAccessExpression(node)
     )
-      return sqlVariants(propertyValue(node.expression, member(node)), seen)
+      return sqlVariants(
+        propertyValue(node.expression, member(node)),
+        seen,
+        allowConfig
+      )
     const cross = (left, right) =>
       left.length * right.length > 64
         ? null
@@ -599,8 +917,15 @@ for (const relativePath of files) {
       ts.isBinaryExpression(node) &&
       node.operatorToken.kind === ts.SyntaxKind.PlusToken
     ) {
-      const left = sqlVariants(node.left, new Set(seen)),
-        right = sqlVariants(node.right, new Set(seen))
+      const left = sqlVariants(node.left, new Set(seen), false),
+        right = sqlVariants(node.right, new Set(seen), false)
+      const opaque = (part) =>
+        ts.isIdentifier(unwrap(part)) && !declaration(unwrap(part))
+      if (
+        (left === null && !opaque(node.left)) ||
+        (right === null && !opaque(node.right))
+      )
+        return null
       return left === null && right === null
         ? null
         : cross(left ?? [placeholder], right ?? [placeholder])
@@ -608,9 +933,9 @@ for (const relativePath of files) {
     if (ts.isTemplateExpression(node)) {
       let result = [node.head.text]
       for (const span of node.templateSpans) {
-        const choices = sqlVariants(span.expression, new Set(seen))
+        const choices = sqlVariants(span.expression, new Set(seen), false)
         const expr = unwrap(span.expression)
-        if (choices === null && ts.isIdentifier(expr) && declaration(expr))
+        if (choices === null && !(ts.isIdentifier(expr) && !declaration(expr)))
           return null
         result = cross(result, choices ?? [placeholder])
         if (result === null) return null
@@ -629,6 +954,7 @@ for (const relativePath of files) {
     const arrow = node.parent
     if (
       !ts.isArrowFunction(arrow) ||
+      arrow.modifiers?.length ||
       arrow.body !== node ||
       !ts.isPropertyAssignment(arrow.parent) ||
       arrow.parent.initializer !== arrow ||
@@ -649,6 +975,9 @@ for (const relativePath of files) {
       arrow.parameters.every(
         (parameter, index) =>
           ts.isIdentifier(parameter.name) &&
+          !parameter.initializer &&
+          !parameter.dotDotDotToken &&
+          !parameter.questionToken &&
           ts.isIdentifier(node.arguments[index]) &&
           parameter.name.text === node.arguments[index].text
       )
@@ -664,17 +993,8 @@ for (const relativePath of files) {
       if (effects.has(name) && member(expression) !== 'bind')
         finding(effects.get(name), node)
       if (name === 'unresolved_static_callable') finding(name, node)
-      if (name === 'query') {
-        let argument = ts.isCallExpression(node)
-          ? node.arguments[0]
-          : node.template
-        if (ts.isCallExpression(node) && member(expression) === 'call')
-          argument = node.arguments[1]
-        if (ts.isCallExpression(node) && member(expression) === 'apply') {
-          const args = unwrap(node.arguments[1])
-          argument =
-            args && ts.isArrayLiteralExpression(args) ? args.elements[0] : null
-        }
+      if (name === 'query' && member(expression) !== 'bind') {
+        const argument = invocationSqlArgument(node)
         const variants = sqlVariants(argument)
         if (variants === null) {
           if (transparentForwarder(node))

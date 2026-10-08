@@ -9,9 +9,9 @@
     {
       "id": "AUD06-01",
       "finding": "Todos",
-      "objective": "Criar roadmap, backlog, PRD/SPEC e barra Q01\u2013Q14 em docs",
+      "objective": "Criar roadmap, backlog, PRD/SPEC e barra Q01–Q14 em docs",
       "dependenciesDescription": "Auditoria",
-      "acceptance": "Q01; links v\u00e1lidos, escopo completo",
+      "acceptance": "Q01; links válidos, escopo completo",
       "status": "COMPLETED",
       "evidence": [
         "docs/04_audit/evidence/AUD06/quality-bar.json",
@@ -24,7 +24,7 @@
     {
       "id": "AUD06-02",
       "finding": "F01",
-      "objective": "Atualizar source-map-js no lockfile com instala\u00e7\u00e3o reproduz\u00edvel",
+      "objective": "Atualizar source-map-js no lockfile com instalação reproduzível",
       "dependenciesDescription": "01",
       "acceptance": "Q02; audit sem high/critical, build/testes",
       "status": "COMPLETED",
@@ -38,9 +38,9 @@
     {
       "id": "AUD06-03",
       "finding": "F02",
-      "objective": "N3 can\u00f4nico e irredut\u00edvel em policy-engine, negativos no runtime",
+      "objective": "N3 canônico e irredutível em policy-engine, negativos no runtime",
       "dependenciesDescription": "01",
-      "acceptance": "Q03; cinco opera\u00e7\u00f5es DENY sem executor, sem promo\u00e7\u00e3o",
+      "acceptance": "Q03; cinco operações DENY sem executor, sem promoção",
       "status": "COMPLETED",
       "evidence": [
         "docs/04_audit/evidence/AUD06/policy-independent-acceptance.md",
@@ -54,9 +54,9 @@
     {
       "id": "AUD06-04",
       "finding": "F03",
-      "objective": "Ambiente visual CI e runner Playwright pinados; diagn\u00f3stico por imagens",
+      "objective": "Ambiente visual CI e runner Playwright pinados; diagnóstico por imagens",
       "dependenciesDescription": "01",
-      "acceptance": "Q04; 75/75 nos tr\u00eas browsers, toler\u00e2ncias preservadas",
+      "acceptance": "Q04; 75/75 nos três browsers, tolerâncias preservadas",
       "status": "COMPLETED",
       "evidence": [
         "docs/04_audit/evidence/AUD06/visual/verification-receipt.json",
@@ -70,7 +70,7 @@
     {
       "id": "AUD06-05",
       "finding": "F07",
-      "objective": "Runner scripts/ preserva exit, cleanup pr\u00f3prio e prazo",
+      "objective": "Runner scripts/ preserva exit, cleanup próprio e prazo",
       "dependenciesDescription": "01",
       "acceptance": "Q05; sucesso/falha/timeout/sinal demonstrados",
       "status": "COMPLETED",
@@ -89,7 +89,7 @@
     {
       "id": "AUD06-06",
       "finding": "F05",
-      "objective": "Implementar decis\u00e3o de reten\u00e7\u00e3o em retention.ts e testes",
+      "objective": "Implementar decisão de retenção em retention.ts e testes",
       "dependenciesDescription": "01; receipt CLAW-W1-07",
       "acceptance": "Q06; janela, aviso, fronteiras e PostgreSQL PASS",
       "status": "COMPLETED",
@@ -104,7 +104,7 @@
     {
       "id": "AUD06-07",
       "finding": "F05/F08",
-      "objective": "Reconciliar CURRENT/runtime/matriz/backlog, manter hist\u00f3rico",
+      "objective": "Reconciliar CURRENT/runtime/matriz/backlog, manter histórico",
       "dependenciesDescription": "01",
       "acceptance": "Q07; checker e ponteiros refletem o estado observado",
       "status": "COMPLETED",
@@ -121,8 +121,8 @@
       "id": "AUD06-08",
       "finding": "F08",
       "objective": "Extrair registrador coeso da API e reduzir acoplamento de cliente",
-      "dependenciesDescription": "03/04 para integra\u00e7\u00e3o",
-      "acceptance": "Q08; regress\u00e3o p\u00fablica e redu\u00e7\u00e3o medida",
+      "dependenciesDescription": "03/04 para integração",
+      "acceptance": "Q08; regressão pública e redução medida",
       "status": "COMPLETED",
       "evidence": [
         "docs/04_audit/evidence/AUD06/architecture/final-source-binding.json",
@@ -137,7 +137,7 @@
     {
       "id": "AUD06-09",
       "finding": "F06",
-      "objective": "Composi\u00e7\u00e3o descart\u00e1vel API/worker/web/banco, migra\u00e7\u00e3o, TLS/headers",
+      "objective": "Composição descartável API/worker/web/banco, migração, TLS/headers",
       "dependenciesDescription": "01",
       "acceptance": "Q09; startup/health/teardown isolados observados",
       "status": "COMPLETED",
@@ -152,9 +152,9 @@
     {
       "id": "AUD06-10",
       "finding": "F06",
-      "objective": "Rate compartilhado, coleta/exporta\u00e7\u00e3o e ensaio de restore",
+      "objective": "Rate compartilhado, coleta/exportação e ensaio de restore",
       "dependenciesDescription": "09",
-      "acceptance": "Q10; duas r\u00e9plicas, falha de storage, telemetria, integridade restaurada",
+      "acceptance": "Q10; duas réplicas, falha de storage, telemetria, integridade restaurada",
       "status": "COMPLETED",
       "evidence": [
         "docs/04_audit/evidence/AUD06/rate/policy-change-green-2.log",
@@ -169,7 +169,7 @@
     {
       "id": "AUD06-11",
       "finding": "F04",
-      "objective": "Resolver Discovery 0026 e contratos/integra\u00e7\u00f5es HIS/piloto",
+      "objective": "Resolver Discovery 0026 e contratos/integrações HIS/piloto",
       "dependenciesDescription": "Respostas de produto e identidade",
       "acceptance": "Q11; contratos aprovados e fluxo ponta a ponta qualificado",
       "status": "WAITING_HUMAN_APPROVAL",
@@ -181,8 +181,8 @@
     {
       "id": "AUD06-12",
       "finding": "Todos",
-      "objective": "Regress\u00e3o integrada e Gauntlet com cr\u00edtica fresca",
-      "dependenciesDescription": "02\u201310",
+      "objective": "Regressão integrada e Gauntlet com crítica fresca",
+      "dependenciesDescription": "02–10",
       "acceptance": "Q12; testes, PostgreSQL, E2E, critic sem achado material",
       "status": "COMPLETED",
       "evidence": [
@@ -193,9 +193,9 @@
     },
     {
       "id": "AUD06-13",
-      "finding": "F03/certifica\u00e7\u00e3o",
-      "objective": "Selar candidato ap\u00f3s docs est\u00e1veis; validar CI do mesmo candidato",
-      "dependenciesDescription": "12; autoridade de publica\u00e7\u00e3o",
+      "finding": "F03/certificação",
+      "objective": "Selar candidato após docs estáveis; validar CI do mesmo candidato",
+      "dependenciesDescription": "12; autoridade de publicação",
       "acceptance": "Q13; certificado+Verify/Security com SHA correspondente",
       "status": "WAITING_HUMAN_APPROVAL",
       "evidence": [
@@ -207,17 +207,19 @@
         "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v8-focused-receipt.json",
         "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v9-integrated-focused-receipt.json",
         "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v9-fresh-reject-I1/report.json",
-        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v10-integrated-focused-receipt.json"
+        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v10-integrated-focused-receipt.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v10-fresh-reject-I1/report.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v11-integrated-focused-receipt.json"
       ],
       "executionDisposition": "LOCAL_CERTIFICATION_PREPARATION_AUTHORIZED_PUBLICATION_PENDING",
-      "rework": "Q13 lexical symbol identity, effective config order, recursive SQL variants, mutation/alias provenance and executable statement classes; integrated632/632, public59 PASS; fresh independent and canonical qualification pending"
+      "rework": "v11 transitive origin/invocation repair integrated; RED21FAIL/208PASS, GREEN692/692, scanner59 PASS; fresh critique and pass4 pending, publication authority pending"
     },
     {
       "id": "AUD06-14",
       "finding": "F04/F06",
       "objective": "Oito gates externos/humanos em ambiente e janela autorizados",
       "dependenciesDescription": "11/13; owners/ambiente",
-      "acceptance": "Q14; evid\u00eancias reais e signoff, sem s\u00edntese de aprova\u00e7\u00e3o",
+      "acceptance": "Q14; evidências reais e signoff, sem síntese de aprovação",
       "status": "WAITING_HUMAN_APPROVAL",
       "evidence": []
     }

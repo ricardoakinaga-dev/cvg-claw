@@ -252,3 +252,34 @@ e seu teste. RED/GREEN para todos os casos discriminantes, scanner59fontes,
 crítica fresca e novo binding obrigatórios. Candidato ed573464 anterior STALE;
 passada4 preparada mas não iniciada. Q01–Q14, escopo sintético, gates humanos
 e autoridade de publicação permanecem inalterados.
+
+### Rework de alcance de objetos e invocação Q13 — 2026-10-08
+
+Crítico fresco v10 REJECT4P1/2P2,115 sondagens CLI e135 casos SQL,
+25.167 arquivos intactos. Corrigir invalidadores transitivos: referências
+contidas em arrays/objetos, spreads, closures, tags e argumentos de construtor
+escapam juntos para chamada não modelada. Destinos de atribuição destructuring
+devem invalidar símbolos/objetos reais, não o objeto sintático do padrão.
+Dispensa de método leitor requer origem nativa verificada, nunca apenas nome
+join/slice em método local; preservar método local puro e listas primitivas
+nativas. Namespace/default de node-fetch preserva o efeito HTTP por aliases
+estáticos. Separar construção bind de invocação e compor argumentos prefixados
+com argumentos reais de call/apply; bind não invocado é inerte. Forwarder exato
+exclui defaults/rest/opcionais/transformações de parâmetros. Nenhum novo grant
+de domínio, SQL, autonomia ou effect boundary. Helper SQL permanece frozen
+d668aeaa, sem nova mudança; revisão encontrou zero P1 em sua amostra limitada.
+
+RED/GREEN discriminantes, corpus59fontes e crítica fresca obrigatórios.
+Candidato31be26 anterior não aceito; passada4 não iniciada. Antes do ensaio,
+materializar os recibos excluídos faltantes na cópia e repetir docs:check;
+precheck encontrou27 referências em8 caminhos ausentes, sem alteração durante
+a crítica. Lead possui scanner/testes/masters; Q01–Q14, piloto adiado e
+publicação/gates reais permanecem inalterados.
+
+Precisão de alcance: uma closure que apenas lê uma lista primitiva fechada não
+expõe a referência; retornos/armazenamentos que expõem objetos continuam
+invalidados transitivamente. Valores escalares não herdam o tratamento de
+config de query; coerções locais com efeitos são inspecionadas. Propriedades
+adicionais de funções não eliminam sua identidade lexical nem suas referências
+carregadas. Controles negativos e positivos devem discriminar essas situações
+sem conceder dispensa ao readiness por caminho de arquivo.

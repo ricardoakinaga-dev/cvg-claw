@@ -1165,3 +1165,414 @@ describe('literal module aliases and lexical local require', () => {
     expect(scan(quotaFile, source).exitCode).toBe(expected)
   })
 })
+
+describe('fresh I1 v10 transitive origins and invocation controls', () => {
+  it.each([
+    {
+      name: 'escape-array-concrete',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'function mutate(a){a[0].text="DELETE FROM billing_items"};const c={text:"SELECT 1"};mutate([c]);client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'escape-object-concrete',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'function mutate(a){a.c.text="DELETE FROM billing_items"};const c={text:"SELECT 1"};mutate({c});client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'escape-spread-concrete',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'function mutate(a){a.text="DELETE FROM billing_items"};const c={text:"SELECT 1"};mutate(...[c]);client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'escape-tag-concrete',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'function mutate(strings,c){c.text="DELETE FROM billing_items"};const c={text:"SELECT 1"};mutate`${c}`;client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'escape-new-concrete',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'class Mutator {constructor(c){c.text="DELETE FROM billing_items"}};const c={text:"SELECT 1"};new Mutator(c);client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'array-escape-concrete',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'function mutate(a){a[0][0]="billing_items"};const tables=["api_rate_limit_buckets"];mutate([tables]);for(const table of tables){client.query(`DELETE FROM ${table}`)}',
+      expected: 1
+    },
+    {
+      name: 'config-alias-positive',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'const c={text:"SELECT 1"};const d=c;client.query(d)',
+      expected: 0
+    },
+    {
+      name: 'escape-inert-template-control',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const c={text:"SELECT 1"};const note=`value ${c}`;client.query(c)',
+      expected: 0
+    },
+    {
+      name: 'array-alias-control',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const tables=["api_rate_limit_buckets"];const a=tables;for(const table of a){client.query(`DELETE FROM ${table}`)}',
+      expected: 0
+    },
+    {
+      name: 'escape-direct-concrete-control',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'function mutate(c){c.text="DELETE FROM billing_items"};const c={text:"SELECT 1"};mutate(c);client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'config-destructure-object-write',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const c={text:"SELECT 1"};({text:c.text}={text:"DELETE FROM billing_items"});client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'config-destructure-array-write',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const c={text:"SELECT 1"};[c.text]=["DELETE FROM billing_items"];client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'array-destructure-write',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const tables=["api_rate_limit_buckets"];[tables[0]]=["billing_items"];for(const table of tables){client.query(`DELETE FROM ${table}`)}',
+      expected: 1
+    },
+    {
+      name: 'destructure-copy-positive',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'const c={text:"SELECT 1"};const {text}=c;client.query(text)',
+      expected: 0
+    },
+    {
+      name: 'config-alias-write',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const c={text:"SELECT 1"};const d=c;d.text="DELETE FROM billing_items";client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'array-own-join-write',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const tables=["api_rate_limit_buckets"];tables.join=()=>{tables[0]="billing_items"}; tables.join();for(const table of tables){client.query(`DELETE FROM ${table}`)}',
+      expected: 1
+    },
+    {
+      name: 'config-own-join-write',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const c={text:"SELECT 1",join(){this.text="DELETE FROM billing_items"}};c.join();client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'own-slice-mutation',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const c={text:"SELECT 1",slice(){this.text="DELETE FROM billing_items"}};c.slice();client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'own-join-via-alias',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const c={text:"SELECT 1",join(){this.text="DELETE FROM billing_items"}};const a=c;a.join();client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'config-own-join-pure',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const c={text:"SELECT 1",join(){return 1}};c.join();client.query(c)',
+      expected: 0
+    },
+    {
+      name: 'own-other-pure-control',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const c={text:"SELECT 1",change(){return 1}};c.change();client.query(c)',
+      expected: 0
+    },
+    {
+      name: 'own-other-method-mutation-control',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const c={text:"SELECT 1",change(){this.text="DELETE FROM billing_items"}};c.change();client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'nodefetch-namespace-default',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'import * as nf from "node-fetch"; nf.default("https://example.invalid")',
+      expected: 1
+    },
+    {
+      name: 'namespace-default-call',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'import * as nf from "node-fetch"; const f=nf.default;f("https://example.invalid")',
+      expected: 1
+    },
+    {
+      name: 'namespace-destructure-default',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'import * as nf from "node-fetch";const {default:f}=nf;f("https://example.invalid")',
+      expected: 1
+    },
+    {
+      name: 'dynamic-nodefetch-default',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const nf=await import("node-fetch");nf.default("https://example.invalid")',
+      expected: 1
+    },
+    {
+      name: 'local-default-pure-control',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'const nf={default:()=>42};nf.default()',
+      expected: 0
+    },
+    {
+      name: 'nodefetch-default-import',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'import nf from "node-fetch"; nf("https://example.invalid")',
+      expected: 1
+    },
+    {
+      name: 'nodefetch-named-default',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'import { default as nf } from "node-fetch"; nf("https://example.invalid")',
+      expected: 1
+    },
+    {
+      name: 'local-default-real-effect-control',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const nf={default:()=>fetch("https://example.invalid")};nf.default()',
+      expected: 1
+    },
+    {
+      name: 'sql-bind-unused',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'const q=client.query.bind(client,"SELECT 1")',
+      expected: 0
+    },
+    {
+      name: 'sql-bind-select',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'const q=client.query.bind(client,"SELECT 1");q()',
+      expected: 0
+    },
+    {
+      name: 'bind-sql-benign-no-preargs',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'const q=client.query.bind(client);q("SELECT 1")',
+      expected: 0
+    },
+    {
+      name: 'bind-fetch-unused-control',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'const f=fetch.bind(globalThis,"https://example.invalid")',
+      expected: 0
+    },
+    {
+      name: 'bind-local-function-unused',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'const query=()=>1;const f=query.bind(null)',
+      expected: 0
+    },
+    {
+      name: 'select-positive',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'client.query("SELECT 1")',
+      expected: 0
+    },
+    {
+      name: 'sql-bind-domain',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const q=client.query.bind(client,"DELETE FROM billing_items");q()',
+      expected: 1
+    },
+    {
+      name: 'bind-sql-domain-no-preargs',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const q=client.query.bind(client);q("DELETE FROM billing_items")',
+      expected: 1
+    },
+    {
+      name: 'domain-negative',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'client.query("DELETE FROM billing_items")',
+      expected: 1
+    },
+    {
+      name: 'forwarder-parameters-default',
+      file: 'apps/api/src/server/bootstrap-persistence.ts',
+      source:
+        'const adapter={query:(text="DELETE FROM billing_items",values=[])=>client.query(text,values)}',
+      expected: 1
+    },
+    {
+      name: 'forwarder-parameters-rest',
+      file: 'apps/api/src/server/bootstrap-persistence.ts',
+      source:
+        'const adapter={query:(text,...values)=>client.query(text,values)}',
+      expected: 1
+    },
+    {
+      name: 'forwarder-exact-control',
+      file: 'apps/api/src/server/bootstrap-persistence.ts',
+      source: 'const adapter={query:(text,values)=>client.query(text,values)}',
+      expected: 0
+    },
+    {
+      name: 'forwarder-consumer-select',
+      file: 'apps/api/src/server/bootstrap-persistence.ts',
+      source:
+        'const adapter={query:(text,values)=>client.query(text,values)};adapter.query("SELECT 1",[])',
+      expected: 0
+    },
+    {
+      name: 'forwarder-body-transform',
+      file: 'apps/api/src/server/bootstrap-persistence.ts',
+      source:
+        'const adapter={query:(text,values)=>client.query(text+";DELETE FROM billing_items",values)}',
+      expected: 1
+    },
+    {
+      name: 'forwarder-consumer-write',
+      file: 'apps/api/src/server/bootstrap-persistence.ts',
+      source:
+        'const adapter={query:(text,values)=>client.query(text,values)};adapter.query("DELETE FROM billing_items",[])',
+      expected: 1
+    }
+  ])('$name', ({ file, source, expected }) => {
+    expect(scan(file, source).exitCode).toBe(expected)
+  })
+})
+
+describe('exposed references versus primitive data and closed callbacks', () => {
+  it.each([
+    {
+      name: 'closed-readiness-callback',
+      source:
+        'const tables=["api_rate_limit_buckets"];withContext(async(client)=>{for(const table of tables){client.query(`SELECT 1 FROM ${table} LIMIT 0`)}})',
+      expected: 0
+    },
+    {
+      name: 'returned-closure-reference',
+      source:
+        'function mutate(fn){fn().text="DELETE FROM billing_items"};const c={text:"SELECT 1"};const fn=()=>c;mutate(fn);client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'returned-closure-array',
+      source:
+        'function mutate(fn){fn().push("billing_items")};const tables=["api_rate_limit_buckets"];mutate(()=>tables);for(const table of tables){client.query(`DELETE FROM ${table}`)}',
+      expected: 1
+    },
+    {
+      name: 'function-carried-reference',
+      source:
+        'function mutate(fn){fn.c.text="DELETE FROM billing_items"};const c={text:"SELECT 1"};function holder(){return 1};holder.c=c;mutate(holder);client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'pure-local-return-alias',
+      source:
+        'const c={text:"SELECT 1"};function same(){return c};const alias=same();client.query(c)',
+      expected: 0
+    },
+    {
+      name: 'primitive-value-read',
+      source: 'const c={text:"SELECT 1"};observe(c.text);client.query(c)',
+      expected: 0
+    },
+    {
+      name: 'primitive-array-native-read',
+      source:
+        'const tables=["api_rate_limit_buckets"];tables.join("/");for(const table of tables){client.query(`DELETE FROM ${table}`)}',
+      expected: 0
+    },
+    {
+      name: 'literal-object-sql-interpolation',
+      source:
+        'const c={text:"SELECT 1",toString(){return "x\'; DELETE FROM billing_items; --"}};client.query(`SELECT \'${c}\'`)',
+      expected: 1
+    },
+    {
+      name: 'implicit-coercion-mutation',
+      source:
+        'const c={text:"SELECT 1",toString(){this.text="DELETE FROM billing_items";return "safe"}};const note=`${c}`;client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'implicit-coercion-pure',
+      source:
+        'const c={text:"SELECT 1",toString(){return "safe"}};const note=`${c}`;client.query(c)',
+      expected: 0
+    },
+    {
+      name: 'bound-sql-call-prefix',
+      source:
+        'const q=client.query.bind(client,"DELETE FROM billing_items");q.call(client,"SELECT 1")',
+      expected: 1
+    },
+    {
+      name: 'bound-sql-apply-prefix',
+      source: 'const q=client.query.bind(client,"SELECT 1");q.apply(client,[])',
+      expected: 0
+    },
+    {
+      name: 'bound-sql-nested',
+      source:
+        'const q=client.query.bind(client).bind(client,"DELETE FROM billing_items");q()',
+      expected: 1
+    }
+  ])('$name', ({ source, expected }) => {
+    expect(scan(quotaFile, source).exitCode).toBe(expected)
+  })
+})
+
+describe('function expando identity', () => {
+  it.each([
+    [
+      'const c={text:"SELECT 1"};const holder=()=>1;holder.c=c;mutate(holder);client.query(c)',
+      1
+    ],
+    [
+      'const c={text:"SELECT 1"};function holder(){return 1};holder.note="readonly";client.query(c)',
+      0
+    ]
+  ])(
+    'preserves declaration identity across property writes %s',
+    (source, expected) => {
+      expect(scan(quotaFile, source).exitCode).toBe(expected)
+    }
+  )
+})
