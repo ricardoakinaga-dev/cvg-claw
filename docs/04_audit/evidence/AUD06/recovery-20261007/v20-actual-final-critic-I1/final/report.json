@@ -1,0 +1,1130 @@
+{
+  "schemaVersion": "aud06-finalcritic-companion-v1",
+  "kind": "independent-final-review-companion-NOT-MACHINE-INPUT",
+  "createdAt": "2026-10-08T16:27:42.378789+00:00",
+  "identity": {
+    "threadId": "01a11c45-fee4-7243-bbdc-e75eb18920ec",
+    "nickname": "Socrates",
+    "role": "NOVO FinalCritic I1 independente pós-verificação integrada real",
+    "freshFork": {
+      "fork_context": false,
+      "model": "omitido/inherited, conforme atestação factual pós-dispatch do usuário/parent",
+      "identitySource": "Atestação recebida apósdispatch nesta conversa; dispatchfile/history não abertos"
+    },
+    "descendants": 0,
+    "distinctFromCurrentIntegrationValidatorInput": true,
+    "priorConclusionsUsed": false
+  },
+  "goal": "Criar roadmap e backlog e implementar integralmente o plano de melhoria F01-F08 da auditoria 0576, respeitando todos os gates.",
+  "sealedFirst": {
+    "path": "/tmp/aud06-v20-final-critic-sealed-contract.json",
+    "expectedSHA256": "e9749a3b00c3edc32e21508a338aa1793b28dbbc3390f5e3037172f38f66d7a4",
+    "actualSHA256": "e9749a3b00c3edc32e21508a338aa1793b28dbbc3390f5e3037172f38f66d7a4",
+    "firstFSAction": "Somente contrato, open O_NOATIME, hash validado antes de qualquer TARGET",
+    "freshForkContract": "Fresh independent FinalCritic after actual integrated full pass5; original14 criteria; I1fork_context:false, different from all earlier builders/critics; zero descendants"
+  },
+  "ownTEMP": "/tmp/aud06-finalcritic-I1-db55luic",
+  "verifiedOwncopy": "/tmp/aud06-finalcritic-I1-db55luic/owncopy",
+  "candidate": {
+    "fileCount": 1256,
+    "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+    "behaviorTreeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+    "fingerprintBefore": "ffc25aad2f22adcf4c9a35ba58fb1e01ee57adac5a8477a182a29eb14c934a8d",
+    "algorithm": "sha256-candidate-v1",
+    "mismatches": [],
+    "missing": []
+  },
+  "gitReconstruction": {
+    "HEAD": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "gitTreeHash": "1e0dd618b6a8cf8aeaf574082d4332e9030281cd",
+    "indexEntries": 4105,
+    "headEntries": 4105,
+    "uniqueBlobsChecked": 3523,
+    "objectHashFailures": [],
+    "candidateIndexByteMismatches": [],
+    "candidateHEADByteMismatches": [],
+    "indexHEADBindingMismatches": [],
+    "excludedTrackedCount": 2849,
+    "allRegularClassification": {
+      "candidate": 1256,
+      "excluded-gauntlet": 6,
+      "generated-build": 3,
+      "other-ignored-or-excluded": 87,
+      "excluded-evidence": 7086,
+      "generated-coverage": 1,
+      "dependency": 17288
+    },
+    "gitProcessExit": 0,
+    "independentGitPhysicalFiles": true,
+    "alternatesAbsent": true
+  },
+  "original14": [
+    {
+      "id": "Q01",
+      "target": "Complete roadmap and backlog for F01-F08",
+      "required": true,
+      "actual": "Roadmap e backlog completos mantêm F01–F08,14tarefas,marcos,dependências,ownership e aceitações Q01–Q14. Projeção normativa verificada; implementação integral permanece condicionada aos itens11/13/14.",
+      "status": "PASS_BOUNDED_LOCAL",
+      "confidence": "ALTA nos artefatos e escopo observados; não universal",
+      "advisoryScore": 100,
+      "directEvidence": [
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/normative-projection.json",
+          "sha256": "319a183a856d5df14a3d5b22bdce2cef431430c45fcd619e4a02b4207fe735ce",
+          "size": 12886,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": "Q01",
+          "observation": "14 tarefas cobrem F01–F08, dependências, aceite, marcos e ownership; objetivo integral preservado"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/finite-plan.json",
+          "sha256": "27f4973f5dd3a7d5ae44b1c0f4fe6175cdf28fec16b4450bf552a934751c905b",
+          "size": 1322,
+          "method": "plano próprio registrado antes de controles",
+          "selector": null,
+          "observation": "Execução finita e limites registrados"
+        }
+      ],
+      "missingConditions": [],
+      "scope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY; nenhum efeito real ou aprovação presumida"
+    },
+    {
+      "id": "Q02",
+      "target": "No high/critical dependency advisory with repeatable installation",
+      "required": true,
+      "actual": "Instalação real npmci--ignore-scripts do stage synthetic observado,324packages; lockfile/código exatos atuais, npm audit0vulns e buildPASS. Julgamento limitado ao candidato e momento registrados.",
+      "status": "PASS_BOUNDED_LOCAL",
+      "confidence": "ALTA nos artefatos e escopo observados; não universal",
+      "advisoryScore": 100,
+      "directEvidence": [
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/package-lock.json",
+          "sha256": "ba75acab43ab821ca2eb4decd7fee82eb248cebd9d6fed53a8e3469a4e90588c",
+          "size": 186586,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": null,
+          "observation": "Lockfile exato do candidato; bytes HEAD/index/worktree iguais"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/Dockerfile",
+          "sha256": "be2dddb95c5447c81101010b2726eaa10587c146e14eac77d882758b9a061f68",
+          "size": 4359,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": "57–69",
+          "observation": "Stage aud06-build instala npm ci --ignore-scripts sob Node22.23.2 pinado"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/015-build-runtime.stderr.log",
+          "sha256": "e6394ab499f9066d365392feb589d5794e92db29adc0976c07856adccc89965d",
+          "size": 3664,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": "RUN npm ci --ignore-scripts / added324packages",
+          "observation": "Instalação realmente executada: added324packages; stage não cached neste build"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/security.log",
+          "sha256": "2c6381b9baf17f912cc7afa0d950b978e317d2d18f12af22fd01986caac31a77",
+          "size": 496,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": null,
+          "observation": "npm audit --audit-level=high:found0vulnerabilities"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/build.log",
+          "sha256": "1728b1628cfbd64588eb37bb697b1afc11111bf6d71fd598b38213e2fd81c89f",
+          "size": 1018,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": null,
+          "observation": "Build atual exit0 ligado ao candidato"
+        }
+      ],
+      "missingConditions": [],
+      "scope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY; nenhum efeito real ou aprovação presumida"
+    },
+    {
+      "id": "Q03",
+      "target": "N3 always DENY with zero executor invocation",
+      "required": true,
+      "actual": "CincoN3 canônicos sempreDENY na fronteira revisada antes do modelo/approval/executor.22policy+16runtime assertions atuaisPASS;spies de executor/outbox nunca chamados emN3. Não promove capability nem libera efeito real.",
+      "status": "PASS_BOUNDED_LOCAL",
+      "confidence": "ALTA nos artefatos e escopo observados; não universal",
+      "advisoryScore": 100,
+      "directEvidence": [
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/packages/policy-engine/src/autonomy.ts",
+          "sha256": "014a94849c29c614b4c627b1fa5a1a8314a1a86018def92685793017d5403b5e",
+          "size": 2110,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": "23–56",
+          "observation": "Catálogo N3 congelado para cinco operações clínicas/financeiras/prontuário/exame"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/packages/policy-engine/src/engine.ts",
+          "sha256": "d5147d5f299c9072b5b8d098efcde2ad17ced365b4c36da533c39aece2223606",
+          "size": 12664,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": "196–208",
+          "observation": "N3 retorna DENY antes de grants/documentos"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/packages/agent-runtime/src/runtime.ts",
+          "sha256": "5e8a2e0af32a707caa47fba56b0a4c7be5b0bb8c45ffbebd6a1bd740c024ccdd",
+          "size": 95062,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": "644–689;1066;1686",
+          "observation": "Reavaliação da policy e retorno DENY precedem model/approval/tool/outbox"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/packages/agent-runtime/src/__tests__/aud06-n3-executor.test.ts",
+          "sha256": "1540b3a29c76f75c62f652ff6fd4297f83114cbf4e8934ae954089ea8b520d5e",
+          "size": 9058,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": "178–269",
+          "observation": "Spies para executor/outbox/model; fresh/approved/disguised/controlcancel"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/direct-observations.json",
+          "sha256": "9f61847010494f1ef07f27484f0a3466d1053a822a26537a2f94c1737aeb1083",
+          "size": 13579,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": "relevantTestFacts",
+          "observation": "Raw atual:policy22PASS/runtime16PASS; nenhum executor no cenário N3"
+        }
+      ],
+      "missingConditions": [],
+      "scope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY; nenhum efeito real ou aprovação presumida"
+    },
+    {
+      "id": "Q04",
+      "target": "All 75 Browser E2E tests pass with preserved snapshots/tolerances",
+      "required": true,
+      "actual": "Raw atual75/75PASS nos3browsers;30baselines PNG preservados porHEAD/index/currentbytes;updateSnapshotsnone e tolerânciasfonte mantidas;wrapper/CI digest Playwright coincidem.",
+      "status": "PASS_BOUNDED_LOCAL",
+      "confidence": "ALTA nos artefatos e escopo observados; não universal",
+      "advisoryScore": 100,
+      "directEvidence": [
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/playwright.config.ts",
+          "sha256": "9d284a59afe37ee983bb24c59bb2894c8280e62895fcb67be473db244663d98c",
+          "size": 1795,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": "14–34",
+          "observation": "3browsers, updateSnapshots:none; execução CI pinada"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/tests/e2e/visual-shell.spec.ts",
+          "sha256": "e2fc08deb4a923e86266142e8a4e69d4aab0ad024f42c6f4cc9ff55c713d2e6c",
+          "size": 16045,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": null,
+          "observation": "Tolerâncias reais e screenshot assertions preservadas no candidato"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/.github/workflows/verify.yml",
+          "sha256": "16070dff4609910f694c4c8edec62f7b587cd1e100ab10662b45acb9cf29490f",
+          "size": 3807,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": null,
+          "observation": "Digest Playwright correspondente ao wrapper local"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/e2e.log",
+          "sha256": "d66eafd6d783eee241148d707d0621452348a32ffd66dc197634791ae373ce21",
+          "size": 12646,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": null,
+          "observation": "75passed/exit0 em3browsers no ciclo atual"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/candidate-git-index.json",
+          "sha256": "0e85db117a96494a8d36e6cc74c80babb9bfa0c2c4d65b8a156b798d0a5a397a",
+          "size": 606169,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": "paths tests/e2e/visual-shell.spec.ts-snapshots/",
+          "observation": "30baselinesPNG com bytes HEAD/index/current idênticos"
+        }
+      ],
+      "missingConditions": [],
+      "scope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY; nenhum efeito real ou aprovação presumida"
+    },
+    {
+      "id": "Q05",
+      "target": "Certification wrapper preserves status and cleans only owned resources",
+      "required": true,
+      "actual": "Fonte preserva workloadexit/transporte/sinais,deadline e cleanupownedID/cidfile;43assertions atuaisPASS. Ciclo realexit0sem timeout;2containers+1anonymousvolume confirmadosausentes e cleanup0.",
+      "status": "PASS_BOUNDED_LOCAL",
+      "confidence": "ALTA nos artefatos e escopo observados; não universal",
+      "advisoryScore": 100,
+      "directEvidence": [
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/scripts/certify-controlled.sh",
+          "sha256": "8857c3243cc1fb1cabda14cf9ba32bb1a29c30cb0e7c46268af96bc442e73329",
+          "size": 7943,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": "56–125;131–207",
+          "observation": "EXIT original; sinais130/143/129; deadline startup compartilhado; cleanup por privatecidfiles/IDs; wait transporte separado"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/tests/certify-controlled.test.js",
+          "sha256": "714cb1b107f605d76b64e82e9808c52676d4d76799466c137ca2d8416fd298b7",
+          "size": 21761,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": null,
+          "observation": "Casos sucesso/falha/timeout/sinal/cleanup/unowned/loghang/concurrency definidos"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/direct-observations.json",
+          "sha256": "9f61847010494f1ef07f27484f0a3466d1053a822a26537a2f94c1737aeb1083",
+          "size": 13579,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": "relevantTestFacts/teardownActual",
+          "observation": "43assertions atuais wrapperPASS; receipt real exit0/sem timeout;3recursos ausentes"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-teardown.json",
+          "sha256": "f9be6c122b1d842d92316baa0ca31293ee432ff6310af6eb9d6235750ecd2c06",
+          "size": 1814,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": "resources/tempDirs/cleanupFailures",
+          "observation": "2containers+volume own ausentes;tempDir ausente;cleanup failures0;daemon consultado produtor"
+        }
+      ],
+      "missingConditions": [],
+      "scope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY; nenhum efeito real ou aprovação presumida"
+    },
+    {
+      "id": "Q06",
+      "target": "Approved retention renewal and boundary/early warning enforced",
+      "required": true,
+      "actual": "RenovaçãohumanaAPPROVED observada com scopeCONTROLLED_LOCAL_SYNTHETIC_ONLY;janela05Oct2026–01Jul2027 02:59:59UTC,enforcement transactionclock/boundaries/UNCERTAIN,12renewal+13PGPASS. Warning30dias é sentinelCI/manutenção.",
+      "status": "PASS_BOUNDED_LOCAL",
+      "confidence": "ALTA nos artefatos e escopo observados; não universal",
+      "advisoryScore": 100,
+      "directEvidence": [
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/CLAW-W1/CLAW-W1-07-tombstone-policy-renewal-decision-20261005.json",
+          "sha256": "ddc816bd01c3881bc0cbdeeef05bf9cc5d1b572cd823f9a564cfe7c75857b705",
+          "size": 1461,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": "status/decidedAt/validUntil/policyVersion/scope/releaseEligible",
+          "observation": "APPROVED de05Oct2026 até30Jun2027 23:59:59-03;somenteCONTROLLED_LOCAL_SYNTHETIC_ONLY"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/packages/persistence/src/retention.ts",
+          "sha256": "610ec15040a123590a1ab4c872e2142d14c4cb733636d22a07f9ce586eff4a64",
+          "size": 54477,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": "43–47;1534–1552;1600–1609",
+          "observation": "Clock transacional antes da mutação, validUntil inclusivo/approvedAt mínimo;30dias;UNCERTAIN preservado"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/packages/persistence/src/__tests__/retention-renewal.test.ts",
+          "sha256": "5c981600a67a78dd318bfd752c16354e76b8c906fb3b0f2298ba3b9a9683bbb2",
+          "size": 4407,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": "35–121",
+          "observation": "12testes atuaisPASS;warning30dias é sentinel manutençãoCI, não autorização"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/postgres-report.json",
+          "sha256": "b8a42891de9c6102ce57050ad92e2288e0c5a7bfe2af07259f6eddc415fcbf6f",
+          "size": 137002,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": "retention-postgres.test.ts",
+          "observation": "13assertions retentionPostgreSQL PASS no conjunto dedicado atual"
+        }
+      ],
+      "missingConditions": [],
+      "scope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY; nenhum efeito real ou aprovação presumida"
+    },
+    {
+      "id": "Q07",
+      "target": "Current state and backlog agree and preserve historical evidence",
+      "required": true,
+      "actual": "Projeção demonstra concordância backlog/matriz/CURRENT;docs:check e13routingnegativesPASS. Estados11/13/14waiting e11deferred preservados;histórico preservado por cópiaopaca e sentinelwhole-treeigual.",
+      "status": "PASS_BOUNDED_LOCAL",
+      "confidence": "ALTA nos artefatos e escopo observados; não universal",
+      "advisoryScore": 100,
+      "directEvidence": [
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/normative-projection.json",
+          "sha256": "319a183a856d5df14a3d5b22bdce2cef431430c45fcd619e4a02b4207fe735ce",
+          "size": 12886,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": "Q07",
+          "observation": "Backlog/matriz01–10,12COMPLETED;11/13/14WAITING;11DEFERRED;CURRENT13WAITING"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/tests/aud06-state-routing.test.js",
+          "sha256": "d6e0a3e291379d4d225519c883544a8d73153a2c7cadfd2ded549e32ff456d05",
+          "size": 8039,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": null,
+          "observation": "Negativos de routing/matriz/docs estado"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/verify.log",
+          "sha256": "f0073e89207e1806d271a87c26ffbb50ac7023c7a2d955792c7a42a1f4409dad",
+          "size": 387036,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": null,
+          "observation": "docs:check executado no verify atual exit0;state-routing13PASS no rawunit"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/sentinel-comparison.json",
+          "sha256": "c54c6a7706dcb2eda97464897914b43275375cfb8a627934bb6580242f282c4e",
+          "size": 270,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": "identical",
+          "observation": "Histórias/evidências preservadas opaquely em todo tree; nenhuma leitura semântica de masters"
+        }
+      ],
+      "missingConditions": [],
+      "scope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY; nenhum efeito real ou aprovação presumida"
+    },
+    {
+      "id": "Q08",
+      "target": "Measured cohesive extraction with public behavior preserved",
+      "required": true,
+      "actual": "Request-context328+query138 extraídos;server4583 vsbaselinefonte4958, soma5049≤5050. Client1015 usa contracts613;7architecture/12context/7query/client e regressõespúblicas atuaisPASS.",
+      "status": "PASS_BOUNDED_LOCAL",
+      "confidence": "ALTA nos artefatos e escopo observados; não universal",
+      "advisoryScore": 100,
+      "directEvidence": [
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/apps/api/src/server/request-context.ts",
+          "sha256": "395733f6da3fb4ae05d1baf0d801bd44fdb573ee9122cdcb837b591add34252d",
+          "size": 10479,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": null,
+          "observation": "Extração coesa/injetada328linhas;auth/rawbody/metrics/tenant ownership"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/apps/api/src/server/request-query.ts",
+          "sha256": "63d3f868ef1ab83efface68222a47f70c552b7047a970a7a0f2310a7a18162bc",
+          "size": 4026,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": null,
+          "observation": "Parsers bounded138linhas"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/apps/api/src/server.ts",
+          "sha256": "81b40fceee095b7a98787f2680f5f6afff2d06140e7f6339cffe33b638f35270",
+          "size": 149144,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": "123–130;276–289;417–423",
+          "observation": "buildServer injeta boundary;server4583linhas;public hooks mantidos"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/apps/web/src/api/contracts.ts",
+          "sha256": "f30e34472ff221ffd15fc9926b0e15aff848fd24abcd8c0e7264d987ae705858",
+          "size": 13613,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": null,
+          "observation": "Tipos613linhas separados;client1015linhas usa/reexporta contrato"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/tests/architecture.test.js",
+          "sha256": "42de25e5ebf7a7ed0b50ade083b231e0bef8747423521adc06bd2d53edf664db",
+          "size": 17245,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": null,
+          "observation": "7assertions atuaisPASS;baseline4958;cap agregado5050;export-order equivalence"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/direct-observations.json",
+          "sha256": "9f61847010494f1ef07f27484f0a3466d1053a822a26537a2f94c1737aeb1083",
+          "size": 13579,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": "lineCounts/relevantTestFacts",
+          "observation": "4583+328+138=5049;request-context12PASS/query7PASS/client1PASS"
+        }
+      ],
+      "missingConditions": [],
+      "scope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY; nenhum efeito real ou aprovação presumida"
+    },
+    {
+      "id": "Q09",
+      "target": "Isolated synthetic stack starts and tears down with migration and TLS/headers",
+      "required": true,
+      "actual": "Stackreal synthetic concluiu startup/31migration-idempotence/TLSheaders/isolation/durableworkerrestart/teardown.370sourcebindings atuais,422proofs,110commandstreams e255SHA conferidos. Nenhuma nova execuçãoDocker pelo crítico.",
+      "status": "PASS_BOUNDED_LOCAL",
+      "confidence": "ALTA nos artefatos e escopo observados; não universal",
+      "advisoryScore": 100,
+      "directEvidence": [
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/deploy/aud06/compose.yaml",
+          "sha256": "69d4247d3ded12c4902766b392c923d48a1a915f1f1c610136b0f980d820f47c",
+          "size": 7203,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": null,
+          "observation": "Stack synthetic isoladaDB/API2replicas/worker/web,restrições e ports"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/scripts/aud06-stack-run.mjs",
+          "sha256": "457be0ab1848f48395941d52712f9b9d2fa8f01ad0660ab8750e5c3390342b37",
+          "size": 37266,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": null,
+          "observation": "Runner real cria/atestamigração/TLS/isolation e remove somente ownedIDs"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/commands.jsonl",
+          "sha256": "f66721e3432111a5cd8ad97c6f3fa65cd0225a391e7a24564367116e4d2c4724",
+          "size": 69388,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": null,
+          "observation": "110comandos reais;streamdigests conferidos;exit0 stack com negativos esperados"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/https-api-ready.json",
+          "sha256": "6e031a75b965883677ad2436ffa600ec568771e593d10ba53bf122aa381d9989",
+          "size": 2818,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": null,
+          "observation": "TLS autorizado e readiness HTTP real"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/direct-observations.json",
+          "sha256": "9f61847010494f1ef07f27484f0a3466d1053a822a26537a2f94c1737aeb1083",
+          "size": 13579,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": "runtimeChecks/runtime",
+          "observation": "31migrações idempotentes;worker readiness durable/restart;cleanupremaining[]"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/raw-verification.json",
+          "sha256": "2a9ef4d1ee1362af35e0f4ed8038346f2c9595426e1aebbb5199218a02146e91",
+          "size": 10125,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": "runtime370/proof422/runtimeSHA256SUMS",
+          "observation": "370sourcebindings/422proofs/255SHA256SUMS conferidos independentemente"
+        }
+      ],
+      "missingConditions": [],
+      "scope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY; nenhum efeito real ou aprovação presumida"
+    },
+    {
+      "id": "Q10",
+      "target": "Shared rate limiting, telemetry export and restore integrity demonstrated",
+      "required": true,
+      "actual": "Quota real compartilhada:300HTTP200(150/replica)+2HTTP429;storagefault503→recovery200. Exporttelemetry local API/worker, flushobservado;restore44tables41rows com hashes/constraints/policies/indexes iguais e sourceunchanged.",
+      "status": "PASS_BOUNDED_LOCAL",
+      "confidence": "ALTA nos artefatos e escopo observados; não universal",
+      "advisoryScore": 100,
+      "directEvidence": [
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/apps/api/src/postgres-rate-limit.ts",
+          "sha256": "ab5cfb3a5017cf964bef597cf6876239a16202ea37a81a2596a86fa17c04c6a1",
+          "size": 5470,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": "83–148",
+          "observation": "Transação/locknamespace+UPSERTshared,erro não concede quota"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/packages/observability/src/telemetry.ts",
+          "sha256": "e127f27bd16104353d799e2c8286fa6c464bcd85582ca89be4e5f54eab620b5b",
+          "size": 9226,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": null,
+          "observation": "Exportador real de telemetria e flush"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/shared-quota-burst.json",
+          "sha256": "03462efd02229dd114fb328ad069602f264d1aa1d5c43e0455d48e040060596c",
+          "size": 74931,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": null,
+          "observation": "300HTTP200 distribuídos150cada;2HTTP429umcada"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/quota-storage-failure.json",
+          "sha256": "a6be747e84cdae8b9219dc2f97d8171c0e617b070066fcc24493374ac34e3d3e",
+          "size": 10951,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": null,
+          "observation": "Storagefault503closed;recovery200 emraw separado"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/api-metrics-export.json",
+          "sha256": "4f3305472644645cb57551a75715a0e824153a6728cd8fe0150149cfac3bb55e",
+          "size": 3324,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": null,
+          "observation": "ExportaçãoAPImetrics de requests reais via fonte local"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/restore-integrity.json",
+          "sha256": "e24013d7e3a1058298e74f97895b22fbb7aea0a36d61be6a48632b6ce57a9e5a",
+          "size": 305770,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": null,
+          "observation": "Original==restored integral44tables41rowsinclconstraints/policies/indexes;sourceunchanged"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/raw-verification.json",
+          "sha256": "2a9ef4d1ee1362af35e0f4ed8038346f2c9595426e1aebbb5199218a02146e91",
+          "size": 10125,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": "runtime370/runtimeCommands",
+          "observation": "Todos370bindings atuais conferidos;110outputs íntegros"
+        }
+      ],
+      "missingConditions": [],
+      "scope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY; nenhum efeito real ou aprovação presumida"
+    },
+    {
+      "id": "Q11",
+      "target": "Pilot contracts approved and integrations qualified",
+      "required": true,
+      "actual": "Execução de piloto/integracõesqualificadas adiada explicitamente pelo usuário. Nenhum contratoaprovado/end-to-endreal deHIS/piloto foi demonstrado no escopo permitido.",
+      "status": "DEFERRED_BY_USER_NOT_RUN_UNSATISFIED",
+      "confidence": "ALTA nos artefatos e escopo observados; não universal",
+      "advisoryScore": 0,
+      "directEvidence": [
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/normative-projection.json",
+          "sha256": "319a183a856d5df14a3d5b22bdce2cef431430c45fcd619e4a02b4207fe735ce",
+          "size": 12886,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": "Q07.taskMatrixRouting AUD06-11",
+          "observation": "AUD06-11WAITING_HUMAN_APPROVAL/DEFERRED_BY_USER"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/phase11-result.json",
+          "sha256": "39b4fae216574a139d96a6736c66947495ba2834825058f219e7f2a2df3872b8",
+          "size": 358474,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": "externalGates.pilot/channel/externalIdentity",
+          "observation": "Pilot/channel/externalIdentityNOT_VALIDATED; sem signoff; não importadosscores/conclusões"
+        }
+      ],
+      "missingConditions": [
+        "Decisões de produto/identidade e contratos HIS/piloto aprovados pelos owners em ambiente autorizado.",
+        "Integração ponta a ponta real qualificada após retomada expressa do itemDEFERRED_BY_USER."
+      ],
+      "scope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY; nenhum efeito real ou aprovação presumida"
+    },
+    {
+      "id": "Q12",
+      "target": "Integrated regression and fresh independent critique pass",
+      "required": true,
+      "actual": "Fullpass5real35/35PASS ligado ao candidato;unit4338/200skips,coverage4538PASS,PG369PASS,e2e75PASS,200skips poridentidadeexata todosdedicatedPASS. Crítica independente própria de código e pacote bruto sem achado material no escopo finito. Sentinel e fingerprints estáveis. Primeira falha permaneceNO_GO.",
+      "status": "PASS_BOUNDED_LOCAL",
+      "confidence": "ALTA nos artefatos e escopo observados; não universal",
+      "advisoryScore": 100,
+      "directEvidence": [
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/raw-verification.json",
+          "sha256": "2a9ef4d1ee1362af35e0f4ed8038346f2c9595426e1aebbb5199218a02146e91",
+          "size": 10125,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": "gate35/independentExactSkips",
+          "observation": "35/35gatePASS/30logs bindingvalid;unit4338+200skip/PG369/coverage4538/e2e75"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/exact-skip-index.json",
+          "sha256": "f07d214b1322510a40bba641714a1a0011d4503d26860f20e8cbbebd0b814e89",
+          "size": 58058,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": null,
+          "observation": "200file+fullName únicos todos com1dedicatedPASS"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/scripts/phase11-bypass-audit.mjs",
+          "sha256": "ad5ed6c3d3b1499a4ee5a77e939383d472bbcca5f8ece62b592cf4a12b5110d1",
+          "size": 72184,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": "8–51;1917–2091",
+          "observation": "Real public CLI root/inventory→AST→SQL,forwarderexato disclosed,finite host/origin/alias domain"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/scripts/lib/bypass-sql-audit.mjs",
+          "sha256": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+          "size": 19509,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": "309–371;398–591",
+          "observation": "SQL target/grammar/lexerclosed classes,quota específica/replayrestrito"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/direct-observations.json",
+          "sha256": "9f61847010494f1ef07f27484f0a3466d1053a822a26537a2f94c1737aeb1083",
+          "size": 13579,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": "bypass/relevantTestFacts",
+          "observation": "Scanneractual59PASS,córpus1041PASS/SQL429PASS;inspeção própriaestática,sem rerun"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/before.json",
+          "sha256": "8fcc515a9478be7d49ec5f83f741f6b2f0d57cfaf94bfce0471ee73f1d4759e2",
+          "size": 19849778,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": null,
+          "observation": "Sentinel before todos tempos/statx/bytes/linksobservados"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/after.json",
+          "sha256": "d071342d6c58b2e0dd74160c1d6942950a67fb5b69d4037a4e4ab20cac7f0098",
+          "size": 19849778,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": null,
+          "observation": "Sentinel after igual após allownjobsclosed"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/sentinel-comparison.json",
+          "sha256": "c54c6a7706dcb2eda97464897914b43275375cfb8a627934bb6580242f282c4e",
+          "size": 270,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": null,
+          "observation": "Read-only observado;ZERO TARGET desde AFTER"
+        }
+      ],
+      "missingConditions": [],
+      "scope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY; nenhum efeito real ou aprovação presumida"
+    },
+    {
+      "id": "Q13",
+      "target": "Certified candidate and remote Verify/Security correspond",
+      "required": true,
+      "actual": "Selo local/integridade/candidato1256/HEAD/index/blobs/tree/fingerprint e validador atual conferidos independentemente; Verify/Security remoto do mesmo commit nãoexecutado/nãodemonstrado, publicaçãohumanapendente.",
+      "status": "PARTIAL_REMOTE_NOT_RUN_UNSATISFIED",
+      "confidence": "ALTA nos artefatos e escopo observados; não universal",
+      "advisoryScore": 50,
+      "directEvidence": [
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/candidate-reconstruction.json",
+          "sha256": "66aa670bf73cd2dae7b72cae44cd660c5d56f848b2dc9d549198a740f39c6f68",
+          "size": 365,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": null,
+          "observation": "1256/candidateId/behavior/fingerprint reconstruídos"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/git-reconstruction.json",
+          "sha256": "dea38494ea2f071a587bf83cb05694ccfc3c8a8734a3b7871ef9287cb26ce727",
+          "size": 691,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": null,
+          "observation": "HEAD/index/3523blobs/4105entries;zeroerro1256"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/manifest-resolved-index.json",
+          "sha256": "e7768d7f91e6b7d11b815e8484e68c23bc9365a7f0dc368ab0eada5011a3757d",
+          "size": 30062,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": null,
+          "observation": "78/78artifactdigests;58snapshot20source opaco"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/independent_critic.log",
+          "sha256": "09ac8c4bf701b720eebfde3be6c0cefad7219f70dd58f43e5254ad09396b41d1",
+          "size": 1874,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": null,
+          "observation": "Validador real atual exit0/schema/binding/fingerprint/artifacts checks;sem importar semanticverdictinput"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/.github/workflows/verify.yml",
+          "sha256": "16070dff4609910f694c4c8edec62f7b587cd1e100ab10662b45acb9cf29490f",
+          "size": 3807,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": null,
+          "observation": "CI Verify existe, execução remota correspondente não observada"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/.github/workflows/security.yml",
+          "sha256": "b33fb6f64c89bde1e4f1895cce8a1c2eb2da3e8ac875557f77efb0addb841870",
+          "size": 2186,
+          "method": "inspeção estática/manual do código real em owncopy; teste não reexecutado",
+          "selector": null,
+          "observation": "CI Security existe, execução remota correspondente não observada"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/normative-projection.json",
+          "sha256": "319a183a856d5df14a3d5b22bdce2cef431430c45fcd619e4a02b4207fe735ce",
+          "size": 12886,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": "Q07 AUD06-13",
+          "observation": "13publicationpending"
+        }
+      ],
+      "missingConditions": [
+        "Autoridade humana de publicação.",
+        "Execuções remotas Verify e Security do exato commit/candidato, metadata+logs autênticos e resultados satisfatórios."
+      ],
+      "scope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY; nenhum efeito real ou aprovação presumida"
+    },
+    {
+      "id": "Q14",
+      "target": "Eight external and human gates qualified without synthesized approval",
+      "required": true,
+      "actual": "Oito gates externos/humanos nãoqualificados:provider/channel/IdP/institutionalRAG/RPO-RTO/pilot/rollbackNOT_VALIDATED;humanSignoffPENDING. Sem síntese deaprovacão.",
+      "status": "PENDING_UNSATISFIED",
+      "confidence": "ALTA nos artefatos e escopo observados; não universal",
+      "advisoryScore": 0,
+      "directEvidence": [
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/phase11-result.json",
+          "sha256": "39b4fae216574a139d96a6736c66947495ba2834825058f219e7f2a2df3872b8",
+          "size": 358474,
+          "method": "inspeção/reconciliação independente de fatos brutos da execução real concluída; sem rerun",
+          "selector": "externalGates",
+          "observation": "7externalsNOT_VALIDATED+humanSignoffPENDING;restrições factualemitted"
+        },
+        {
+          "path": "/tmp/aud06-finalcritic-I1-db55luic/normative-projection.json",
+          "sha256": "319a183a856d5df14a3d5b22bdce2cef431430c45fcd619e4a02b4207fe735ce",
+          "size": 12886,
+          "method": "controle estrutural independente efetivamente executado por Socrates",
+          "selector": "Q07 AUD06-14",
+          "observation": "AUD06-14WAITING_HUMAN_APPROVAL"
+        }
+      ],
+      "missingConditions": [
+        "Qualificação real autorizada dos sete gates externos: modelProvider, channel, externalIdentity, institutionalRag, rpoRto, pilot, rollback.",
+        "Signoff humano real, pertinente à janela/ambiente/candidato."
+      ],
+      "scope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY; nenhum efeito real ou aprovação presumida"
+    }
+  ],
+  "decision": {
+    "fullOriginalGoal": "NO_GO_NOT_COMPLETED",
+    "globalProduction": "NO_GO",
+    "boundedLocalTechnical": "CONDITIONAL_GO_CONTROLLED_LOCAL_SYNTHETIC_ONLY",
+    "requiredItemsSatisfiedInBoundedScope": 11,
+    "requiredItemsUnsatisfied": [
+      "Q11",
+      "Q13",
+      "Q14"
+    ],
+    "N3": "DENY",
+    "pilot11": "DEFERRED_BY_USER",
+    "remoteVerifySecurity": "NOT_RUN_UNSATISFIED",
+    "Q14": "PENDING",
+    "synthesizedApproval": false,
+    "noAverageOverridesRequiredGate": true,
+    "publishAuthorityGranted": false
+  },
+  "currentActualIntegrated": {
+    "certificationId": "phase11-f15cece0c6784845-muznvvts",
+    "decisionEmitted": "CONDITIONAL_GO",
+    "eligibleProfileEmitted": "STAGING (emitted control field; não autorização nova)",
+    "exitCode": 0,
+    "timedOut": false,
+    "gates": {
+      "total": 35,
+      "unique": 35,
+      "passed": 35,
+      "commandLogs": 30,
+      "badBindings": [],
+      "internal": [
+        "prompt_integrity",
+        "evidence_graph",
+        "candidate_clean",
+        "node_target",
+        "PHASE11_FORMAL_CLOSURE"
+      ]
+    },
+    "times": {
+      "command": [
+        "bash",
+        "/tmp/cvg-aud06-certification-aottnvx0/repo/scripts/certify-controlled.sh",
+        "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5.log"
+      ],
+      "cwd": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+      "startedAt": "2026-10-08T14:58:33.192505+00:00",
+      "endedAt": "2026-10-08T16:01:02.783052+00:00",
+      "exitCode": 0,
+      "timedOut": false,
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22"
+    },
+    "unit": {
+      "numTotalTests": 4538,
+      "numPassedTests": 4338,
+      "numPendingTests": 200,
+      "numFailedTests": 0,
+      "numTotalTestSuites": 922,
+      "numFailedTestSuites": 0,
+      "success": true,
+      "startTime": 1791473095301
+    },
+    "postgres": {
+      "numTotalTests": 369,
+      "numPassedTests": 369,
+      "numPendingTests": 0,
+      "numFailedTests": 0,
+      "numTotalTestSuites": 87,
+      "numFailedTestSuites": 0,
+      "success": true,
+      "startTime": 1791474658422
+    },
+    "coverageStandalone": {
+      "lines": {
+        "total": 12342,
+        "covered": 12067,
+        "skipped": 0,
+        "pct": 97.77
+      },
+      "statements": {
+        "total": 13083,
+        "covered": 12712,
+        "skipped": 0,
+        "pct": 97.16
+      },
+      "functions": {
+        "total": 2452,
+        "covered": 2374,
+        "skipped": 0,
+        "pct": 96.81
+      },
+      "branches": {
+        "total": 10481,
+        "covered": 9892,
+        "skipped": 0,
+        "pct": 94.38
+      },
+      "branchesTrue": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      }
+    },
+    "coverageNestedVerify": {
+      "statements": 92.83,
+      "branches": 90,
+      "functions": 91.31,
+      "lines": 93.3,
+      "reason": "Separate emitted coverage profile in verify.log; no substitution of percentages."
+    },
+    "snapshotFiles": 158,
+    "manifestArtifactsResolved": 78,
+    "runtimeSourceBindings": 370,
+    "runtimeProofFiles": 422,
+    "exactSkipIdentities": 200,
+    "canonicalOwnResourcesAbsent": 3
+  },
+  "preservedFirstActualCycle": {
+    "controlFacts": {
+      "certificationId": "phase11-f15cece0c6784845-muzjnd5e",
+      "timestamp": "2026-10-08T14:08:06.419Z",
+      "decision": "NO_GO",
+      "certification": "NO_GO",
+      "failedGates": [
+        {
+          "id": "independent_critic",
+          "status": "FAIL",
+          "exitCode": 1,
+          "command": "node scripts/phase11-2-evidence-check.mjs --critic"
+        },
+        {
+          "id": "PHASE11_FORMAL_CLOSURE",
+          "status": "FAIL",
+          "exitCode": 1,
+          "command": "phase11 internal check"
+        }
+      ]
+    },
+    "receiptFacts": {
+      "command": [
+        "bash",
+        "/tmp/cvg-aud06-certification-aottnvx0/repo/scripts/certify-controlled.sh",
+        "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass4.log"
+      ],
+      "cwd": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+      "startedAt": "2026-10-08T12:59:57.056870+00:00",
+      "endedAt": "2026-10-08T14:08:08.932057+00:00",
+      "exitCode": 1,
+      "timedOut": false,
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22"
+    },
+    "snapshot": "/tmp/aud06-finalcritic-I1-db55luic/owncopy/docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot",
+    "notRetrospectivelyAttributedToThisSentinel": true,
+    "sha256Result": "928a15508c16f0ce3abc95d24c790f1a001db3adac7641ca9b550125c966f54e",
+    "earlierFailureNotReplaced": true
+  },
+  "independentlyExecutedChecks": [
+    "Contrato SHA256+O_NOATIME como primeiroFS",
+    "Whole-tree BEFORE com stat/statx todos tempos disponíveis/birthtime,bytesSHA,links;guardsmetadata imediatamente antes/depois cada contentread",
+    "Cópia física exclusiva e byte/inode/link verification, inclusiveGit1984entries1711regularfiles semalternates",
+    "Reconstrução1256/candidateId/behaviorTreeHash/sha256-candidate-v1 usando helpers reais owncopy;recomputationafter igual",
+    "Git owncopy HEAD/index/tree e SHA1+SHA2563523blobs em batch;reconciliação tracked4105/excluded2849/ignoredgenerated",
+    "Node real /home/ricardo/.nvm/versions/node/v22.23.2/bin/node --version: v22.23.2",
+    "Utilityprojeção SHAefc3bf579fa0c4462a0d352eb7644215a922805917955a53950f4360e87b355e verificado;python3utility VERIFIEDOWNCOPY exit0",
+    "ControlesPython de integridade158snapshot/78manifest/422proof/370runtime/220stdoutstderr hashes110commands/255SHA256SUMS",
+    "Reconciliação independente200skips file+fullName únicos com exatamente1dedicatedpassed e seleçãooriginal test:postgres",
+    "Ligação de30logs a35gates:certificationId/candidate/commit/tree/gate/exit/duration,5internal separados",
+    "Comparação whole-tree AFTER após ownjobsclosed;28651entries/705687876bytes idênticos;ZERO TARGET permanente iniciado"
+  ],
+  "staticRawManualInspection": [
+    "Projeção normativa Q01/Q07 apenas; links tratados comoidentificadores; nenhuma leitura full0348/0349/matrix/masters",
+    "Policy/runtime public effect path,N3 catalog,approval/executor spies,real API bootstrap/request-context/query/client contracts",
+    "Wrapper success/failure/timeout/signal source+current raw43cases+birth/teardownIDfacts",
+    "Retention approval selectedcontrolfields+window/transactionclock/UNCERTAIN+warningCI sources/current12+13rawcases",
+    "Public scanner CLI actual inventory/hostAST/SQLlexer/finiteoriginaliasquota grammar+current1041/429rawcorpusPASS",
+    "Pinned manifests/CI/lock/Dockerfile and actualinstall/audit/build/e2e/snapshot preservation",
+    "Actualstack quota/storagefault/TLS/start/migrations/telemetry/restore/durableworker/ownedcleanup rawoutput equivalence with370currentbindings",
+    "Current independent_critic validator log/schema/source inspected; authentic earlier input only opaquehash and mechanical identity/binding/fingerprint parsed; no earlier semanticverdict imported"
+  ],
+  "notExecuted": {
+    "testsOrExpensiveGatesRerun": 0,
+    "targetTests": 0,
+    "corpusAttempts": 0,
+    "CLIAdversarialProbeCases": 0,
+    "pairedConfirmationCases": 0,
+    "SQLProbeCases": 0,
+    "fixtureExecutions": 0,
+    "networkDBDockerInstalls": 0,
+    "descendantAgents": 0
+  },
+  "envelope": {
+    "agents": 1,
+    "descendants": 0,
+    "checkpointsSeconds": 60,
+    "finitePlanBeforeProbes": true,
+    "initialCLImax": 40,
+    "pairedConfirmationsMax": 12,
+    "SQLmax": 40,
+    "copiedActualCorpusAttemptsMax": 1,
+    "copiedCorpusTimeoutSeconds": 300,
+    "corpusOnlyIfNeeded": "Current first-pass raw corpus and full integrated gates may suffice. Do not rerun expensive tests just for repetition. If own corpus is necessary, execute after other own probe jobs end; one attempt/no green retry.",
+    "noExpansion": "Stop expansion after discriminating material paired conclusion; no universal new theories. Finite supported roots only."
+  },
+  "artifactIntegrity": {
+    "snapshot": {
+      "count": 158,
+      "mismatches": []
+    },
+    "manifest": {
+      "count": 78,
+      "matched": 78,
+      "snapshotOrigin": 58,
+      "sourceOwncopyOpaqueOrigin": 20,
+      "initialBaseResolutionObservation": "Inicial resolver tratou erroneamente20refs externas ao snapshot como ausentes; segunda resolução própria ao sourceowncopy confirmou78/78. Nenhum artefato alterado."
+    },
+    "runtime": {
+      "count": 370,
+      "mismatches": []
+    },
+    "proofs": {
+      "count": 422,
+      "mismatches": []
+    },
+    "commandStreams": {
+      "count": 110,
+      "outputHashFailures": [],
+      "nonzero": [
+        {
+          "id": "008",
+          "name": "volume-must-not-exist",
+          "exitCode": 1
+        },
+        {
+          "id": "010",
+          "name": "volume-must-not-exist",
+          "exitCode": 1
+        },
+        {
+          "id": "043",
+          "name": "production-preflight-api",
+          "exitCode": 1
+        },
+        {
+          "id": "044",
+          "name": "production-preflight-worker",
+          "exitCode": 1
+        }
+      ]
+    },
+    "sha256sums": {
+      "count": 255,
+      "mismatches": []
+    },
+    "opaqueBindings": {
+      "bar": "94f3ed94460a2e938635e3d4f8cedc7769666b7682eb42149087aad8c2976b5d",
+      "spec": "d846fce11c9dc7c3b4281a68e2602040cfab59dbf04d1ec6771e114d499527a1",
+      "scanner": "ad5ed6c3d3b1499a4ee5a77e939383d472bbcca5f8ece62b592cf4a12b5110d1",
+      "sqlHelper": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+      "test": "82306075b8612f6cb55c990f870bae1f3dc78ca78de4d8e97a143ceca7a40e83"
+    },
+    "fingerprint": {
+      "algorithm": "sha256-candidate-v1",
+      "before": "ffc25aad2f22adcf4c9a35ba58fb1e01ee57adac5a8477a182a29eb14c934a8d",
+      "after": "ffc25aad2f22adcf4c9a35ba58fb1e01ee57adac5a8477a182a29eb14c934a8d",
+      "equal": true,
+      "owncopyOnly": true
+    }
+  },
+  "sentinels": {
+    "before": {
+      "start_ns": 1791475802998358486,
+      "end_ns": 1791475805630512294,
+      "startUTC": "2026-10-08T16:10:02.998358+00:00",
+      "endUTC": "2026-10-08T16:10:05.630512+00:00",
+      "count": 28651,
+      "bytes": 705687876,
+      "sha256": "8fcc515a9478be7d49ec5f83f741f6b2f0d57cfaf94bfce0471ee73f1d4759e2"
+    },
+    "after": {
+      "start_ns": 1791476270127120174,
+      "end_ns": 1791476271398556093,
+      "startUTC": "2026-10-08T16:17:50.127120+00:00",
+      "endUTC": "2026-10-08T16:17:51.398556+00:00",
+      "count": 28651,
+      "bytes": 705687876,
+      "sha256": "d071342d6c58b2e0dd74160c1d6942950a67fb5b69d4037a4e4ab20cac7f0098",
+      "actualJobExit": 0
+    },
+    "comparison": {
+      "afterCount": 28651,
+      "allAvailableTimes": [
+        "atime",
+        "mtime",
+        "ctime",
+        "statx birthtime"
+      ],
+      "beforeCount": 28651,
+      "changed": [],
+      "identical": true,
+      "noTimestampRestoration": true,
+      "targetReadsPermanentlyEnded_ns": 1791476272031842889
+    },
+    "excludedOnly": "root.git; Git copiado/verificado opaquely de forma separada",
+    "guardFailures": 0,
+    "timestampRestoration": false,
+    "targetReadsAfterFinalAfter": 0
+  },
+  "protocolLimits": {
+    "host": "Host original, filesystem compartilhado entre família I1; contratosread-only,parentZERO,guards,sem isolamentoOS",
+    "writeAccessToWorktreeDeclaration": "Contrato de papel read-only; não restriçãoOS; processo tecnicamente com permissões dohost. Nenhuma escritaTARGET/fonte/gauntlet realizada.",
+    "metadataScope": "lstat+statx mode/dev/inode/size/nlink/uid/gid/blocks/blksize/rdev/attributes/attributesMask/mntId e todos atime/mtime/ctime/birthtime disponíveis; bytes e symlinktext. Não há monitoraçãoOScontínua ou restauração de tempos.",
+    "guardLimit": "Guard imediata perentry pre/post mais BEFORE/AFTER; não prova ausência de mudança transitória adversarial completamente restaurada, nem isolamento/proibiçãoOS. Root.git está excluído do sentinel por acordo explícito.",
+    "semanticBoundary": "Whitelistedsource/tests/comments/config permitido; documento+história e priorcritic/buildernarratives apenasopaqueSHA. Saídas iniciais excessivas contiveram inventories/candidate mechanical fields e Dockerinspectionfacts, sem importar scores/humanrepair/priorsemanticconclusions. Seletores seguintes compactados.",
+    "evidenceLimit": "Logs são execuções reais anteriores concluídas e amarradas ao candidato; foram inspecionados/reconciliados, não reexecutados. Rawproducer assertions não substituem autorizaçõesexternas.",
+    "manualInspectionLimit": "Inspeção direta de caminhos pertinentes erawfullpackage com seleçãocontrolfields, não revisão humana linhaa-linha de todo monorepo nem prova universal deconstructed effect detection.",
+    "Q06warningLimit": "Aviso30dias é mecanismoCI/manutenção comtestedefronteira; não notificaçãooperacional externa demonstrada.",
+    "coverageProfiles": "Standalone97.77lines94.38branches e nestedverify93.3lines90branches são ambos reportados nosperfisemitted; não misturados."
+  },
+  "jobClosure": {
+    "at_ns": 1791476263270602822,
+    "guardCopySession14798Exit": 0,
+    "gitCatFileBatchExit": 0,
+    "projectionExit": 0,
+    "nodeVersionExit": 0,
+    "candidateHelperExit": 0,
+    "gitAndRawControlsExit": 0,
+    "candidateFinalFingerprintExit": 0,
+    "openOwnBackgroundJobs": 0,
+    "descendantsAgents": 0,
+    "targetTests": 0,
+    "networkDBDockerInstalls": 0,
+    "fixtureExecution": 0,
+    "expensiveGateReruns": 0,
+    "corpusAttempts": 0,
+    "canonicalJobsClosed": "User dispatch attestation; actual completed receipt exit0 and resource absence logs independently inspected; no live Docker calls"
+  },
+  "noMachineInputCreatedOrModified": true,
+  "finalTargetBoundary": "AFTERexit0 concluído;permanentemente ZERO TARGETreads desde 2026-10-08T16:17:52.031843+00:00"
+}

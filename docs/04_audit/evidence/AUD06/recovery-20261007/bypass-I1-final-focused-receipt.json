@@ -1,0 +1,49 @@
+{
+  "at": "2026-10-08T04:10:21.988975+00:00",
+  "status": "IMPLEMENTED_FOCUSED_VERIFICATION_ONLY",
+  "red": {
+    "exitCode": 1,
+    "failed": 10,
+    "passed": 40,
+    "log": "bypass-I1-red-valid.log"
+  },
+  "invalidAttempt": {
+    "log": "bypass-I1-red.log",
+    "qualification": "INVALID_RED_HARNESS_ATTEMPT"
+  },
+  "green": {
+    "exitCode": 0,
+    "passed": 82,
+    "files": 3,
+    "log": "bypass-I1-green-4.log"
+  },
+  "publicScanner": {
+    "exitCode": 0,
+    "report": "bypass-I1-public-4.json",
+    "scannedFiles": 59
+  },
+  "intermediatePublicFailure": {
+    "exitCode": 1,
+    "report": "bypass-I1-public-3.json",
+    "cause": "Write-intent classifier included HTTP verb constants and SQL privilege values; corrected by SQL-shape and value recognition, positives added"
+  },
+  "lint": {
+    "exitCode": 0,
+    "log": "bypass-I1-lint-4.log"
+  },
+  "formatCheck": {
+    "exitCode": 0,
+    "log": "bypass-I1-format-check-4.log"
+  },
+  "docsCheck": {
+    "exitCode": 0,
+    "log": "bypass-I1-docs.log"
+  },
+  "sourceHashes": {
+    "scripts/phase11-bypass-audit.mjs": "cf8ec4e961d212c9009e32668b645950e967b129ee41123ca31829ea78d47b5d",
+    "tests/phase11-bypass-audit.test.js": "2942b3d9cb7db057aca4d9e2e940077a48c7a06e487abc69a862960b8566c31a"
+  },
+  "exitProvenance": "Actual tool exec/write_stdin exits observed by Lead; not raw subprocess exit receipt retroactively fabricated",
+  "independentAcceptance": "PENDING",
+  "sourceRuntimeStack": "UNCHANGED"
+}

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "kind": "aud19-documentation-check",
+  "valid": true,
+  "links": {
+    "checked": 2271,
+    "broken": []
+  },
+  "json": {
+    "checked": 663,
+    "invalid": []
+  },
+  "states": {
+    "declared": [
+      "READY_FOR_NEXT_STEP"
+    ],
+    "unexpected": []
+  },
+  "nextAction": {
+    "valid": true,
+    "reason": null,
+    "runtimeStateAction": "obter o parecer do crítico independente no opencode para o candidato congelado da Onda 1 (pedido em `docs/04_audit/evidence/CLAW-W1/`); rodar a passada 2 no contêiner de paridade, commitar o selo com recibo só em `docs/04_audit/evidence/` e fazer push (CLAW-W1-06); decidir a renovação da política de tombstone antes de 2026-12-31 (CLAW-W1-07); responder às 6 perguntas abertas da Discovery 0026 (CLAW-W2-01).",
+    "currentIndexAction": "obter o parecer do crítico independente no opencode para o candidato congelado da Onda 1 (pedido em `docs/04_audit/evidence/CLAW-W1/`); rodar a passada 2 no contêiner de paridade, commitar o selo com recibo só em `docs/04_audit/evidence/` e fazer push (CLAW-W1-06); decidir a renovação da política de tombstone antes de 2026-12-31 (CLAW-W1-07); responder às 6 perguntas abertas da Discovery 0026 (CLAW-W2-01)."
+  },
+  "semantic": {
+    "valid": true,
+    "failures": [],
+    "state": {
+      "valid": true,
+      "failures": []
+    },
+    "node": {
+      "valid": true,
+      "failures": []
+    },
+    "observedNode": "v22.23.2"
+  }
+}

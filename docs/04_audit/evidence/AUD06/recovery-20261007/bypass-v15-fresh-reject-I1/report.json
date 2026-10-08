@@ -1,0 +1,576 @@
+{
+  "schema_version": 1,
+  "kind": "AUD06-Q13-focused-independent-critic",
+  "version": "v15",
+  "disposition": "REJECT",
+  "audit_verdict": "FAIL",
+  "is_final_gauntlet": false,
+  "global_readiness": "NO_GO",
+  "production": "NO_GO",
+  "other_gates": {
+    "Q11": "DEFERRED",
+    "Q13_remote": "UNSATISFIED",
+    "Q14": "PENDING"
+  },
+  "target": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+  "artifacts_directory": "/tmp/aud06-v15-independent-MEG0ts",
+  "authorization": "READONLY target; only own TEMP writable",
+  "independence": {
+    "level": "I1",
+    "fresh_context": true,
+    "builder_receipts_read": false,
+    "builder_justifications_read": false,
+    "prior_focused_reports_read": false,
+    "notes": "SPEC necessarily includes historical addenda; no old critic report/receipt was opened or used as proof. Required administrative documents were inspected for governance only. No descendants. This agent did not build the candidate."
+  },
+  "bindings": {
+    "commit": "cdfea8643cc94d73715e0fcfdd5467b0752fcfa7",
+    "candidateId": "7f2f21d2dc3c3fb2c8e2bda13180f87a4e7aaf75206a4a0c8235c3a81f479e85",
+    "behaviorTree": "2507196505f425b242126c331d12a4448b10a8b2d61f2dedb2409549ffc716de",
+    "independently_recomputed": true,
+    "candidate_file_count": 1256,
+    "candidate_evidence": "/tmp/aud06-v15-independent-MEG0ts/candidate-binding.json",
+    "source_sha256": {
+      "scripts/phase11-bypass-audit.mjs": "e1d90f06f9403397436651ea72024161aadcaebf655fd3b926337a28d2c18f74",
+      "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+      "docs/02_spec/aud06_remediation_20261006.md": "fcf44f618fe6aec06c0d101fd7b0574f83f547fec6bf31ea84c8330f81c8753e",
+      "docs/04_audit/evidence/AUD06/quality-bar.json": "72e793837e58a98699a9d94bf8110ab59bcfb6a5154d0d71a4d3af76fde730af"
+    },
+    "quality_bar_version": "AUD06-v15-intrinsic-bind-effective-arguments-audit"
+  },
+  "method": {
+    "runtime": "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+    "runtime_version": "v22.23.2",
+    "cli_entrypoint": "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs",
+    "shim_manifest": "/tmp/aud06-v15-independent-MEG0ts/shim-manifest.json",
+    "qualification": "Exact actual CLI source preserved; only const root replaced with CVG_CRITIC_FIXTURE_ROOT. AST/SQL functions unchanged. TypeScript package copied using O_NOATIME from frozen target dependency, no install. CLI claims are root-injected scans, not a direct scan of target runtime corpus.",
+    "fixtures": "184 newly git-initialized disposable roots; source is synthetic and never executed",
+    "sql_helper": "Unchanged frozen helper imported from exact source copy; 60 finite calls; no SQL execution"
+  },
+  "counts": {
+    "cli_executions": 184,
+    "cli_expected_outcomes": 156,
+    "falsePASS": 14,
+    "falseFAIL": 14,
+    "parse_invalid": 0,
+    "sql_helper_cases": 60,
+    "sql_expected_outcomes": 60,
+    "findings": 2,
+    "P0": 0,
+    "P1": 1,
+    "P2": 1,
+    "rootcauses": 2,
+    "sentinel_entries": 28107
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "severity": "P1",
+      "confidence": "high",
+      "criterion": "Q13 bounded own-member origin and effective-argument contract",
+      "title": "Own invocation members assigned to a bound callable are lost; material falsePASS",
+      "rootcause": "R01",
+      "source_locations": [
+        "scripts/phase11-bypass-audit.mjs:1063",
+        "scripts/phase11-bypass-audit.mjs:1262",
+        "scripts/phase11-bypass-audit.mjs:1288",
+        "scripts/phase11-bypass-audit.mjs:1310",
+        "scripts/phase11-bypass-audit.mjs:1483"
+      ],
+      "description": "receiverOrigins handles identifiers, selections, literals and functions, but not native bind construction expressions. Thus f = db.query.bind(db) has no receiver origin for storing f.bind/f.call/f.apply. assignedProperties loses those own members; nativeFunctionMember treats spelling as intrinsic. Own bind invocation is skipped as construction, while own call invocation drops its actual first SQL argument and audits the second one. This is within explicit known callable/own member and prefix contract, with no reflection, prototypes, interprocedural effects, or fixture execution.",
+      "reproductions": [
+        {
+          "id": "bound-own-fetch-bind-direct",
+          "code": "const f=fetch.bind(null); f.bind=fetch;  f.bind(\"https://synthetic.invalid\");",
+          "expected": "FAIL",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "group": "bound-own",
+          "root": "/tmp/aud06-v15-independent-MEG0ts/fixtures/bound-own-fetch-bind-direct",
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "status": "PASS",
+          "findings": [],
+          "parse_invalid": false,
+          "seconds": 0.3258328437805176,
+          "stdout": "/tmp/aud06-v15-independent-MEG0ts/raw/bound-own-fetch-bind-direct.stdout.json",
+          "stderr": "/tmp/aud06-v15-independent-MEG0ts/raw/bound-own-fetch-bind-direct.stderr.txt",
+          "matches": false
+        },
+        {
+          "id": "bound-own-query-bind-sql-direct",
+          "code": "const f=db.query.bind(db); f.bind=db.query; f.bind(\"DELETE FROM appointments\", \"SELECT 1\");",
+          "expected": "FAIL",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "group": "bound-own",
+          "root": "/tmp/aud06-v15-independent-MEG0ts/fixtures/bound-own-query-bind-sql-direct",
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "status": "PASS",
+          "findings": [],
+          "parse_invalid": false,
+          "seconds": 0.34393978118896484,
+          "stdout": "/tmp/aud06-v15-independent-MEG0ts/raw/bound-own-query-bind-sql-direct.stdout.json",
+          "stderr": "/tmp/aud06-v15-independent-MEG0ts/raw/bound-own-query-bind-sql-direct.stderr.txt",
+          "matches": false
+        },
+        {
+          "id": "bound-own-query-call-sql-direct",
+          "code": "const f=db.query.bind(db); f.call=db.query; f.call(\"DELETE FROM appointments\", \"SELECT 1\");",
+          "expected": "FAIL",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "group": "bound-own",
+          "root": "/tmp/aud06-v15-independent-MEG0ts/fixtures/bound-own-query-call-sql-direct",
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "status": "PASS",
+          "findings": [],
+          "parse_invalid": false,
+          "seconds": 0.3564329147338867,
+          "stdout": "/tmp/aud06-v15-independent-MEG0ts/raw/bound-own-query-call-sql-direct.stdout.json",
+          "stderr": "/tmp/aud06-v15-independent-MEG0ts/raw/bound-own-query-call-sql-direct.stderr.txt",
+          "matches": false
+        }
+      ],
+      "related_falsePASS": [
+        "bound-own-fetch-bind-direct",
+        "bound-own-fetch-bind-holder",
+        "bound-own-fetch-bind-array",
+        "bound-own-fetch-bind-spread",
+        "bound-own-query-bind-direct",
+        "bound-own-query-bind-holder",
+        "bound-own-query-bind-array",
+        "bound-own-query-bind-spread",
+        "bound-own-query-bind-sql-direct",
+        "bound-own-query-bind-sql-rest",
+        "bound-own-query-bind-sql-array",
+        "bound-own-query-call-sql-direct",
+        "bound-own-query-call-sql-rest",
+        "bound-own-query-call-sql-array"
+      ],
+      "collateral_falseFAIL": [
+        "bound-own-pure-call-positive-direct",
+        "bound-own-pure-call-positive-rest",
+        "bound-own-pure-call-positive-array",
+        "bound-own-pure-apply-positive-direct",
+        "bound-own-pure-apply-positive-rest",
+        "bound-own-pure-apply-positive-array"
+      ],
+      "positive_controls": [
+        {
+          "id": "function-bind-fetch",
+          "code": "function f() { return 1; } f.bind=fetch; f.bind(\"https://synthetic.invalid\");",
+          "expected": "FAIL",
+          "path": "apps/api/src/probe.ts",
+          "group": "origin",
+          "root": "/tmp/aud06-v15-independent-MEG0ts/fixtures/function-bind-fetch",
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs"
+          ],
+          "exit": 1,
+          "status": "FAIL",
+          "findings": [
+            {
+              "id": "direct_fetch",
+              "path": "apps/api/src/probe.ts",
+              "line": 1
+            }
+          ],
+          "parse_invalid": false,
+          "seconds": 0.3317537307739258,
+          "stdout": "/tmp/aud06-v15-independent-MEG0ts/raw/function-bind-fetch.stdout.json",
+          "stderr": "/tmp/aud06-v15-independent-MEG0ts/raw/function-bind-fetch.stderr.txt",
+          "matches": true
+        },
+        {
+          "id": "function-bind-pure",
+          "code": "function f() { return 1; } f.bind=() => 1; f.bind(\"inert\");",
+          "expected": "PASS",
+          "path": "apps/api/src/probe.ts",
+          "group": "origin",
+          "root": "/tmp/aud06-v15-independent-MEG0ts/fixtures/function-bind-pure",
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "status": "PASS",
+          "findings": [],
+          "parse_invalid": false,
+          "seconds": 0.3388962745666504,
+          "stdout": "/tmp/aud06-v15-independent-MEG0ts/raw/function-bind-pure.stdout.json",
+          "stderr": "/tmp/aud06-v15-independent-MEG0ts/raw/function-bind-pure.stderr.txt",
+          "matches": true
+        },
+        {
+          "id": "own-query-call-sql-first",
+          "code": "const h={call:db.query}; h.call(\"SELECT 1\",\"DELETE FROM appointments\");",
+          "expected": "PASS",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "group": "controls",
+          "root": "/tmp/aud06-v15-independent-MEG0ts/fixtures/own-query-call-sql-first",
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "status": "PASS",
+          "findings": [],
+          "parse_invalid": false,
+          "seconds": 0.33361268043518066,
+          "stdout": "/tmp/aud06-v15-independent-MEG0ts/raw/own-query-call-sql-first.stdout.json",
+          "stderr": "/tmp/aud06-v15-independent-MEG0ts/raw/own-query-call-sql-first.stderr.txt",
+          "matches": true
+        },
+        {
+          "id": "fetch-bind-inert",
+          "code": "const f=fetch.bind(null,\"https://synthetic.invalid\");",
+          "expected": "PASS",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "group": "controls",
+          "root": "/tmp/aud06-v15-independent-MEG0ts/fixtures/fetch-bind-inert",
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "status": "PASS",
+          "findings": [],
+          "parse_invalid": false,
+          "seconds": 0.3425467014312744,
+          "stdout": "/tmp/aud06-v15-independent-MEG0ts/raw/fetch-bind-inert.stdout.json",
+          "stderr": "/tmp/aud06-v15-independent-MEG0ts/raw/fetch-bind-inert.stderr.txt",
+          "matches": true
+        },
+        {
+          "id": "query-bind-inert",
+          "code": "const q=db.query.bind(db,\"DELETE FROM appointments\");",
+          "expected": "PASS",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "group": "controls",
+          "root": "/tmp/aud06-v15-independent-MEG0ts/fixtures/query-bind-inert",
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "status": "PASS",
+          "findings": [],
+          "parse_invalid": false,
+          "seconds": 0.32856011390686035,
+          "stdout": "/tmp/aud06-v15-independent-MEG0ts/raw/query-bind-inert.stdout.json",
+          "stderr": "/tmp/aud06-v15-independent-MEG0ts/raw/query-bind-inert.stderr.txt",
+          "matches": true
+        },
+        {
+          "id": "bound-twice-inert",
+          "code": "const f=fetch.bind(null).bind(null);",
+          "expected": "PASS",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "group": "intrinsic-chains",
+          "root": "/tmp/aud06-v15-independent-MEG0ts/fixtures/bound-twice-inert",
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "status": "PASS",
+          "findings": [],
+          "parse_invalid": false,
+          "seconds": 0.3345983028411865,
+          "stdout": "/tmp/aud06-v15-independent-MEG0ts/raw/bound-twice-inert.stdout.json",
+          "stderr": "/tmp/aud06-v15-independent-MEG0ts/raw/bound-twice-inert.stderr.txt",
+          "matches": true
+        },
+        {
+          "id": "bound-twice-invoked",
+          "code": "fetch.bind(null).bind(null)(\"https://synthetic.invalid\");",
+          "expected": "FAIL",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "group": "intrinsic-chains",
+          "root": "/tmp/aud06-v15-independent-MEG0ts/fixtures/bound-twice-invoked",
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs"
+          ],
+          "exit": 1,
+          "status": "FAIL",
+          "findings": [
+            {
+              "id": "direct_fetch",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            }
+          ],
+          "parse_invalid": false,
+          "seconds": 0.33185648918151855,
+          "stdout": "/tmp/aud06-v15-independent-MEG0ts/raw/bound-twice-invoked.stdout.json",
+          "stderr": "/tmp/aud06-v15-independent-MEG0ts/raw/bound-twice-invoked.stderr.txt",
+          "matches": true
+        },
+        {
+          "id": "bound-query-twice-read",
+          "code": "db.query.bind(db).bind(db,\"SELECT 1\")();",
+          "expected": "PASS",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "group": "intrinsic-chains",
+          "root": "/tmp/aud06-v15-independent-MEG0ts/fixtures/bound-query-twice-read",
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "status": "PASS",
+          "findings": [],
+          "parse_invalid": false,
+          "seconds": 0.33638834953308105,
+          "stdout": "/tmp/aud06-v15-independent-MEG0ts/raw/bound-query-twice-read.stdout.json",
+          "stderr": "/tmp/aud06-v15-independent-MEG0ts/raw/bound-query-twice-read.stderr.txt",
+          "matches": true
+        },
+        {
+          "id": "bound-query-twice-domain",
+          "code": "db.query.bind(db).bind(db,\"DELETE FROM appointments\")();",
+          "expected": "FAIL",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "group": "intrinsic-chains",
+          "root": "/tmp/aud06-v15-independent-MEG0ts/fixtures/bound-query-twice-domain",
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs"
+          ],
+          "exit": 1,
+          "status": "FAIL",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "DELETE is outside the authorized SQL write boundary",
+              "offset": 0,
+              "target": "appointments"
+            }
+          ],
+          "parse_invalid": false,
+          "seconds": 0.331010103225708,
+          "stdout": "/tmp/aud06-v15-independent-MEG0ts/raw/bound-query-twice-domain.stdout.json",
+          "stderr": "/tmp/aud06-v15-independent-MEG0ts/raw/bound-query-twice-domain.stderr.txt",
+          "matches": true
+        }
+      ],
+      "impact": "Public static gate can issue PASS/exit0 for known invoked HTTP and domain SQL writes. Pure own call/apply overrides on bound fetch falsely FAIL as well.",
+      "recommendation": "Retain a stable identity for the constructed bound callable in receiver/store projection, including its own properties and bound prefix. Use that projection in origin and argument classification; keep native uninvoked bind inert. Requalify on a new frozen source/candidate."
+    },
+    {
+      "id": "F02",
+      "severity": "P2",
+      "confidence": "high",
+      "criterion": "Q13 native bind construction inert; known call/apply argument contract",
+      "title": "Native construction and invocation composed through call/apply receive falseFAIL",
+      "rootcause": "R02",
+      "source_locations": [
+        "scripts/phase11-bypass-audit.mjs:1281",
+        "scripts/phase11-bypass-audit.mjs:1288",
+        "scripts/phase11-bypass-audit.mjs:1310"
+      ],
+      "description": "Classification only recognizes outer intrinsicOperation and removes one call/apply layer. fetch.bind.call(fetch,null,url) constructs a bound function but is reported direct_fetch. Read-only query.call.call/query.call.apply paths lose their effective SQL argument and are unresolved. Extracted bind has the same false rejection.",
+      "reproductions": [
+        {
+          "id": "fetch-bind-call-inert",
+          "code": "const q=fetch.bind.call(fetch,null,\"https://synthetic.invalid\");",
+          "expected": "PASS",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "group": "controls",
+          "root": "/tmp/aud06-v15-independent-MEG0ts/fixtures/fetch-bind-call-inert",
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs"
+          ],
+          "exit": 1,
+          "status": "FAIL",
+          "findings": [
+            {
+              "id": "direct_fetch",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            }
+          ],
+          "parse_invalid": false,
+          "seconds": 0.32942914962768555,
+          "stdout": "/tmp/aud06-v15-independent-MEG0ts/raw/fetch-bind-call-inert.stdout.json",
+          "stderr": "/tmp/aud06-v15-independent-MEG0ts/raw/fetch-bind-call-inert.stderr.txt",
+          "matches": false
+        },
+        {
+          "id": "query-bind-apply-inert",
+          "code": "const q=db.query.bind.apply(db.query,[db,\"DELETE FROM appointments\"]);",
+          "expected": "PASS",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "group": "controls",
+          "root": "/tmp/aud06-v15-independent-MEG0ts/fixtures/query-bind-apply-inert",
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs"
+          ],
+          "exit": 1,
+          "status": "FAIL",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ],
+          "parse_invalid": false,
+          "seconds": 0.33594417572021484,
+          "stdout": "/tmp/aud06-v15-independent-MEG0ts/raw/query-bind-apply-inert.stdout.json",
+          "stderr": "/tmp/aud06-v15-independent-MEG0ts/raw/query-bind-apply-inert.stderr.txt",
+          "matches": false
+        },
+        {
+          "id": "query-call-call-read",
+          "code": "db.query.call.call(db.query,db,\"SELECT 1\");",
+          "expected": "PASS",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "group": "controls",
+          "root": "/tmp/aud06-v15-independent-MEG0ts/fixtures/query-call-call-read",
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs"
+          ],
+          "exit": 1,
+          "status": "FAIL",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ],
+          "parse_invalid": false,
+          "seconds": 0.35445713996887207,
+          "stdout": "/tmp/aud06-v15-independent-MEG0ts/raw/query-call-call-read.stdout.json",
+          "stderr": "/tmp/aud06-v15-independent-MEG0ts/raw/query-call-call-read.stderr.txt",
+          "matches": false
+        },
+        {
+          "id": "intrinsic-alias-bind-fetch-inert",
+          "code": "const b=fetch.bind; const f=b.call(fetch,null,\"https://synthetic.invalid\");",
+          "expected": "PASS",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "group": "intrinsic-chains",
+          "root": "/tmp/aud06-v15-independent-MEG0ts/fixtures/intrinsic-alias-bind-fetch-inert",
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v15-independent-MEG0ts/shim/phase11-bypass-audit.mjs"
+          ],
+          "exit": 1,
+          "status": "FAIL",
+          "findings": [
+            {
+              "id": "direct_fetch",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            }
+          ],
+          "parse_invalid": false,
+          "seconds": 0.3175947666168213,
+          "stdout": "/tmp/aud06-v15-independent-MEG0ts/raw/intrinsic-alias-bind-fetch-inert.stdout.json",
+          "stderr": "/tmp/aud06-v15-independent-MEG0ts/raw/intrinsic-alias-bind-fetch-inert.stderr.txt",
+          "matches": false
+        }
+      ],
+      "related_falseFAIL": [
+        "query-bind-call-inert",
+        "fetch-bind-call-inert",
+        "query-bind-apply-inert",
+        "query-call-call-read",
+        "query-call-apply-read",
+        "query-alias-call",
+        "intrinsic-alias-bind-fetch-inert",
+        "intrinsic-alias-bind-query-inert"
+      ],
+      "impact": "Known inert binding/read-only queries can block scanner acceptance; no additional unsafe effect is inferred from these cases.",
+      "recommendation": "Model the bounded known intrinsic composition at the invocation boundary, preserving construction versus invocation and argument order. Do not broaden to general reflection or user-function execution."
+    }
+  ],
+  "rootcauses": [
+    {
+      "id": "R01",
+      "severity": "P1",
+      "cause": "No bound callable receiver/allocation origin in receiverOrigins; own member stores are lost",
+      "finding_ids": [
+        "F01"
+      ]
+    },
+    {
+      "id": "R02",
+      "severity": "P2",
+      "cause": "Single outer intrinsic operation classification and single-layer effective argument normalization",
+      "finding_ids": [
+        "F02"
+      ]
+    }
+  ],
+  "raw_evidence": {
+    "cli": [
+      "/tmp/aud06-v15-independent-MEG0ts/cli-results.json",
+      "/tmp/aud06-v15-independent-MEG0ts/cli-additional-results.json"
+    ],
+    "each_case_stdout_stderr": "Per-case paths in CLI result rows; raw/ contains exact subprocess stdout and stderr",
+    "sql": "/tmp/aud06-v15-independent-MEG0ts/sql-results.json",
+    "sql_driver": "/tmp/aud06-v15-independent-MEG0ts/sql-probes.mjs",
+    "sql_command_exit": 0,
+    "sql_stdout": "/tmp/aud06-v15-independent-MEG0ts/sql-run.stdout.json",
+    "fixture_driver": [
+      "/tmp/aud06-v15-independent-MEG0ts/probes.py",
+      "/tmp/aud06-v15-independent-MEG0ts/probes-additional.py"
+    ]
+  },
+  "sentinel": {
+    "status": "UNCHANGED",
+    "scope": "Whole target tree including root directories, evidence, dependencies, certification, .gauntlet, ignored files; only .git excluded",
+    "fields": [
+      "regular-file SHA256",
+      "mode/type",
+      "uid",
+      "gid",
+      "size",
+      "atime_ns",
+      "mtime_ns",
+      "ctime_ns",
+      "inode",
+      "nlink",
+      "symlink target"
+    ],
+    "before": "/tmp/aud06-v15-independent-MEG0ts/before.json",
+    "after": "/tmp/aud06-v15-independent-MEG0ts/after.json",
+    "before_sha256": "bcbadd6ad337d1b784e9eaedf940094c124f86a8ab7f36fa3b41f4e41117ade1",
+    "after_sha256": "bcbadd6ad337d1b784e9eaedf940094c124f86a8ab7f36fa3b41f4e41117ade1",
+    "differences": 0,
+    "atime_qualification": "Regular files and directories opened O_NOATIME; symlinks read via O_PATH|O_NOFOLLOW|O_NOATIME descriptors. Per-read symlink lstat verifies no atime change, whole before/after equality independently confirms all atimes unchanged. No reliance on symlink O_NOATIME guarantee. Git metadata excluded by authorization."
+  },
+  "limits": [
+    "Finite independent focused probes, not exhaustive theorem or universal JavaScript/SQL parser proof.",
+    "No general interprocedural, reflection, prototype or external PostgreSQL function semantics inferred.",
+    "No actual HTTP/SQL/fixture effects executed; effect classification derives from concrete static known functions.",
+    "No target corpus CLI scan, full framework tests, installs, DB, Docker, network, commit, push or global certification performed.",
+    "Other Q01-Q14 gates not adjudicated here. Q11 deferred, Q13 remote unsatisfied, Q14 pending; production/global NO_GO.",
+    "Checkpoint sent to lead 01a11315-639f-7793-a147-b880b9d73160. Stop reason: reproducible material P1 plus relevant discriminating controls and SQL regressions concluded."
+  ],
+  "governance_handoff": "No target runtime/log/backlog/evidence updated because explicit READONLY scope supersedes local write instructions. Lead owns disposition and subsequent registered BUILD/retest.",
+  "started_at": "2026-10-08T08:58:00Z",
+  "completed_at": "2026-10-08T09:06:25.674665+00:00",
+  "elapsed_seconds": 505.674677
+}

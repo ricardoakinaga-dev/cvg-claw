@@ -1,0 +1,75 @@
+{
+  "observed_at": "2026-10-08T04:56:16.626354+00:00",
+  "status": "IMPLEMENTED",
+  "task": "AUD06-13",
+  "rework": "ORDINARY_POSTGRESQL_ARRAY_BRACKETS",
+  "changed_source_paths": [
+    "scripts/lib/bypass-sql-audit.mjs",
+    "tests/bypass-sql-audit.test.js"
+  ],
+  "sources": {
+    "scripts/lib/bypass-sql-audit.mjs": "6e44a70609e8b0be6787feaa265fc8879a83a11330337c3cc9531f5391ef5b78",
+    "tests/bypass-sql-audit.test.js": "443df68de81ea2955a715c1ef271237a1b81e6916c910b3f50b2943ee66267e4",
+    "apps/api/src/operator-replay-store.ts": "ef387dea54f0eae3e1838cf3a83be28fdd54d3b4e279e5121f45bbc1f2282909",
+    "apps/api/src/server/postgres-role-checks.ts": "ee6009dc99b923375adac3677545c049ccb1309e6f81a469a0f6df1eeff284bb",
+    "apps/api/src/postgres-rate-limit.ts": "ab5cfb3a5017cf964bef597cf6876239a16202ea37a81a2596a86fa17c04c6a1",
+    "apps/api/src/webhook-security.ts": "96f39a798c497dcc7779288b6c3a662f82fe5b0bfd4ec4072aa68a161468c5e5"
+  },
+  "checks": [
+    {
+      "name": "arrays-focused-final",
+      "receipt": "arrays-focused-final.receipt.json",
+      "exit": 0
+    },
+    {
+      "name": "arrays-lint",
+      "receipt": "arrays-lint.receipt.json",
+      "exit": 0
+    },
+    {
+      "name": "arrays-format-check",
+      "receipt": "arrays-format-check.receipt.json",
+      "exit": 0
+    },
+    {
+      "name": "arrays-syntax-helper",
+      "receipt": "arrays-syntax-helper.receipt.json",
+      "exit": 0
+    },
+    {
+      "name": "arrays-syntax-tests",
+      "receipt": "arrays-syntax-tests.receipt.json",
+      "exit": 0
+    }
+  ],
+  "focused_vitest": {
+    "node": "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+    "files": 1,
+    "passed": 135,
+    "failed": 0,
+    "skipped": 0
+  },
+  "preserved_red": {
+    "passed": 127,
+    "failed": 7,
+    "exit": 1,
+    "receipt": "arrays-red.receipt.json"
+  },
+  "implementation": [
+    "Lexer recognizes ordinary [ ] as individual symbols and checks bracket balance; no array content masking and no write scope boundary from brackets",
+    "Recognized write cast expressions allow empty array type suffixes ::text[] and repeated []; nonempty dimensions and unsupported write subscripts remain unresolved",
+    "Known-good SELECT ANY($1::text[]) and actual three replay assertReady SELECT excerpts plus API privilege array SELECT literals are covered",
+    "Array fields/casts followed by domain INSERT/UPDATE/DELETE and writes inside array syntax remain denied; malformed/unknown write syntax remains fail closed",
+    "Original actual quota UPSERT/expiry DELETE positive is still included in focused135"
+  ],
+  "old_results": "All previous focused115, discovery39 and parent/public/copied-fixture integration results remain historical. They do not certify these new source hashes. Existing intermediate results were preserved and no public scanner or parent suite was rerun by this lane.",
+  "limitations": [
+    "Bounded syntax control, not a universal PostgreSQL parser; nonempty array dimensions/subscripts in write expressions are unsupported",
+    "Remaining interpolation analysis and source authorization remain Lead AST-owned",
+    "Fresh critic and integrated/public scanner qualification of this new helper version remain pending"
+  ],
+  "current_engine": "BUILD -> AUDIT handoff",
+  "last_completed_action": "Bounded array repair verified by focused135/135 with scoped lint/format/syntax exit0 and source binding",
+  "next_action": "Lead refreshes copied helper imports and evaluates integration against this binding; independent critic acceptance remains separate",
+  "masters": "No edits; state/log/backlog updates remain Lead-owned"
+}

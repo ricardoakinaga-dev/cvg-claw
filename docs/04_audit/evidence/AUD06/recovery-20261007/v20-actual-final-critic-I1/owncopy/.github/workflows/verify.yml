@@ -1,0 +1,122 @@
+name: Verify
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    # Approved visual baselines were rendered in this exact Noble image.
+    # Keep its browsers, font packages and system libraries together.
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble@sha256:b0ab6f3cb99aa7803adbc14d9027ec1785fc6e433b97e134e0f8fe61683b6b53
+      options: --shm-size=1g
+    defaults:
+      run:
+        shell: bash
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: cvg_test
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd "pg_isready -U postgres -d cvg_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          # phase11-verify resolves the certification anchor commit
+          # (isAncestor / gitTreeForCommit) and needs the full history.
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22.23.2
+          cache: npm
+
+      - name: Install
+        run: npm ci --ignore-scripts
+
+      - name: Construction readiness
+        run: npm run readiness
+
+      - name: Verify
+        env:
+          # Coverage must be PostgreSQL-backed: the critical-branch floors of
+          # kernel-composition (90%) and runtime-approval-store (85%) are only
+          # reachable when the integration tests run.
+          TEST_DATABASE_URL: postgres://postgres:postgres@postgres:5432/cvg_test
+        run: npm run verify
+
+      - name: Critical branch coverage
+        run: node scripts/aud19-critical-coverage.mjs
+
+      - name: Phase 11 certification integrity
+        run: npm run certification:verify:phase11
+
+      - name: Promotion gate
+        run: npm run promotion:check -- --expect=EXTERNAL_ONLY
+
+      - name: Diff check
+        run: git diff --check
+
+      - name: Worker startup fail-closed smoke
+        run: npm run test:worker:startup
+
+      - name: Production preflight remains fail-closed
+        run: npm run production:preflight -- --expect=REJECT
+
+      - name: Agent evals
+        run: npm run test:evals
+
+      - name: Chaos suite
+        run: npm run test:chaos
+
+      - name: Dependency licenses
+        run: npm run licenses:check
+
+      - name: SBOM
+        run: npm run sbom
+
+      - name: PostgreSQL migration smoke
+        env:
+          TEST_DATABASE_URL: postgres://postgres:postgres@postgres:5432/cvg_test
+        run: npm run test:postgres
+
+      - name: Browser environment contract
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict'
+          import fs from 'node:fs'
+          import { createRequire } from 'node:module'
+          const require = createRequire(import.meta.url)
+          assert.equal(process.versions.node, fs.readFileSync('.nvmrc', 'utf8').trim())
+          assert.equal(require('@playwright/test/package.json').version, '1.59.1')
+          assert.equal(process.env.PLAYWRIGHT_BROWSERS_PATH, '/ms-playwright')
+          console.log(`Browser parity: Node ${process.versions.node}, Playwright 1.59.1`)
+          NODE
+          source /etc/os-release
+          test "$VERSION_CODENAME" = noble
+      - name: Browser E2E
+        run: npm run test:e2e

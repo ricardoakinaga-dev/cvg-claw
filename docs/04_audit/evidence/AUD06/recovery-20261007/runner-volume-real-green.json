@@ -1,0 +1,48 @@
+{
+  "at": "2026-10-08T02:33:32.349269+00:00",
+  "runnerSha256": "8857c3243cc1fb1cabda14cf9ba32bb1a29c30cb0e7c46268af96bc442e73329",
+  "sourceUnchanged": true,
+  "results": [
+    {
+      "exitExpected": 0,
+      "exitActual": 0,
+      "startedAt": "2026-10-08T02:33:27.805355+00:00",
+      "endedAt": "2026-10-08T02:33:30.070748+00:00",
+      "anonymousVolumes": [
+        {
+          "removedContainerVolume": "fb36a24db6322040b3a9dfe0478cd0f3f5b5ca68584aba02de5a6e314c543fb6",
+          "inspectAfterExit": 1,
+          "stderr": "Error response from daemon: get fb36a24db6322040b3a9dfe0478cd0f3f5b5ca68584aba02de5a6e314c543fb6: no such volume\n"
+        }
+      ],
+      "foreignVolumePreserved": true,
+      "commandsFile": "runner-volume-real-0-commands.jsonl",
+      "runnerSha256": "8857c3243cc1fb1cabda14cf9ba32bb1a29c30cb0e7c46268af96bc442e73329",
+      "notCertification": "Only workload Dockercreate argv substituted by executable harness; canonical runner/cleanup bytes unchanged",
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "exitExpected": 37,
+      "exitActual": 37,
+      "startedAt": "2026-10-08T02:33:30.070839+00:00",
+      "endedAt": "2026-10-08T02:33:32.335955+00:00",
+      "anonymousVolumes": [
+        {
+          "removedContainerVolume": "2f2ef9918065743780e7df07b7e90ac1925cec457fdcc41b6b8c2d49d260a9b9",
+          "inspectAfterExit": 1,
+          "stderr": "Error response from daemon: get 2f2ef9918065743780e7df07b7e90ac1925cec457fdcc41b6b8c2d49d260a9b9: no such volume\n"
+        }
+      ],
+      "foreignVolumePreserved": true,
+      "commandsFile": "runner-volume-real-37-commands.jsonl",
+      "runnerSha256": "8857c3243cc1fb1cabda14cf9ba32bb1a29c30cb0e7c46268af96bc442e73329",
+      "notCertification": "Only workload Dockercreate argv substituted by executable harness; canonical runner/cleanup bytes unchanged",
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "leadSentinelVolumeTeardownExit": 0,
+  "harnessDirectory": "/tmp/cvg-runner-volume-real-3pgya445",
+  "scope": "Synthetic real Docker runner boundary proof; no certification/product workload executed"
+}

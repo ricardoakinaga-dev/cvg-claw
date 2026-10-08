@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-10-08T16:03:03.626314+00:00",
+  "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+  "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+  "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+  "certificationId": "phase11-f15cece0c6784845-muznvvts",
+  "startedAt": "2026-10-08T14:58:33.192505+00:00",
+  "endedAt": "2026-10-08T16:01:02.783052+00:00",
+  "elapsedSeconds": 3749.590547,
+  "wrapperActualExit": 0,
+  "timedOut": false,
+  "decision": "CONDITIONAL_GO",
+  "gatesPassed": 35,
+  "gatesTotal": 35,
+  "failedGates": [],
+  "bindingPassed": true,
+  "sourcesChecked": 1256,
+  "source1256Stable": true,
+  "teardownPassed": true,
+  "ownResourceCount": 3,
+  "all200SkippedReconciledByExactIdentity": true,
+  "unitPassed": 4338,
+  "unitSkipped": 200,
+  "coveragePassed": 4538,
+  "coverageSkipped": 0,
+  "postgresPassed": 369,
+  "postgresSkipped": 0,
+  "browserPassed": 75,
+  "bypass": {
+    "scannedFiles": 59,
+    "findings": []
+  },
+  "coverageTotals": {
+    "lines": {
+      "total": 12342,
+      "covered": 12067,
+      "skipped": 0,
+      "pct": 97.77
+    },
+    "statements": {
+      "total": 13083,
+      "covered": 12712,
+      "skipped": 0,
+      "pct": 97.16
+    },
+    "functions": {
+      "total": 2452,
+      "covered": 2374,
+      "skipped": 0,
+      "pct": 96.81
+    },
+    "branches": {
+      "total": 10481,
+      "covered": 9892,
+      "skipped": 0,
+      "pct": 94.38
+    },
+    "branchesTrue": {
+      "total": 0,
+      "covered": 0,
+      "skipped": 0,
+      "pct": 100
+    }
+  },
+  "externalGates": {
+    "modelProvider": "NOT_VALIDATED",
+    "channel": "NOT_VALIDATED",
+    "externalIdentity": "NOT_VALIDATED",
+    "institutionalRag": "NOT_VALIDATED",
+    "rpoRto": "NOT_VALIDATED",
+    "pilot": "NOT_VALIDATED",
+    "rollback": "NOT_VALIDATED",
+    "humanSignoff": "PENDING"
+  },
+  "firstFailedCyclePreserved": true,
+  "freshFinalCritic": "NOT_STARTED_REQUIRED",
+  "globalProduction": "NO_GO",
+  "N3": "DENY",
+  "pilot11": "DEFERRED_BY_USER",
+  "remoteQ13": "NOT_RUN/UNSATISFIED",
+  "Q14": "PENDING",
+  "completeSnapshot": "local-certification-v20-second-complete-pass5-snapshot",
+  "scope": "Actual complete controlled-local qualification, NOT full-goal/global/production acceptance. Different fresh FinalCritic and publication authority still required."
+}

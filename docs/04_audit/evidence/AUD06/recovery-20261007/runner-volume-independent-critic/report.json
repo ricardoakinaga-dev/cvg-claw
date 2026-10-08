@@ -1,0 +1,1275 @@
+{
+  "schema_version": 1,
+  "verdict": "APPROVE",
+  "scope": "Q05 canonical runner corrective change only; synthetic runner boundary, not certification, product acceptance, release or all-Q approval",
+  "confidence": "HIGH for source safety and recorded 0/37 behavior; bounded to admitted artifacts",
+  "started_at": "2026-10-08T02:35:31Z",
+  "finished_at": "2026-10-08T02:40:13.039959+00:00",
+  "envelope_seconds": 480,
+  "independence": {
+    "level": "I1",
+    "fresh_packet": true,
+    "descendants": 0,
+    "prior_critic_reports_read": false,
+    "builder_handoffs_read": false,
+    "gauntlet_history_read": false,
+    "lead_validation_receipt_used_as_proof": false,
+    "governance_owner": "lead"
+  },
+  "quality_bar": {
+    "version": "AUD06-v5-owned-anonymous-volumes",
+    "sha256": "f018dc1ba92f259d808e22048f1cbe2f6c8ac3d7b7dc9521e72fed6622551e8c",
+    "spec_sha256": "2a705aed577478d385c95807977ddd0f05d9d0179f8c9cb8e1d1310520cdb9e0",
+    "id": "Q05"
+  },
+  "criteria": {
+    "artifact_binding": {
+      "status": "PASS",
+      "method": "Independent PRE/POST SHA-256 of both canonical sources, SPEC, quality bar and every admitted raw file. All unchanged; expected source hashes matched."
+    },
+    "discriminating_RED": {
+      "status": "PASS",
+      "method": "RED real create/inspect/rm -f/volume inspect shows an anonymous volume retained; focused raw RED fails specifically at anonymous volume exists assertion for exits 0 and 37; canonical tests check exits before the failing assertion. Prechange complete runner source/hash not included, so real RED is operation-level."
+    },
+    "preservation_0_37": {
+      "status": "PASS",
+      "method": "For each real case wait API exit 0 prints respective workload result 0/37; canonical log exit matches; cleanup executes both owned IDs with all rm exits 0. Exact source and extracted cleanup independently preserve original exits including cleanup failure."
+    },
+    "owned_immutable_IDs_anonymous_scope": {
+      "status": "PASS",
+      "method": "Private mktemp cidfiles, 64 hex guard, two owned creation IDs exactly equal removal set; --volumes on each ID only; post anonymous volume inspect exit1 with no such volume. No global volume enumeration/prune/rm in runner."
+    },
+    "named_external_and_bind_preservation": {
+      "status": "PASS",
+      "method": "Named attached sentinel survives both scope deletions with raw inspect exit0, then is separately deleted by probe owner. Bind mount deletion command has no host-source deletion; source cleanup removes only four receipt files and private state directory. Bind after-delete evidence is boolean-only: advisory raw-evidence gap, not observed source behavior defect."
+    },
+    "bounded_cleanup": {
+      "status": "PASS",
+      "method": "At most logs once and rm twice, each timeout cleanup_seconds 1..300, TERM then kill-after1s; child-group termination polls 20x0.05s then KILL. Separate operation budgets, not one global cleanup deadline. Temp child escalation observed exit137 within2.01s. No live Docker stall rerun; uninterruptible OS/daemon work and filesystem failure not universal wall-clock guarantees."
+    },
+    "43_test_regression_signal_timeout_transport": {
+      "status": "PASS",
+      "method": "Existing raw log 43 passed; 42 observation files correspond to 43 tests minus two static checks plus one extra concurrent invocation. 41 canonical invocations and one historical known-bad, exact created/removed ID sets validated. Logs/observations retain timeout124, signal130/143/129, wait transport42, wait-signal143/137, invalid status65, diagnostics failure and workload beyond startup deadline. Framework tests not rerun by critic."
+    }
+  },
+  "findings": [
+    {
+      "id": "Q05-C1",
+      "severity": "MINOR",
+      "blocking": false,
+      "confidence": "HIGH",
+      "title": "Bind preservation lacks raw host-source postcheck",
+      "evidence": [
+        "runner-volume-scope-preservation.json: bindSourceRetained=true; commands record mount and container deletion but no host stat/read/hash after removal"
+      ],
+      "impact": "The operation boundary and canonical source support preservation, but the bind boolean cannot independently prove source content continuity.",
+      "recommendation": "In future evidence capture a synthetic bind sentinel hash/stat before and after owned container removal, before probe teardown. Do not reopen implementation solely for this reporting gap."
+    },
+    {
+      "id": "Q05-C2",
+      "severity": "MINOR",
+      "blocking": false,
+      "confidence": "HIGH",
+      "title": "Raw test logs omit outer process exit receipts",
+      "evidence": [
+        "runner-volume-tests-red.log: 2 failed,41 skipped; runner-volume-tests-green.log:43 passed; neither prints outer exit status"
+      ],
+      "impact": "Exact outer npm/Vitest process exits are not directly recoverable from these two logs. Regression result and fixture runner exits are observable.",
+      "recommendation": "Future test command records should retain exact outer argv and numeric process exit with raw log hash; do not fabricate 1/0 receipts retrospectively."
+    }
+  ],
+  "raw_command_analysis": {
+    "red": {
+      "operationCommand": [
+        "docker",
+        "rm",
+        "-f",
+        "--",
+        "47f327796df95b7e01d2ee94dcf1b8507a13b1d8c2c2d1090d77ad57472515ba"
+      ],
+      "operationExit": 0,
+      "volumeInspectAfterRemovalExit": 0,
+      "containerNeverStarted": true,
+      "teardownInspectExit": 1
+    },
+    "0": {
+      "createdIDs": [
+        "adab873ac1f12ef99858253ea64696da91ecb538866477a1b98013a4e9fa199c",
+        "030fb64b3ea8f27f49e42105e47c7a84a152ed82b41dbedf348ca56e4488d91b"
+      ],
+      "removedIDs": [
+        "030fb64b3ea8f27f49e42105e47c7a84a152ed82b41dbedf348ca56e4488d91b",
+        "adab873ac1f12ef99858253ea64696da91ecb538866477a1b98013a4e9fa199c"
+      ],
+      "waitTransportExit": 0,
+      "workloadResult": 0,
+      "cleanupCommands": [
+        [
+          "rm",
+          "-f",
+          "--volumes",
+          "--",
+          "030fb64b3ea8f27f49e42105e47c7a84a152ed82b41dbedf348ca56e4488d91b"
+        ],
+        [
+          "rm",
+          "-f",
+          "--volumes",
+          "--",
+          "adab873ac1f12ef99858253ea64696da91ecb538866477a1b98013a4e9fa199c"
+        ]
+      ],
+      "cleanupExits": [
+        0,
+        0
+      ],
+      "anonymousPostInspect": [
+        {
+          "removedContainerVolume": "fb36a24db6322040b3a9dfe0478cd0f3f5b5ca68584aba02de5a6e314c543fb6",
+          "inspectAfterExit": 1,
+          "stderr": "Error response from daemon: get fb36a24db6322040b3a9dfe0478cd0f3f5b5ca68584aba02de5a6e314c543fb6: no such volume\n"
+        }
+      ],
+      "onlyArgvChange": "create final workload command",
+      "executedWorkload": "mkdir -p \"$HOME\"; printf \"synthetic runner-only workload\n\"; exit 0"
+    },
+    "37": {
+      "createdIDs": [
+        "11d34d451f8e1d2b5dd5c9431f3bf5a81987ae18dae4a6ef6af215cb12f67a3f",
+        "6843845fde2e91cfc863e09ced50ee8c3434db706c6b629c67399b9477aceaee"
+      ],
+      "removedIDs": [
+        "6843845fde2e91cfc863e09ced50ee8c3434db706c6b629c67399b9477aceaee",
+        "11d34d451f8e1d2b5dd5c9431f3bf5a81987ae18dae4a6ef6af215cb12f67a3f"
+      ],
+      "waitTransportExit": 0,
+      "workloadResult": 37,
+      "cleanupCommands": [
+        [
+          "rm",
+          "-f",
+          "--volumes",
+          "--",
+          "6843845fde2e91cfc863e09ced50ee8c3434db706c6b629c67399b9477aceaee"
+        ],
+        [
+          "rm",
+          "-f",
+          "--volumes",
+          "--",
+          "11d34d451f8e1d2b5dd5c9431f3bf5a81987ae18dae4a6ef6af215cb12f67a3f"
+        ]
+      ],
+      "cleanupExits": [
+        0,
+        0
+      ],
+      "anonymousPostInspect": [
+        {
+          "removedContainerVolume": "2f2ef9918065743780e7df07b7e90ac1925cec457fdcc41b6b8c2d49d260a9b9",
+          "inspectAfterExit": 1,
+          "stderr": "Error response from daemon: get 2f2ef9918065743780e7df07b7e90ac1925cec457fdcc41b6b8c2d49d260a9b9: no such volume\n"
+        }
+      ],
+      "onlyArgvChange": "create final workload command",
+      "executedWorkload": "mkdir -p \"$HOME\"; printf \"synthetic runner-only workload\n\"; exit 37"
+    },
+    "scopeBoundary": [
+      {
+        "id": "37a52bf042f790a188f349d025f149009a6cf926fc766afb3a13d8940f902335",
+        "mounts": [
+          {
+            "Type": "volume",
+            "Name": "cvg-aud06-named-sentinel-9724f9ad45",
+            "Source": "/var/lib/docker/volumes/cvg-aud06-named-sentinel-9724f9ad45/_data",
+            "Destination": "/var/lib/postgresql/data",
+            "Driver": "local",
+            "Mode": "z",
+            "RW": true,
+            "Propagation": ""
+          }
+        ],
+        "neverStarted": true,
+        "rmCommand": [
+          "docker",
+          "rm",
+          "-f",
+          "--volumes",
+          "--",
+          "37a52bf042f790a188f349d025f149009a6cf926fc766afb3a13d8940f902335"
+        ],
+        "rmExit": 0,
+        "postContainerInspectExit": 1
+      },
+      {
+        "id": "6b33157dabe2e4e913a41addb87a9b0e07d22ee27270a270585441fe62523306",
+        "mounts": [
+          {
+            "Type": "bind",
+            "Source": "/tmp/cvg-runner-volume-scope-lx7ve9s6",
+            "Destination": "/var/lib/postgresql/data",
+            "Mode": "",
+            "RW": true,
+            "Propagation": "rprivate"
+          }
+        ],
+        "neverStarted": true,
+        "rmCommand": [
+          "docker",
+          "rm",
+          "-f",
+          "--volumes",
+          "--",
+          "6b33157dabe2e4e913a41addb87a9b0e07d22ee27270a270585441fe62523306"
+        ],
+        "rmExit": 0,
+        "postContainerInspectExit": 1
+      }
+    ],
+    "namedVolumePreservation": {
+      "postInspectCommands": [
+        [
+          "docker",
+          "volume",
+          "inspect",
+          "cvg-aud06-named-sentinel-9724f9ad45"
+        ],
+        [
+          "docker",
+          "volume",
+          "inspect",
+          "cvg-aud06-named-sentinel-9724f9ad45"
+        ]
+      ],
+      "postInspectExits": [
+        0,
+        0
+      ],
+      "name": "cvg-aud06-named-sentinel-9724f9ad45",
+      "separateTeardownCommand": [
+        "docker",
+        "volume",
+        "rm",
+        "cvg-aud06-named-sentinel-9724f9ad45"
+      ],
+      "separateTeardownExit": 0
+    },
+    "bindRawLimit": "Bind mount association and container deletion recorded; after-delete host source existence/content only asserted as bindSourceRetained=true, no raw stat/read/hash in this file."
+  },
+  "raw_fixtures": {
+    "count": 42,
+    "canonical_count": 41,
+    "all_canonical_removed_ID_sets_match_created": true,
+    "detail_path": "/tmp/q05-independent-critic-_gfgqblx/fixture-analysis.json"
+  },
+  "existing_test_commands": [
+    {
+      "argv_as_logged": [
+        "vitest",
+        "run",
+        "--no-file-parallelism",
+        "--maxWorkers=2",
+        "--run",
+        "tests/certify-controlled.test.js",
+        "-t",
+        "removes its anonymous PostgreSQL volume"
+      ],
+      "outcome": "2FAIL/41SKIP",
+      "outer_exit_code": null,
+      "exit_reason": "not recorded in raw log",
+      "critic_executed": false
+    },
+    {
+      "argv_as_logged": [
+        "vitest",
+        "run",
+        "--no-file-parallelism",
+        "--maxWorkers=2",
+        "--run",
+        "tests/certify-controlled.test.js"
+      ],
+      "outcome": "43PASS",
+      "outer_exit_code": null,
+      "exit_reason": "not recorded in raw log",
+      "critic_executed": false
+    }
+  ],
+  "critic_commands": {
+    "syntax": {
+      "argv": [
+        "bash",
+        "-n",
+        "/tmp/q05-independent-critic-_gfgqblx/raw/scripts/certify-controlled.sh"
+      ],
+      "exit_code": 0
+    },
+    "cleanup_probes": {
+      "method": "Exact cleanup function extracted from hashed source; run_child/terminate and deletion intercepted by shell builtins; no Docker/Node invoked. Validates shell exit/argv control only, not Docker semantics.",
+      "results": [
+        {
+          "command": [
+            "bash",
+            "/tmp/q05-independent-critic-_gfgqblx/probes/exit-0-fail-0-invalid-0/cleanup-probe.sh"
+          ],
+          "exitActual": 0,
+          "originalExit": 0,
+          "rmFailureStub": false,
+          "invalidReceipt": false,
+          "elapsedSeconds": 0.0027979890001006424,
+          "stdout": "",
+          "stderr": "",
+          "recordedArguments": [
+            "timeout --foreground --signal=TERM --kill-after=1s 2s docker logs bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "timeout --foreground --signal=TERM --kill-after=1s 2s docker rm -f --volumes -- bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "timeout --foreground --signal=TERM --kill-after=1s 2s docker rm -f --volumes -- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "rm -f -- /tmp/q05-independent-critic-_gfgqblx/probes/exit-0-fail-0-invalid-0/pg.cid /tmp/q05-independent-critic-_gfgqblx/probes/exit-0-fail-0-invalid-0/cert.cid /tmp/q05-independent-critic-_gfgqblx/probes/exit-0-fail-0-invalid-0/port /tmp/q05-independent-critic-_gfgqblx/probes/exit-0-fail-0-invalid-0/wait",
+            "rmdir -- /tmp/q05-independent-critic-_gfgqblx/probes/exit-0-fail-0-invalid-0"
+          ],
+          "runnerLog": "cleanup failures 0\nrunner exit 0\n",
+          "scriptSha256": "bee34cec48ff4bbaefb3e849d66ddcf47a0dbcb5b2ad1c0eeb7aeaf812bb7d5b"
+        },
+        {
+          "command": [
+            "bash",
+            "/tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-0-invalid-0/cleanup-probe.sh"
+          ],
+          "exitActual": 37,
+          "originalExit": 37,
+          "rmFailureStub": false,
+          "invalidReceipt": false,
+          "elapsedSeconds": 0.002916159006417729,
+          "stdout": "",
+          "stderr": "",
+          "recordedArguments": [
+            "timeout --foreground --signal=TERM --kill-after=1s 2s docker logs bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "timeout --foreground --signal=TERM --kill-after=1s 2s docker rm -f --volumes -- bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "timeout --foreground --signal=TERM --kill-after=1s 2s docker rm -f --volumes -- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "rm -f -- /tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-0-invalid-0/pg.cid /tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-0-invalid-0/cert.cid /tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-0-invalid-0/port /tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-0-invalid-0/wait",
+            "rmdir -- /tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-0-invalid-0"
+          ],
+          "runnerLog": "cleanup failures 0\nrunner exit 37\n",
+          "scriptSha256": "e89e07d881cf5fb22fa7f01577296b581bf4a24047ef8c188fcd6e5ff4d2444a"
+        },
+        {
+          "command": [
+            "bash",
+            "/tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-1-invalid-0/cleanup-probe.sh"
+          ],
+          "exitActual": 37,
+          "originalExit": 37,
+          "rmFailureStub": true,
+          "invalidReceipt": false,
+          "elapsedSeconds": 0.0027696370088960975,
+          "stdout": "",
+          "stderr": "",
+          "recordedArguments": [
+            "timeout --foreground --signal=TERM --kill-after=1s 2s docker logs bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "timeout --foreground --signal=TERM --kill-after=1s 2s docker rm -f --volumes -- bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "timeout --foreground --signal=TERM --kill-after=1s 2s docker rm -f --volumes -- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "rm -f -- /tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-1-invalid-0/pg.cid /tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-1-invalid-0/cert.cid /tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-1-invalid-0/port /tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-1-invalid-0/wait",
+            "rmdir -- /tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-1-invalid-0"
+          ],
+          "runnerLog": "log collection failed: container bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb exit 58\ncleanup failed: container bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\ncleanup failed: container aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\ncleanup failures 1\nrunner exit 37\n",
+          "scriptSha256": "6e6bc59ff4afd24326c4d5effb85ca07c07aa9998efa2ad939459f78df0ca18d"
+        },
+        {
+          "command": [
+            "bash",
+            "/tmp/q05-independent-critic-_gfgqblx/probes/exit-0-fail-1-invalid-0/cleanup-probe.sh"
+          ],
+          "exitActual": 0,
+          "originalExit": 0,
+          "rmFailureStub": true,
+          "invalidReceipt": false,
+          "elapsedSeconds": 0.0027826110017485917,
+          "stdout": "",
+          "stderr": "",
+          "recordedArguments": [
+            "timeout --foreground --signal=TERM --kill-after=1s 2s docker logs bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "timeout --foreground --signal=TERM --kill-after=1s 2s docker rm -f --volumes -- bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "timeout --foreground --signal=TERM --kill-after=1s 2s docker rm -f --volumes -- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "rm -f -- /tmp/q05-independent-critic-_gfgqblx/probes/exit-0-fail-1-invalid-0/pg.cid /tmp/q05-independent-critic-_gfgqblx/probes/exit-0-fail-1-invalid-0/cert.cid /tmp/q05-independent-critic-_gfgqblx/probes/exit-0-fail-1-invalid-0/port /tmp/q05-independent-critic-_gfgqblx/probes/exit-0-fail-1-invalid-0/wait",
+            "rmdir -- /tmp/q05-independent-critic-_gfgqblx/probes/exit-0-fail-1-invalid-0"
+          ],
+          "runnerLog": "log collection failed: container bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb exit 58\ncleanup failed: container bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\ncleanup failed: container aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\ncleanup failures 1\nrunner exit 0\n",
+          "scriptSha256": "95bb504e9c10431a9a205f748d96d9d00add8d780d312b8f73868153dc783f70"
+        },
+        {
+          "command": [
+            "bash",
+            "/tmp/q05-independent-critic-_gfgqblx/probes/exit-143-fail-0-invalid-0/cleanup-probe.sh"
+          ],
+          "exitActual": 143,
+          "originalExit": 143,
+          "rmFailureStub": false,
+          "invalidReceipt": false,
+          "elapsedSeconds": 0.002891484007705003,
+          "stdout": "",
+          "stderr": "",
+          "recordedArguments": [
+            "timeout --foreground --signal=TERM --kill-after=1s 2s docker logs bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "timeout --foreground --signal=TERM --kill-after=1s 2s docker rm -f --volumes -- bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "timeout --foreground --signal=TERM --kill-after=1s 2s docker rm -f --volumes -- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "rm -f -- /tmp/q05-independent-critic-_gfgqblx/probes/exit-143-fail-0-invalid-0/pg.cid /tmp/q05-independent-critic-_gfgqblx/probes/exit-143-fail-0-invalid-0/cert.cid /tmp/q05-independent-critic-_gfgqblx/probes/exit-143-fail-0-invalid-0/port /tmp/q05-independent-critic-_gfgqblx/probes/exit-143-fail-0-invalid-0/wait",
+            "rmdir -- /tmp/q05-independent-critic-_gfgqblx/probes/exit-143-fail-0-invalid-0"
+          ],
+          "runnerLog": "cleanup failures 0\nrunner exit 143\n",
+          "scriptSha256": "f54b152c69bc88528ad3d625d93ac15471f2bd92a6170e3e824b2e66b4e80651"
+        },
+        {
+          "command": [
+            "bash",
+            "/tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-0-invalid-1/cleanup-probe.sh"
+          ],
+          "exitActual": 37,
+          "originalExit": 37,
+          "rmFailureStub": false,
+          "invalidReceipt": true,
+          "elapsedSeconds": 0.002565415998105891,
+          "stdout": "",
+          "stderr": "",
+          "recordedArguments": [
+            "timeout --foreground --signal=TERM --kill-after=1s 2s docker rm -f --volumes -- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "rm -f -- /tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-0-invalid-1/pg.cid /tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-0-invalid-1/cert.cid /tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-0-invalid-1/port /tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-0-invalid-1/wait",
+            "rmdir -- /tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-0-invalid-1"
+          ],
+          "runnerLog": "cleanup failed: invalid container receipt /tmp/q05-independent-critic-_gfgqblx/probes/exit-37-fail-0-invalid-1/cert.cid\ncleanup failures 1\nrunner exit 37\n",
+          "scriptSha256": "9b9d753675fb3cf6a8183c0d00bfd69e1b9fd19cb62558917552dfd52ed15aa5"
+        }
+      ]
+    },
+    "child_group_bound_probe": {
+      "command": [
+        "bash",
+        "/tmp/q05-independent-critic-_gfgqblx/probes/bounded-child-group.sh"
+      ],
+      "executedInnerCommand": [
+        "timeout",
+        "--foreground",
+        "--signal=TERM",
+        "--kill-after=1s",
+        "1s",
+        "bash",
+        "-c",
+        "trap \"\" TERM; while :; do :; done"
+      ],
+      "exitCode": 137,
+      "stdout": "child status 137; active_pid <>\n",
+      "stderr": "",
+      "elapsedSeconds": 2.0045352970046224,
+      "sourceFunctionsExact": true,
+      "scriptSha256": "0389ce7d7db523a8abb7a78f6a9ceb1c1cef404c39def4e2129aaf57c7a7ccce",
+      "qualification": "Temp-only shell child group escalation; no Docker/framework or target writes."
+    },
+    "static_analysis": "Python standard library JSON/SHA/argv assertions over own raw copies; all assertion commands exit0. Shell cat/rg/nl/sed/read operations only on allowed sources/governance prerequisites and skill instructions."
+  },
+  "nonmutation": {
+    "target_writes": 0,
+    "output_root": "/tmp/q05-independent-critic-_gfgqblx",
+    "pre_manifest": "/tmp/q05-independent-critic-_gfgqblx/pre-manifest.json",
+    "post_manifest": "/tmp/q05-independent-critic-_gfgqblx/post-manifest.json",
+    "files_checked": 98,
+    "changes": [],
+    "both_source_hashes_unchanged": true,
+    "statement": "No target/cache/private-backup writes, framework/npm/Vitest/Vite/tsx/Docker/DB/network/install commands, agent descendants, git actions or governance mutations. Docker argv appeared only as raw evidence or inert shell-stub arguments. SHA sentinel covers admitted files, not whole repository."
+  },
+  "pre_raw_sha256": {
+    "scripts/certify-controlled.sh": {
+      "sha256": "8857c3243cc1fb1cabda14cf9ba32bb1a29c30cb0e7c46268af96bc442e73329",
+      "bytes": 7943
+    },
+    "tests/certify-controlled.test.js": {
+      "sha256": "714cb1b107f605d76b64e82e9808c52676d4d76799466c137ca2d8416fd298b7",
+      "bytes": 21761
+    },
+    "docs/02_spec/aud06_remediation_20261006.md": {
+      "sha256": "2a705aed577478d385c95807977ddd0f05d9d0179f8c9cb8e1d1310520cdb9e0",
+      "bytes": 9637
+    },
+    "docs/04_audit/evidence/AUD06/quality-bar.json": {
+      "sha256": "f018dc1ba92f259d808e22048f1cbe2f6c8ac3d7b7dc9521e72fed6622551e8c",
+      "bytes": 16309
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-anonymous-volume-red.json": {
+      "sha256": "7f169bfa125b9f5519d9588d56b070bb0a0bf6c63abbf223cefa3a3b3029468f",
+      "bytes": 11824
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-tests-red.log": {
+      "sha256": "5ef43b4494ecdc568b881909ecee1f5a59c7cc281b303515b2f046a8cb81991d",
+      "bytes": 1738
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-tests-green.log": {
+      "sha256": "59fdffd4063a543b705be10358e9337401fba429752c745fdd2cb68779098226",
+      "bytes": 322
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-real-green.json": {
+      "sha256": "434b48dca02d71eaf024167d46d2d7eeb0289988b070ac306b4566b161d21987",
+      "bytes": 2115
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-real-0.log": {
+      "sha256": "429a6f078971cae5554ae82d17b92327f33a910a8d5a22a3779b76e7cb42808a",
+      "bytes": 1094
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-real-37.log": {
+      "sha256": "1e30ea5dbd1135c526ca4129a85cec1cc1dea21c39790054ebfee84d14347075",
+      "bytes": 1097
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-real-0-commands.jsonl": {
+      "sha256": "507bfdf0b0d150c4dff616dc3ad1141d08b98c3d054466964d83212e7e5cb08e",
+      "bytes": 7279
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-real-37-commands.jsonl": {
+      "sha256": "5e962d6f1cf36f0f15e9c08cb7885df8555ffca974af0d2e859fabda12b48b91",
+      "bytes": 7281
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-real-harness.py": {
+      "sha256": "108f61c08076e3d130880f282ea3447ea7c640fffa4852f307e70815fcf64368",
+      "bytes": 1182
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-final-binding.json": {
+      "sha256": "396029478df6472d5415f911a8edbd33463040c939bf2f9c56e0ab0f95c99fad",
+      "bytes": 1357
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-0Mj4eK/observations.json": {
+      "sha256": "93d47b366c857713ec0ad1108feaca2865de0c8dc2f4b4376a13721f2300dc90",
+      "bytes": 4059
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-0Mj4eK/runner.log": {
+      "sha256": "0e078cd9743b4af501cb5df34b40435261aa32911530a637e251b1ff2dc21a41",
+      "bytes": 366
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-1Iqz6H/observations.json": {
+      "sha256": "fb9202b3e99d0af010b0a92a56b63ef0acad94cea0f6c9740036cbaab8d06194",
+      "bytes": 4571
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-1Iqz6H/runner.log": {
+      "sha256": "df3ac3c2c038e7814f7675f32e6ca1f3d5a7c87274711c4e5020b0e9d72b36f4",
+      "bytes": 603
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-1hOaDC/observations.json": {
+      "sha256": "7ef9145a9c830ec2f55462893ad1bc99e81b6d307cf6823aaeb3a84aa4f90a61",
+      "bytes": 3331
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-1hOaDC/runner.log": {
+      "sha256": "bfa8dabb3577423a1ac989c169c636a3052909ac93bb37b0fb2feeb2cff80b8e",
+      "bytes": 39
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-51OLkx/observations.json": {
+      "sha256": "6e57461aaefd42097d382c37d67b9cd44b1628b8ca837bddce328aa25121fe02",
+      "bytes": 4072
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-51OLkx/runner.log": {
+      "sha256": "cb639b5532853ac255a27d30a4f2478ba241e802228d6d5b26d5e998daac6602",
+      "bytes": 273
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-64DKhZ/observations.json": {
+      "sha256": "3706bfa7bd458fe3c302b61fc477038017ec349138198a066d15dc41c34750cf",
+      "bytes": 4571
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-64DKhZ/runner.log": {
+      "sha256": "e94081a33f1652ea1bfe5483f4420baa06907a0f4eec5b32bbbdc1b015f8514d",
+      "bytes": 599
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-7GPSk2/observations.json": {
+      "sha256": "e617e047e0eaf258986cffa8633991b9364eb028bc3eabbf3e8531c74a04f82c",
+      "bytes": 4522
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-7GPSk2/runner.log": {
+      "sha256": "5c0b72b3d056b11ecf39faf115c104cd77d0d7286afecdfb4ececd3dad2a210f",
+      "bytes": 492
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-89qQxO/observations.json": {
+      "sha256": "d378dd9c7a96faceaeafc59d756abc202c92d2bba512a355950947eddaed75ee",
+      "bytes": 4058
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-89qQxO/runner.log": {
+      "sha256": "38a32736e65ec34d7e1cb74b70d204a5a606a0b45df8e7441bc0de5bc9d03bab",
+      "bytes": 364
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-8zOlSK/observations.json": {
+      "sha256": "24128b55fb84a94a3a60ab8919ae892169c0a61eb89f726538ae9d733875911c",
+      "bytes": 4266
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-8zOlSK/runner.log": {
+      "sha256": "76c83543146ac66fe104870880e07d8d9ee0f6175598d73dd2b403bfa4d75ca6",
+      "bytes": 336
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-CYbwdx/observations.json": {
+      "sha256": "b34a0c782bc982a04584e7ae2178f7147bb4ff3196b0c03fe4e1dc80765667cb",
+      "bytes": 1391
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-CYbwdx/runner.log": {
+      "sha256": "be30dc2237f52a71f94b6af2955dd02458553c2afb82863018b31d955056e2b0",
+      "bytes": 63
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-CssU92/observations.json": {
+      "sha256": "c45cf6d0a2d303753e93fc9561e97e3d9b0204dead1e715b5a32a1cb78c93f6b",
+      "bytes": 4570
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-CssU92/runner.log": {
+      "sha256": "d5efbc11a0622e485068db262e36aaba4530b57275720d3204c4c18d71943d8f",
+      "bytes": 550
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-Cxkhyy/observations.json": {
+      "sha256": "9e6212fd4095f5440745b9a41b233e83f73694c5a75b45bbdb5d85ce07cb2734",
+      "bytes": 1453
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-Cxkhyy/runner.log": {
+      "sha256": "2e4e90d9423fedfaa0b1c2bc388dd4ac3fc2b19bf046f39a3d7f13fcc1fe1a5b",
+      "bytes": 199
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-DQ9PE4/observations.json": {
+      "sha256": "942c7214b3564dba1c743fd1a81b3905abc790cb393d1202d5e36e8ec1226ace",
+      "bytes": 4522
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-DQ9PE4/runner.log": {
+      "sha256": "f01977e4b8befd4d7a4de053fdfaad8e9030e92340e3f532410fede6ecbab3a5",
+      "bytes": 492
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-EseIFZ/observations.json": {
+      "sha256": "593ded6c9cd8d498a9275dc5b1b354a7bb3c5a392ab8bab284c246223dbf039f",
+      "bytes": 4572
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-EseIFZ/runner.log": {
+      "sha256": "44de093882cfce47de88b13902853b5f05498fbabcc5eac33f1aee5b58d83f96",
+      "bytes": 553
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-EuXDCq/observations.json": {
+      "sha256": "1dd1e0cb9906e5529ded4d21280101a03f730244263a6bda6cf1688cad477530",
+      "bytes": 4404
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-EuXDCq/runner.log": {
+      "sha256": "4d4d5dea6beaa685f74483f0098379a7b4fc4f9c1038f6c15866b37df406957d",
+      "bytes": 716
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-HKvuCK/observations.json": {
+      "sha256": "15255937d8eb52e1452d05ecf4a52c29890fc7cfdc930ad6ee23f46a938c290b",
+      "bytes": 4571
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-HKvuCK/runner.log": {
+      "sha256": "3144b779c8cca16f8ab7daa1d5f0f666faa665c2f798e37c3bda0b1fb0f1fd15",
+      "bytes": 610
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-Jng4jp/observations.json": {
+      "sha256": "80a6575fb0dcff4b6e236ec128ca19ed8cd661dd1cfd4ebd5b1a52a0fc905897",
+      "bytes": 4574
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-Jng4jp/runner.log": {
+      "sha256": "8012b5b1838f920ad7ccf132a23800a42b42400e68d5dee03d570f66ddbe53cf",
+      "bytes": 556
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-KByr6p/observations.json": {
+      "sha256": "023a4a9915c6751fab8244587e7b29040c0f5f66b1d5a5f1ffa8e6344a68de1c",
+      "bytes": 4570
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-KByr6p/runner.log": {
+      "sha256": "e5506a5368adc3e227c510cb7e4bc128257c3697bb5bd3c00f2f6f9bd83d242b",
+      "bytes": 550
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-KD9wLC/observations.json": {
+      "sha256": "db9f3945ec354582d35bc74b7caaa9c74f53e012a4291ff3353d2623765c2fc8",
+      "bytes": 3180
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-KD9wLC/runner.log": {
+      "sha256": "76b814982ce491b62de18786e7517013b8960cd45677ceab00671c337d9cee1f",
+      "bytes": 180
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-KO5zfK/observations.json": {
+      "sha256": "eba7aed107879f59391159bb38d81e1d37d90976e98e87a2ef5d4d258aa4542c",
+      "bytes": 4570
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-KO5zfK/runner.log": {
+      "sha256": "30d6db896b514d535b792d4193d5004b8dd2cea246c50b2edebee3329d8fb500",
+      "bytes": 550
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-LtVrMs/observations.json": {
+      "sha256": "8d02b7d42bd2d6a9d1e630899a5f2c6c0145c11c93144bbdebf0eeb00b243c12",
+      "bytes": 4572
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-LtVrMs/runner.log": {
+      "sha256": "552d85a7333d2d17514947cbce21f588926f9940752f4324faf0746855ff690a",
+      "bytes": 735
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-M5tYFA/observations.json": {
+      "sha256": "6efd8165c6c1aae917b5c6b8d45e6c6d8a0eac4901dc4ae972fc22af51c23b73",
+      "bytes": 1789
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-M5tYFA/runner.log": {
+      "sha256": "12c71a115a493df110185b13f28f0679a3e8b595a4a23a0869e978adccaba2e0",
+      "bytes": 211
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-P11HZz/observations.json": {
+      "sha256": "97b4e07521fda5751eb3fac66bc72c38bb925e9f59a2a3a6321ac5a40180db5f",
+      "bytes": 4266
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-P11HZz/runner.log": {
+      "sha256": "5f5cae6fa08eec6b6cfe9dfa04ceb7e4f6fbf8f4e7c8d621f2069e0b7430333f",
+      "bytes": 366
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-S4Dy8P/observations.json": {
+      "sha256": "763175cb3391fdf5ad6425ff9363f7fada9f7568f3bb7383c89395737506c2f9",
+      "bytes": 4572
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-S4Dy8P/runner.log": {
+      "sha256": "be44ac60cbcefb7630dc665f5d7c87fc6d17a2a4bb691f5e97cccff6857f8bf3",
+      "bytes": 553
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-X9EcOi/observations.json": {
+      "sha256": "c1456e2bf761d76dac84d76b19df39671508df0bf3e36c1358a9562ccb010ab5",
+      "bytes": 2964
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-X9EcOi/runner.log": {
+      "sha256": "a1c05e686261bd0787ccd13e0e7d894234a9e68d00637bcce3fe29594bd7a9c2",
+      "bytes": 209
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-XlAO7d/observations.json": {
+      "sha256": "3138e162e0de4271accd1ceb4d366e2e376dbfe12a8617ddd1230cf642e069ae",
+      "bytes": 4522
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-XlAO7d/runner.log": {
+      "sha256": "f59773263c3d4339edf1d3085d4ec71c778326bf88380a4b8cce1ec5e371450c",
+      "bytes": 492
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-Yr3MB8/observations.json": {
+      "sha256": "d906dd1dbf5488e8c99386b8a13a3525843205a35afc4978912f02a5accf8398",
+      "bytes": 485
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-Yr3MB8/runner.log": {
+      "sha256": "2bb40edceaecfb8ef5c72dab95ce4ab12072080a03d241eaa982cefdce943532",
+      "bytes": 61
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-Zyw8uh/observations.json": {
+      "sha256": "de318ddb6273102379fbe9bd1364bb69e99304b0d9d915cb765e9089ffd57a12",
+      "bytes": 4570
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-Zyw8uh/runner.log": {
+      "sha256": "68b2a21573676ca84df38952d1a5802eb1460ae7d882497445b01c7ac62842f1",
+      "bytes": 550
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-a7jvi6/observations.json": {
+      "sha256": "1c6e5d4edc65ce9ea364073bd0b4ac12a0e05a62d8328c8f43621ce1dd915b0d",
+      "bytes": 4574
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-a7jvi6/runner.log": {
+      "sha256": "c949afdffba3aa60abd4af9afe93b43a54b5adfa72a8a570c33dbf1518dbc894",
+      "bytes": 556
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-eDcAo4/observations.json": {
+      "sha256": "179a1902b969e7c6909b85a542b1f4c082f50d3ccf7944073ce873f91e918eb3",
+      "bytes": 4574
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-eDcAo4/runner.log": {
+      "sha256": "4727fe183dfb006746ed24ae3e4903219bb686ad27a12c80589a7290ed569847",
+      "bytes": 556
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-eLZcGp/observations.json": {
+      "sha256": "b05c32ee661c5d4fb6e35e648e2b1fc950575f3d0cee2b25e6eda1eb58280917",
+      "bytes": 1272
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-eLZcGp/runner.log": {
+      "sha256": "7a33195bd181765415edc85d775e86934cec103764f0baf7ad8f99f08b307b20",
+      "bytes": 61
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-fwBrni/observations.json": {
+      "sha256": "4df141abde1246974cd0d82a32d04aca4e0f2bb29af80dc294126cf288f7e6a9",
+      "bytes": 1453
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-fwBrni/runner.log": {
+      "sha256": "0c5126db84c5c83cffaf756c7a7b4c31332e88a17103f841b8c077ba8612de09",
+      "bytes": 153
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-g33KA6/observations.json": {
+      "sha256": "9b5e0dc23be5eda9d88076dc6e4b26c4e08f8457c311c9f46bc3ba894785e722",
+      "bytes": 4058
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-g33KA6/runner.log": {
+      "sha256": "2d98d682553c5ced11bba7806ea29c6ecdcf740467dc1f2c938bdb7890d004d4",
+      "bytes": 550
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-h5ZUG0/observations.json": {
+      "sha256": "61fe110e4316220617e13ace3e7e955a8fef7b4d53fe2ebc9a8617557af862a5",
+      "bytes": 4570
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-h5ZUG0/runner.log": {
+      "sha256": "fd822cbb9c72da8a160bce318dd0bd05ab4f3118c63d56681b0e494413256a1d",
+      "bytes": 732
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-i3OFkV/observations.json": {
+      "sha256": "6a4b22911344051df4ea3a6f939837b27848d17fc18c4d33c5208e0254c1d75e",
+      "bytes": 4570
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-i3OFkV/runner.log": {
+      "sha256": "f779580f6c43d4bb271d354e3c7eff786c00dd5b52089dcfd27d1af6ab86db43",
+      "bytes": 550
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-jTWQ4w/observations.json": {
+      "sha256": "de066b14c6941f0dddb00ca261bca6028a133b0519f1dfdb6ebccc81b98950c5",
+      "bytes": 3180
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-jTWQ4w/runner.log": {
+      "sha256": "334e1a05f9e504351854cb5cc697aaacb4ee8d857e434c6f1ed7530711bac99c",
+      "bytes": 211
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-lXawBt/observations.json": {
+      "sha256": "c65d5692e126fb028d3550f1fbc790ce8a53f01f016075ee95d1750e82ec4a11",
+      "bytes": 4404
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-lXawBt/runner.log": {
+      "sha256": "074e96fe49269a439d92854fa391c093aa42c6a16ac52a20dd558c717f5383b8",
+      "bytes": 580
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-lcjFOt/observations.json": {
+      "sha256": "cc655fb3049610e6d05c33b6465b6cc8fb6b22d8dc00c8b57d3a6d02034b442f",
+      "bytes": 4403
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-lcjFOt/runner.log": {
+      "sha256": "9548a88eb2796c6c58ffbf7859dd5b7b4cab8771c21117641c754a79c061b040",
+      "bytes": 577
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-m0LS7e/observations.json": {
+      "sha256": "cac27972c23df9bd6afe537ea17658be035b9a59c20d78255755b6d03370579e",
+      "bytes": 4571
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-m0LS7e/runner.log": {
+      "sha256": "834d649b9da45ae329c944c50ac4301b4202023c8d277d956c74a9952443bf3d",
+      "bytes": 602
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-qGogzA/observations.json": {
+      "sha256": "c287d81c3c486ef618633b1c9323a24ac317340291f30e8787b156b0d0b5e4c3",
+      "bytes": 4572
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-qGogzA/runner.log": {
+      "sha256": "261a4a0a5b8964da6ddbc8f1936c20238136704d9c9bf5799ef5d2e72076013b",
+      "bytes": 597
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-y0JKkO/observations.json": {
+      "sha256": "53a5c52f285e4201d2212a5b7e9b9ff036315db5f297a1a1e03b804651ee0aa4",
+      "bytes": 146
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-yPjeW5/observations.json": {
+      "sha256": "1e154974688b87c31ca0b1e5acc7982b0de661351bcdcbf4b2d5d7ff5c2747b1",
+      "bytes": 4572
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-yPjeW5/runner.log": {
+      "sha256": "89f77a8fe633ba329021f2f660c6586c75c46617dc77793876434649c5be52f1",
+      "bytes": 553
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-yjQcS1/observations.json": {
+      "sha256": "5ecae044372050d25d485ec4a9a5e1a7b4fab1fcbb92801cc2e4e28e005747d0",
+      "bytes": 4690
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-yjQcS1/runner.log": {
+      "sha256": "2536e3d9be84eddc722deddf06a6c0c9f25bc399614e5711fda197ae10392995",
+      "bytes": 598
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-scope-preservation.json": {
+      "sha256": "1d681d3e114e81869df5c160f4e0fbcbc8a3e4d729318d18243e52188e129319",
+      "bytes": 22881,
+      "admittedDuringReview": true
+    }
+  },
+  "post_raw_sha256": {
+    "scripts/certify-controlled.sh": {
+      "sha256": "8857c3243cc1fb1cabda14cf9ba32bb1a29c30cb0e7c46268af96bc442e73329",
+      "bytes": 7943
+    },
+    "tests/certify-controlled.test.js": {
+      "sha256": "714cb1b107f605d76b64e82e9808c52676d4d76799466c137ca2d8416fd298b7",
+      "bytes": 21761
+    },
+    "docs/02_spec/aud06_remediation_20261006.md": {
+      "sha256": "2a705aed577478d385c95807977ddd0f05d9d0179f8c9cb8e1d1310520cdb9e0",
+      "bytes": 9637
+    },
+    "docs/04_audit/evidence/AUD06/quality-bar.json": {
+      "sha256": "f018dc1ba92f259d808e22048f1cbe2f6c8ac3d7b7dc9521e72fed6622551e8c",
+      "bytes": 16309
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-anonymous-volume-red.json": {
+      "sha256": "7f169bfa125b9f5519d9588d56b070bb0a0bf6c63abbf223cefa3a3b3029468f",
+      "bytes": 11824
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-tests-red.log": {
+      "sha256": "5ef43b4494ecdc568b881909ecee1f5a59c7cc281b303515b2f046a8cb81991d",
+      "bytes": 1738
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-tests-green.log": {
+      "sha256": "59fdffd4063a543b705be10358e9337401fba429752c745fdd2cb68779098226",
+      "bytes": 322
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-real-green.json": {
+      "sha256": "434b48dca02d71eaf024167d46d2d7eeb0289988b070ac306b4566b161d21987",
+      "bytes": 2115
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-real-0.log": {
+      "sha256": "429a6f078971cae5554ae82d17b92327f33a910a8d5a22a3779b76e7cb42808a",
+      "bytes": 1094
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-real-37.log": {
+      "sha256": "1e30ea5dbd1135c526ca4129a85cec1cc1dea21c39790054ebfee84d14347075",
+      "bytes": 1097
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-real-0-commands.jsonl": {
+      "sha256": "507bfdf0b0d150c4dff616dc3ad1141d08b98c3d054466964d83212e7e5cb08e",
+      "bytes": 7279
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-real-37-commands.jsonl": {
+      "sha256": "5e962d6f1cf36f0f15e9c08cb7885df8555ffca974af0d2e859fabda12b48b91",
+      "bytes": 7281
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-real-harness.py": {
+      "sha256": "108f61c08076e3d130880f282ea3447ea7c640fffa4852f307e70815fcf64368",
+      "bytes": 1182
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-final-binding.json": {
+      "sha256": "396029478df6472d5415f911a8edbd33463040c939bf2f9c56e0ab0f95c99fad",
+      "bytes": 1357
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-0Mj4eK/observations.json": {
+      "sha256": "93d47b366c857713ec0ad1108feaca2865de0c8dc2f4b4376a13721f2300dc90",
+      "bytes": 4059
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-0Mj4eK/runner.log": {
+      "sha256": "0e078cd9743b4af501cb5df34b40435261aa32911530a637e251b1ff2dc21a41",
+      "bytes": 366
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-1Iqz6H/observations.json": {
+      "sha256": "fb9202b3e99d0af010b0a92a56b63ef0acad94cea0f6c9740036cbaab8d06194",
+      "bytes": 4571
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-1Iqz6H/runner.log": {
+      "sha256": "df3ac3c2c038e7814f7675f32e6ca1f3d5a7c87274711c4e5020b0e9d72b36f4",
+      "bytes": 603
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-1hOaDC/observations.json": {
+      "sha256": "7ef9145a9c830ec2f55462893ad1bc99e81b6d307cf6823aaeb3a84aa4f90a61",
+      "bytes": 3331
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-1hOaDC/runner.log": {
+      "sha256": "bfa8dabb3577423a1ac989c169c636a3052909ac93bb37b0fb2feeb2cff80b8e",
+      "bytes": 39
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-51OLkx/observations.json": {
+      "sha256": "6e57461aaefd42097d382c37d67b9cd44b1628b8ca837bddce328aa25121fe02",
+      "bytes": 4072
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-51OLkx/runner.log": {
+      "sha256": "cb639b5532853ac255a27d30a4f2478ba241e802228d6d5b26d5e998daac6602",
+      "bytes": 273
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-64DKhZ/observations.json": {
+      "sha256": "3706bfa7bd458fe3c302b61fc477038017ec349138198a066d15dc41c34750cf",
+      "bytes": 4571
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-64DKhZ/runner.log": {
+      "sha256": "e94081a33f1652ea1bfe5483f4420baa06907a0f4eec5b32bbbdc1b015f8514d",
+      "bytes": 599
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-7GPSk2/observations.json": {
+      "sha256": "e617e047e0eaf258986cffa8633991b9364eb028bc3eabbf3e8531c74a04f82c",
+      "bytes": 4522
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-7GPSk2/runner.log": {
+      "sha256": "5c0b72b3d056b11ecf39faf115c104cd77d0d7286afecdfb4ececd3dad2a210f",
+      "bytes": 492
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-89qQxO/observations.json": {
+      "sha256": "d378dd9c7a96faceaeafc59d756abc202c92d2bba512a355950947eddaed75ee",
+      "bytes": 4058
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-89qQxO/runner.log": {
+      "sha256": "38a32736e65ec34d7e1cb74b70d204a5a606a0b45df8e7441bc0de5bc9d03bab",
+      "bytes": 364
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-8zOlSK/observations.json": {
+      "sha256": "24128b55fb84a94a3a60ab8919ae892169c0a61eb89f726538ae9d733875911c",
+      "bytes": 4266
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-8zOlSK/runner.log": {
+      "sha256": "76c83543146ac66fe104870880e07d8d9ee0f6175598d73dd2b403bfa4d75ca6",
+      "bytes": 336
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-CYbwdx/observations.json": {
+      "sha256": "b34a0c782bc982a04584e7ae2178f7147bb4ff3196b0c03fe4e1dc80765667cb",
+      "bytes": 1391
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-CYbwdx/runner.log": {
+      "sha256": "be30dc2237f52a71f94b6af2955dd02458553c2afb82863018b31d955056e2b0",
+      "bytes": 63
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-CssU92/observations.json": {
+      "sha256": "c45cf6d0a2d303753e93fc9561e97e3d9b0204dead1e715b5a32a1cb78c93f6b",
+      "bytes": 4570
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-CssU92/runner.log": {
+      "sha256": "d5efbc11a0622e485068db262e36aaba4530b57275720d3204c4c18d71943d8f",
+      "bytes": 550
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-Cxkhyy/observations.json": {
+      "sha256": "9e6212fd4095f5440745b9a41b233e83f73694c5a75b45bbdb5d85ce07cb2734",
+      "bytes": 1453
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-Cxkhyy/runner.log": {
+      "sha256": "2e4e90d9423fedfaa0b1c2bc388dd4ac3fc2b19bf046f39a3d7f13fcc1fe1a5b",
+      "bytes": 199
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-DQ9PE4/observations.json": {
+      "sha256": "942c7214b3564dba1c743fd1a81b3905abc790cb393d1202d5e36e8ec1226ace",
+      "bytes": 4522
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-DQ9PE4/runner.log": {
+      "sha256": "f01977e4b8befd4d7a4de053fdfaad8e9030e92340e3f532410fede6ecbab3a5",
+      "bytes": 492
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-EseIFZ/observations.json": {
+      "sha256": "593ded6c9cd8d498a9275dc5b1b354a7bb3c5a392ab8bab284c246223dbf039f",
+      "bytes": 4572
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-EseIFZ/runner.log": {
+      "sha256": "44de093882cfce47de88b13902853b5f05498fbabcc5eac33f1aee5b58d83f96",
+      "bytes": 553
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-EuXDCq/observations.json": {
+      "sha256": "1dd1e0cb9906e5529ded4d21280101a03f730244263a6bda6cf1688cad477530",
+      "bytes": 4404
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-EuXDCq/runner.log": {
+      "sha256": "4d4d5dea6beaa685f74483f0098379a7b4fc4f9c1038f6c15866b37df406957d",
+      "bytes": 716
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-HKvuCK/observations.json": {
+      "sha256": "15255937d8eb52e1452d05ecf4a52c29890fc7cfdc930ad6ee23f46a938c290b",
+      "bytes": 4571
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-HKvuCK/runner.log": {
+      "sha256": "3144b779c8cca16f8ab7daa1d5f0f666faa665c2f798e37c3bda0b1fb0f1fd15",
+      "bytes": 610
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-Jng4jp/observations.json": {
+      "sha256": "80a6575fb0dcff4b6e236ec128ca19ed8cd661dd1cfd4ebd5b1a52a0fc905897",
+      "bytes": 4574
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-Jng4jp/runner.log": {
+      "sha256": "8012b5b1838f920ad7ccf132a23800a42b42400e68d5dee03d570f66ddbe53cf",
+      "bytes": 556
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-KByr6p/observations.json": {
+      "sha256": "023a4a9915c6751fab8244587e7b29040c0f5f66b1d5a5f1ffa8e6344a68de1c",
+      "bytes": 4570
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-KByr6p/runner.log": {
+      "sha256": "e5506a5368adc3e227c510cb7e4bc128257c3697bb5bd3c00f2f6f9bd83d242b",
+      "bytes": 550
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-KD9wLC/observations.json": {
+      "sha256": "db9f3945ec354582d35bc74b7caaa9c74f53e012a4291ff3353d2623765c2fc8",
+      "bytes": 3180
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-KD9wLC/runner.log": {
+      "sha256": "76b814982ce491b62de18786e7517013b8960cd45677ceab00671c337d9cee1f",
+      "bytes": 180
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-KO5zfK/observations.json": {
+      "sha256": "eba7aed107879f59391159bb38d81e1d37d90976e98e87a2ef5d4d258aa4542c",
+      "bytes": 4570
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-KO5zfK/runner.log": {
+      "sha256": "30d6db896b514d535b792d4193d5004b8dd2cea246c50b2edebee3329d8fb500",
+      "bytes": 550
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-LtVrMs/observations.json": {
+      "sha256": "8d02b7d42bd2d6a9d1e630899a5f2c6c0145c11c93144bbdebf0eeb00b243c12",
+      "bytes": 4572
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-LtVrMs/runner.log": {
+      "sha256": "552d85a7333d2d17514947cbce21f588926f9940752f4324faf0746855ff690a",
+      "bytes": 735
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-M5tYFA/observations.json": {
+      "sha256": "6efd8165c6c1aae917b5c6b8d45e6c6d8a0eac4901dc4ae972fc22af51c23b73",
+      "bytes": 1789
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-M5tYFA/runner.log": {
+      "sha256": "12c71a115a493df110185b13f28f0679a3e8b595a4a23a0869e978adccaba2e0",
+      "bytes": 211
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-P11HZz/observations.json": {
+      "sha256": "97b4e07521fda5751eb3fac66bc72c38bb925e9f59a2a3a6321ac5a40180db5f",
+      "bytes": 4266
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-P11HZz/runner.log": {
+      "sha256": "5f5cae6fa08eec6b6cfe9dfa04ceb7e4f6fbf8f4e7c8d621f2069e0b7430333f",
+      "bytes": 366
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-S4Dy8P/observations.json": {
+      "sha256": "763175cb3391fdf5ad6425ff9363f7fada9f7568f3bb7383c89395737506c2f9",
+      "bytes": 4572
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-S4Dy8P/runner.log": {
+      "sha256": "be44ac60cbcefb7630dc665f5d7c87fc6d17a2a4bb691f5e97cccff6857f8bf3",
+      "bytes": 553
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-X9EcOi/observations.json": {
+      "sha256": "c1456e2bf761d76dac84d76b19df39671508df0bf3e36c1358a9562ccb010ab5",
+      "bytes": 2964
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-X9EcOi/runner.log": {
+      "sha256": "a1c05e686261bd0787ccd13e0e7d894234a9e68d00637bcce3fe29594bd7a9c2",
+      "bytes": 209
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-XlAO7d/observations.json": {
+      "sha256": "3138e162e0de4271accd1ceb4d366e2e376dbfe12a8617ddd1230cf642e069ae",
+      "bytes": 4522
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-XlAO7d/runner.log": {
+      "sha256": "f59773263c3d4339edf1d3085d4ec71c778326bf88380a4b8cce1ec5e371450c",
+      "bytes": 492
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-Yr3MB8/observations.json": {
+      "sha256": "d906dd1dbf5488e8c99386b8a13a3525843205a35afc4978912f02a5accf8398",
+      "bytes": 485
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-Yr3MB8/runner.log": {
+      "sha256": "2bb40edceaecfb8ef5c72dab95ce4ab12072080a03d241eaa982cefdce943532",
+      "bytes": 61
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-Zyw8uh/observations.json": {
+      "sha256": "de318ddb6273102379fbe9bd1364bb69e99304b0d9d915cb765e9089ffd57a12",
+      "bytes": 4570
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-Zyw8uh/runner.log": {
+      "sha256": "68b2a21573676ca84df38952d1a5802eb1460ae7d882497445b01c7ac62842f1",
+      "bytes": 550
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-a7jvi6/observations.json": {
+      "sha256": "1c6e5d4edc65ce9ea364073bd0b4ac12a0e05a62d8328c8f43621ce1dd915b0d",
+      "bytes": 4574
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-a7jvi6/runner.log": {
+      "sha256": "c949afdffba3aa60abd4af9afe93b43a54b5adfa72a8a570c33dbf1518dbc894",
+      "bytes": 556
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-eDcAo4/observations.json": {
+      "sha256": "179a1902b969e7c6909b85a542b1f4c082f50d3ccf7944073ce873f91e918eb3",
+      "bytes": 4574
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-eDcAo4/runner.log": {
+      "sha256": "4727fe183dfb006746ed24ae3e4903219bb686ad27a12c80589a7290ed569847",
+      "bytes": 556
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-eLZcGp/observations.json": {
+      "sha256": "b05c32ee661c5d4fb6e35e648e2b1fc950575f3d0cee2b25e6eda1eb58280917",
+      "bytes": 1272
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-eLZcGp/runner.log": {
+      "sha256": "7a33195bd181765415edc85d775e86934cec103764f0baf7ad8f99f08b307b20",
+      "bytes": 61
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-fwBrni/observations.json": {
+      "sha256": "4df141abde1246974cd0d82a32d04aca4e0f2bb29af80dc294126cf288f7e6a9",
+      "bytes": 1453
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-fwBrni/runner.log": {
+      "sha256": "0c5126db84c5c83cffaf756c7a7b4c31332e88a17103f841b8c077ba8612de09",
+      "bytes": 153
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-g33KA6/observations.json": {
+      "sha256": "9b5e0dc23be5eda9d88076dc6e4b26c4e08f8457c311c9f46bc3ba894785e722",
+      "bytes": 4058
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-g33KA6/runner.log": {
+      "sha256": "2d98d682553c5ced11bba7806ea29c6ecdcf740467dc1f2c938bdb7890d004d4",
+      "bytes": 550
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-h5ZUG0/observations.json": {
+      "sha256": "61fe110e4316220617e13ace3e7e955a8fef7b4d53fe2ebc9a8617557af862a5",
+      "bytes": 4570
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-h5ZUG0/runner.log": {
+      "sha256": "fd822cbb9c72da8a160bce318dd0bd05ab4f3118c63d56681b0e494413256a1d",
+      "bytes": 732
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-i3OFkV/observations.json": {
+      "sha256": "6a4b22911344051df4ea3a6f939837b27848d17fc18c4d33c5208e0254c1d75e",
+      "bytes": 4570
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-i3OFkV/runner.log": {
+      "sha256": "f779580f6c43d4bb271d354e3c7eff786c00dd5b52089dcfd27d1af6ab86db43",
+      "bytes": 550
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-jTWQ4w/observations.json": {
+      "sha256": "de066b14c6941f0dddb00ca261bca6028a133b0519f1dfdb6ebccc81b98950c5",
+      "bytes": 3180
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-jTWQ4w/runner.log": {
+      "sha256": "334e1a05f9e504351854cb5cc697aaacb4ee8d857e434c6f1ed7530711bac99c",
+      "bytes": 211
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-lXawBt/observations.json": {
+      "sha256": "c65d5692e126fb028d3550f1fbc790ce8a53f01f016075ee95d1750e82ec4a11",
+      "bytes": 4404
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-lXawBt/runner.log": {
+      "sha256": "074e96fe49269a439d92854fa391c093aa42c6a16ac52a20dd558c717f5383b8",
+      "bytes": 580
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-lcjFOt/observations.json": {
+      "sha256": "cc655fb3049610e6d05c33b6465b6cc8fb6b22d8dc00c8b57d3a6d02034b442f",
+      "bytes": 4403
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-lcjFOt/runner.log": {
+      "sha256": "9548a88eb2796c6c58ffbf7859dd5b7b4cab8771c21117641c754a79c061b040",
+      "bytes": 577
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-m0LS7e/observations.json": {
+      "sha256": "cac27972c23df9bd6afe537ea17658be035b9a59c20d78255755b6d03370579e",
+      "bytes": 4571
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-m0LS7e/runner.log": {
+      "sha256": "834d649b9da45ae329c944c50ac4301b4202023c8d277d956c74a9952443bf3d",
+      "bytes": 602
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-qGogzA/observations.json": {
+      "sha256": "c287d81c3c486ef618633b1c9323a24ac317340291f30e8787b156b0d0b5e4c3",
+      "bytes": 4572
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-qGogzA/runner.log": {
+      "sha256": "261a4a0a5b8964da6ddbc8f1936c20238136704d9c9bf5799ef5d2e72076013b",
+      "bytes": 597
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-y0JKkO/observations.json": {
+      "sha256": "53a5c52f285e4201d2212a5b7e9b9ff036315db5f297a1a1e03b804651ee0aa4",
+      "bytes": 146
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-yPjeW5/observations.json": {
+      "sha256": "1e154974688b87c31ca0b1e5acc7982b0de661351bcdcbf4b2d5d7ff5c2747b1",
+      "bytes": 4572
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-yPjeW5/runner.log": {
+      "sha256": "89f77a8fe633ba329021f2f660c6586c75c46617dc77793876434649c5be52f1",
+      "bytes": 553
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-yjQcS1/observations.json": {
+      "sha256": "5ecae044372050d25d485ec4a9a5e1a7b4fab1fcbb92801cc2e4e28e005747d0",
+      "bytes": 4690
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-green-fixtures/cvg-certify-test-yjQcS1/runner.log": {
+      "sha256": "2536e3d9be84eddc722deddf06a6c0c9f25bc399614e5711fda197ae10392995",
+      "bytes": 598
+    },
+    "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-scope-preservation.json": {
+      "sha256": "1d681d3e114e81869df5c160f4e0fbcbc8a3e4d729318d18243e52188e129319",
+      "bytes": 22881
+    }
+  },
+  "limitations": [
+    "Real 0/37 runs changed only the create final workload argv through the recorded Python executable; certify:phase11 was not executed and this is not certification.",
+    "Named/bind scope probes reproduce the same removal operation on never-started containers, not canonical workload execution.",
+    "Unattached foreign volume preservation in runner-volume-real-green.json is boolean-only; attached external named volume has raw inspect proof in new scope artifact.",
+    "Final-binding JSON was inventoried/hash-read but its absent-container assertions and 43PASS claim were not used as independent behavioral proof.",
+    "Historical wrapper/workflow source files, prior critic reports, vendor/cache and private backups were not opened; historical and workflow assertions are limited to admitted canonical test and raw fixture evidence.",
+    "No current Docker state, source content outside admitted scope, or broader project regression revalidated.",
+    "Automatic deletion cannot guarantee remote resource absence after daemon/API failure or missing creation acknowledgement; runner logs cleanup failure and preserves original result."
+  ],
+  "next_action": "Lead may accept Q05 within controlled local synthetic scope and update governance; retain production/pilot/publication gates separately."
+}

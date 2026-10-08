@@ -1,0 +1,15 @@
+{
+  "command": [
+    "bash",
+    "/tmp/cvg-aud06-certification-aottnvx0/repo/scripts/certify-controlled.sh",
+    "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass4.log"
+  ],
+  "cwd": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+  "startedAt": "2026-10-08T12:59:57.056870+00:00",
+  "endedAt": "2026-10-08T14:08:08.932057+00:00",
+  "exitCode": 1,
+  "timedOut": false,
+  "scope": "Own unpublished provisional certification copy; main cert pointer preserved; current v20 qualification; fresh critic and formal closure still pending",
+  "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+  "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22"
+}

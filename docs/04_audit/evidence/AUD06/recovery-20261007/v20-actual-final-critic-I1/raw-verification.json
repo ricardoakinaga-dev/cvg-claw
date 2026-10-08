@@ -1,0 +1,323 @@
+{
+  "snapshot158": {
+    "count": 158,
+    "mismatches": []
+  },
+  "manifest78": {
+    "count": 78,
+    "mismatches": [
+      {
+        "path": "docs/11_phase11/prompt-master/20260916-triple-aaa/source/pasted-text-1.txt",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/11_phase11/prompt-master/20260916-triple-aaa/source/pasted-text-2.txt",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/11_phase11/prompt-master/20260916-triple-aaa/source/pasted-text-3.txt",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/11_phase11/prompt-master/20260916-triple-aaa/source/pasted-text-4.txt",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/11_phase11/prompt-master/20260916-triple-aaa/source/pasted-text-5.txt",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/11_phase11/prompt-master/20260916-triple-aaa/source/pasted-text-6.txt",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/11_phase11/prompt-master/20260916-triple-aaa/README.md",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/phase11/PHASE11_INDEPENDENT_CRITIC.md",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/01_prd/phase11_2_state_of_art_triple_aaa_20260916.md",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/02_spec/phase11_2_state_of_art_triple_aaa_20260916.md",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/phase11/PHASE11_2_DELTA_AUDIT.md",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/phase11/PHASE11_FORMAL_CLOSURE.md",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/phase11/PHASE11_ORCHESTRATOR_PROOF.md",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/phase11/PHASE11_SECURITY_REVIEW.md",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/phase11/PHASE11_ADVERSARIAL_REPORT.md",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/phase11/PHASE11_RECOVERY_REPORT.md",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/phase11/PHASE11_CHAOS_REPORT.md",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/phase11/PHASE11_LOAD_REPORT.md",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      },
+      {
+        "path": "docs/phase11/PHASE11_INTEGRATION_REPORT.md",
+        "sha256": null,
+        "size": null,
+        "passed": false
+      }
+    ]
+  },
+  "proof422": {
+    "count": 422,
+    "mismatches": []
+  },
+  "runtime370": {
+    "count": 370,
+    "mismatches": []
+  },
+  "runtimeCommands": {
+    "count": 110,
+    "outputHashFailures": [],
+    "nonzero": [
+      {
+        "id": "008",
+        "name": "volume-must-not-exist",
+        "exitCode": 1
+      },
+      {
+        "id": "010",
+        "name": "volume-must-not-exist",
+        "exitCode": 1
+      },
+      {
+        "id": "043",
+        "name": "production-preflight-api",
+        "exitCode": 1
+      },
+      {
+        "id": "044",
+        "name": "production-preflight-worker",
+        "exitCode": 1
+      }
+    ]
+  },
+  "runtimeSHA256SUMS": {
+    "count": 255,
+    "mismatches": []
+  },
+  "gate35": {
+    "total": 35,
+    "unique": 35,
+    "passed": 35,
+    "commandLogs": 30,
+    "badBindings": [],
+    "internal": [
+      "prompt_integrity",
+      "evidence_graph",
+      "candidate_clean",
+      "node_target",
+      "PHASE11_FORMAL_CLOSURE"
+    ]
+  },
+  "unitJSON": {
+    "numTotalTests": 4538,
+    "numPassedTests": 4338,
+    "numPendingTests": 200,
+    "numFailedTests": 0,
+    "numTotalTestSuites": 922,
+    "numFailedTestSuites": 0,
+    "success": true,
+    "startTime": 1791473095301
+  },
+  "postgresJSON": {
+    "numTotalTests": 369,
+    "numPassedTests": 369,
+    "numPendingTests": 0,
+    "numFailedTests": 0,
+    "numTotalTestSuites": 87,
+    "numFailedTestSuites": 0,
+    "success": true,
+    "startTime": 1791474658422
+  },
+  "independentExactSkips": {
+    "count": 200,
+    "unique": 200,
+    "matchedPassedExactlyOnce": 200,
+    "missingOrAmbiguous": [],
+    "dedicatedFailures": 0,
+    "dedicatedSkipped": 0,
+    "declaredReceiptCounts": {
+      "unitSkipped": 200,
+      "matched": 200,
+      "absent": 0,
+      "outsideSelection": 0,
+      "duplicateUnitSkipped": 0,
+      "duplicateDedicatedMatches": 0,
+      "failedDedicatedMatches": 0,
+      "skippedDedicatedMatches": 0,
+      "dedicatedFailed": 0,
+      "dedicatedSkipped": 0,
+      "dedicatedDuplicateIdentities": 0
+    },
+    "selectionCommand": "vitest run --testTimeout=60000 --no-file-parallelism packages/persistence/src/__tests__/postgres-migration-smoke.test.ts packages/persistence/src/__tests__/orchestrator-postgres.test.ts packages/persistence/src/__tests__/tenant-isolation.test.ts packages/persistence/src/__tests__/platform-postgres-smoke.test.ts packages/persistence/src/__tests__/platform-approval-postgres.test.ts packages/persistence/src/__tests__/audit-evidence-checkpoint-postgres.test.ts packages/persistence/src/__tests__/session-version-pinning-postgres.test.ts packages/persistence/src/__tests__/outbox-durability.test.ts packages/persistence/src/__tests__/effect-journal-postgres.test.ts packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts apps/api/src/__tests__/postgres-persistence-mode.test.ts apps/api/src/__tests__/webhook-security.test.ts apps/api/src/__tests__/journeys-api-postgres.test.ts apps/worker/src/__tests__/postgres-outbox-bridge.integration.test.ts packages/chaos/src/__tests__/chaos-postgres.test.ts packages/persistence/src/__tests__/journeys-postgres.test.ts apps/worker/src/__tests__/continuous-worker-postgres.integration.test.ts apps/worker/src/__tests__/postgres-role-preflight.test.ts packages/persistence/src/__tests__/attendance-approval-postgres.test.ts packages/persistence/src/__tests__/journey-task-atomicity.test.ts packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts apps/worker/src/__tests__/kernel-composition-postgres.integration.test.ts apps/worker/src/__tests__/kernel-durable-orchestrator-postgres.test.ts packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts packages/persistence/src/__tests__/retention-postgres.test.ts apps/api/src/__tests__/operator-replay-store.test.ts apps/api/src/__tests__/operator-replay-guard.test.ts apps/worker/src/__tests__/continuous-worker-entrypoint.integration.test.ts packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts apps/api/src/__tests__/postgres-rate-limit.test.ts apps/api/src/__tests__/shared-rate-boundary.test.ts"
+  },
+  "coverageTotals": {
+    "lines": {
+      "total": 12342,
+      "covered": 12067,
+      "skipped": 0,
+      "pct": 97.77
+    },
+    "statements": {
+      "total": 13083,
+      "covered": 12712,
+      "skipped": 0,
+      "pct": 97.16
+    },
+    "functions": {
+      "total": 2452,
+      "covered": 2374,
+      "skipped": 0,
+      "pct": 96.81
+    },
+    "branches": {
+      "total": 10481,
+      "covered": 9892,
+      "skipped": 0,
+      "pct": 94.38
+    },
+    "branchesTrue": {
+      "total": 0,
+      "covered": 0,
+      "skipped": 0,
+      "pct": 100
+    }
+  },
+  "firstCycle": {
+    "certificationId": "phase11-f15cece0c6784845-muzjnd5e",
+    "timestamp": "2026-10-08T14:08:06.419Z",
+    "decision": "NO_GO",
+    "certification": "NO_GO",
+    "failedGates": [
+      {
+        "id": "independent_critic",
+        "status": "FAIL",
+        "exitCode": 1,
+        "command": "node scripts/phase11-2-evidence-check.mjs --critic"
+      },
+      {
+        "id": "PHASE11_FORMAL_CLOSURE",
+        "status": "FAIL",
+        "exitCode": 1,
+        "command": "phase11 internal check"
+      }
+    ]
+  },
+  "opaqueBindings": {
+    "bar": [
+      "docs/04_audit/evidence/AUD06/quality-bar.json"
+    ],
+    "spec": [
+      "docs/02_spec/aud06_remediation_20261006.md"
+    ],
+    "scanner": [
+      "scripts/phase11-bypass-audit.mjs"
+    ],
+    "sqlHelper": [
+      "scripts/lib/bypass-sql-audit.mjs"
+    ],
+    "test": [
+      "tests/phase11-bypass-audit.test.js"
+    ]
+  },
+  "priorMachineMechanicalOnly": {
+    "path": "docs/04_audit/evidence/AUD19/AUD19-08-critic-report.json",
+    "sha256": "8e534c67446682632ac5d17b93118ddb42d043de33a3542bef0a5798da39ca60",
+    "size": 18471,
+    "criticIdentity": "01a11bf1-fc38-7ec1-a0af-8603dfea9356 / Curie",
+    "freshContext": true,
+    "binding": {
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283"
+    },
+    "fingerprint": {
+      "algorithm": "sha256-candidate-v1",
+      "before": "ffc25aad2f22adcf4c9a35ba58fb1e01ee57adac5a8477a182a29eb14c934a8d",
+      "after": "ffc25aad2f22adcf4c9a35ba58fb1e01ee57adac5a8477a182a29eb14c934a8d"
+    },
+    "independence": {
+      "criteria": [
+        "fresh-context",
+        "separate-identity",
+        "artifact-only-input",
+        "no-worktree-write",
+        "no-builder-justification"
+      ],
+      "builderJustificationIncluded": false,
+      "builderConclusionReused": false,
+      "writeAccessToWorktree": false
+    }
+  }
+}

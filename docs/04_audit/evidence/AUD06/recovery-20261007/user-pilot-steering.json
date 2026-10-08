@@ -1,0 +1,24 @@
+{
+  "observedAt": "2026-10-08T01:09:17.529919+00:00",
+  "authority": "Direct user replies in this conversation",
+  "responses": [
+    {
+      "question": "Pilot hospital/units/participants/owners/metrics definitions",
+      "answer": "pula essa etapa",
+      "disposition": "DEFER_PILOT_DEFINITIONS_STAGE"
+    },
+    {
+      "question": "F01/F03 priority and proposed HIS operator-token/service identity",
+      "answer": "Manter prioridade e avaliar esse desenho de identidade",
+      "disposition": "PRIORITY_CONFIRMED_IDENTITY_REMAINS_UNDER_EVALUATION"
+    }
+  ],
+  "effects": {
+    "productBuildApproved": false,
+    "pilotApproved": false,
+    "identityDesignApprovedForImplementation": false,
+    "autonomyPromotion": false,
+    "production": "NO_GO"
+  },
+  "next": "Continue AUD06 local technical remediation and qualification. Do not request the deferred definitions again unless the user resumes the pilot stage."
+}

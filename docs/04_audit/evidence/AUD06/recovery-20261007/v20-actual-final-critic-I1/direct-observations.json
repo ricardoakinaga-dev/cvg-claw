@@ -1,0 +1,415 @@
+{
+  "relevantTestFacts": [
+    {
+      "scope": "unit",
+      "file": "tests/architecture.test.js",
+      "statuses": {
+        "passed": 7
+      }
+    },
+    {
+      "scope": "unit",
+      "file": "tests/aud06-stack.test.js",
+      "statuses": {
+        "passed": 18
+      }
+    },
+    {
+      "scope": "unit",
+      "file": "tests/aud06-state-routing.test.js",
+      "statuses": {
+        "passed": 13
+      }
+    },
+    {
+      "scope": "unit",
+      "file": "tests/bypass-sql-audit.test.js",
+      "statuses": {
+        "passed": 429
+      }
+    },
+    {
+      "scope": "unit",
+      "file": "tests/certify-controlled.test.js",
+      "statuses": {
+        "passed": 43
+      }
+    },
+    {
+      "scope": "unit",
+      "file": "tests/phase11-bypass-audit.test.js",
+      "statuses": {
+        "passed": 1041
+      }
+    },
+    {
+      "scope": "unit",
+      "file": "apps/api/src/__tests__/request-context.test.ts",
+      "statuses": {
+        "passed": 12
+      }
+    },
+    {
+      "scope": "unit",
+      "file": "apps/api/src/__tests__/request-query.test.ts",
+      "statuses": {
+        "passed": 7
+      }
+    },
+    {
+      "scope": "unit",
+      "file": "apps/web/src/api/client.test.ts",
+      "statuses": {
+        "passed": 1
+      }
+    },
+    {
+      "scope": "unit",
+      "file": "packages/agent-runtime/src/__tests__/aud06-n3-executor.test.ts",
+      "statuses": {
+        "passed": 16
+      }
+    },
+    {
+      "scope": "unit",
+      "file": "packages/persistence/src/__tests__/retention-postgres.test.ts",
+      "statuses": {
+        "skipped": 13
+      }
+    },
+    {
+      "scope": "unit",
+      "file": "packages/persistence/src/__tests__/retention-renewal.test.ts",
+      "statuses": {
+        "passed": 12
+      }
+    },
+    {
+      "scope": "unit",
+      "file": "packages/policy-engine/src/__tests__/aud06-n3-policy.test.ts",
+      "statuses": {
+        "passed": 22
+      }
+    },
+    {
+      "scope": "postgres",
+      "file": "packages/persistence/src/__tests__/retention-postgres.test.ts",
+      "statuses": {
+        "passed": 13
+      }
+    }
+  ],
+  "lineCounts": {
+    "apps/api/src/server.ts": 4583,
+    "apps/api/src/server/request-context.ts": 328,
+    "apps/api/src/server/request-query.ts": 138,
+    "apps/web/src/api/client.ts": 1015,
+    "apps/web/src/api/contracts.ts": 613
+  },
+  "runtimeBurst": {
+    "(200, 'api-b:3000')": 150,
+    "(200, 'api-a:3000')": 150,
+    "(429, 'api-b:3000')": 1,
+    "(429, 'api-a:3000')": 1
+  },
+  "restore": {
+    "completeOriginalRestoredEqual": true,
+    "sourceUnchanged": true,
+    "originalSha256": "bb2c651468eedc82a1e5ad37957b184e946de2df7e0136a39263447ff59055b0"
+  },
+  "runtime": {
+    "runId": "cvg-aud06-stack-1791422392227-f517287933",
+    "status": "IMPLEMENTED_LOCAL_CHECKS_PASSED",
+    "startedAt": "2026-10-08T01:19:52.227Z",
+    "endedAt": "2026-10-08T01:20:55.943Z",
+    "exitCode": 0,
+    "cleanupErrors": [],
+    "sourceDriftSinceSnapshot": [],
+    "teardown": {
+      "remaining": {
+        "containers": [],
+        "networks": [],
+        "volumes": []
+      },
+      "passed": true
+    },
+    "production": "NO_GO",
+    "realPilot": false,
+    "realRpoRtoQualified": false,
+    "humanSignoff": false
+  },
+  "runtimeChecks": {
+    "migration": {
+      "count": 31,
+      "repeatedWithoutChanges": true,
+      "sha256": "63e2cb0f21630bd5b5538935a3e92f70f27be069d3f1a9ca63cfcc02cfe4f92b"
+    },
+    "startup": true,
+    "containerIsolation": true,
+    "sharedQuota": {
+      "accepted": 300,
+      "limited": 2,
+      "replicas": 2,
+      "storageFailureStatus": 503,
+      "recovered": true
+    },
+    "restore": {
+      "tables": 44,
+      "rows": 41,
+      "sha256": "bb2c651468eedc82a1e5ad37957b184e946de2df7e0136a39263447ff59055b0",
+      "target": "separate disposable PostgreSQL container/volume"
+    }
+  },
+  "bypass": {
+    "status": "PASS",
+    "scannedFiles": 59,
+    "findings": [],
+    "forwardingQueries": [
+      {
+        "path": "apps/api/src/server/bootstrap-persistence.ts",
+        "line": 295,
+        "kind": "existing-transparent-parameter-forwarder",
+        "sqlTargetExemption": false
+      }
+    ]
+  },
+  "currentExternal": {
+    "modelProvider": "NOT_VALIDATED",
+    "channel": "NOT_VALIDATED",
+    "externalIdentity": "NOT_VALIDATED",
+    "institutionalRag": "NOT_VALIDATED",
+    "rpoRto": "NOT_VALIDATED",
+    "pilot": "NOT_VALIDATED",
+    "rollback": "NOT_VALIDATED",
+    "humanSignoff": "PENDING"
+  },
+  "teardownActual": {
+    "at": "2026-10-08T16:01:32.787235+00:00",
+    "mutation": "NONE_INSPECTION_ONLY",
+    "resources": [
+      {
+        "kind": "container",
+        "id": "d06452837668eb7d021d193c9e91caafabbcf62b8bccb9a9f0704727c1cecca1",
+        "command": [
+          "docker",
+          "inspect",
+          "d06452837668eb7d021d193c9e91caafabbcf62b8bccb9a9f0704727c1cecca1"
+        ],
+        "exitCode": 1,
+        "stdout": "[]\n",
+        "stderr": "error: no such object: d06452837668eb7d021d193c9e91caafabbcf62b8bccb9a9f0704727c1cecca1\n",
+        "absenceConfirmed": true
+      },
+      {
+        "kind": "volume",
+        "id": "4876ba74b20c438bb710e793da01ea4786fadba615705026faddaf1e1f5db57f",
+        "command": [
+          "docker",
+          "volume",
+          "inspect",
+          "4876ba74b20c438bb710e793da01ea4786fadba615705026faddaf1e1f5db57f"
+        ],
+        "exitCode": 1,
+        "stdout": "[]\n",
+        "stderr": "Error response from daemon: get 4876ba74b20c438bb710e793da01ea4786fadba615705026faddaf1e1f5db57f: no such volume\n",
+        "absenceConfirmed": true
+      },
+      {
+        "kind": "container",
+        "id": "b49e234962d13075c99b0dd140f15b60e25c6d36fed94c86c11737b0a87e3398",
+        "command": [
+          "docker",
+          "inspect",
+          "b49e234962d13075c99b0dd140f15b60e25c6d36fed94c86c11737b0a87e3398"
+        ],
+        "exitCode": 1,
+        "stdout": "[]\n",
+        "stderr": "error: no such object: b49e234962d13075c99b0dd140f15b60e25c6d36fed94c86c11737b0a87e3398\n",
+        "absenceConfirmed": true
+      }
+    ],
+    "tempDirs": [
+      {
+        "path": "/tmp/cvg-certify.Uy8PIgpvDb",
+        "absent": true
+      }
+    ],
+    "daemon": {
+      "command": [
+        "docker",
+        "info",
+        "--format",
+        "{{.ServerVersion}}"
+      ],
+      "exitCode": 0,
+      "stdout": "29.1.3\n",
+      "stderr": ""
+    },
+    "cleanupFailures": [
+      "0"
+    ],
+    "passed": true
+  },
+  "actualCycleTimes": {
+    "command": [
+      "bash",
+      "/tmp/cvg-aud06-certification-aottnvx0/repo/scripts/certify-controlled.sh",
+      "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5.log"
+    ],
+    "cwd": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+    "startedAt": "2026-10-08T14:58:33.192505+00:00",
+    "endedAt": "2026-10-08T16:01:02.783052+00:00",
+    "exitCode": 0,
+    "timedOut": false,
+    "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+    "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22"
+  },
+  "coverageFirstDedicated": {
+    "lines": {
+      "total": 12342,
+      "covered": 12067,
+      "skipped": 0,
+      "pct": 97.77
+    },
+    "statements": {
+      "total": 13083,
+      "covered": 12712,
+      "skipped": 0,
+      "pct": 97.16
+    },
+    "functions": {
+      "total": 2452,
+      "covered": 2374,
+      "skipped": 0,
+      "pct": 96.81
+    },
+    "branches": {
+      "total": 10481,
+      "covered": 9892,
+      "skipped": 0,
+      "pct": 94.38
+    },
+    "branchesTrue": {
+      "total": 0,
+      "covered": 0,
+      "skipped": 0,
+      "pct": 100
+    }
+  },
+  "coverageVerifyObserved": {
+    "statements": 92.83,
+    "branches": 90,
+    "functions": 91.31,
+    "lines": 93.3,
+    "reason": "Separate emitted coverage profile in verify.log; no substitution of percentages."
+  },
+  "rawTerminal": {
+    "e2e": [
+      "  75 passed (3.4m)"
+    ],
+    "security": [
+      "found 0 vulnerabilities"
+    ],
+    "coverage": [
+      " Test Files  334 passed (334)",
+      "      Tests  4538 passed (4538)",
+      "All files          |   97.16 |    94.38 |   96.81 |   97.77 |                   "
+    ],
+    "verify": [
+      " Test Files  322 passed | 12 skipped (334)",
+      "      Tests  4338 passed | 200 skipped (4538)",
+      " Test Files  322 passed | 12 skipped (334)",
+      "      Tests  4338 passed | 200 skipped (4538)",
+      "All files          |   92.83 |       90 |   91.31 |    93.3 |                   ",
+      "found 0 vulnerabilities"
+    ]
+  },
+  "runtimeInstallRaw": [
+    "#12 [aud06-build 6/6] RUN npm ci --ignore-scripts && npm run build:web",
+    "#12 4.189 added 324 packages in 4s"
+  ],
+  "retentionApproval": {
+    "status": "APPROVED",
+    "decidedAt": "2026-10-05T12:00:42Z",
+    "validUntil": "2027-06-30T23:59:59-03:00",
+    "policyVersion": "AUD20-16-LIFECYCLE-v1",
+    "environmentAndEffectScope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY",
+    "policyRulesChanged": false,
+    "releaseEligible": false,
+    "postTombstoneHorizonDays": 30
+  },
+  "visualBaselines": [
+    "tests/e2e/visual-shell.spec.ts-snapshots/console-desktop-chromium-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/console-desktop-firefox-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/console-desktop-webkit-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/console-mobile-chromium-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/console-mobile-firefox-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/console-mobile-webkit-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/console-tablet-chromium-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/console-tablet-firefox-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/console-tablet-webkit-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/console-wide-tablet-chromium-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/console-wide-tablet-firefox-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/console-wide-tablet-webkit-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/dead-letter-panel-1024-chromium-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/dead-letter-panel-1024-firefox-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/dead-letter-panel-1024-webkit-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/dead-letter-panel-375-chromium-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/dead-letter-panel-375-firefox-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/dead-letter-panel-375-webkit-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-chromium-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-firefox-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-mobile-chromium-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-mobile-firefox-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-mobile-webkit-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-tablet-chromium-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-tablet-firefox-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-tablet-webkit-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-webkit-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-uncertain-reconciliation-chromium-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-uncertain-reconciliation-firefox-linux.png",
+    "tests/e2e/visual-shell.spec.ts-snapshots/orchestration-uncertain-reconciliation-webkit-linux.png"
+  ],
+  "visualToleranceLines": [
+    {
+      "line": 68,
+      "text": "await expect(page).toHaveScreenshot(`console-${viewport.name}.png`, {"
+    },
+    {
+      "line": 72,
+      "text": "maxDiffPixelRatio: 0.02"
+    },
+    {
+      "line": 152,
+      "text": "await expect(panel).toHaveScreenshot("
+    },
+    {
+      "line": 157,
+      "text": "maxDiffPixelRatio: 0.02"
+    },
+    {
+      "line": 474,
+      "text": "await expect(panel).toHaveScreenshot("
+    },
+    {
+      "line": 481,
+      "text": "maxDiffPixelRatio: 0.02"
+    },
+    {
+      "line": 493,
+      "text": "await expect(panel).toHaveScreenshot("
+    },
+    {
+      "line": 498,
+      "text": "maxDiffPixelRatio: 0.02"
+    }
+  ],
+  "boundedStaticSourceObservations": [
+    "PolicyEngine checks immutable N3 catalog before grants/documents; GovernedAgentRuntime DENY before model/approval/executor/outbox; fresh/approved/disguised tests inspect spies.",
+    "Wrapper uses private creation cidfiles/immutable IDs, own sessions, original EXIT status, bounded startup/cleanup, retained wait/container status distinction.",
+    "Retention uses transaction timestamp before mutation; inclusive validity boundary, UNCERTAIN excluded; early-warning sentinel is CI maintenance at 30 days, not a new runtime authority.",
+    "buildServer injects request-context, installs auth/raw body/metrics/security hooks; client types extracted to contracts with request/envelope public behavior retained.",
+    "Public scanner uses actual own-root git inventory of API/worker/agent-core; AST host calls separate from SQL lexer; opaque unresolved SQL refused except exact disclosed bootstrap pure forwarder; quota exact unqualified target/grammar, host member-origin domain bounded.",
+    "Q01/Q07 semantic input exclusively verified normative projection; no historical text or prior critic verdicts used."
+  ]
+}

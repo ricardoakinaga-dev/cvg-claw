@@ -1,0 +1,9 @@
+{
+  "source": "/home/ricardo/cvg-claw",
+  "worktree": "/tmp/cvg-aud06-integration.7IE2g0XF/repo",
+  "head": "1a66436ffed42b656aa980bd64ac6bed45548ba4",
+  "historicalGauntletArchive": "/tmp/cvg-aud06-integration.7IE2g0XF/historical-gauntlet",
+  "mainGauntletUnchanged": true,
+  "initialCopy": "Tracked changes and untracked non-ignored files copied with git path lists and rsync; active builder paths require refresh before final qualification",
+  "certification": "Only the isolated copy may receive provisional certification output; main certificate remains preserved"
+}

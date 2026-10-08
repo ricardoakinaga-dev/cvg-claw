@@ -1,0 +1,62 @@
+{
+  "at": "2026-10-08T07:03:52.641500+00:00",
+  "kind": "aud06-v12-focused-integration",
+  "green": {
+    "passed": 741,
+    "failed": 0,
+    "skipped": 0,
+    "exit": 0,
+    "raw": "bypass-v12-green-final-3.log"
+  },
+  "red": {
+    "passed": 258,
+    "failed": 21,
+    "exit": 1,
+    "raw": "bypass-v12-red.log"
+  },
+  "additionalRestRed": {
+    "failed": 4,
+    "passed": 10,
+    "skippedByFilter": 279,
+    "exit": 1,
+    "raw": "bypass-v12-rest-red.log"
+  },
+  "additionalRestGreen": {
+    "passed": 14,
+    "skippedByFilter": 279,
+    "exit": 0,
+    "raw": "bypass-v12-rest-green-2.log"
+  },
+  "public": {
+    "scannedFiles": 59,
+    "status": "PASS",
+    "exit": 0,
+    "raw": "bypass-v12-public-final-3.json"
+  },
+  "sourceBindings": [
+    {
+      "path": "scripts/phase11-bypass-audit.mjs",
+      "sha256": "f9fc1c5ec4afa61b39df8e6f2ff2ea61b53c1dc7d8fbcf66f3e72d3834e2d105"
+    },
+    {
+      "path": "tests/phase11-bypass-audit.test.js",
+      "sha256": "48206799c5ecbd3d58f316574e5735cd049544b96b6fc02f2bfb036644e6d149"
+    },
+    {
+      "path": "scripts/lib/bypass-sql-audit.mjs",
+      "sha256": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b"
+    },
+    {
+      "path": "tests/bypass-sql-audit.test.js",
+      "sha256": "6351cc6c3cf22e261586448a1f97048e2fa9e876e9d0a0aa447fe486bbacce54"
+    },
+    {
+      "path": "docs/02_spec/aud06_remediation_20261006.md",
+      "sha256": "f0da3fe92ea2c54445f3ba8e70b78d7b16d9d193b6cdf5f296ea62ffd91f4a87"
+    }
+  ],
+  "intermediateAttempts": "bypass-v12-intermediate-qualification.json",
+  "independentAcceptance": "PENDING",
+  "runtimeChanged": false,
+  "global": "FAIL/NO_GO"
+}

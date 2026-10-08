@@ -1,0 +1,69 @@
+{
+  "at": "2026-10-08T02:16:52.126700+00:00",
+  "candidateId": "380ccc525d3c8313463bf8a845f634fb34757d8c85682b6ee7601a59a4a4495d",
+  "regression": "PASS",
+  "critic": "PENDING",
+  "overall": "NOT_PASS",
+  "artifacts": [
+    {
+      "path": "verify-9.log",
+      "sha256": "9e6daf300ca09c2b5d795256a06d6b51a171590deaef249eda65fb1236a01df3",
+      "size": 237620
+    },
+    {
+      "path": "verify-9-receipt.json",
+      "sha256": "c246ac4e1a234aa73c0fcb4f34743207ba3a6c78bcb43d211509f4c5acd1f4d3",
+      "size": 365
+    },
+    {
+      "path": "verify-9-source-before.json",
+      "sha256": "1c04f6b87f462377601f7ebd7441cc59425a76a538b872aaee42e85e0781dc49",
+      "size": 257701
+    },
+    {
+      "path": "verify-9-source-binding-correction.json",
+      "sha256": "a153f5cf256471c04d22fd9060a13d2abd46669551f239ca323f086d0d2f9c3c",
+      "size": 946
+    },
+    {
+      "path": "postgres-v4-final9.log",
+      "sha256": "866395ff43f55652353213cbb1dc862663021ae11cf98371f0e5323bdd7a4ba5",
+      "size": 23026
+    },
+    {
+      "path": "postgres-v4-final9-receipt.json",
+      "sha256": "6435dade9d02f6257262d4e0633ec324a5e1f6830d25945292e4661644243e43",
+      "size": 372
+    },
+    {
+      "path": "coverage-v4-summary.json",
+      "sha256": "863ead96ac672aecb2fc50b0ff2bf69e7188956aca086b6ac5c49050b8425df4",
+      "size": 70605
+    },
+    {
+      "path": "coverage-v4-adjudication-v2.json",
+      "sha256": "662ac8ffc448072ce9e7bd5704bdb527511d0ed72656393c5181be8eb92f3252",
+      "size": 2726
+    },
+    {
+      "path": "postgres-v4-teardown-v2.json",
+      "sha256": "540ccf2681650b6df37ea63ff77cec1e19b0a6b08f94d66ccf8ef75a7ee13d4c",
+      "size": 650
+    },
+    {
+      "path": "browser-v4/command-receipt.json",
+      "sha256": "c590fa41dc455ab799218f9c7ecdc1a4305d9f0eff00828f4dfb6cb863ba6cc5",
+      "size": 322
+    },
+    {
+      "path": "browser-v4/source-after.json",
+      "sha256": "bd1558cb5c583b1b65f1a48d98982da54b2175b7037538123856f03b07429d09",
+      "size": 257639
+    },
+    {
+      "path": "v4-final-frozen-tree.json",
+      "sha256": "ed8727538ea4b8ca579e5c9be07746f0fc016fac3cc07a009e63dd9a502c576f",
+      "size": 5644523
+    }
+  ]
+}

@@ -1,0 +1,1320 @@
+{
+  "schemaVersion": 1,
+  "role": "Fresh independent focused Critic I1",
+  "decision": "REJECT",
+  "globalApproval": false,
+  "scope": [
+    "scripts/phase11-bypass-audit.mjs",
+    "tests/phase11-bypass-audit.test.js",
+    "Q13 scanner measurement qualification only"
+  ],
+  "generatedAt": "2026-10-08T04:34:57.950970+00:00",
+  "independence": {
+    "builder": false,
+    "finalPhase11Critic": false,
+    "descendants": 0,
+    "builderConclusionsUsedForAcceptance": false,
+    "otherCriticReportsUsedForAcceptance": false
+  },
+  "candidate": {
+    "fileCount": 1254,
+    "candidateId": "c3847fbb3b659294552b48317fbadfd1c167eff5f996c71825eb4a20ed3d4c0c",
+    "behaviorTreeHash": "1f214abb839857b50728826eda9238a2ef09b932ae6c0d6c7a189427dbfb3644",
+    "commit": "a04d6b067171e17db044812490e4d069900786fc",
+    "commands": [
+      {
+        "argv": [
+          "git",
+          "ls-files",
+          "-z"
+        ],
+        "cwd": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+        "exit": 0
+      },
+      {
+        "argv": [
+          "git",
+          "ls-files",
+          "-z",
+          "--others",
+          "--exclude-standard"
+        ],
+        "cwd": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+        "exit": 0
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "cwd": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+        "exit": 0
+      }
+    ]
+  },
+  "bar": {
+    "version": "AUD06-v8-host-template-separation",
+    "sha256": "59de512b27b36e49f6324e7dc7c466067e4b94dc97d23aedd41ed02d4cc15530",
+    "specSHA256": "4fe972d8be9cffb4390a8cae050395d6c1a55ad60a8a1b811c5316f4a5cabe55"
+  },
+  "severityCounts": {
+    "P1": 3,
+    "P2": 1
+  },
+  "findings": [
+    {
+      "id": "Q13-I1-V8-01",
+      "severity": "P1",
+      "confidence": "HIGH",
+      "title": "Dollar-quoted SQL value is misread as a line comment and masks following domain DELETE",
+      "anchors": [
+        "scripts/phase11-bypass-audit.mjs:55-105",
+        "scripts/phase11-bypass-audit.mjs:114-121"
+      ],
+      "contract": "Other domain writes, mixed statements and SQL values/comments cannot hide actual writes; unresolved grammar cannot receive quota exemption.",
+      "explanation": "normalizeSql has single/double quote modes but no dollar quote mode. -- inside $$...$$ or $value$...$value$ discards the rest of the decoded literal as a comment. Remaining INSERT target is exempted, or a remaining SELECT has no write finding. These are literal statements, not constructed SQL. No SQL was executed.",
+      "evidence": [
+        {
+          "name": "dollar-comment-value-domain-definitive",
+          "source": "client.query(\"SELECT $$--$$; DELETE FROM patient_records\")",
+          "sourceSHA256": "1cbaf16ff09d2f67c4d8db6ce5c3e89bd68a19e7f5e700f8317e92493fdd4654",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/121-dollar-comment-value-domain-definitive",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "plain-comment-value-domain-control",
+          "source": "client.query(\"SELECT '--'; DELETE FROM patient_records\")",
+          "sourceSHA256": "47602ddab9beb63c9595615406bf6cd2567dd8954189f7bc2fa95e49684303aa",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/120-plain-comment-value-domain-control",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 1,
+          "expected": 1,
+          "stdoutSHA256": "1d8fff2c083ed7c0c34f6a98b8090c99fd1448c666380181ad87101b516be2fa",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "FAIL",
+            "scannedFiles": 1,
+            "findings": [
+              {
+                "id": "direct_sql_write",
+                "path": "apps/api/src/postgres-rate-limit.ts",
+                "line": 1
+              },
+              {
+                "id": "direct_sql_write",
+                "path": "apps/api/src/postgres-rate-limit.ts",
+                "grammar": "write_intent"
+              }
+            ],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "dollar-comment-domain",
+          "source": "client.query(\"INSERT INTO api_rate_limit_buckets VALUES ($$--$$); DELETE FROM billing_items WHERE id=$1\")",
+          "sourceSHA256": "14a7f179aa78b4480f228a45ebc9af1350a05bed0c9971dbce9f0d8381983b72",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/100-dollar-comment-domain",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "dollar-select-domain",
+          "source": "client.query(\"SELECT $$--$$; DELETE FROM patient_records WHERE id=$1\")",
+          "sourceSHA256": "62bc06dc060c0d833f226c3ddca203766690854cd53fd215be30a771e63aef7c",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/102-dollar-select-domain",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "tagged-dollar-comment-domain",
+          "source": "client.query(\"INSERT INTO api_rate_limit_buckets VALUES ($value$--$value$); DELETE FROM billing_items WHERE id=$1\")",
+          "sourceSHA256": "44238a517c2572a10fa303a116ffaa85667126a6d35d8fe3190f9bf89a9b05ce",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/103-tagged-dollar-comment-domain",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "unknown-leading-semicolon",
+          "source": "client.query(\"; INSERT INTO api_rate_limit_buckets VALUES ($$--$$); DELETE FROM billing_items\")",
+          "sourceSHA256": "f68c8d24afa0b726ff8e5fbf23d0df3eafa6532914ad3db1886400eb7d7288ed",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/112-unknown-leading-semicolon",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        }
+      ],
+      "recommendation": "Recognize the lexical form correctly or reject it explicitly before granting the quota exception; retain the following statement for write detection."
+    },
+    {
+      "id": "Q13-I1-V8-02",
+      "severity": "P1",
+      "confidence": "HIGH",
+      "title": "Executable host calls pass when the callee syntax is optional, parenthesized, escaped, generic or property based",
+      "anchors": [
+        "scripts/phase11-bypass-audit.mjs:15-20",
+        "scripts/phase11-bypass-audit.mjs:123-156"
+      ],
+      "contract": "Executable fetch/sendMessage/HTTP effects forbidden, including executable template interpolations.",
+      "explanation": "The parser recognizes CallExpression, but the scanner flattens its syntax and matches name followed immediately by an opening parenthesis. It misses optional calls, parentheses, escaped identifiers, TypeScript type arguments and HTTP methods. Separately appended template AST text is still subjected to this incomplete regex. parse-proof.json independently shows valid AST calls and zero diagnostics for each failing fixture.",
+      "evidence": [
+        {
+          "name": "host-optional-fetch",
+          "source": "fetch?.(\"https://example.invalid\")",
+          "sourceSHA256": "29c9caef69333d58b1f7c6132fe66b83d8cac336047a6c24840a2fd12a68dbf5",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/049-host-optional-fetch",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "host-parenthesized-fetch",
+          "source": "(fetch)(\"https://example.invalid\")",
+          "sourceSHA256": "128726337eb8f14e96c94a4452bacca6c8292d21565dfc051e14f0fd68cc88a0",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/050-host-parenthesized-fetch",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "host-bracket-fetch",
+          "source": "globalThis[\"fetch\"](\"https://example.invalid\")",
+          "sourceSHA256": "1350015d90ef12ee904e7e0061383808006327741677ecc5e65542d6db9d0f3e",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/051-host-bracket-fetch",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "host-escaped-fetch",
+          "source": "f\\u0065tch(\"https://example.invalid\")",
+          "sourceSHA256": "7ea4cc35d903f785b607abd28eeb7f79382677a190842de713cb06f1f184d080",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/052-host-escaped-fetch",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "host-generic-fetch",
+          "source": "fetch<Response>(\"https://example.invalid\")",
+          "sourceSHA256": "8f60f656b604fb8302424a34c7af9eaf3b7936c1830d5b4369efd15db3870b59",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/053-host-generic-fetch",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "host-optional-message",
+          "source": "sendMessage?.(\"synthetic\")",
+          "sourceSHA256": "e19087f28a503b4b9f0e097744ff9c1509445477eddcf4de2be2e86b101171ad",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/054-host-optional-message",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "host-parenthesized-message",
+          "source": "(sendMessage)(\"synthetic\")",
+          "sourceSHA256": "ab03c23f67cfc28ad1ac930e3db164a2c2ef1ab70823dc713972a682c519031f",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/055-host-parenthesized-message",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "host-axios-post",
+          "source": "axios.post(\"https://example.invalid\", {})",
+          "sourceSHA256": "fd98f927c8857e6a7270d64e856076965069f54b16630ef39712e9d49b9bd4f3",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/056-host-axios-post",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "host-fetch-call",
+          "source": "fetch.call(globalThis,\"https://example.invalid\")",
+          "sourceSHA256": "e350757cebdb7e132c41e2f00f706715e9f4c4f839d54948bbd5b463cc7a68a7",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/057-host-fetch-call",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "host-sql-value-optional",
+          "source": "client.query(`INSERT INTO api_rate_limit_buckets VALUES ('${fetch?.(\"https://example.invalid\")}')`)",
+          "sourceSHA256": "0318ca9f9ba6af99aac3718e93aff6663b97385aa4291706bd736470dedb0ca0",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/058-host-sql-value-optional",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "quota-comment-external-call",
+          "source": "client.query(`SELECT /* ${(fetch)(\"https://example.invalid\")} */ 1`)",
+          "sourceSHA256": "88f4c222e6ed63a4b97fe1050ce8435a94d4042f62018066d7b79227a78b51ec",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/111-quota-comment-external-call",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        }
+      ],
+      "recommendation": "Classify executable AST call/tag nodes and statically identifiable callees directly, including these syntactic forms; inspect every template expression independently."
+    },
+    {
+      "id": "Q13-I1-V8-03",
+      "severity": "P1",
+      "confidence": "HIGH",
+      "title": "Quota target alone admits unresolved UPDATE grammar",
+      "anchors": [
+        "scripts/phase11-bypass-audit.mjs:166-170",
+        "scripts/phase11-bypass-audit.mjs:227-241"
+      ],
+      "contract": "Unknown grammar cannot receive quota exemption.",
+      "explanation": "The write-intent fallback calls the same target-only allowBoundary check. An incomplete UPDATE with no SET, and UPDATE followed by an opaque template expression, receive PASS because their first target is api_rate_limit_buckets. The incomplete case is a qualification fail-closed defect, not a claim that invalid SQL executed a domain effect.",
+      "evidence": [
+        {
+          "name": "unknown-opaque-quota-update",
+          "source": "client.query(`UPDATE api_rate_limit_buckets ${unresolvedGrammar}`)",
+          "sourceSHA256": "8617abb6070b4d5f5cbb39eff7b65c67ae1e0193cb6608178fc62f5bdaa6b575",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/068-unknown-opaque-quota-update",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "unknown-incomplete-quota-update",
+          "source": "client.query(\"UPDATE api_rate_limit_buckets\")",
+          "sourceSHA256": "4c43c942af699240c25883b603c0185757e9165a4283af3f3243c5a42ff34bb8",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/069-unknown-incomplete-quota-update",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 0,
+          "expected": 1,
+          "stdoutSHA256": "34a65039cae19f50b4122739c228660d9718d8d6984d25067943e507fdaab04b",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "PASS",
+            "scannedFiles": 1,
+            "findings": [],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        }
+      ],
+      "recommendation": "Grant exemption only after the supported UPDATE grammar is resolved; unknown fragments and incomplete forms must reject without rejecting pure value interpolation in a recognized statement."
+    },
+    {
+      "id": "Q13-I1-V8-04",
+      "severity": "P2",
+      "confidence": "HIGH",
+      "title": "Inert host text and read-only quoted SQL identifiers are mistaken for executable effects",
+      "anchors": [
+        "scripts/phase11-bypass-audit.mjs:61-81",
+        "scripts/phase11-bypass-audit.mjs:114-125",
+        "scripts/phase11-bypass-audit.mjs:218-240"
+      ],
+      "contract": "Preserve actual benign strings/templates and read-only SQL while detecting effects.",
+      "explanation": "An ordinary string or non-interpolated template containing fetch(...) or sendMessage(...) has no executable call nodes but is rejected. In SELECT, double-quoted identifiers containing DELETE FROM or UPDATE ... SET are scanned as statements and rejected. They are identifier text, not writes.",
+      "evidence": [
+        {
+          "name": "benign-fetch-string",
+          "source": "const example='fetch(\"https://example.invalid\")'",
+          "sourceSHA256": "c09d8890e8274eea5936d1ef509214b613368c9f404f3884e9115daf200a7f7a",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/059-benign-fetch-string",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 1,
+          "expected": 0,
+          "stdoutSHA256": "d2b867b67b4a3796975d7a157f5166c4b6f6f54638a5600b0691fa47bb057670",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "FAIL",
+            "scannedFiles": 1,
+            "findings": [
+              {
+                "id": "direct_fetch",
+                "path": "apps/api/src/postgres-rate-limit.ts",
+                "line": 1
+              }
+            ],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "benign-message-string",
+          "source": "const example='sendMessage(\"synthetic\")'",
+          "sourceSHA256": "f32f40ed45d91586bc51fa1c3d3f7d785a991dcdea366db5f2fa984ec4c6f3a1",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/060-benign-message-string",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 1,
+          "expected": 0,
+          "stdoutSHA256": "9b09130a5de5e6ab30938dac9db8906b86c3d6c019e7a77a5ee22bd843b6afd8",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "FAIL",
+            "scannedFiles": 1,
+            "findings": [
+              {
+                "id": "direct_channel_send",
+                "path": "apps/api/src/postgres-rate-limit.ts",
+                "line": 1
+              }
+            ],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "benign-plain-template",
+          "source": "const example=`fetch(\"https://example.invalid\")`",
+          "sourceSHA256": "f84cf6a84a7774be44a5d41d395b8236d12d75bbf6b94a6467039565f624515a",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/064-benign-plain-template",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 1,
+          "expected": 0,
+          "stdoutSHA256": "d2b867b67b4a3796975d7a157f5166c4b6f6f54638a5600b0691fa47bb057670",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "FAIL",
+            "scannedFiles": 1,
+            "findings": [
+              {
+                "id": "direct_fetch",
+                "path": "apps/api/src/postgres-rate-limit.ts",
+                "line": 1
+              }
+            ],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "read-only-quoted-identifier",
+          "source": "client.query(\"SELECT \\\"DELETE FROM billing_items\\\" FROM api_rate_limit_buckets\")",
+          "sourceSHA256": "df38ff1fc28238d57f8da23697a32d68e2ecde7c8a402c5d9abc5d2e8499ddaf",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/106-read-only-quoted-identifier",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 1,
+          "expected": 0,
+          "stdoutSHA256": "1d8fff2c083ed7c0c34f6a98b8090c99fd1448c666380181ad87101b516be2fa",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "FAIL",
+            "scannedFiles": 1,
+            "findings": [
+              {
+                "id": "direct_sql_write",
+                "path": "apps/api/src/postgres-rate-limit.ts",
+                "line": 1
+              },
+              {
+                "id": "direct_sql_write",
+                "path": "apps/api/src/postgres-rate-limit.ts",
+                "grammar": "write_intent"
+              }
+            ],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        },
+        {
+          "name": "read-only-quoted-update-identifier",
+          "source": "client.query(\"SELECT \\\"UPDATE appointments SET status\\\" FROM api_rate_limit_buckets\")",
+          "sourceSHA256": "3912c92edaa43011a6231be5da6ee18621343a256eedd0c596d87b6d36136fd5",
+          "fixtureRoot": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fixtures/107-read-only-quoted-update-identifier",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "exit": 1,
+          "expected": 0,
+          "stdoutSHA256": "1d8fff2c083ed7c0c34f6a98b8090c99fd1448c666380181ad87101b516be2fa",
+          "report": {
+            "schemaVersion": 1,
+            "kind": "phase11-bypass-audit",
+            "status": "FAIL",
+            "scannedFiles": 1,
+            "findings": [
+              {
+                "id": "direct_sql_write",
+                "path": "apps/api/src/postgres-rate-limit.ts",
+                "line": 1
+              },
+              {
+                "id": "direct_sql_write",
+                "path": "apps/api/src/postgres-rate-limit.ts",
+                "grammar": "write_intent"
+              }
+            ],
+            "allowedEffectBoundaries": [
+              "packages/channel-gateway/src/adapters/",
+              "packages/model-gateway/src/providers/",
+              "packages/adapters/src/fake/"
+            ],
+            "allowedSqlWriteInfrastructure": [
+              {
+                "file": "apps/api/src/webhook-security.ts",
+                "rationale": "webhook signature replay store (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/operator-replay-store.ts",
+                "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+              },
+              {
+                "file": "apps/api/src/postgres-rate-limit.ts",
+                "table": "api_rate_limit_buckets",
+                "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+              }
+            ],
+            "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+          }
+        }
+      ],
+      "recommendation": "Separate inert literal content and SQL identifier tokens from executable host nodes and SQL write grammar. Preserve identifiers as targets only in actual write positions."
+    }
+  ],
+  "verification": {
+    "probeCount": 99,
+    "unsafePasses": 18,
+    "definiteBenignFalseRejects": 5,
+    "supplementaryCases": [
+      "dollar-inert-value",
+      "read-only-select-for-update",
+      "read-only-select-for-update-of"
+    ],
+    "supplementaryDisposition": "Two SELECT FOR UPDATE cases are row-locking selects, not pure read-only operations; the dollar-quoted inert value is unsupported lexical grammar and rejection can legitimately be fail-closed. Their initial raw expected-zero mismatches are retained but not used as independent acceptance failures.",
+    "rawHarnessMismatches": 26,
+    "allEffectFixturesParsedOnly": true,
+    "noEffectFixtureExecuted": true,
+    "parserDiagnosticsProof": "parse-proof.json",
+    "currentActualSourceCopy": {
+      "argv": [
+        "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+        "scripts/phase11-bypass-audit.mjs"
+      ],
+      "cwd": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/actual-source-copy",
+      "exit": 0,
+      "copiedFiles": 163,
+      "report": {
+        "schemaVersion": 1,
+        "kind": "phase11-bypass-audit",
+        "status": "PASS",
+        "scannedFiles": 59,
+        "findings": [],
+        "allowedEffectBoundaries": [
+          "packages/channel-gateway/src/adapters/",
+          "packages/model-gateway/src/providers/",
+          "packages/adapters/src/fake/"
+        ],
+        "allowedSqlWriteInfrastructure": [
+          {
+            "file": "apps/api/src/webhook-security.ts",
+            "rationale": "webhook signature replay store (pre-kernel security boundary)"
+          },
+          {
+            "file": "apps/api/src/operator-replay-store.ts",
+            "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+          },
+          {
+            "file": "apps/api/src/postgres-rate-limit.ts",
+            "table": "api_rate_limit_buckets",
+            "rationale": "bounded pre-authentication HTTP quota metadata; exact literal table only"
+          }
+        ],
+        "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning; replay store exceptions remain scoped to their named files, and quota writes require both the exact file and literal table. Tracked and untracked source inventory failures reject the gate. Static scanning does not prove the absence of constructed SQL."
+      },
+      "inventoryTargetExit": 0,
+      "sourceExecution": false
+    },
+    "controlsPassed": [
+      "Exact quota INSERT/UPSERT/UPDATE/expiry DELETE; mixed case and nested comments",
+      "Ordinary domain INSERT/UPDATE/DELETE, quoted aliases, mixed statements and CTE",
+      "Quoted, schema-qualified, suffix and dynamic quota targets reject",
+      "Direct and tagged host effects, nested template effects and original v7 reproductions reject",
+      "Pure values/interpolation, E-string, doubled apostrophe, comment-only, URL and SELECT privilege diagnostics pass",
+      "Exact replay-store SQL exception and rejection of replay-store host effects",
+      "Tracked/untracked production paths including .test./.spec. directories inventoried; actual test basename excluded",
+      "Git inventory failure, missing tracked source and host parse error reject"
+    ]
+  },
+  "environment": {
+    "node": "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+    "nodeVersion": "v22.23.2",
+    "nodeSHA256": "3517c2df0b2f8cd7f422b4b8450ef81c6889f08eb03e281d6de9079b15e6a327",
+    "env": {
+      "NODE_DISABLE_COMPILE_CACHE": "1",
+      "GIT_OPTIONAL_LOCKS": "0"
+    },
+    "parser": {
+      "version": "6.0.3",
+      "fileCount": 140,
+      "copiedEqualsOriginal": true,
+      "treeHash": "c13e93a7216c07be77db097fd7abc08146f682edf722ee6f6503c9820ae184f4"
+    },
+    "parserPackageSHA256": "9332e97c30d3e53ed54910b89207ed657fb444066484df6e5b6965bf130865e9",
+    "parserLibrarySHA256": "569177652966bd528c319171c7dd22860dbf72bde116cbc4f644f1d02bb12e39",
+    "dependencyResolution": "Copied TypeScript package under own TEMP/node_modules, ancestor of every fixture; no symlinks or framework runner"
+  },
+  "artifactHashes": {
+    "scanner": "9274417cbfef94dfaa9a9eccfc2b3abf682016f2a39872d32ba8b73e666c6f28",
+    "tests": "d40dac5243366c4089cb2aaa8d1a8410362289cd47d0623870c24e91bf6ea6a3"
+  },
+  "immutability": {
+    "reviewedBefore": "reviewed-before.json",
+    "reviewedAfter": "reviewed-after.json",
+    "reviewedHashesMatch": true,
+    "filesystemSentinel": {
+      "match": true,
+      "expected": "ee54c067bb14df711029dcd64c5edd7eb1d7efa5fff19c84e1b6183cde47b8c1",
+      "actual": "ee54c067bb14df711029dcd64c5edd7eb1d7efa5fff19c84e1b6183cde47b8c1"
+    },
+    "filesystemEntries": 25089,
+    "scope": "All tracked, untracked and ignored files plus .gauntlet, excluding .git as defined by gauntlet_state.py; content/path/symlink-target equality, not continuous write monitoring.",
+    "fingerprintArgv": [
+      "python3",
+      "/home/ricardo/.codex/skills/gauntlet-loop/scripts/gauntlet_state.py",
+      "fingerprint",
+      "--repo",
+      "/tmp/cvg-aud06-certification-aottnvx0/repo",
+      "--include-state",
+      "--output",
+      "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fingerprint-before.json"
+    ],
+    "fingerprintExit": 0,
+    "verifyArgv": [
+      "python3",
+      "/home/ricardo/.codex/skills/gauntlet-loop/scripts/gauntlet_state.py",
+      "verify-fingerprint",
+      "--repo",
+      "/tmp/cvg-aud06-certification-aottnvx0/repo",
+      "--snapshot",
+      "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO/fingerprint-before.json"
+    ],
+    "verifyExit": 0,
+    "processSnapshot": {
+      "cloneCwdPids": [],
+      "observedWritableTargetDescriptors": [],
+      "processesNotInspectable": 680,
+      "scope": "proc snapshot: no continuous process monitoring; content immutability separately tested"
+    },
+    "noWriterObserved": true
+  },
+  "rawProvidedProof": {
+    "v7Red": "4 failed / 65 passed (69); failures are three executable template effects and ordinary-backslash case.",
+    "v8Green": "95 passed across 3 files; raw log does not establish 95 scanner tests or independent qualification.",
+    "v8Public": "Historical focused run records PASS / 59 scanned files. Independent copied actual-source scan reproduces 0/PASS/59, while adversarial qualification still fails.",
+    "builderReceipt": "Hashed for artifact identity only; not accepted as a verdict."
+  },
+  "checksNotRun": [
+    "npm",
+    "Vitest",
+    "Vite",
+    "tsx",
+    "build",
+    "install",
+    "tsc",
+    "Docker",
+    "database",
+    "network",
+    "integrated certification",
+    "remote CI",
+    "full Phase11 Final Critic"
+  ],
+  "remaining": {
+    "FullGoal": "UNSATISFIED",
+    "Q11": "UNSATISFIED",
+    "Q13remote": "UNSATISFIED",
+    "Q14": "UNSATISFIED",
+    "production": "NO_GO",
+    "canonicalPackage": "Historical/interrupted; not current integrated acceptance"
+  },
+  "nextAction": "Bounded scanner/test rework, new frozen binding and fresh focused qualification; then integrated certification and separately authorized remote/external gates. Lead persists this read-only critique; no masters updated by this Critic.",
+  "outputPath": "/tmp/cvg-aud06-v8-focusedcritic-Tb1n3qnO"
+}

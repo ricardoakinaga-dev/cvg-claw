@@ -1,0 +1,14 @@
+{
+  "afterCount": 28651,
+  "allAvailableTimes": [
+    "atime",
+    "mtime",
+    "ctime",
+    "statx birthtime"
+  ],
+  "beforeCount": 28651,
+  "changed": [],
+  "identical": true,
+  "noTimestampRestoration": true,
+  "targetReadsPermanentlyEnded_ns": 1791476272031842889
+}

@@ -1,0 +1,296 @@
+{
+  "artifactManifest": "/tmp/q13-i1-Z4c7haMd/artifact-manifest.json",
+  "artifactManifestQualification": "Manifest binds all files/directories/symlink targets in ownTEMP excluding only itself and temporary atomic manifest staging; manifest digest returned independently to avoid circular self-hashing. Report is an index, raw evidence lives outside it.",
+  "boundaries": {
+    "SQLhelperLegacyGrant": "allowSecurityStore allows existing write classes, only caller-owned two frozen paths; tested explicitly, no new grant or domain exemption added.",
+    "allowedEffectBoundaries": [
+      "packages/channel-gateway/src/adapters/",
+      "packages/model-gateway/src/providers/",
+      "packages/adapters/src/fake/"
+    ],
+    "allowedSqlWriteInfrastructure": [
+      {
+        "file": "apps/api/src/webhook-security.ts",
+        "rationale": "webhook signature replay store (pre-kernel security boundary)"
+      },
+      {
+        "file": "apps/api/src/operator-replay-store.ts",
+        "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+      },
+      {
+        "file": "apps/api/src/postgres-rate-limit.ts",
+        "rationale": "bounded pre-authentication quota; exact static target and supported write grammar only",
+        "table": "api_rate_limit_buckets"
+      }
+    ],
+    "existingTransparentForwarder": [
+      {
+        "kind": "existing-transparent-parameter-forwarder",
+        "line": 295,
+        "path": "apps/api/src/server/bootstrap-persistence.ts",
+        "sqlTargetExemption": false
+      }
+    ],
+    "forwarderSQLTargetExemption": false
+  },
+  "candidateBindings": {
+    "BARsha256": "02b9ddee4352306d46a0ce71e1641e4ae2ceb247d0c0fb2ef8140cdb1447034a",
+    "HEAD": "0c9bb076ae3eebee16e5e4bada974b7f13977908",
+    "SPECsha256": "682f81c749c93d0e8b8937679e2967ab0dab4096abe8e57abd41f7546d376d10",
+    "SQLhelperSha256": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+    "TypeScriptSha256": "569177652966bd528c319171c7dd22860dbf72bde116cbc4f644f1d02bb12e39",
+    "behaviorTreeHash": "3094efe91ab35c1aa3779eaae99d3b62afb02e88c42f7bcafd4b9e3f7c470bc7",
+    "candidateId": "663cd7aa059909ea4a50d69f463cc5e7ab0c2281e494b4ac964a65c7472297cc",
+    "candidateRecords": 1256,
+    "copyActualDiff": 0,
+    "generatedIgnoredReconciled": true,
+    "gitTree": "4fa1838a6682d775a5123e09027c292f31665870",
+    "headDifferences": [],
+    "ignoredCount": 17647,
+    "indexDifferences": [],
+    "objectHashFailures": [],
+    "scannerSha256": "29066bfb9600580c9f7862366a5fb8a3817d557dbd984cdda041344d462428f8",
+    "testSha256": "02f9329bbbd176391c461d1ee42447ee7c0e34d58154641e5f098749dcdd7c88",
+    "trackedCount": 4105,
+    "untrackedCount": 3569
+  },
+  "closure": {
+    "allProbeJobsEnded": true,
+    "cannotBeFinalCriticLater": true,
+    "noFurtherTargetReads": true,
+    "targetReadsClosed": true
+  },
+  "controls": {
+    "N3": "DENY",
+    "Q14": "PENDING",
+    "global": "NO_GO",
+    "pilot11": "DEFERRED_BY_USER",
+    "production": "NO_GO",
+    "remoteQ13": "UNSATISFIED"
+  },
+  "counts": {
+    "CLI": {
+      "capConfirmations": 16,
+      "capInitialPlusControls": 120,
+      "confirmationCases": 4,
+      "confirmedFalseFAIL": 0,
+      "fixedControls": 14,
+      "initialExploration": 8,
+      "knownFalsePASS": 2,
+      "knownScopeMismatches": 2,
+      "observedExpectationMismatches": 3,
+      "parserInvalid": 1,
+      "total": 26,
+      "uncertainExpectedAbsenceMismatch": 1,
+      "valid": 25,
+      "validActualFAIL": 14,
+      "validActualPASS": 11
+    },
+    "SQL": {
+      "actualFAIL": 14,
+      "actualPASS": 6,
+      "cap": 60,
+      "invalidGrammarControls": 1,
+      "mismatches": 0,
+      "total": 20,
+      "validGrammarCases": 19
+    },
+    "corpus": {
+      "actualStatus": "PASS",
+      "attempts": 1,
+      "elapsedSeconds": 291.876572226,
+      "exitStatus": 0,
+      "parserValidSources": 59,
+      "retry": false,
+      "scannedFiles": 59,
+      "sourceCount": 59,
+      "timedOut": false,
+      "timeoutSeconds": 300
+    }
+  },
+  "created_ns": 1791461394552136425,
+  "evidenceIndex": {
+    "after.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/after.json",
+      "sha256": "ff7f92c750f09fe02394fe39076b3b5e2377133af72f45e50a42ce191c03dd67"
+    },
+    "before.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/before.json",
+      "sha256": "0be3c4529d6d450a4431a1a897261e964b2dda3f635dc5557bf16ccd037fb1cf"
+    },
+    "candidate-matrix-1256.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/candidate-matrix-1256.json",
+      "sha256": "5b96e249c22f7dbb944711230851847cd683b91c3b3a2bba73f15400c9c9bed3"
+    },
+    "candidate-records.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/candidate-records.json",
+      "sha256": "f712102a6881bcc6ac0252873727d3743154c91deacb98ddbd4a9252c2c94d19"
+    },
+    "case-matrix.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/case-matrix.json",
+      "sha256": "2e34c2207450344b48b5857f78d52b83c46338b42f50bb90350dae4827e6b370"
+    },
+    "copy-source.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/copy-source.json",
+      "sha256": "60b4b96da42e1fa8cafd01bf1b6afeeaf11fd27dfb9bf62f1f97d3f863ce3d1f"
+    },
+    "copy-verification.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/copy-verification.json",
+      "sha256": "1cf46c527c3e3b4f5f2a5bd839f503e4f1f4b33baa9299e4b7445540a52c5c50"
+    },
+    "corpus-parse/command.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/corpus-parse/command.json",
+      "sha256": "d2876cc1e8dd08385f9a8303653eec5af5bfc469becbb386761534431b2cb0ed"
+    },
+    "corpus-parse/stdout.txt": {
+      "path": "/tmp/q13-i1-Z4c7haMd/corpus-parse/stdout.txt",
+      "sha256": "163fd6d9615ed78de71aae8db4d32d34dc6ff78976ac4e228f757188a55ca5d5"
+    },
+    "corpus-sources.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/corpus-sources.json",
+      "sha256": "a8fd5e988b5731074baf7d5097d3d693a7774b733279f0600504088d6d5a93ed"
+    },
+    "corpus/command.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/corpus/command.json",
+      "sha256": "f6f597098a11f151e730c9f391d4a8d81b64015df25d9bd4fcfa123ff97e59ff"
+    },
+    "corpus/stderr.txt": {
+      "path": "/tmp/q13-i1-Z4c7haMd/corpus/stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "corpus/stdout.txt": {
+      "path": "/tmp/q13-i1-Z4c7haMd/corpus/stdout.txt",
+      "sha256": "0f1011e9d2b116443a624e42aea138c9976e157fc0ec70499c5ba22e77b19ead"
+    },
+    "git-copy-dependencies.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/git-copy-dependencies.json",
+      "sha256": "5a13dd82fa5d8a515373d7d1f6b7c6be3f16c81b9fbea490bc3e6a5b08d8cc69"
+    },
+    "identity.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/identity.json",
+      "sha256": "5f8efea7c4e30b2e6226691fc6a4fd5c1cb752a31eaaf4380fae434de706e99e"
+    },
+    "inventory-reconciliation.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/inventory-reconciliation.json",
+      "sha256": "f4154982c8b35b4b564eaed634b89e88973ec3223fa0fabdcd9ca6b4c77a10de"
+    },
+    "jobs-closed.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/jobs-closed.json",
+      "sha256": "b9f405b849cfe0bbc6ca4fd5f3044000ca1f25f3dcb9ce460384926f3568aaec"
+    },
+    "plan-chronology.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/plan-chronology.json",
+      "sha256": "85d68e9c8a29f82a0f64e6cc9b7cfc252aca4c6bf867e455bbb233a79886657c"
+    },
+    "plan.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/plan.json",
+      "sha256": "29b5e59c2f9b01c2e5f5ada56b5844a6c75ccd217f064e37ef33311f66b69fa1"
+    },
+    "sentinel-comparison.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/sentinel-comparison.json",
+      "sha256": "d1327c648e54ad7b54603d514c3e6deae2df475639c9be42f31f0841656a21f5"
+    },
+    "source-bindings.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/source-bindings.json",
+      "sha256": "b3d59ad633386acf77779ba33ba47f7897023158041c177f6d77d9fa3115f90f"
+    },
+    "sql-cases.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/sql-cases.json",
+      "sha256": "838ad0616bb24844f358dadb84393f9a128875bbadd09014e8e472085e967a07"
+    },
+    "sql/command.json": {
+      "path": "/tmp/q13-i1-Z4c7haMd/sql/command.json",
+      "sha256": "4b001263caac2742006f96bae5f2143fdc9e911f097b4ee2d2d3dd270fda6c98"
+    },
+    "sql/stdout.txt": {
+      "path": "/tmp/q13-i1-Z4c7haMd/sql/stdout.txt",
+      "sha256": "f4eccc73d8c1e3dda07debaeb98d334f42228ebc879e4ca94b172b6f6dce6fb1"
+    }
+  },
+  "findings": [
+    {
+      "confidence": "HIGH",
+      "expected": "FAIL/direct_channel_send",
+      "id": "Q13-I1-001",
+      "normativeRequirement": "Supported known selected callable members keep a stable identity distinct from owner; known own stores retain origin; invoked direct channel send must be refused.",
+      "observed": "PASS, exit0, scannedFiles1, empty findings, independent parse diagnostics0",
+      "pairedCases": [
+        "intrinsic-selected-store",
+        "intrinsic-store-direct-alias",
+        "own-store-direct-control",
+        "intrinsic-selected-pure-control",
+        "intrinsic-distinct-store"
+      ],
+      "rawEvidence": [
+        "/tmp/q13-i1-Z4c7haMd/cases/intrinsic-selected-store/cli/command.json",
+        "/tmp/q13-i1-Z4c7haMd/cases/intrinsic-store-direct-alias/cli/command.json",
+        "/tmp/q13-i1-Z4c7haMd/cases/own-store-direct-control/cli/command.json"
+      ],
+      "reproduction": "const a=fetch.call; a.slot=sendMessage; a.slot('x');",
+      "rootObservation": "externalMemberOrigin excludes call/apply/bind; receiverOrigins supplies no known function owner for this intrinsic selected member, so the assignment store is not recorded on a stable selected callable identity. Public CLI then misses the invoked sendMessage.",
+      "severity": "HIGH",
+      "sourceAnchors": [
+        "copy/scripts/phase11-bypass-audit.mjs:718",
+        "copy/scripts/phase11-bypass-audit.mjs:722",
+        "copy/scripts/phase11-bypass-audit.mjs:1229",
+        "copy/scripts/phase11-bypass-audit.mjs:1694"
+      ],
+      "sourceHashes": {
+        "intrinsic-selected-store": "8763ca3536a046ae599f5785b02ca13e5b4bb8c152a022299fcfc111bb098679",
+        "intrinsic-store-direct-alias": "26a2dee784a8bb666b5297f60766ea9061c91c56a7cece2d6220dbacf2641f0d",
+        "own-store-direct-control": "306a52b0ce97d4228f742efafa3fbdede78144c2b5b1fb130d475fa75450745a"
+      },
+      "support": "fetch.call is explicitly recognized by nativeFunctionMember/intrinsicOperation; this case selects that already-supported callable, performs a literal own store, and invokes its stored value. It requires no arbitrary factory/reflection/general prototype interpretation.",
+      "title": "Known intrinsic selected callable loses its own stored effect"
+    }
+  ],
+  "independence": {
+    "builderExplanationUsed": false,
+    "descendants": 0,
+    "forkContext": false,
+    "level": "I1",
+    "qualification": "Shared filesystem isolation by contract, not OS enforcement. Parent attested ZERO TARGET readers/writers until CLOSED. Own full copy includes dependencies, generated ignored files, opaque evidence and .gauntlet. No target symlink/hardlink/inode dependency. Root .git excluded from sentinels; independently copied with noatime guards and verified Git objects/index/HEAD. No Git inventory was executed in TARGET.",
+    "rawHistoricalContextSemanticallyRead": false
+  },
+  "isFinalGauntlet": false,
+  "missingEvidence": [
+    "Remote Verify/Security metadata/logs for same commit NOT_RUN/unsatisfied",
+    "Q14 actual external human approvals PENDING",
+    "Pilot11 DEFERRED_BY_USER",
+    "Full TS semantic typecheck not run; independent syntax parse verified",
+    "No comprehensive scanner correctness certification; finite stopped-at-gap audit",
+    "Synthetic fixture execution intentionally not performed; only real scanner/parser/helper code executed"
+  ],
+  "qualifiedObservation": {
+    "actual": "FAIL/direct_external_http",
+    "case": "distinct-member-store",
+    "initialExpected": "PASS",
+    "reason": "The public classifier assigns HTTP origin to arbitrary selected names on known HTTP callables; no full prototype/export schema is read. Whether axios.post.slot is absent is not independently established. Unknown properties remain conservative. Count the expectation mismatch honestly; do not label it confirmed known-scope falseFAIL.",
+    "status": "NOT_A_CONFIRMED_ROOT"
+  },
+  "role": "fresh-independent-focused-Q13-critic",
+  "schemaVersion": 1,
+  "scope": "Actual frozen static bypass public AST CLI and SQL helper, local only",
+  "sentinel": {
+    "birthtimeAvailableRecords": 28164,
+    "copyActualDiff": 0,
+    "fields": "type, regular SHA256 or exact symlink target, mode uid gid size inode dev nlink atime_ns mtime_ns ctime_ns and available fdstatx birthtime_ns",
+    "metadataAndBytesEqual": true,
+    "noatimeQualification": "O_NOATIME required on regular/directory reads. Symlink O_PATH|O_NOATIME and readlinkat(empty fd) guarded by before/after fd metadata; all equal. Kernel flag semantics and external actors not OS isolated. No timestamp restoration. All target descriptors closed after final traversal; no further target reads.",
+    "rootGitOnlyExcluded": true,
+    "wholeTreeRecords": 28164
+  },
+  "state": "CLOSED/STOP",
+  "timeouts": [
+    {
+      "actualSeconds": 291.876572226,
+      "command": [
+        "node",
+        "scripts/phase11-bypass-audit.mjs"
+      ],
+      "declaredSeconds": 300,
+      "timedOut": false
+    }
+  ],
+  "verdict": "REJECT"
+}

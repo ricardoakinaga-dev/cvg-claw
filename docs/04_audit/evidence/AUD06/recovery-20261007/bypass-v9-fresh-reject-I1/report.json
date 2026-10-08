@@ -1,0 +1,861 @@
+{
+  "schemaVersion": 1,
+  "critic": "Fresh independent focused Critic I1",
+  "independence": {
+    "level": "I1",
+    "role": "critic, not builder",
+    "context": "User supplied sealed packet; no previous critic report/builder rationale consulted. Required SPEC/masters and requested source tests contain historical status/reproduction references; those were not accepted as evidence.",
+    "descendants": 0,
+    "mode": "direct read-only focused review within parent orchestration"
+  },
+  "verdict": "REJECT",
+  "scope": "Q13 structured AST outbound-call and SQL-write measurement only",
+  "target": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+  "completedAt": "2026-10-08T05:19:06.666384+00:00",
+  "candidateBindings": {
+    "computed": {
+      "candidateId": "ed5734645f2c1d9929125aec6ce415c19cdaa99c8696362bda6b1e3c731eda78",
+      "behaviorTreeHash": "8ce640f8a1eee5124096ae3998c584c173b85cf1edaad3ae947483cfeef7cf84",
+      "fileCount": 1256,
+      "commit": "0e33af649ecfbd38e67dcd96c3ca6cba0491219e"
+    },
+    "expected": {
+      "candidateId": "ed5734645f2c1d9929125aec6ce415c19cdaa99c8696362bda6b1e3c731eda78",
+      "behaviorTreeHash": "8ce640f8a1eee5124096ae3998c584c173b85cf1edaad3ae947483cfeef7cf84",
+      "fileCount": 1256,
+      "commit": "0e33af649ecfbd38e67dcd96c3ca6cba0491219e"
+    },
+    "matches": true,
+    "sources": {
+      "scripts/phase11-bypass-audit.mjs": {
+        "sha256": "8316f495375ba9724f599423eaaed516227f39ad004c9f11790aba35cdda3af1",
+        "size": 13036
+      },
+      "scripts/lib/bypass-sql-audit.mjs": {
+        "sha256": "6e44a70609e8b0be6787feaa265fc8879a83a11330337c3cc9531f5391ef5b78",
+        "size": 14483
+      },
+      "tests/phase11-bypass-audit.test.js": {
+        "sha256": "76a4ba64881de53d2afb2166b4d87539794ea9d6b0845d0c6ba4731cfe0afbc5",
+        "size": 25400
+      },
+      "tests/bypass-sql-audit.test.js": {
+        "sha256": "443df68de81ea2955a715c1ef271237a1b81e6916c910b3f50b2943ee66267e4",
+        "size": 20289
+      },
+      "docs/02_spec/aud06_remediation_20261006.md": {
+        "sha256": "64c42572f27f18c3576623b307c902d8eccefedf65dd634e1ab61265a03b743b",
+        "size": 15310
+      },
+      "docs/04_audit/evidence/AUD06/quality-bar.json": {
+        "sha256": "36c791984a36ee9755cb029226af28bb0f4ff72103b11d382d9913238ab9126d",
+        "size": 19364
+      },
+      "docs/07_agents/AGENTS.md": {
+        "sha256": "d61ec23e923a02e522851d6140d5b6cafafcb1d851ea829a1743d267e3d6f8d0",
+        "size": 5022
+      },
+      "docs/99_runtime_state.md": {
+        "sha256": "d7ad13153c03c6a71e00e85635dd6f7cc988a729e7f2e3c7161c3b8aecf5b3b1",
+        "size": 461560
+      },
+      "docs/20_master_execution_log.md": {
+        "sha256": "774941aab639f8e80f62216e05e0bd562aa77e8e791420dd0e7ca9fb3a4c77f7",
+        "size": 484047
+      },
+      "docs/30_backlog_master.md": {
+        "sha256": "294370bfb72044214df8df6190c2a8633b937e971c88cae86bae5bbb473e712f",
+        "size": 241653
+      },
+      "node_modules/typescript/lib/typescript.js": {
+        "sha256": "569177652966bd528c319171c7dd22860dbf72bde116cbc4f644f1d02bb12e39",
+        "size": 9144216
+      },
+      "node_modules/typescript/package.json": {
+        "sha256": "9332e97c30d3e53ed54910b89207ed657fb444066484df6e5b6965bf130865e9",
+        "size": 3527
+      }
+    },
+    "q13": [
+      {
+        "id": "Q13",
+        "source_type": "REPO",
+        "source": "docs/02_spec/aud06_remediation_20261006.md",
+        "dimension": "Q13",
+        "target": "Certified candidate and remote Verify/Security correspond",
+        "evidence_method": "Current verifier and actual CI metadata/logs bound to commit",
+        "required": true,
+        "priority": "high",
+        "baseline": {
+          "status": "NOT_RUN",
+          "actual": "Current implementation/approval still requires item-level evidence"
+        },
+        "conditions": "Synthetic local work only until explicit external authority; no scope reduction.",
+        "version": "AUD06-v9-structured-AST-SQL-audit",
+        "snapshot_sha256": "64c42572f27f18c3576623b307c902d8eccefedf65dd634e1ab61265a03b743b",
+        "license_notes": "User-owned internal repository",
+        "validity_notes": "A local fixture never proves real operational approval; stale/missing evidence is not PASS."
+      }
+    ],
+    "specBindingMatches": true,
+    "method": "Independent canonical JSON recomputation of exact source rules; Git reads GIT_OPTIONAL_LOCKS=0; no candidate/evidence acceptance imported"
+  },
+  "authorization": {
+    "targetWrites": false,
+    "evidenceWrites": "own /tmp/cvg-i1-q13-spAWJk",
+    "fixtureCodeExecuted": false,
+    "frameworkOrVitestRun": false,
+    "dockerOrDatabaseOrNetworkUsed": false,
+    "mastersUpdated": false,
+    "reason": "Explicit immutable read-only target; main lead receives external report for integration."
+  },
+  "immutability": {
+    "status": "UNCHANGED",
+    "excluded": [
+      ".git at repository root ONLY"
+    ],
+    "before": "before.json",
+    "after": "after.json",
+    "beforeTime": "2026-10-08T05:11:44.358529+00:00",
+    "afterTime": "2026-10-08T05:17:18.059469+00:00",
+    "regularFiles": 25133,
+    "entriesIncludingDirectoriesAndSymlinks": 27984,
+    "contentManifestSha256Before": "4b53e43192ddd9fd08b74c810cffc6284f2bbeb67e2e95a680b43d201e118fd8",
+    "contentManifestSha256After": "4b53e43192ddd9fd08b74c810cffc6284f2bbeb67e2e95a680b43d201e118fd8",
+    "metadataManifestSha256Before": "4407c6c5c0e7dc3b274e6889dd24bbd4577362a3ead877660be3165ba1f4d6d0",
+    "metadataManifestSha256After": "4407c6c5c0e7dc3b274e6889dd24bbd4577362a3ead877660be3165ba1f4d6d0",
+    "gitHeadBefore": "0e33af649ecfbd38e67dcd96c3ca6cba0491219e",
+    "gitHeadAfter": "0e33af649ecfbd38e67dcd96c3ca6cba0491219e",
+    "changedEntries": [],
+    "method": "os.walk without following symlinks; SHA-256 of every regular file; lstat mode/size/mtime_ns/ctime_ns/uid/gid and symlink targets; sorted manifests; excluded root .git only. atime intentionally excluded because reads may update it. No ignored/generated/dependency directory omitted."
+  },
+  "parserIsolation": {
+    "copiedFiles": 142,
+    "equalAll": true,
+    "noSymlinks": true,
+    "noSharedInodes": true,
+    "nodeVersion": "v22.23.2"
+  },
+  "summary": {
+    "P0": 0,
+    "P1": 6,
+    "P2": 1,
+    "uniqueCliProbes": 127,
+    "canonicalCliReplays": 14,
+    "realPublicSource": {
+      "scannedFiles": 59,
+      "status": "PASS",
+      "findingCount": 0,
+      "forwardingQueries": [
+        {
+          "path": "apps/api/src/server/bootstrap-persistence.ts",
+          "line": 295,
+          "kind": "existing-transparent-parameter-forwarder",
+          "sqlTargetExemption": false
+        }
+      ],
+      "receipt": "real-admitted.json"
+    },
+    "rawExpectedMatches": 81,
+    "rawExpectedDenyReturnedPass": 42,
+    "rawExpectedBenignReturnedFail": 4,
+    "expectationAdjudication": "shadow_param_known_outer_write was labeled benign by a behavioral oracle, but the SPEC explicitly refuses unresolved parameters; its FAIL is valid under the bounded contract, not a separate false-positive finding. sql_call depends on procedure semantics; not needed to establish the definite write-command finding. Counts are raw probe-oracle counts, not global gate scores."
+  },
+  "findings": [
+    {
+      "id": "I1-Q13-01",
+      "severity": "P1",
+      "confidence": "high",
+      "title": "File-wide name inference substitutes outer constants for shadowed SQL parameters",
+      "locations": [
+        {
+          "path": "scripts/phase11-bypass-audit.mjs",
+          "line": 100
+        },
+        {
+          "path": "scripts/phase11-bypass-audit.mjs",
+          "line": 147
+        },
+        {
+          "path": "scripts/phase11-bypass-audit.mjs",
+          "line": 236
+        }
+      ],
+      "binding": "Q13 structured measurement; SPEC SHA-256 64c42572f27f18c3576623b307c902d8eccefedf65dd634e1ab61265a03b743b",
+      "contractViolated": "Unresolved query expressions must be refused; constants must denote the actual unique const binding at the use site.",
+      "primaryReproductions": [
+        {
+          "probeId": "sql_shadow_param",
+          "fixture": "fixtures/sql_shadow_param/apps/api/src/postgres-rate-limit.ts",
+          "source": "const sql=\"SELECT 1\"; function run(sql:string){ client.query(sql) }; run(\"DELETE FROM patient_records\")",
+          "sourceSha256": "36e399856828b1fa3b253a6b0ca65ebbb0a0399615fb4c3b4ba257a634e7ec52",
+          "expectedScannerExit": 1,
+          "actualScannerExit": 0,
+          "reportStatus": "PASS",
+          "findings": [],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "sql_shadow_param"
+          ],
+          "rawReceipt": "replays/sql_shadow_param.json"
+        }
+      ],
+      "discriminatingControls": [
+        {
+          "probeId": "shadow_param_no_outer_binding",
+          "fixture": "fixtures/shadow_param_no_outer_binding/apps/api/src/postgres-rate-limit.ts",
+          "source": "function run(sql:string){ client.query(sql) }; run(\"DELETE FROM patient_records\")",
+          "sourceSha256": "0f323c875399303a1a510667d8ea3bdaf4129456178777d8f50c02492a0fc1d7",
+          "expectedScannerExit": 1,
+          "actualScannerExit": 1,
+          "reportStatus": "FAIL",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "shadow_param_no_outer_binding"
+          ],
+          "rawReceipt": "replays/shadow_param_no_outer_binding.json"
+        }
+      ],
+      "supportingProbeIds": [
+        "sql_shadow_catch",
+        "sql_destructure_shadow",
+        "finite_loop_shadow"
+      ],
+      "impact": "An unknown parameter is resolved as an unrelated outer SELECT literal and a function receiving domain DELETE passes. Readiness inference can similarly substitute an outer quota-only array for a shadowing function parameter.",
+      "suggestedRepair": "Resolve lexical declarations and parameter/catch/destructuring shadowing at each reference, or decline inference where binding identity is not proven."
+    },
+    {
+      "id": "I1-Q13-02",
+      "severity": "P1",
+      "confidence": "high",
+      "title": "SQL config inference uses the first text property and ignores later overrides",
+      "locations": [
+        {
+          "path": "scripts/phase11-bypass-audit.mjs",
+          "line": 201
+        }
+      ],
+      "binding": "Q13 structured measurement; SPEC SHA-256 64c42572f27f18c3576623b307c902d8eccefedf65dd634e1ab61265a03b743b",
+      "contractViolated": "Static query composition must be inspected; unresolved query expressions receive no exception.",
+      "primaryReproductions": [
+        {
+          "probeId": "sql_config_spread_later",
+          "fixture": "fixtures/sql_config_spread_later/apps/api/src/postgres-rate-limit.ts",
+          "source": "const unsafe={text:\"DELETE FROM patient_records\"}; client.query({text:\"SELECT 1\", ...unsafe})",
+          "sourceSha256": "c82af443aec9062b01770767780862ed6fd4377628fba389e243aff0f9417d62",
+          "expectedScannerExit": 1,
+          "actualScannerExit": 0,
+          "reportStatus": "PASS",
+          "findings": [],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "sql_config_spread_later"
+          ],
+          "rawReceipt": "replays/sql_config_spread_later.json"
+        },
+        {
+          "probeId": "config_unknown_spread_after",
+          "fixture": "fixtures/config_unknown_spread_after/apps/api/src/postgres-rate-limit.ts",
+          "source": "client.query({text:\"SELECT 1\",...unsafe})",
+          "sourceSha256": "75bc17f7bdf7dbc1060403fb33bd2ec1e00e5682049cc50714a34e8045b72e13",
+          "expectedScannerExit": 1,
+          "actualScannerExit": 0,
+          "reportStatus": "PASS",
+          "findings": [],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "config_unknown_spread_after"
+          ],
+          "rawReceipt": "replays/config_unknown_spread_after.json"
+        }
+      ],
+      "discriminatingControls": [
+        {
+          "probeId": "config_spread_before_good",
+          "fixture": "fixtures/config_spread_before_good/apps/api/src/postgres-rate-limit.ts",
+          "source": "client.query({...unsafe,text:\"SELECT 1\"})",
+          "sourceSha256": "20ba3f115ff6cabf29a17729888e337dafe8debf9b83e85c361ec4ca9253b0ac",
+          "expectedScannerExit": 0,
+          "actualScannerExit": 0,
+          "reportStatus": "PASS",
+          "findings": [],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "config_spread_before_good"
+          ],
+          "rawReceipt": "followup-results.json"
+        }
+      ],
+      "supportingProbeIds": [
+        "sql_config_duplicate",
+        "sql_config_static_computed",
+        "config_getter_overrides"
+      ],
+      "impact": "The effective SQL text can be domain DELETE or wholly unknown while the scanner reports SELECT and PASS. This does not require SQL lexer evasion.",
+      "suggestedRepair": "Honor effective object property order including statically resolvable spreads/computed keys; reject unknown later overrides, getters or ambiguous text ownership."
+    },
+    {
+      "id": "I1-Q13-03",
+      "severity": "P1",
+      "confidence": "high",
+      "title": "Aliased or computed mutations leave quota/readiness lists falsely constant",
+      "locations": [
+        {
+          "path": "scripts/phase11-bypass-audit.mjs",
+          "line": 115
+        },
+        {
+          "path": "scripts/phase11-bypass-audit.mjs",
+          "line": 128
+        },
+        {
+          "path": "scripts/phase11-bypass-audit.mjs",
+          "line": 147
+        },
+        {
+          "path": "scripts/phase11-bypass-audit.mjs",
+          "line": 236
+        }
+      ],
+      "binding": "Q13 structured measurement; SPEC SHA-256 64c42572f27f18c3576623b307c902d8eccefedf65dd634e1ab61265a03b743b",
+      "contractViolated": "Inferred SQL constants/lists must be unique const bindings without mutation; a mutated or mixed domain list must reject.",
+      "primaryReproductions": [
+        {
+          "probeId": "finite_loop_alias_mutation",
+          "fixture": "fixtures/finite_loop_alias_mutation/apps/api/src/postgres-rate-limit.ts",
+          "source": "const tables=[\"api_rate_limit_buckets\"]; const alias=tables; alias.push(\"billing_items\"); for(const table of tables){client.query(`DELETE FROM ${table}`)}",
+          "sourceSha256": "5a7d8657ebf842497853932e28cefb53fe03a7f5cb42ba6c0aa6295139d28ea8",
+          "expectedScannerExit": 1,
+          "actualScannerExit": 0,
+          "reportStatus": "PASS",
+          "findings": [],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "finite_loop_alias_mutation"
+          ],
+          "rawReceipt": "replays/finite_loop_alias_mutation.json"
+        }
+      ],
+      "discriminatingControls": [
+        {
+          "probeId": "finite_loop_direct_mutation",
+          "fixture": "fixtures/finite_loop_direct_mutation/apps/api/src/postgres-rate-limit.ts",
+          "source": "const tables=[\"api_rate_limit_buckets\"]; tables.push(\"billing_items\"); for(const table of tables){client.query(`DELETE FROM ${table}`)}",
+          "sourceSha256": "6dad778196a0f0cb621aef6fbe38a287081e2405eeca6c574f2b746448d13558",
+          "expectedScannerExit": 1,
+          "actualScannerExit": 1,
+          "reportStatus": "FAIL",
+          "findings": [
+            {
+              "id": "sql_lexical_unresolved",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "Unrecognized or incomplete DELETE grammar",
+              "offset": 0
+            },
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "DELETE is outside the authorized SQL write boundary",
+              "offset": 0
+            },
+            {
+              "id": "sql_lexical_unresolved",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "Unknown SQL interpolation",
+              "offset": 12
+            }
+          ],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "finite_loop_direct_mutation"
+          ],
+          "rawReceipt": "replays/finite_loop_direct_mutation.json"
+        },
+        {
+          "probeId": "finite_loop_alias_benign",
+          "fixture": "fixtures/finite_loop_alias_benign/apps/api/src/postgres-rate-limit.ts",
+          "source": "const tables=[\"api_rate_limit_buckets\"];const alias=tables;for(const table of tables){client.query(`DELETE FROM ${table}`)}",
+          "sourceSha256": "2ae313a9996d5c8e555cee2a7ffd8fe6097a58a475b6cfb9494c2a31121c04a7",
+          "expectedScannerExit": 0,
+          "actualScannerExit": 0,
+          "reportStatus": "PASS",
+          "findings": [],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "finite_loop_alias_benign"
+          ],
+          "rawReceipt": "followup-results.json"
+        }
+      ],
+      "supportingProbeIds": [
+        "finite_loop_computed_mutation",
+        "finite_loop_assign_mutation",
+        "finite_loop_indirect_splice",
+        "sql_config_alias_mutation",
+        "sql_config_assign"
+      ],
+      "impact": "A list that contains billing_items at runtime is enumerated as quota-only. Mutation through alias.text also hides domain SQL in a const query config.",
+      "suggestedRepair": "Track alias identity and literal computed mutators; fail closed when objects/arrays escape to unmodeled mutation rather than treating const as immutable."
+    },
+    {
+      "id": "I1-Q13-04",
+      "severity": "P1",
+      "confidence": "high",
+      "title": "Nested static templates in concatenation/config are replaced by quoted opaque placeholders",
+      "locations": [
+        {
+          "path": "scripts/phase11-bypass-audit.mjs",
+          "line": 184
+        },
+        {
+          "path": "scripts/phase11-bypass-audit.mjs",
+          "line": 196
+        },
+        {
+          "path": "scripts/phase11-bypass-audit.mjs",
+          "line": 209
+        },
+        {
+          "path": "scripts/phase11-bypass-audit.mjs",
+          "line": 253
+        }
+      ],
+      "binding": "Q13 structured measurement; SPEC SHA-256 64c42572f27f18c3576623b307c902d8eccefedf65dd634e1ab61265a03b743b",
+      "contractViolated": "Known literals and static composition must preserve SQL writes; inert values and pure placeholders must remain discriminable.",
+      "primaryReproductions": [
+        {
+          "probeId": "nested_static_template_concat",
+          "fixture": "fixtures/nested_static_template_concat/apps/api/src/postgres-rate-limit.ts",
+          "source": "client.query(\"SELECT '\" + `${\"x'; DELETE FROM patient_records; --\"}` + \"'\")",
+          "sourceSha256": "09d16811ea6441f45d0693569514c6bb6c8461a3325dd4bc4c50c550fe9a6b39",
+          "expectedScannerExit": 1,
+          "actualScannerExit": 0,
+          "reportStatus": "PASS",
+          "findings": [],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "nested_static_template_concat"
+          ],
+          "rawReceipt": "replays/nested_static_template_concat.json"
+        }
+      ],
+      "discriminatingControls": [
+        {
+          "probeId": "nested_static_template_concat_control",
+          "fixture": "fixtures/nested_static_template_concat_control/apps/api/src/postgres-rate-limit.ts",
+          "source": "client.query(\"SELECT '\" + \"x'; DELETE FROM patient_records; --\" + \"'\")",
+          "sourceSha256": "428ecba3b1b01d47a49c46bdc60b3c9b0b909595068024efaa0f83992fbc7569",
+          "expectedScannerExit": 1,
+          "actualScannerExit": 1,
+          "reportStatus": "FAIL",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "DELETE is outside the authorized SQL write boundary",
+              "offset": 12,
+              "target": "patient_records"
+            }
+          ],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "nested_static_template_concat_control"
+          ],
+          "rawReceipt": "replays/nested_static_template_concat_control.json"
+        },
+        {
+          "probeId": "nested_static_template_top_level",
+          "fixture": "fixtures/nested_static_template_top_level/apps/api/src/postgres-rate-limit.ts",
+          "source": "client.query(`SELECT '${\"x'; DELETE FROM patient_records; --\"}'`)",
+          "sourceSha256": "6ff95594cffe0f528423629dbe0a45623fc97804267b103a6d98a20fb1d7d5b4",
+          "expectedScannerExit": 1,
+          "actualScannerExit": 1,
+          "reportStatus": "FAIL",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "DELETE is outside the authorized SQL write boundary",
+              "offset": 12,
+              "target": "patient_records"
+            }
+          ],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "nested_static_template_top_level"
+          ],
+          "rawReceipt": "followup-results.json"
+        }
+      ],
+      "supportingProbeIds": [
+        "nested_static_template_in_config"
+      ],
+      "impact": "The resulting statically known string is SELECT followed by DELETE FROM patient_records. A template inside concatenation or config becomes a placeholder inside quotes and gets PASS; equivalent plain concatenation and top-level template get FAIL.",
+      "suggestedRepair": "Use one recursive variant/inference path for all expression shapes; retain known interpolation literals before applying opaque placeholders."
+    },
+    {
+      "id": "I1-Q13-05",
+      "severity": "P1",
+      "confidence": "high",
+      "title": "Known outbound/query calls disappear through static import and destructuring aliases",
+      "locations": [
+        {
+          "path": "scripts/phase11-bypass-audit.mjs",
+          "line": 100
+        },
+        {
+          "path": "scripts/phase11-bypass-audit.mjs",
+          "line": 161
+        }
+      ],
+      "binding": "Q13 structured measurement; SPEC SHA-256 64c42572f27f18c3576623b307c902d8eccefedf65dd634e1ab61265a03b743b",
+      "contractViolated": "Known static aliases of outbound calls and query functions must remain detectable.",
+      "primaryReproductions": [
+        {
+          "probeId": "import_renamed_effect",
+          "fixture": "fixtures/import_renamed_effect/apps/api/src/postgres-rate-limit.ts",
+          "source": "import {fetch as external} from \"undici\"; external(\"https://example.invalid\")",
+          "sourceSha256": "eee116b8d5ef1adb2552c7c740e199f2d55c55f04dd21a29fd7d282dfb89a047",
+          "expectedScannerExit": 1,
+          "actualScannerExit": 0,
+          "reportStatus": "PASS",
+          "findings": [],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "import_renamed_effect"
+          ],
+          "rawReceipt": "replays/import_renamed_effect.json"
+        }
+      ],
+      "discriminatingControls": [
+        {
+          "probeId": "host_import_unaliased",
+          "fixture": "fixtures/host_import_unaliased/apps/api/src/postgres-rate-limit.ts",
+          "source": "import {fetch} from \"undici\";fetch(\"https://example.invalid\")",
+          "sourceSha256": "432cacce01c4f757464a317596804cbc1babba2f666b1fe595ebb9d7aa05e9de",
+          "expectedScannerExit": 1,
+          "actualScannerExit": 1,
+          "reportStatus": "FAIL",
+          "findings": [
+            {
+              "id": "direct_fetch",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            }
+          ],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "host_import_unaliased"
+          ],
+          "rawReceipt": "replays/host_import_unaliased.json"
+        },
+        {
+          "probeId": "host_static_member_alias",
+          "fixture": "fixtures/host_static_member_alias/apps/api/src/postgres-rate-limit.ts",
+          "source": "const external=globalThis.fetch;external(\"https://example.invalid\")",
+          "sourceSha256": "2f0b3a1f79548a07a3f857c6c8d34535469028d1e71a5b76ce762d340a907cc2",
+          "expectedScannerExit": 1,
+          "actualScannerExit": 1,
+          "reportStatus": "FAIL",
+          "findings": [
+            {
+              "id": "direct_fetch",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            }
+          ],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "host_static_member_alias"
+          ],
+          "rawReceipt": "followup-results.json"
+        }
+      ],
+      "supportingProbeIds": [
+        "destructure_global_effect",
+        "static_object_alias_effect",
+        "host_import_axios_renamed",
+        "query_destructure",
+        "query_wrapper_known"
+      ],
+      "impact": "An undici fetch imported as external is not detected. Aliased destructuring or object members likewise hide fetch/query calls despite literal alias relationships.",
+      "suggestedRepair": "Collect import bindings and destructuring/object member aliases for known effects; preserve scope identity without attempting universal constructed-effect analysis."
+    },
+    {
+      "id": "I1-Q13-06",
+      "severity": "P1",
+      "confidence": "high",
+      "title": "Unrecognized SQL write statements default to PASS, including TRUNCATE and executable DO blocks",
+      "locations": [
+        {
+          "path": "scripts/lib/bypass-sql-audit.mjs",
+          "line": 4
+        },
+        {
+          "path": "scripts/lib/bypass-sql-audit.mjs",
+          "line": 405
+        }
+      ],
+      "binding": "Q13 structured measurement; SPEC SHA-256 64c42572f27f18c3576623b307c902d8eccefedf65dd634e1ab61265a03b743b",
+      "contractViolated": "The quota exception is narrow; unknown writes/effects must reject rather than silently inherit read-only acceptance.",
+      "primaryReproductions": [
+        {
+          "probeId": "sql_truncate",
+          "fixture": "fixtures/sql_truncate/apps/api/src/postgres-rate-limit.ts",
+          "source": "client.query(\"TRUNCATE patient_records\")",
+          "sourceSha256": "9f10673cf3795f2a32157079a68d69b4cd7d7059037ece983a3ceff2cc836bcd",
+          "expectedScannerExit": 1,
+          "actualScannerExit": 0,
+          "reportStatus": "PASS",
+          "findings": [],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "sql_truncate"
+          ],
+          "rawReceipt": "replays/sql_truncate.json"
+        },
+        {
+          "probeId": "sql_do",
+          "fixture": "fixtures/sql_do/apps/api/src/postgres-rate-limit.ts",
+          "source": "client.query(\"DO $$BEGIN DELETE FROM patient_records; END$$\")",
+          "sourceSha256": "60b3f3fcfaa5043d02e0ea2659a74945840c3ca7619ed8f6226c9ce0ae045daf",
+          "expectedScannerExit": 1,
+          "actualScannerExit": 0,
+          "reportStatus": "PASS",
+          "findings": [],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "sql_do"
+          ],
+          "rawReceipt": "replays/sql_do.json"
+        }
+      ],
+      "discriminatingControls": [
+        {
+          "probeId": "dollar_block_inert",
+          "fixture": "fixtures/dollar_block_inert/apps/api/src/postgres-rate-limit.ts",
+          "source": "client.query(\"SELECT $$BEGIN DELETE FROM patient_records; END$$\")",
+          "sourceSha256": "89c2168c9c1fe3d5b10e697787e0c86232bb2147fad4c5260af3966b7e8724ec",
+          "expectedScannerExit": 0,
+          "actualScannerExit": 0,
+          "reportStatus": "PASS",
+          "findings": [],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "dollar_block_inert"
+          ],
+          "rawReceipt": "replays/dollar_block_inert.json"
+        },
+        {
+          "probeId": "domain_delete",
+          "fixture": "fixtures/domain_delete/apps/api/src/postgres-rate-limit.ts",
+          "source": "client.query(\"DELETE FROM patient_records\")",
+          "sourceSha256": "b7fe053fc33b5b2f66fae9066d80238f4599762b07933fe0b4a1e11ebfd159a7",
+          "expectedScannerExit": 1,
+          "actualScannerExit": 1,
+          "reportStatus": "FAIL",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "DELETE is outside the authorized SQL write boundary",
+              "offset": 0,
+              "target": "patient_records"
+            }
+          ],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "domain_delete"
+          ],
+          "rawReceipt": "probe-results.json"
+        },
+        {
+          "probeId": "quota_insert",
+          "fixture": "fixtures/quota_insert/apps/api/src/postgres-rate-limit.ts",
+          "source": "client.query(\"INSERT INTO api_rate_limit_buckets VALUES ($1)\")",
+          "sourceSha256": "5490bb60557bd4e30718e21c9deb807c3a562309f05e9e09842f14e30d0b55c5",
+          "expectedScannerExit": 0,
+          "actualScannerExit": 0,
+          "reportStatus": "PASS",
+          "findings": [],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "quota_insert"
+          ],
+          "rawReceipt": "probe-results.json"
+        }
+      ],
+      "supportingProbeIds": [
+        "sql_drop",
+        "sql_copy",
+        "sql_create_as",
+        "sql_select_into",
+        "outside_quota_25",
+        "outside_quota_31",
+        "quota_mixed_26",
+        "quota_mixed_32"
+      ],
+      "impact": "Only INSERT/UPDATE/DELETE word tokens are classified. TRUNCATE outside quota or appended after admitted quota INSERT passes. DO executes a dollar-quoted DELETE body that is treated as inert value. Exact helper probes return [] with both allowQuota=false and true.",
+      "suggestedRepair": "Reject unsupported/unknown executable statement classes. Distinguish a dollar-quoted SELECT value from a procedural DO body. Add explicit write forms or refuse them until supported; preserve admitted transaction/read diagnostics."
+    },
+    {
+      "id": "I1-Q13-07",
+      "severity": "P2",
+      "confidence": "high",
+      "title": "Name-only call classification rejects pure locally declared functions",
+      "locations": [
+        {
+          "path": "scripts/phase11-bypass-audit.mjs",
+          "line": 165
+        },
+        {
+          "path": "scripts/phase11-bypass-audit.mjs",
+          "line": 177
+        }
+      ],
+      "binding": "Q13 structured measurement; SPEC SHA-256 64c42572f27f18c3576623b307c902d8eccefedf65dd634e1ab61265a03b743b",
+      "contractViolated": "AST outbound detection should discriminate actual known effects from inert/local behavior.",
+      "primaryReproductions": [
+        {
+          "probeId": "literal_method_shadow",
+          "fixture": "fixtures/literal_method_shadow/apps/api/src/postgres-rate-limit.ts",
+          "source": "const sendMessage=()=>42; sendMessage()",
+          "sourceSha256": "dc330cd057cba46bbb99b7d4cf7d4e4477566aa703057f723ae17e3bf9690751",
+          "expectedScannerExit": 0,
+          "actualScannerExit": 1,
+          "reportStatus": "FAIL",
+          "findings": [
+            {
+              "id": "direct_channel_send",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            }
+          ],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "literal_method_shadow"
+          ],
+          "rawReceipt": "replays/literal_method_shadow.json"
+        },
+        {
+          "probeId": "literal_query_shadow",
+          "fixture": "fixtures/literal_query_shadow/apps/api/src/postgres-rate-limit.ts",
+          "source": "function query(x:string){ return x }; query(\"DELETE FROM patient_records\")",
+          "sourceSha256": "2c55667d2557df9a801c4fa65ac048a48a50df1d88dd27e0a05820804373902c",
+          "expectedScannerExit": 0,
+          "actualScannerExit": 1,
+          "reportStatus": "FAIL",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "DELETE is outside the authorized SQL write boundary",
+              "offset": 0,
+              "target": "patient_records"
+            }
+          ],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "literal_query_shadow"
+          ],
+          "rawReceipt": "probe-results.json"
+        }
+      ],
+      "discriminatingControls": [
+        {
+          "probeId": "inert_host_literals",
+          "fixture": "fixtures/inert_host_literals/apps/api/src/postgres-rate-limit.ts",
+          "source": "const a=\"fetch(; sendMessage(; axios(\"; const r=/fetch(/; // fetch(\"x\")",
+          "sourceSha256": "5998f21d0dc3ca7c58cc45fe34b3be246769f954884b315929c78762be07bddb",
+          "expectedScannerExit": 0,
+          "actualScannerExit": 0,
+          "reportStatus": "PASS",
+          "findings": [],
+          "reproduceCommand": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/cvg-i1-q13-spAWJk/replay-case.mjs",
+            "inert_host_literals"
+          ],
+          "rawReceipt": "probe-results.json"
+        }
+      ],
+      "supportingProbeIds": [],
+      "impact": "A local sendMessage function returning 42 is reported as outbound channel send; a local query identity function is reported as domain SQL write. These are concrete conservative false positives, not outbound effects.",
+      "suggestedRepair": "Resolve locally declared callable bindings before classifying known global/member names; explicitly document any deliberate conservative unresolved-member behavior."
+    }
+  ],
+  "positiveAndNegativeEvidence": {
+    "accepted": "Actual quota UPSERT/expiry, replay/readiness source, inert strings/comments/dollar quotes, E-values, arrays/casts, read locks, safe finite readiness lists and exact preexisting parameter forwarder.",
+    "rejected": "Plain/quoted domain writes, mixed quota/domain IUD, dynamic targets, malformed grammar/source, direct effects including optional/casts/call/apply/tags and nested template expressions, quota in wrong file, direct mutations, tracked/untracked source in test-named directories, Git inventory failure.",
+    "sourceTests": "Inspected relevant public-path/helper regression tests; did not execute Vitest or rely on prior green logs. Existing examples do not cover the scope/override/alias/nested-composition gaps above. Public test setup links TypeScript to its target dependency; independent probes instead byte-copy it and verify distinct inodes."
+  },
+  "residualStaticAnalysisLimits": [
+    "No runtime DB/outbound effects were executed; probes prove scanner output for parsed synthetic source, not clinical/financial runtime exploitation.",
+    "The helper is not a full PostgreSQL parser. Function/procedure semantics, dynamic SQL, triggers, extensions and constructed/evaluated host effects cannot be universally inferred.",
+    "Opaque interpolation inside SQL quoted values/comments remains admitted under the existing pure-value contract; this is not an SQL-injection safety proof. Parameterization and runtime guards remain necessary.",
+    "No claim of complete interprocedural or cross-module effect analysis. The material alias findings use literal binding relationships, not arbitrary dynamic dispatch.",
+    "A PASS on the 59 current production sources does not validate a nondiscriminating certification measurement.",
+    "Remote CI metadata, full regression, certification/promotion and external/human gates were not evaluated; no global certification verdict is asserted."
+  ],
+  "artifacts": {
+    "humanReport": "report.md",
+    "jsonReport": "report.json",
+    "candidate": "candidate-bindings.json",
+    "sentinel": "immutability.json",
+    "beforeManifest": "before.json",
+    "afterManifest": "after.json",
+    "firstBatch": "probe-results.json",
+    "secondBatch": "followup-results.json",
+    "commands": [
+      "commands.json",
+      "followup-commands.json",
+      "canonical-replay-commands.json"
+    ],
+    "helpers": [
+      "helper-results.json",
+      "followup-helper-results.json"
+    ],
+    "realSource": "real-admitted.json",
+    "copyIsolation": "copy-isolation.json",
+    "replayTool": "replay-case.mjs",
+    "savedFixtures": "fixtures/",
+    "hashReceipts": "evidence-sha256.txt"
+  },
+  "nextAction": "Return Q13 measurement to bounded remediation. Retest these exact repros and controls against a newly frozen candidate and commission a fresh critic. Do not infer authority for implementation, global acceptance or publication from this report."
+}

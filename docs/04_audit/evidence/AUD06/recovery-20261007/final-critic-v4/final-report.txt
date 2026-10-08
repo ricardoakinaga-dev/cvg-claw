@@ -1,0 +1,63 @@
+# AUD06 v4 — independent final audit
+
+**Overall verdict: FAIL. Local technical review: PASS.** Eleven required criteria pass; Q11/Q13/Q14 do not. No release or real-effect authority is granted.
+
+Target: `/tmp/cvg-aud06-certification-aottnvx0/repo`. Fresh read-only I1 critic; distinct assigned role, no descendants. All own outputs are in `/tmp/cvg-aud06-final-critic-fxkbsI`. No framework execution, DB/container/network calls, dependency installs/caches or artifact writes by this critic.
+
+Frozen bar: `AUD06-v4-state-consistency`, SHA-256 `4e6e41cf41b4faf41c07ef49cd06a713f7b74b67fde0da5e6c7c5ca6fdf99d2f`. SPEC SHA-256 `ebdc464d71b9ed5ee2c8f628f81483b1be91dd752a86b2a86da05c80e1569dd2` matches frozen reference.
+
+Material findings: required pilot/external gates remain unqualified; certification references a different candidate and current remote CI is absent. User deferral and identity evaluation remain authoritative.
+
+| Criterion | Decision | Direct basis |
+| --- | --- | --- |
+| Q01 | PASS | PRD0034, SPEC and 0348/0349 cover all F01-F08 and all14 tasks; external dependencies are explicit and retained. |
+| Q02 | PASS | Lock pins source-map-js1.2.2; repeatable install raw log and empty audit exist; current verify9 build and audit exit0. |
+| Q03 | PASS | Frozen exhaustive autonomy catalog blocks five N3 capabilities before grants/documents. Raw red/green and38 focused/518 regression tests sourcebound37entries; role/profile policy loops cover3000 evaluations and125 fresh runtime combinations, stored approvals/executorzero covered. |
+| Q04 | PASS | browser-v4 exit0/JUnit75 tests0fail/error/skip with exact1252candidate binding;30baselines matchHEAD and retained before/after; pinned browser container and tolerances unchanged. |
+| Q05 | PASS | Canonical script preserves dockerwait workload exits and separate startup/cleanup budgets, immutable owned IDs and traps. Current sourcebound41 raw tests plus actual0/37 receipts and absent ownedresources. Older shell22 receipt stale and not used as current gate. |
+| Q06 | PASS | Exact local synthetic renewal source matches constants, inclusiveexpiry and warning30days in maintenance sentinel;39unit/13PG raw focused tests sourcebound retention code unchanged; current dedicated PostgreSQL final9 exit0. |
+| Q07 | PASS | 14 independent positive/negative tempfixtures validated closed program/matrix/backlog paths and every noncurrent row; target checker valid underNode22. AUD20matrix hash unchangedHEAD; current verify9 docs gate exit0. Available144 protected historical digests match;13 obsolete ignored generated paths absentcopy are not proof of original deletion. |
+| Q08 | PASS | Current health registry cohe­sive explicit injected probes/metrics, hooks retain ordering; Nodebuiltin static TStransform independently confirms client runtimeequivalence and1543->1015lines. Historical arch server binding stale; current stack370 matches and current verify9 includes passing public HTTP/client regressions. |
+| Q09 | PASS | Current sourcebound370entry synthetic stack,110 raw commands hashed,31 migrations twice, TLS/headers,6nonroot/readOnlyboundedcontainers, loopbackwebports/internalDBnet and emptyteardown sets. Production preflight intentionallyexit1. Independent helper foreign/headers negatives rejected. |
+| Q10 | PASS | Recomputed302 requests:300HTTP200/2HTTP429 and151 eachreplica;4storagefault503 generic responses, restored44tables41rows identical,9collectorJSONL exports directlyreparsed with preservedprefixes. Admission2sdeadline late release code inspected; current dedicated PostgreSQL final9 includes saturation gate PASS. No realRPO/RTOqualification. |
+| Q11 | BLOCKED | Pilot definitions explicitly deferred and identity remains evaluationonly. Approved pilot contracts/endtoend authorized externalintegration absent; do not synthesizeapproval or re-request deferreddefinitions. |
+| Q12 | PASS | Current verify9, dedicated PostgreSQL final9 and browser-v4 receipts passed, independently re-bound to exact candidate. Fresh I1 technical critique found no additional material local implementation gap. Clean final static whole-copy PRE/POST sentinel after lead stopped writers. This satisfies local integrated regression/critique only; Q11/Q13/Q14 remain separate unsatisfied gates. |
+| Q13 | STALE | Current certificationpointer/manifest bind72fa77fc… not380ccc52…; actual remoteVerify/Security logs for currentcandidate not provided. Localverify andbrowserchecks do not satisfycertification/remoteCI. |
+| Q14 | BLOCKED | Required realprovider/channel/IdP/approvedinstitutionalRAG/RPO-RTO/pilot/rollback/humansignoff evidence absent and externalqualification unauthorized; localfixtures are not realapproval. |
+
+Candidate PRE / final-window PRE / POST: `380ccc525d3c8313463bf8a845f634fb34757d8c85682b6ee7601a59a4a4495d`, 1252 files, byte/hash records identical. Whole-copy PRE/POST digest: `25e1279495b5dee8919f75f55d3787d19079704db0f37d4cf373a49f1e9d5c8c`. Final static window followed explicit lead notification that all writers stopped. Helper uses no `--include-state`; ignored files are inventoried, `.git/` and `.gauntlet/` excluded by requested scope. Own earlier write incident: none.
+
+Current raw commands were executed by the lead, not this critic. verify9 exit0 and PostgreSQL final9 exit0 receipts are inspected and hashed; browser-v4 exit0 and JUnit75/75 (zero failures/errors/skips) match the same candidate. verify8 exit1 is preserved as failed preparation evidence. Raw file paths and full SHA-256 values are recorded in `final-report.json`, `evidence-hash-check.json`, `current-gates-results.json` and `browser-v4-check.json`.
+
+Own acceptance/diagnostic commands and exits:
+
+- `node --input-type=module -` — exit 0. 380ccc525d3c8313463bf8a845f634fb34757d8c85682b6ee7601a59a4a4495d / 1252
+- `node /tmp/cvg-aud06-final-critic-fxkbsI/q07-probe.mjs` — exit 1. Node24.20.0 rejected by Node pin; fixtures themselves reached target assertion
+- `/home/ricardo/.nvm/versions/node/v22.23.2/bin/node /tmp/cvg-aud06-final-critic-fxkbsI/q07-probe.mjs` — exit 0. 14 independent good/bad fixtures and target state valid
+- `/home/ricardo/.nvm/versions/node/v22.23.2/bin/node /tmp/cvg-aud06-final-critic-fxkbsI/q08-static.mjs` — exit 1. builtin strip rejected TypeScript parameter property; harness error, not product failure
+- `/home/ricardo/.nvm/versions/node/v22.23.2/bin/node /tmp/cvg-aud06-final-critic-fxkbsI/q08-static.mjs` — exit 0. static JS equivalent; 1543 to 1015 lines
+- `python3 /tmp/cvg-aud06-final-critic-fxkbsI/evidence-check.py` — exit 0. current stack370/policy37 match; old arch server binding stale
+- `/home/ricardo/.nvm/versions/node/v22.23.2/bin/node /tmp/cvg-aud06-final-critic-fxkbsI/stack-static-probe.mjs` — exit 0. 15 good/bad pure helper checks; no main/runtime/container execution
+- `/home/ricardo/.nvm/versions/node/v22.23.2/bin/node /tmp/cvg-aud06-final-critic-fxkbsI/telemetry-raw-probe.mjs` — exit 0. nine JSONL exports validated; preserved prefixes; three shutdown summaries recomputed
+- `python3 /tmp/cvg-aud06-final-critic-fxkbsI/current-gates-check.py` — exit 0. 
+- `python3 /tmp/cvg-aud06-final-critic-fxkbsI/evidence-check.py` — exit 0. 
+- `env NODE_DISABLE_COMPILE_CACHE=1 GIT_OPTIONAL_LOCKS=0 /home/ricardo/.nvm/versions/node/v22.23.2/bin/node /tmp/cvg-aud06-final-critic-fxkbsI/source-capture.mjs final-pre` — exit 0. 
+- `env NODE_DISABLE_COMPILE_CACHE=1 GIT_OPTIONAL_LOCKS=0 /home/ricardo/.nvm/versions/node/v22.23.2/bin/node /tmp/cvg-aud06-final-critic-fxkbsI/source-capture.mjs post` — exit 0. 
+- `env GIT_OPTIONAL_LOCKS=0 PYTHONDONTWRITEBYTECODE=1 python3 /home/ricardo/.codex/skills/gauntlet-loop/scripts/gauntlet_state.py fingerprint --repo /tmp/cvg-aud06-certification-aottnvx0/repo --output /tmp/cvg-aud06-final-critic-fxkbsI/post-gauntlet.json` — exit 0. 
+- `env GIT_OPTIONAL_LOCKS=0 PYTHONDONTWRITEBYTECODE=1 python3 /home/ricardo/.codex/skills/gauntlet-loop/scripts/gauntlet_state.py fingerprint --repo /tmp/cvg-aud06-certification-aottnvx0/repo --output /tmp/cvg-aud06-final-critic-fxkbsI/pre-gauntlet.json` — exit 0. 
+
+Q07:14 independent good/bad fixtures; current state valid in Node22. Q09/Q10:15 good/bad pure helper fixtures. Static client transformation:identical runtime output,1543→1015lines. Telemetry:nine actual JSONL files verified and append preservation checked. Stack:370 source hashes,110 command logs,300 accepted/2limited requests across two replicas,four503storage failures,restore44tables/41rows identical,empty residual resource sets. All30visual baselines match HEAD and unchanged snapshot lists.
+
+Limits and provenance:
+
+- verify8 exit1 stopped at docs because excluded untracked historical evidence folder was absent in clone; retained failure, not accepted. Lead preparation repair added exact excluded historical folder without source change. verify9 separately supersedes regression evidence.
+- Historical architecture binding for server.ts is stale; five other entries match. Current stack370 manifest matches current source, independent builtin Node static client transformation matches runtime output, and current verify9 supplies regression proof.
+- Older retention-runner script/test hashes are stale and not used as current Q05 evidence; runner-round2 current script/test hashes match.
+- 144 available protected history hashes match;13 obsolete ignored generated legacy paths absent from isolated clone. These paths are untracked in HEAD. No original filesystem inspected to infer deletion; canonical current/historical namespaces exist.
+- Legacy source receipt treeHash fields encode computeCandidateId, not behaviorTreeHash. Independent equality uses aaa-candidate-v1 and full file records; no cross-algorithm comparison was used. Current coverage global and critical module counts recomputed in independent-coverage-counts.json.
+- No prior critic report, builder handoff or .gauntlet history was used as grading input. Required SPEC/backlog contain embedded historical references; their reported conclusions were not adopted.
+- Synthetic backup payloads were not semantically read or used as real RPO/RTO proof. Required whole-copy helper necessarily fingerprints all target files; targeted checksum verification skipped backup payload.
+
+No implementation change is claimed. Next authorized work is evidence qualification for Q13; Q11/Q14 remain deferred/blocked external dependencies. Do not mark the integral program completed or reduce the frozen bar.
+
+Final `verify-fingerprint` exit0 confirms the same whole-copy digest after report preparation. Raw command/exit receipt: `whole-verify.command.json`. Initial20min envelope was checkpointed at18min; user authorized finalread extension to30min. Completion used about22.5min.

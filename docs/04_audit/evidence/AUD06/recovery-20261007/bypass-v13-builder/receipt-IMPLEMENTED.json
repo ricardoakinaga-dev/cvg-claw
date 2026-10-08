@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "task": "AUD06-13/Q13-v13",
+  "status": "IMPLEMENTED",
+  "observedAt": "2026-10-08T07:38:51.660969+00:00",
+  "main": "/home/ricardo/cvg-claw",
+  "ownedSourceFiles": [
+    "scripts/phase11-bypass-audit.mjs",
+    "tests/phase11-bypass-audit.test.js"
+  ],
+  "implementation": "Shared value/origin projection for static bindings, members/indices, defaults, stored references, bind prefixes, receiver/reachable/mutation consumers; stable rest/slice allocations keyed by AST, independent copies with shallow reference reachability and conservative copy-source dependencies. Unknown escaped callable holders decline SQL inference. Syntactic candidate collection is bounded and independent of execution order.",
+  "red": {
+    "cases": 47,
+    "actualFailures": 19,
+    "matches": 28,
+    "valid": true,
+    "raw": "red-summary.json",
+    "testExit": 1,
+    "testFailed": 19,
+    "testPassed": 28,
+    "filterSkipped": 293,
+    "filterIsFinalGreen": false
+  },
+  "additionalRed": [
+    {
+      "evidence": "extended-red-summary.json",
+      "cases": 66,
+      "actualFailures": 2,
+      "valid": true
+    },
+    {
+      "evidence": "spread-red-summary.json",
+      "cases": 70,
+      "actualFailures": 1,
+      "valid": true
+    }
+  ],
+  "green": {
+    "cliCases": 70,
+    "matches": 70,
+    "testFiles": 4,
+    "passed": 811,
+    "failed": 0,
+    "skipped": 0,
+    "rawTests": "check-all-four-tests.json",
+    "rawCLI": "green-final-summary.json"
+  },
+  "corpus": {
+    "evidence": "check-corpus.json",
+    "scannedFiles": 59,
+    "status": "PASS",
+    "findings": 0,
+    "exit": 0
+  },
+  "checks": [
+    {
+      "name": "all-four-tests",
+      "exit": 0,
+      "stable": true
+    },
+    {
+      "name": "corpus",
+      "exit": 0,
+      "stable": true
+    },
+    {
+      "name": "lint",
+      "exit": 0,
+      "stable": true
+    },
+    {
+      "name": "eslint-scoped",
+      "exit": 0,
+      "stable": true
+    },
+    {
+      "name": "format",
+      "exit": 0,
+      "stable": true
+    },
+    {
+      "name": "syntax-scanner",
+      "exit": 0,
+      "stable": true
+    },
+    {
+      "name": "syntax-tests",
+      "exit": 0,
+      "stable": true
+    },
+    {
+      "name": "docs-check",
+      "exit": 0,
+      "stable": true
+    }
+  ],
+  "sourceBinding": {
+    "scripts/phase11-bypass-audit.mjs": "f8080d782e9fab17dbcd27c587fced177e22e3ce13cfe63960c72c6100e7f861",
+    "tests/phase11-bypass-audit.test.js": "72258251ea86d687a24b7f990c642e27522754ed6e5877764437298501a93cb9",
+    "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+    "docs/02_spec/aud06_remediation_20261006.md": "0f0d0fc22d08ddbe89aac18eecc82d3d38864200af75863874f1dadb771ea53a",
+    "docs/04_audit/evidence/AUD06/quality-bar.json": "b8f7a3f845c2ccfb49f26545ed123d9426ac7b76b0262f9a72ca9c08940468c0"
+  },
+  "sourcesStableAcrossChecks": true,
+  "frozenInputs": {
+    "spec": "docs/02_spec/aud06_remediation_20261006.md",
+    "qualityBar": "docs/04_audit/evidence/AUD06/quality-bar.json",
+    "barVersion": "AUD06-v13-shared-origin-projection-audit",
+    "helper": "scripts/lib/bypass-sql-audit.mjs",
+    "sha256Unchanged": true
+  },
+  "frozenRejectedReference": {
+    "root": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+    "mode": "READ_ONLY_O_NOATIME",
+    "candidate": "017c464a322e022e711d94be32903c5882f1a232ce7e942ee6e8605102f6e6c3",
+    "sources": {
+      "scripts/phase11-bypass-audit.mjs": "f9fc1c5ec4afa61b39df8e6f2ff2ea61b53c1dc7d8fbcf66f3e72d3834e2d105",
+      "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+      "docs/02_spec/aud06_remediation_20261006.md": "f0da3fe92ea2c54445f3ba8e70b78d7b16d9d193b6cdf5f296ea62ffd91f4a87",
+      "docs/04_audit/evidence/AUD06/quality-bar.json": "7424a1abbc5909e390bd39e4aa453fb92cf87c8cc71de1e1c21604aceaeb93c2"
+    }
+  },
+  "preservation": {
+    "scopeAndEffectMetadataByteIdentical": true,
+    "exactLegacyForwarderByteIdentical": true,
+    "helperSpecBarSHAUnchanged": true,
+    "mastersWrittenByBuilder": false,
+    "runtimeServerAdapterStackWrittenByBuilder": false
+  },
+  "intermediates": {
+    "green-1-summary.json": "46/47; real false rejection on unexposed store, repaired",
+    "green-2-summary.json": "46/47; assigned destructuring unresolved, repaired",
+    "green-3-summary.json": "47/47 before additional cases/format; not final binding",
+    "green-4-summary.json": "66/66 before spread dependency repair; not final binding",
+    "green-1-tests.log": "INTERRUPTED exit130; source changed during check; INVALID as final GREEN, preserved",
+    "corpus-1.rawtxt": "FAIL exit1 on parameter default callback false rejections; preserved valid JSON as rawtxt",
+    "invalidJSONRenamed": 0,
+    "finalJSONWriters": "synchronous write to rawtxt then atomic rename; all complete before docs checks"
+  },
+  "selfReview": {
+    "kind": "BUILDER_SELF_REVIEW",
+    "independent": false,
+    "evidence": "scanner-v13.diff + executable paired controls",
+    "newGapsReproducedAndRepaired": [
+      "escaped holder bind prefix",
+      "mutated rest spread copy source"
+    ],
+    "remainingLimits": "Bounded static projection only; competing/unknown SQL origins decline inference. Function body position is not execution order. Independent acceptance pending."
+  },
+  "governance": {
+    "selfApproval": false,
+    "independentAcceptance": "PENDING",
+    "N3": "DENY",
+    "pilot11": "DEFERRED",
+    "CIpublication": "PENDING",
+    "global": "NO_GO",
+    "production": "NO_GO"
+  },
+  "prohibitedActionsExecuted": false,
+  "notRun": [
+    "fixture effects",
+    "Docker",
+    "DB",
+    "network",
+    "install",
+    "commit",
+    "push",
+    "production certification",
+    "descendant agents"
+  ],
+  "nextAction": "Lead records masters/runtime/log disposition, freezes candidate and obtains fresh independent critique; no builder acceptance."
+}

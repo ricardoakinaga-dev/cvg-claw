@@ -1,0 +1,222 @@
+{
+  "schemaVersion": 1,
+  "kind": "focused-Q13-scanner-review",
+  "at": "2026-10-08T03:58:55.021140+00:00",
+  "decision": "REJECT",
+  "scope": "Focused Q13 scanner rework only; not full Phase11 certification",
+  "reviewer": "independent focused critic; earlier final-role checkpoint, now focused rework reviewer; separate fresh Final Critic required later",
+  "independence": "Source/spec/bar/raw evidence only; no builder narrative or previous critic conclusions used to prove acceptance; zero descendants",
+  "binding": {
+    "commit": "1dc4d09fd1ee3a836f06d3ecab00138de0a555db",
+    "candidateIdReportedInLeadReceipt": "8a108f29e6157cf8332a396b2885c6400b91575ac43a5b11e44a28ff60d1587a",
+    "candidateIdIndependentlyRecomputed": false,
+    "scannerSha256": "a2d0994c24cc15c35350c23225be780e94588326bfbfe1e0d0c609097cad5cc5",
+    "testSha256": "5ffbff6ba972f8dc852c2c0baa2c112b924932f3e3d1abab8c2518c869ae1afe",
+    "barVersion": "AUD06-v6-scoped-prekernel-SQL",
+    "specDigestMatchesBar": true
+  },
+  "findings": [
+    {
+      "id": "Q13-F01",
+      "severity": "P1",
+      "kind": "certification measurement gap",
+      "source": "scripts/phase11-bypass-audit.mjs",
+      "line": 28,
+      "title": "Static SQL variants escape detection, including mixed writes and unknown targets",
+      "criterion": "Q13 SPEC addendum requires detecting UPDATE/DELETE, other writes in CTE/mixed statements, comment variants and refusing unknown-target exemptions.",
+      "reproductions": [
+        "update-quoted-alias",
+        "mixed-quoted-alias",
+        "mixed-cte-quoted-alias",
+        "dynamic-quoted-alias",
+        "delete-sql-line-comment",
+        "update-sql-line-comment",
+        "domain-quoted-alias-outside-exception"
+      ],
+      "observed": "Every listed probe returns exit0/PASS/findings[] despite explicit static domain DML or dynamic target. The UPDATE pattern only admits an unquoted alias and SQL -- comments are not normalized. This is not constructed SQL uncertainty.",
+      "neededCorrection": "Recognize quoted aliases and normalize SQL comments in SQL content; fail closed when a write is recognized but target/grammar is unresolved. Preserve exact unqualified quota-table allowance and UPSERT DO UPDATE SET handling.",
+      "neededNegatives": [
+        "UPDATE patient_records AS \"p\" SET value=$1",
+        "Allowed quota INSERT followed by UPDATE billing_items AS \"b\" SET value=$2",
+        "WITH changed AS (UPDATE billing_items AS \"b\" SET value=$1 RETURNING id) INSERT INTO api_rate_limit_buckets SELECT id FROM changed",
+        "UPDATE ${table} AS \"target\" SET value=$1",
+        "DELETE -- comment\nFROM billing_items WHERE id=$1",
+        "UPDATE -- comment\npatient_records SET value=$1"
+      ]
+    },
+    {
+      "id": "Q13-F02",
+      "severity": "P1",
+      "kind": "certification measurement gap",
+      "source": "scripts/phase11-bypass-audit.mjs",
+      "line": 53,
+      "title": "Host string content is stripped as comments, hiding subsequent domain writes",
+      "criterion": "Comment variants must not mask following forbidden effects.",
+      "reproductions": [
+        "url-mask-domain"
+      ],
+      "observed": "const endpoint=\"https://example.invalid\"; client.query(`DELETE FROM billing_items WHERE id=$1`) returns exit0/PASS/findings[]. Regex treats // inside the quoted URL as a source comment and removes the rest of the line.",
+      "neededCorrection": "Make host-comment removal aware of quoted strings/template literals and escapes; preserve string contents that contain URLs/comment markers.",
+      "neededNegatives": [
+        "Benign URL literal followed on same line by clinical/financial/agendamento INSERT/UPDATE/DELETE",
+        "Quoted // or /*...*/ text must not swallow a following forbidden call",
+        "Preserve positive actual comments, harmless URL constants and quota UPSERT"
+      ]
+    },
+    {
+      "id": "Q13-F03",
+      "severity": "P1",
+      "kind": "certification inventory gap",
+      "source": "scripts/phase11-bypass-audit.mjs",
+      "line": 93,
+      "title": "Production sources are omitted when a directory name contains .test. or .spec.",
+      "criterion": "New tracked/untracked source files inside the same governed prefixes must be inventoried; only actual test files should be excluded.",
+      "reproductions": [
+        "path-test-substring",
+        "tracked-path-test-substring"
+      ],
+      "observed": "apps/api/src/new.test.helper/domain.ts containing DELETE FROM billing_items returns exit0/PASS/scannedFiles0 in both tracked and untracked fixtures. ignoredName tests the whole path rather than a defined test filename classification.",
+      "neededCorrection": "Restrict exclusion to precisely classified test files (anchored basename/suffix); do not exempt unrelated ancestor directories merely containing .test./.spec.",
+      "neededNegatives": [
+        "Tracked and untracked production .ts/.js files beneath .test./.spec.-containing directories must be scanned/rejected",
+        "Genuine example.test.ts remains excluded; ordinary untracked worker SQL remains rejected"
+      ]
+    }
+  ],
+  "findingCounts": {
+    "P0": 0,
+    "P1": 3,
+    "P2": 0
+  },
+  "observations": {
+    "exceptionNarrowing": "Exact file+literal quota table is correctly enforced for recognized simple writes; quoted/schema-qualified quota targets rejected. Existing replay exceptions preserved.",
+    "inventory": "Ordinary untracked source detected; Git inventory failure rejects; test-substring path omission remains.",
+    "positiveControls": "Quota UPSERT and ordinary quota alias, actual comments, benign URL, diagnostic prose and genuine test exclusion remain accepted in independent fixtures. No actual-current-source false positive established.",
+    "rawEvidence": "RED log11failed/14passed preserved; intermediate44 tests passed but public scanner failed on prose; later raw GREEN48passed across3files and public59source PASS. These supplied successful cases do not include the independently reproduced failures."
+  },
+  "verification": {
+    "method": "Copied exact scanner bytes into independent synthetic temp Git fixtures; run exact Node22 binary; inspect reports/exit/raw hashes. No framework/test runner, target scanner execution, DB, Docker or network.",
+    "node": "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+    "nodeVersion": "v22.23.2",
+    "probeCases": 22,
+    "incorrectPasses": 10,
+    "incorrectPassNames": [
+      "mixed-quoted-alias",
+      "update-quoted-alias",
+      "delete-sql-line-comment",
+      "update-sql-line-comment",
+      "url-mask-domain",
+      "mixed-cte-quoted-alias",
+      "dynamic-quoted-alias",
+      "path-test-substring",
+      "tracked-path-test-substring",
+      "domain-quoted-alias-outside-exception"
+    ],
+    "rawHashPolicy": "Every per-fixture argv/cwd/exit/stdout+stderr hash retained in own probe JSON and raw files"
+  },
+  "sentinel": {
+    "status": "PASS",
+    "reviewedFiles": 13,
+    "drift": [],
+    "wholeCloneClaim": false
+  },
+  "artifacts": [
+    {
+      "path": "docs/02_spec/aud06_remediation_20261006.md",
+      "sha256": "8a2f7089f8cf2f27c950d3251456fe31df0a75c13c3d6358f633d133b18ec6b8",
+      "size": 10952
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-docs-check.log",
+      "sha256": "5db697beab2c807e4de68657ea586a743710e2cd0bb0fbbf74b7d8134538dec4",
+      "size": 1103
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-focused-validation-receipt-v2.json",
+      "sha256": "d240f0ec0565f0d83763b9327055a424faff654b110ddaebbb917c3f630da353",
+      "size": 759
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-focused-validation-receipt.json",
+      "sha256": "9f432a241b97cc58baad03c7d34d0d2b654f3d1a0481097999ab1d5ebbacc16f",
+      "size": 849
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-lint-2.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-main-public-green-2.json",
+      "sha256": "e7da5083a79ab470ad95671bb2077a3f430ca763b14dff2ad16b90eabe2c508a",
+      "size": 1264
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-main-public-green.json",
+      "sha256": "4e578a1d805b7dead268af7e4ce9b2e6c4fe01a2e00712a448211ac9835cf139",
+      "size": 1389
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-scanner-green-2.log",
+      "sha256": "37d258169a1a8c2061a1b9a04f7c56668a20f804a3a1676215878cd037cf3f27",
+      "size": 211
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-scanner-green.log",
+      "sha256": "75b529f0a2e035b004a7099cde9e25da1d1573d8ebebe9a554e19386309b7911",
+      "size": 211
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-scanner-red.log",
+      "sha256": "8b0194cfcd14b32de3f2479a8f942ca1f7ac840176ca218f524abdf51d6305fa",
+      "size": 6125
+    },
+    {
+      "path": "scripts/phase11-bypass-audit.mjs",
+      "sha256": "a2d0994c24cc15c35350c23225be780e94588326bfbfe1e0d0c609097cad5cc5",
+      "size": 4721
+    },
+    {
+      "path": "tests/phase11-bypass-audit.test.js",
+      "sha256": "5ffbff6ba972f8dc852c2c0baa2c112b924932f3e3d1abab8c2518c869ae1afe",
+      "size": 5311
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/quality-bar.json",
+      "sha256": "9188a19bb5dd11ab8af647a1c5d3ccd116571044d3406976e23887ad86798986",
+      "size": 16952
+    }
+  ],
+  "ownEvidence": [
+    {
+      "path": "/tmp/cvg-phase11-finalcritic-czA9IfAv/q13-independent-fixture-results.json",
+      "sha256": "6c85b320ccda8ef6b190b55ce6d53dbd3ad966b79958555f6ce432f9701d5c23",
+      "size": 52897
+    },
+    {
+      "path": "/tmp/cvg-phase11-finalcritic-czA9IfAv/q13-independent-additional-results.json",
+      "sha256": "9260ac39430403d6c4c59d0ce3ba06111d7b344f893bbc23de366a91fc36c39f",
+      "size": 19526
+    },
+    {
+      "path": "/tmp/cvg-phase11-finalcritic-czA9IfAv/q13-scanner-reviewed-pre.json",
+      "sha256": "e45a9ec69b9873530eccfdc891158fcc14998054c6f32f5e2a93c8b6b265628b",
+      "size": 2539
+    },
+    {
+      "path": "/tmp/cvg-phase11-finalcritic-czA9IfAv/q13-bar-pre.json",
+      "sha256": "d6a6fef61d6243b8ee8f427c510d348402a14359607a35e36929ed2f0be9e55a",
+      "size": 203
+    },
+    {
+      "path": "/tmp/cvg-phase11-finalcritic-czA9IfAv/q13-scanner-reviewed-post.json",
+      "sha256": "77e317be9d4a08125d8da3d2ecb883799f8411599ad38add112bd15d681e91e3",
+      "size": 2859
+    }
+  ],
+  "limits": [
+    "Findings concern scanner certification evidence, not executed domain effects or proven deployed compromise.",
+    "New integrated Phase11 run not executed/accepted; no Phase11 PASS issued.",
+    "Global Q11/Q13remoteCI/Q14 remain unqualified; production NO_GO."
+  ]
+}

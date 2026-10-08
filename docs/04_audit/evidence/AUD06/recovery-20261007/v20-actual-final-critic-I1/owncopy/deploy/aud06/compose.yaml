@@ -1,0 +1,229 @@
+# Synthetic only. The runner supplies a fresh env file, network, volumes,
+# credentials, image tags and loopback ports; never run against an existing DB.
+x-security: &security
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  pids_limit: 256
+  cpus: 1.0
+  mem_limit: 768m
+  restart: 'no'
+  labels:
+    org.cvg.aud06.run: ${AUD06_RUN_ID:?runner required}
+  logging:
+    driver: json-file
+    options: { max-size: 10m, max-file: '2' }
+
+x-runtime: &runtime
+  <<: *security
+  image: ${AUD06_RUN_ID}-runtime:synthetic
+  user: '${AUD06_RUNTIME_UID:?}:${AUD06_RUNTIME_GID:?}'
+  tmpfs:
+    [
+      '/tmp:rw,noexec,nosuid,size=64m,uid=${AUD06_RUNTIME_UID},gid=${AUD06_RUNTIME_GID}'
+    ]
+  stop_grace_period: 20s
+  networks: [isolated]
+
+x-common-env: &common-env
+  NODE_ENV: test
+  CVG_AUD06_SYNTHETIC: 'true'
+  DATABASE_URL: postgres://cvg_aud06_runtime:${AUD06_RUNTIME_PASSWORD}@db:5432/cvg_aud06
+  POSTGRES_SCHEMA: cvg_aud06
+  POSTGRES_RLS_ENFORCEMENT: 'true'
+  POSTGRES_AUTO_MIGRATE: 'false'
+  CVG_ALLOW_REAL_EFFECTS: 'false'
+  CVG_REAL_EFFECTS: 'false'
+  ENABLE_REAL_CHANNELS: 'false'
+  ENABLE_REAL_RAG: 'false'
+  ENABLE_REAL_PAYMENTS: 'false'
+  ENABLE_REAL_MEDICAL_RECORDS: 'false'
+
+x-api-env: &api-env
+  <<: *common-env
+  API_PERSISTENCE_MODE: postgres
+  API_RATE_LIMIT_STORE: postgres
+  DATABASE_MIGRATION_URL: postgres://cvg_aud06_migration:${AUD06_MIGRATION_PASSWORD}@db:5432/cvg_aud06
+  OUTBOX_DURABLE_INBOUND: 'true'
+  CVG_IDENTITY_MODE: simulation
+  INBOUND_TENANT_ID: tenant_00000000-0000-4000-8000-000000000006
+  INBOUND_AGENT_ID: agent_00000000-0000-4000-8000-000000000006
+  API_REQUIRE_HTTPS: 'true'
+  API_TRUSTED_PROXY_ADDRESSES: ${AUD06_EDGE_IP},127.0.0.1
+  API_ALLOWED_ORIGINS: https://localhost:${AUD06_HTTPS_PORT}
+  CVG_TELEMETRY_MODE: local_file
+  CVG_TELEMETRY_PROFILE: CONTROLLED_LOCAL_SYNTHETIC
+  CVG_TELEMETRY_ROOT: /tmp/${AUD06_RUN_ID}-telemetry
+  PORT: '3000'
+
+x-api-health: &api-health
+  test:
+    [
+      CMD,
+      node,
+      -e,
+      "fetch('http://127.0.0.1:3000/ready',{headers:{'x-forwarded-proto':'https'}}).then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+    ]
+  interval: 5s
+  timeout: 4s
+  start_period: 30s
+  retries: 10
+
+x-db: &db
+  <<: *security
+  image: postgres:16-alpine@sha256:3c5c8892d184f738f4fe282d14ddaa613a38f00f4189d2d94725ebe6f2909ddb
+  user: postgres
+  tmpfs:
+    [
+      '/tmp:rw,noexec,nosuid,size=64m',
+      '/var/run/postgresql:rw,noexec,nosuid,size=8m,uid=70,gid=70'
+    ]
+  networks: [isolated]
+  healthcheck:
+    test: [CMD-SHELL, 'pg_isready -U cvg_aud06_admin -d cvg_aud06']
+    interval: 2s
+    timeout: 3s
+    retries: 30
+  environment: &db-env
+    POSTGRES_USER: cvg_aud06_admin
+    POSTGRES_DB: cvg_aud06
+    POSTGRES_PASSWORD: ${AUD06_ADMIN_PASSWORD:?}
+    AUD06_MIGRATION_PASSWORD: ${AUD06_MIGRATION_PASSWORD:?}
+    AUD06_RUNTIME_PASSWORD: ${AUD06_RUNTIME_PASSWORD:?}
+    CVG_AUD06_SYNTHETIC: 'true'
+    PGDATA: /var/lib/postgresql/data/pgdata
+    POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+
+services:
+  db:
+    <<: *db
+    container_name: ${AUD06_RUN_ID}-db
+    environment:
+      <<: *db-env
+      AUD06_SOURCE_DB: 'true'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ${AUD06_CONTEXT}/deploy/aud06/init-db.sh:/docker-entrypoint-initdb.d/01-aud06.sh:ro
+  db-restore:
+    <<: *db
+    container_name: ${AUD06_RUN_ID}-db-restore
+    volumes:
+      - restore-data:/var/lib/postgresql/data
+      - ${AUD06_CONTEXT}/deploy/aud06/init-db.sh:/docker-entrypoint-initdb.d/01-aud06.sh:ro
+  migrate:
+    <<: *runtime
+    profiles: [tools]
+    command: [node, --import, tsx, scripts/aud06-migrate.ts]
+    environment:
+      <<: *common-env
+      DATABASE_URL: postgres://cvg_aud06_migration:${AUD06_MIGRATION_PASSWORD}@db:5432/cvg_aud06
+  tools:
+    <<: *runtime
+    profiles: [tools]
+    command: [node, --import, tsx, scripts/aud06-stack-db.ts, fingerprint]
+    environment:
+      <<: *common-env
+      AUD06_ADMIN_URL: postgres://cvg_aud06_admin:${AUD06_ADMIN_PASSWORD}@db:5432/cvg_aud06
+      AUD06_RESTORE_URL: postgres://cvg_aud06_admin:${AUD06_ADMIN_PASSWORD}@db-restore:5432/cvg_aud06
+  api-a:
+    <<: *runtime
+    container_name: ${AUD06_RUN_ID}-api-a
+    environment: *api-env
+    healthcheck: *api-health
+    volumes:
+      - type: bind
+        source: ${AUD06_TEMP}/telemetry/api-a
+        target: /tmp/${AUD06_RUN_ID}-telemetry
+        bind: { create_host_path: false }
+  api-b:
+    <<: *runtime
+    container_name: ${AUD06_RUN_ID}-api-b
+    environment: *api-env
+    healthcheck: *api-health
+    volumes:
+      - type: bind
+        source: ${AUD06_TEMP}/telemetry/api-b
+        target: /tmp/${AUD06_RUN_ID}-telemetry
+        bind: { create_host_path: false }
+  worker:
+    <<: *runtime
+    container_name: ${AUD06_RUN_ID}-worker
+    command: [node, --import, tsx, apps/worker/src/main.ts]
+    environment:
+      <<: *common-env
+      CVG_WORKER_QUEUE_ADAPTER: postgres-controlled
+      CVG_WORKER_RUN_MODE: continuous
+      CVG_WORKER_RUNTIME: kernel
+      CVG_DURABLE_KERNEL_ORCHESTRATOR: 'true'
+      CVG_WORKER_CONTROLLED_MODE: 'true'
+      CVG_WORKER_TENANT_ID: tenant_00000000-0000-4000-8000-000000000006
+      CVG_WORKER_AGENT_ID: agent_00000000-0000-4000-8000-000000000006
+      CVG_WORKER_ID: ${AUD06_RUN_ID}-worker
+      CVG_WORKER_POLL_INTERVAL_MS: '100'
+      CVG_WORKER_DRAIN_MS: '10000'
+      CVG_WORKER_READINESS_FILE: /tmp/cvg-worker-ready
+      CVG_TELEMETRY_MODE: local_file
+      CVG_TELEMETRY_PROFILE: CONTROLLED_LOCAL_SYNTHETIC
+      CVG_TELEMETRY_ROOT: /tmp/${AUD06_RUN_ID}-telemetry
+    volumes:
+      - type: bind
+        source: ${AUD06_TEMP}/telemetry/worker
+        target: /tmp/${AUD06_RUN_ID}-telemetry
+        bind: { create_host_path: false }
+    healthcheck:
+      test:
+        [
+          CMD,
+          node,
+          -e,
+          "const r=JSON.parse(require('fs').readFileSync('/tmp/cvg-worker-ready'));process.exit(r.status==='ready'&&r.durable===true?0:1)"
+        ]
+      interval: 3s
+      timeout: 3s
+      start_period: 30s
+      retries: 15
+  web:
+    <<: *security
+    image: ${AUD06_RUN_ID}-web:synthetic
+    container_name: ${AUD06_RUN_ID}-web
+    user: '10001:10001'
+    mem_limit: 128m
+    tmpfs:
+      [
+        '/tmp:rw,noexec,nosuid,size=16m',
+        '/data:rw,noexec,nosuid,size=16m,uid=10001,gid=10001',
+        '/config:rw,noexec,nosuid,size=8m,uid=10001,gid=10001'
+      ]
+    environment:
+      AUD06_HTTPS_PORT: ${AUD06_HTTPS_PORT:?}
+    ports:
+      - '127.0.0.1:${AUD06_HTTP_PORT:?}:8080'
+      - '127.0.0.1:${AUD06_HTTPS_PORT:?}:8443'
+    networks:
+      isolated:
+        ipv4_address: ${AUD06_EDGE_IP:?}
+      edge:
+        gw_priority: 1
+    volumes:
+      - ${AUD06_TEMP}/localhost.crt:/certs/localhost.crt:ro
+      - ${AUD06_TEMP}/localhost.key:/certs/localhost.key:ro
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, http://127.0.0.1:8080/edge-health]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+
+networks:
+  isolated:
+    external: true
+    name: ${AUD06_RUN_ID}-network
+  edge:
+    external: true
+    name: ${AUD06_RUN_ID}-edge-network
+volumes:
+  db-data:
+    external: true
+    name: ${AUD06_RUN_ID}-db-data
+  restore-data:
+    external: true
+    name: ${AUD06_RUN_ID}-restore-data

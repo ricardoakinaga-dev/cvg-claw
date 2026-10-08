@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "task": "AUD06-13/Q13-v14",
+  "status": "IMPLEMENTED",
+  "observedAt": "2026-10-08T08:16:42.520624+00:00",
+  "main": "/home/ricardo/cvg-claw",
+  "ownedSourceFiles": [
+    "scripts/phase11-bypass-audit.mjs",
+    "tests/phase11-bypass-audit.test.js"
+  ],
+  "implementation": "Shared own-member materialization incorporates syntactic literal properties and stored literal slots in object rest, array binding/rest, member selection and shallow spread reachability. Unknown/incomplete is distinct from absent for defaults. Stable copies remain distinct, contained references preserve identity/bind prefixes, and SQL taint qualification is retained. Inherited native methods and arbitrary factory results remain within the preexisting bounded callable classification.",
+  "red": {
+    "cases": 44,
+    "actualFailures": 21,
+    "matches": 23,
+    "valid": true,
+    "sourceSHA256": "f8080d782e9fab17dbcd27c587fced177e22e3ce13cfe63960c72c6100e7f861",
+    "raw": "red-summary.json",
+    "testExit": 1,
+    "testFailed": 21,
+    "testPassed": 23,
+    "filterSkipped": 363,
+    "parserInventoryFailures": 0
+  },
+  "green": {
+    "cliCases": 44,
+    "matches": 44,
+    "testFiles": 4,
+    "passed": 855,
+    "failed": 0,
+    "skipped": 0,
+    "rawTests": "check-all-four-tests.json",
+    "rawCLI": "green-final-v14-summary.json",
+    "sourceBindingMatches": true
+  },
+  "corpus": {
+    "evidence": "check-corpus.json",
+    "scannedFiles": 59,
+    "status": "PASS",
+    "findings": 0,
+    "exit": 0
+  },
+  "checks": [
+    {
+      "name": "all-four-tests",
+      "exit": 0,
+      "stable": true
+    },
+    {
+      "name": "corpus",
+      "exit": 0,
+      "stable": true
+    },
+    {
+      "name": "lint",
+      "exit": 0,
+      "stable": true
+    },
+    {
+      "name": "eslint-scoped",
+      "exit": 0,
+      "stable": true
+    },
+    {
+      "name": "format",
+      "exit": 0,
+      "stable": true
+    },
+    {
+      "name": "syntax-scanner",
+      "exit": 0,
+      "stable": true
+    },
+    {
+      "name": "syntax-tests",
+      "exit": 0,
+      "stable": true
+    },
+    {
+      "name": "docs-check",
+      "exit": 0,
+      "stable": true
+    }
+  ],
+  "sourceBinding": {
+    "scripts/phase11-bypass-audit.mjs": "3ff92b6c1ba21ace310f455668ba1f8fc8eaada45e17ab1219cad0fe65e7f7fe",
+    "tests/phase11-bypass-audit.test.js": "90af5c3dc1d39d5883e55eaf7a69ef153e29f433ada57934df0e3d104d2412c2",
+    "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+    "docs/02_spec/aud06_remediation_20261006.md": "0763583ae8ce7f8133e61d768407ebd555600cf037071b345b363c1916cf85b5",
+    "docs/04_audit/evidence/AUD06/quality-bar.json": "5eae1c7ab5061dafb9be744dd58a2349ea8d8f4fbb8dd27f03d4140960b7b70a"
+  },
+  "sourcesFrozen": true,
+  "sourcesStableAcrossChecks": true,
+  "frozenInputs": {
+    "spec": "docs/02_spec/aud06_remediation_20261006.md",
+    "qualityBar": "docs/04_audit/evidence/AUD06/quality-bar.json",
+    "barVersion": "AUD06-v14-stored-member-spread-projection-audit",
+    "helper": "scripts/lib/bypass-sql-audit.mjs",
+    "sha256Unchanged": true
+  },
+  "frozenRejectedReference": {
+    "root": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+    "candidate": "06dab37e82c38ad4a242301b186d48f865a1e6916117d2ff2db22e0146d4e5e1",
+    "mode": "READ_ONLY_O_NOATIME",
+    "sources": {
+      "scripts/phase11-bypass-audit.mjs": "f8080d782e9fab17dbcd27c587fced177e22e3ce13cfe63960c72c6100e7f861",
+      "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+      "docs/02_spec/aud06_remediation_20261006.md": "0f0d0fc22d08ddbe89aac18eecc82d3d38864200af75863874f1dadb771ea53a",
+      "docs/04_audit/evidence/AUD06/quality-bar.json": "b8f7a3f845c2ccfb49f26545ed123d9426ac7b76b0262f9a72ca9c08940468c0"
+    }
+  },
+  "preservation": {
+    "scopeGrantsEffectMetadataByteIdentical": true,
+    "exactLegacyForwarderByteIdentical": true,
+    "helperSpecBarSHAUnchanged": true,
+    "mastersWrittenByBuilder": false,
+    "runtimeServerAdapterStackWrittenByBuilder": false,
+    "rejectedCloneWrittenByBuilder": false
+  },
+  "intermediates": {
+    "green-1-summary.json": "43/44; unknown stored value repaired",
+    "green-final-summary.json": "44/44 on earlier binding304b; stale after corpus regressions were repaired, not final handoff",
+    "corpus-1.rawtxt": "FAIL; inherited-method/factory classifications repaired",
+    "corpus-2.rawtxt": "FAIL; factory classification repaired",
+    "corpus-3.rawtxt": "PASS59 on pre-regression-repair binding, not final handoff",
+    "check-all-four-tests-attempt1.json": "852PASS/3FAIL, valid regression result preserved; getter receiver and pure callable qualification repaired",
+    "green-focused-2.log": "58PASS/349 filtered skips; intermediate only, final suite has zero skips",
+    "checks-summary-attempt1.json": "all_exit_zero false; preserved",
+    "invalidJSONRenamed": 0,
+    "JSONWriters": "all completed before documentation checks"
+  },
+  "selfReview": {
+    "kind": "BUILDER_SELF_REVIEW",
+    "independent": false,
+    "evidence": "scanner-v14.diff; reported and same-root paired controls; existing regressions",
+    "limits": "Bounded static projection, no universal JS/PG or execution-order inference. Independent critique and canonical disposition pending."
+  },
+  "governance": {
+    "selfApproval": false,
+    "independentAcceptance": "PENDING",
+    "N3": "DENY",
+    "pilot11": "DEFERRED",
+    "CIpublication": "PENDING",
+    "global": "NO_GO",
+    "production": "NO_GO"
+  },
+  "notRun": [
+    "fixture effects",
+    "runtime",
+    "Docker",
+    "DB",
+    "network",
+    "install",
+    "commit",
+    "push",
+    "certification",
+    "descendant agents"
+  ],
+  "nextAction": "Lead freezes candidate, obtains fresh independent critique and records canonical/master disposition. No builder acceptance."
+}

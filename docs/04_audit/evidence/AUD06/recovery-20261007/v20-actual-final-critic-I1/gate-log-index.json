@@ -1,0 +1,642 @@
+[
+  {
+    "id": "prompt_integrity",
+    "command": "phase11 internal check",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 0,
+    "internal": true
+  },
+  {
+    "id": "format",
+    "command": "npm run format:check",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 17804,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/format.log",
+    "sha256": "d976f0796f7ce635b0a93c976c3d66b10319508cb746f4c3b54c17ddbfe64d61",
+    "size": 523,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "format"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 17804,
+    "bindingValid": true
+  },
+  {
+    "id": "typecheck",
+    "command": "npm run typecheck",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 10034,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/typecheck.log",
+    "sha256": "181882102491d0ed0b86707bdf5b3592ee6c23cbc97b9a6d030330bb138e3aae",
+    "size": 475,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "typecheck"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 10034,
+    "bindingValid": true
+  },
+  {
+    "id": "lint",
+    "command": "npm run lint",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 8001,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/lint.log",
+    "sha256": "45699f5573c0de9a489a706b495e15e1677e53d4ca18a6efbfe461d0eeb41967",
+    "size": 428,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "lint"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 8001,
+    "bindingValid": true
+  },
+  {
+    "id": "build",
+    "command": "npm run build",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 10687,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/build.log",
+    "sha256": "1728b1628cfbd64588eb37bb697b1afc11111bf6d71fd598b38213e2fd81c89f",
+    "size": 1018,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "build"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 10687,
+    "bindingValid": true
+  },
+  {
+    "id": "unit",
+    "command": "npm test -- --reporter=default --reporter=json --outputFile=certification/phase11/logs/unit-report.json",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 735045,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/unit.log",
+    "sha256": "59de52b7015bb2d4bc62c1136296fbe523e01ed3d3d14c223de9a3e7138533bb",
+    "size": 181842,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "unit"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 735045,
+    "bindingValid": true
+  },
+  {
+    "id": "coverage",
+    "command": "npm run test:coverage",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 825302,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/coverage.log",
+    "sha256": "f9f1f6de393400df907a573fa8dac08cf14de7918e0fa6ba8e509a208445e27d",
+    "size": 218807,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "coverage"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 825302,
+    "bindingValid": true
+  },
+  {
+    "id": "security",
+    "command": "npm run audit:security",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 1313,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/security.log",
+    "sha256": "2c6381b9baf17f912cc7afa0d950b978e317d2d18f12af22fd01986caac31a77",
+    "size": 496,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "security"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 1313,
+    "bindingValid": true
+  },
+  {
+    "id": "supply_chain",
+    "command": "npm run sbom && npm run licenses:check",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 250,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/supply_chain.log",
+    "sha256": "d790f42fb06615c28fc10b086b76db74cc9492cc0717d8148eb9bd302be52b2f",
+    "size": 819,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "supply_chain"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 250,
+    "bindingValid": true
+  },
+  {
+    "id": "worker_startup",
+    "command": "npm run test:worker:startup",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 1192,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/worker_startup.log",
+    "sha256": "616a24b803c36eb7af43f2bc05fb080aa13a311b6091e6dcb52b3322efcf4917",
+    "size": 701,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "worker_startup"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 1192,
+    "bindingValid": true
+  },
+  {
+    "id": "postgres",
+    "command": "npm run test:postgres -- --reporter=default --reporter=json --outputFile=certification/phase11/logs/postgres-report.json",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 84743,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/postgres.log",
+    "sha256": "d4948002569386996c9a9c128f3a681ca75e7273e1f7f68f450d329aa9b5521e",
+    "size": 23857,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "postgres"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 84743,
+    "bindingValid": true
+  },
+  {
+    "id": "e2e",
+    "command": "npm run test:e2e",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 207620,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/e2e.log",
+    "sha256": "d66eafd6d783eee241148d707d0621452348a32ffd66dc197634791ae373ce21",
+    "size": 12646,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "e2e"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 207620,
+    "bindingValid": true
+  },
+  {
+    "id": "evals",
+    "command": "npm run test:evals && npx tsx scripts/phase10-eval-report.ts",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 5103,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/evals.log",
+    "sha256": "6c18427d2a7e753cd0009de505b9f8f2319a24f2a110d46fda6295311ca1f984",
+    "size": 1763,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "evals"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 5103,
+    "bindingValid": true
+  },
+  {
+    "id": "chaos",
+    "command": "npm run test:chaos -- --reporter=json --outputFile=certification/chaos-report.json",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 3324,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/chaos.log",
+    "sha256": "757fdb6bb11afeecb9ab3bbb9331018ede55a612b90fe6a333c99daa068a4b18",
+    "size": 718,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "chaos"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 3324,
+    "bindingValid": true
+  },
+  {
+    "id": "load",
+    "command": "npx tsx scripts/phase10-load.ts --events=10000",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 8670,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/load.log",
+    "sha256": "3d793acc0eb487d4aa3965be637ae4262b88573a832438f66242ab541039bb42",
+    "size": 815,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "load"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 8670,
+    "bindingValid": true
+  },
+  {
+    "id": "recovery",
+    "command": "npm test -- --run packages/agent-runtime/src/__tests__/runtime-execution-recovery.test.ts apps/worker/src/__tests__/outbox-recovery.test.ts apps/worker/src/__tests__/worker-sweeps.test.ts",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 3825,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/recovery.log",
+    "sha256": "15bdbd2fd79005a64025addee5b92124fe846e628f18f7585bfa7ae7494e6a48",
+    "size": 6307,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "recovery"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 3825,
+    "bindingValid": true
+  },
+  {
+    "id": "bypass_audit",
+    "command": "node scripts/phase11-bypass-audit.mjs",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 229569,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/bypass_audit.log",
+    "sha256": "51296adc2d20259d166a1803b17ae4f8d1d1e666c504917fe190b3de210a6128",
+    "size": 1851,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "bypass_audit"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 229569,
+    "bindingValid": true
+  },
+  {
+    "id": "certification_self_test",
+    "command": "node scripts/phase11-self-test.mjs",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 84,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/certification_self_test.log",
+    "sha256": "d5f423be0016be2fbbdbd9b485b6c3b221bec12990eca5a4c12be36ef70b2bf3",
+    "size": 1215,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "certification_self_test"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 84,
+    "bindingValid": true
+  },
+  {
+    "id": "phase10_historical_verification",
+    "command": "node scripts/phase10-verify.mjs --historical --base certification/logs/historical/2026-09-11-phase10",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 81,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/phase10_historical_verification.log",
+    "sha256": "8d4826e40145497478615d080c055be1c5e3380a6faf57b9d7fbc603605dbf13",
+    "size": 943,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "phase10_historical_verification"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 81,
+    "bindingValid": true
+  },
+  {
+    "id": "evidence_graph",
+    "command": "phase11 internal check",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 0,
+    "internal": true
+  },
+  {
+    "id": "candidate_clean",
+    "command": "phase11 internal check",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 0,
+    "internal": true
+  },
+  {
+    "id": "node_target",
+    "command": "phase11 internal check",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 0,
+    "internal": true
+  },
+  {
+    "id": "verify",
+    "command": "npm run verify",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 1533315,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/verify.log",
+    "sha256": "f0073e89207e1806d271a87c26ffbb50ac7023c7a2d955792c7a42a1f4409dad",
+    "size": 387036,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "verify"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 1533315,
+    "bindingValid": true
+  },
+  {
+    "id": "production_preflight",
+    "command": "node scripts/production-preflight.mjs --profile=PRODUCTION --expect=REJECT",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 33,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/production_preflight.log",
+    "sha256": "1a806e31447fd8c66a0be69392e44715752ad47371bc58cd341490dcec683966",
+    "size": 8609,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "production_preflight"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 33,
+    "bindingValid": true
+  },
+  {
+    "id": "evidence_reports",
+    "command": "node scripts/phase11-2-evidence-check.mjs --reports",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 95,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/evidence_reports.log",
+    "sha256": "b0fc8566186407f6cd40ef2f6452c08ee9b288102b7e1f0a5c4b9c3e02677cb5",
+    "size": 2588,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "evidence_reports"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 95,
+    "bindingValid": true
+  },
+  {
+    "id": "independent_critic",
+    "command": "node scripts/phase11-2-evidence-check.mjs --critic",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 396,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/independent_critic.log",
+    "sha256": "09ac8c4bf701b720eebfde3be6c0cefad7219f70dd58f43e5254ad09396b41d1",
+    "size": 1874,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "independent_critic"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 396,
+    "bindingValid": true
+  },
+  {
+    "id": "mutation_sentinel",
+    "command": "node scripts/mutation-sentinel.mjs --fail-on-gaps --out=certification/phase11/mutation-raw-report.json",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 46320,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/mutation_sentinel.log",
+    "sha256": "d3039411a0829881bc0b93ec83df447336476df628c12832228a621e5d62c38b",
+    "size": 2748,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "mutation_sentinel"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 46320,
+    "bindingValid": true
+  },
+  {
+    "id": "trace_lineage",
+    "command": "npm test -- --run apps/api/src/__tests__/orchestration-observability.test.ts packages/observability/src/__tests__/observability.test.ts",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 2945,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/trace_lineage.log",
+    "sha256": "3ff9957e2836f4e54050530f6cfcd825be84361997c3549f483e23c4954ee455",
+    "size": 1378,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "trace_lineage"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 2945,
+    "bindingValid": true
+  },
+  {
+    "id": "governance_redteam",
+    "command": "npm test -- --run packages/policy-engine/src/__tests__/policy-engine-branch-hardening.test.ts packages/platform/src/__tests__/tool-invocation-boundary-hardening.test.ts packages/platform/src/__tests__/critical-safety-preflight.test.ts",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 2895,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/governance_redteam.log",
+    "sha256": "523a92d8975f99b24805fe65b77eeb7fc450b58c5ae659dec09978d1b4578c3d",
+    "size": 1754,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "governance_redteam"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 2895,
+    "bindingValid": true
+  },
+  {
+    "id": "tenant_redteam",
+    "command": "npm test -- --run apps/api/src/__tests__/tenant-inbound-isolation.test.ts packages/persistence/src/__tests__/tenant-isolation.test.ts",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 3013,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/tenant_redteam.log",
+    "sha256": "4ac63161ce88ee6c534a82dee307521e430f66b9d83e45988c024f1565c91700",
+    "size": 1435,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "tenant_redteam"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 3013,
+    "bindingValid": true
+  },
+  {
+    "id": "certification_redteam",
+    "command": "node scripts/phase11-2-redteam.mjs --suite=certification && npm test -- --run apps/api/src/__tests__/aud17-connected-redteam.test.ts",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 2176,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/certification_redteam.log",
+    "sha256": "d192157f33db5d144b538cf8adb60680f6b16f1414a93fd8525a7d562770ce25",
+    "size": 2122,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "certification_redteam"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 2176,
+    "bindingValid": true
+  },
+  {
+    "id": "adversarial_proof",
+    "command": "node scripts/phase11-2-redteam.mjs --suite=all",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 85,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/adversarial_proof.log",
+    "sha256": "97ea7e87daecaefdfd3c0f8bf079966c9802a0413a9b5c65a32086e00e10dd6b",
+    "size": 2079,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "adversarial_proof"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 85,
+    "bindingValid": true
+  },
+  {
+    "id": "outbox_replay",
+    "command": "npm test -- --run packages/persistence/src/__tests__/outbox-durability.test.ts apps/worker/src/__tests__/outbox-recovery.test.ts",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 2569,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/outbox_replay.log",
+    "sha256": "dd1ddbfd69fb55dbfe75b493974c97342ae6f3579e604ec7bfbac718bbd675b9",
+    "size": 1415,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "outbox_replay"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 2569,
+    "bindingValid": true
+  },
+  {
+    "id": "clone_verify",
+    "command": "node scripts/phase11-2-redteam.mjs --suite=clone",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 89,
+    "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-second-complete-pass5-snapshot/certification/phase11/logs/clone_verify.log",
+    "sha256": "7bd93cee7bf2050640bcabfd6c7d7c1364791e4b792257c7f32a10f88a210a67",
+    "size": 729,
+    "header": {
+      "certificationId": "phase11-f15cece0c6784845-muznvvts",
+      "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+      "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+      "gate": "clone_verify"
+    },
+    "actualExit": 0,
+    "actualDurationMs": 89,
+    "bindingValid": true
+  },
+  {
+    "id": "PHASE11_FORMAL_CLOSURE",
+    "command": "phase11 internal check",
+    "status": "PASS",
+    "exitCode": 0,
+    "durationMs": 0,
+    "internal": true
+  }
+]

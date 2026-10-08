@@ -1,0 +1,41 @@
+{
+  "at": "2026-10-08T02:22:52.487008+00:00",
+  "kind": "AUD06-local-technical-acceptance",
+  "lead": "Codex lead (separate from final critic)",
+  "candidateId": "380ccc525d3c8313463bf8a845f634fb34757d8c85682b6ee7601a59a4a4495d",
+  "sourceFileCount": 1252,
+  "wholeArtifactFingerprint": "25e1279495b5dee8919f75f55d3787d19079704db0f37d4cf373a49f1e9d5c8c",
+  "criticIdentity": "01a1193a-9a29-7053-b4e6-5a810076c5a8",
+  "criticReport": "final-critic-v4/final-report.json",
+  "acceptedCriteria": [
+    "Q01",
+    "Q02",
+    "Q03",
+    "Q04",
+    "Q05",
+    "Q06",
+    "Q07",
+    "Q08",
+    "Q09",
+    "Q10",
+    "Q12"
+  ],
+  "unacceptedCriteria": [
+    {
+      "id": "Q11",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "Q13",
+      "status": "STALE"
+    },
+    {
+      "id": "Q14",
+      "status": "BLOCKED"
+    }
+  ],
+  "scope": "Controlled local synthetic technical acceptance; no institutional integration, publication or production permission",
+  "overall": "FAIL",
+  "localTechnical": "PASS",
+  "metadataAfterAcceptance": "Backlog/state/report will change candidate hash; runtime/source checks bind frozen reviewed candidate only. Subsequent certification must bind new stable docs."
+}

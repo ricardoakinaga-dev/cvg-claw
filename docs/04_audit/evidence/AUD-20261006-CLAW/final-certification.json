@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "kind": "phase11-verification",
+  "mode": "current",
+  "status": "FAIL",
+  "currentPointer": "certification/current.json",
+  "result": "certification/phase11/phase11-result.json",
+  "manifest": "certification/phase11/manifest.json",
+  "failures": [
+    "independent_critic_invalid:CRITIC:binding:candidateId=72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267!=947d75579a35714555780a9a8f9131b13944b4562332cee6536fa4c306032098, treeHash=d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569!=b6f5667ddf26b6a3cc2c61a5e857f9ebca199660cb589d9f94f406f4dd930591, commit=185f82168a11e813c218f2e6da1c49b671bf451f!=1a66436ffed42b656aa980bd64ac6bed45548ba4|CRITIC:fingerprint:worktree changed after review: reported ad6087e1cad09d16ec532dc5e893a21e4d4e7759f4f30d1bec6cab4a6ec11865, current 69033a97aa37b744d325aeae461de1b15b1d7d21a154ff17ceebcf66e3760a41",
+    "mutation_report_invalid:mutation_candidate_candidateId_mismatch|mutation_candidate_treeHash_mismatch|mutation_candidate_commit_mismatch",
+    "candidate_tree_stale:d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569:b6f5667ddf26b6a3cc2c61a5e857f9ebca199660cb589d9f94f406f4dd930591",
+    "candidate_dirty_state_changed",
+    "candidate_untracked_state_changed",
+    "candidate_id_stale",
+    "candidate_file_count_changed",
+    "candidate_file_hash_changed",
+    "candidate_scope_drift:[{\"type\":\"added\",\"path\":\"docs/04_audit/0576_repository_audit_2026-10-06.md\",\"current\":\"bea510dfd5d7efa24fa224b2dd08ffce8d287208f51d76b954cb76e72f33b0d8\"},{\"type\":\"changed\",\"path\":\"docs/20_master_execution_log.md\",\"recorded\":\"3e0302f797728fbf542db80458ec2098dd7707db859b77c1f6589d6b4d9536c6\",\"current\":\"11ff7304d152fe7976645fce112107e34f0c41f7371cec8d67e06a41136544e5\"},{\"type\":\"changed\",\"path\":\"docs/30_backlog_master.md\",\"recorded\":\"8199e1645405dc1a70ebe265e1df6ef3bd95a596d0a4721c3bfbee10c7f7e3da\",\"current\":\"40c3e88964fa8317e935124934a0eb23c506ce0b4e3665fc363c4b9026129c1f\"},{\"type\":\"changed\",\"path\":\"docs/99_runtime_state.md\",\"recorded\":\"ba75d6eef64c2bf175125ca4b11b24d430315de9aa9a7f0ee98c1498d8ea24fe\",\"current\":\"93e592e5743fa9649f4c2c83f7681f33a66e4200021887c903b4f50afaa4d60d\"},{\"type\":\"changed\",\"path\":\"docs/CURRENT.md\",\"recorded\":\"3614b0873b86bf6bd5cf256a07c59dd3bce5016fc42a09be9e4af26afe82307c\",\"current\":\"b435d103bbd767e6061167767137d30d1a4361f3cc43155cee3c781b3763128f\"}]",
+    "pointer_candidateId_mismatch",
+    "pointer_treeHash_mismatch",
+    "manifest_candidate_mismatch",
+    "manifest_tree_stale",
+    "evidence_graph_candidate_mismatch",
+    "release_candidate_mismatch",
+    "release_tree_mismatch",
+    "decision_recalculation_mismatch",
+    "certification_recalculation_mismatch",
+    "eligible_profile_recalculation_mismatch",
+    "success_state_recalculation_mismatch",
+    "remaining_blockers_recalculation_mismatch",
+    "scores_recalculation_mismatch"
+  ]
+}

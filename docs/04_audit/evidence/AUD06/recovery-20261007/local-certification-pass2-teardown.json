@@ -1,0 +1,38 @@
+{
+  "at": "2026-10-08T03:48:42.297660+00:00",
+  "observations": [
+    {
+      "command": [
+        "docker",
+        "inspect",
+        "6bd8d949b6f15a16fe5a27ca9e4a6569dc02c29fff135787824b90893f75175b"
+      ],
+      "exitCode": 1,
+      "stdout": "[]\n",
+      "stderr": "error: no such object: 6bd8d949b6f15a16fe5a27ca9e4a6569dc02c29fff135787824b90893f75175b\n"
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "inspect",
+        "9ba4f5c232d322f78cb4deb45bb4fbbc02ef6ac6adbc0f3ba3c3c853e79dd00d"
+      ],
+      "exitCode": 1,
+      "stdout": "[]\n",
+      "stderr": "Error response from daemon: get 9ba4f5c232d322f78cb4deb45bb4fbbc02ef6ac6adbc0f3ba3c3c853e79dd00d: no such volume\n"
+    },
+    {
+      "command": [
+        "docker",
+        "inspect",
+        "961b62ce73e1c302859cfb67587b2dde2ed6afeda91f119910cfb305c224b992"
+      ],
+      "exitCode": 1,
+      "stdout": "[]\n",
+      "stderr": "error: no such object: 961b62ce73e1c302859cfb67587b2dde2ed6afeda91f119910cfb305c224b992\n"
+    }
+  ],
+  "tempAbsent": true,
+  "allOwnResourcesAbsent": true
+}

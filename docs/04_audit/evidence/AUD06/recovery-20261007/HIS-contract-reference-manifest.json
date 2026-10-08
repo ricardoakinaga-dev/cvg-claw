@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "kind": "source-reference-paths-sha256-only",
+  "sources": [
+    {
+      "project": "cvg-his-v4",
+      "path": "apps/api/src/routes/billing-routes.ts",
+      "sha256": "da3b8e3b96b3cbc15e2de74ae43afe69ffa64f271dd7bc2e08acd9fe500c238b"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "packages/modules/billing/src/index.ts",
+      "sha256": "16d13bfb8e769211fcc70b504b628a2fc47a644834b3a77fcf56f1c4b8a4b177"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "packages/modules/billing/src/repositories/database-billing.repository.ts",
+      "sha256": "ec074c874b58f928afacd80f55684e206006d07e93958972b21d54239f97a641"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "apps/api/src/openapi.yaml",
+      "sha256": "85ea477fbeb5e65e244ceb93d23f446f0fe97b9275638401025e29fa2efe37c7"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "packages/modules/event-bus/src/event-catalog.ts",
+      "sha256": "f1b88f9d532a391a2df9971bee8876828bb2aa3fd37eeb28500569f36dfa81c2"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "packages/rbac/src/permissions.ts",
+      "sha256": "1d41f18a5387b02b5214333cd76f8d312cff007a17019a379f2922b95dd12045"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "apps/api/src/server.ts",
+      "sha256": "5ed9460383aee61950da81e3346b9d7fc10eb8bd36c5d8d981fed33e3c4168a7"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "apps/api/src/helpers/auth-helpers.ts",
+      "sha256": "21b10c94380e2d1169c8fa399a91ecbb6a0decfcda512ef4c89d6298ba224f4b"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "apps/api/src/routes/api-keys-routes.ts",
+      "sha256": "1c56f5954f16181ad4edf39ea88119fcaa723bd093acfb5926cad8b0cc5eabeb"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "packages/rbac/src/access-control-catalog.ts",
+      "sha256": "558d644d1b7691624404dc6c6167f8957903b99f17cdc340376a33c3ef0623ca"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "packages/rbac/src/index.ts",
+      "sha256": "ec516b4276ba74a463aeb0bbbb8c6b48ef4c36f1f95710bc3c7006ec8cf58285"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "apps/api/src/routes/financial-routes.ts",
+      "sha256": "a3cae7c8b595727ac632b7ca375cf13e40a67827cc6a3660046bead865ed444a"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "apps/api/src/routes/encounter-read-routes.ts",
+      "sha256": "99a4a4cdf479c7954c4d370e93eea8b503fb41478bad9c3629b89b09d05fd509"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "apps/api/src/routes/encounter-list-route.ts",
+      "sha256": "d1747e765033989f526f8944235e9b53a76df36d92d0820ad6ca4d3686dacf83"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "apps/api/src/routes/inpatient-routes.ts",
+      "sha256": "3b2bf9ac484db0b83a21715108cafe804afb3f405416e2084cf81ddd9c4aca99"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "packages/modules/access-control/src/index.ts",
+      "sha256": "51b016f1c8c33130ab4e7ec07dadfdcd7a7fe3808cc1a8cc2a39a8109b544eec"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "packages/modules/auth/src/index.ts",
+      "sha256": "1e6b87d59b8e8c2869a63a7861ec5732afb97e7454d6a1c5631803cdcc79c483"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "apps/api/src/routes/auth-routes.ts",
+      "sha256": "8d361b33fbf1c87d7f67248f5f4be23e89899183a8e877f4aebd6bb3cde1a1f4"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "apps/api/src/runtime.ts",
+      "sha256": "29dd45d5a5a4cebe1cf6abd68bb5395870809885901aefcaf224fe73853f5d2b"
+    },
+    {
+      "project": "cvg-his-v4",
+      "path": "apps/api/src/routes/payments-routes.ts",
+      "sha256": "3d04e4adea34b2fe3a09c3480e81f26eaed607610975b43c6784a3f32d1bada9"
+    },
+    {
+      "project": "cvg-claw",
+      "path": "docs/00_discovery/0026_cvg_claw_hospital_autonomous_agent.md",
+      "sha256": "fb9e2cee173686665bd248dcfc116005ecb8f844d186f429b2ea3e9f9f0752b7"
+    },
+    {
+      "project": "cvg-claw",
+      "path": "docs/03_build/0349_aud06_backlog.md",
+      "sha256": "8fc1aed5287506eff520de47747514319ba655549c30947eecab367ce2db3a6b"
+    },
+    {
+      "project": "cvg-claw",
+      "path": "docs/04_audit/evidence/AUD06/quality-bar.json",
+      "sha256": "7451853f3cd6c6c21b9eed9afb0a031dcced5152b12bd90d6f6502fefe6cfb9d"
+    },
+    {
+      "project": "cvg-claw",
+      "path": "docs/07_agents/AGENTS.md",
+      "sha256": "d61ec23e923a02e522851d6140d5b6cafafcb1d851ea829a1743d267e3d6f8d0"
+    }
+  ]
+}

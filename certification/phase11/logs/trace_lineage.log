@@ -1,28 +1,28 @@
 $ npm test -- --run apps/api/src/__tests__/orchestration-observability.test.ts packages/observability/src/__tests__/observability.test.ts
-# certificationId=phase11-72fa77fcda6fad8c-muv8q8tu
-# candidateId=72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267
-# commit=dfe2c1dd992a96a55dd41f5c516352a82f587cbf
-# treeHash=d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569
+# certificationId=phase11-f15cece0c6784845-muznvvts
+# candidateId=f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0
+# commit=7c1fdfc488664c365b4df6423d1b81c60e27ac22
+# treeHash=4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283
 # gate=trace_lineage
 # profile=CONTROLLED_LOCAL
 # databaseConfigured=false
 # realEffects=disabled
-# exitCode=0 durationMs=2949
+# exitCode=0 durationMs=2945
 
 
 > cvg-claw@1.0.0 test
 > vitest run --no-file-parallelism --maxWorkers=2 --run apps/api/src/__tests__/orchestration-observability.test.ts packages/observability/src/__tests__/observability.test.ts
 
 
-[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/home/ricardo/cvg-claw[39m
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/tmp/cvg-aud06-certification-aottnvx0/repo[39m
 
- [32m✓[39m apps/api/src/__tests__/orchestration-observability.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 151[2mms[22m[39m
- [32m✓[39m packages/observability/src/__tests__/observability.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m apps/api/src/__tests__/orchestration-observability.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 150[2mms[22m[39m
+ [32m✓[39m packages/observability/src/__tests__/observability.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 21[2mms[22m[39m
 
 [2m Test Files [22m [1m[32m2 passed[39m[22m[90m (2)[39m
 [2m      Tests [22m [1m[32m17 passed[39m[22m[90m (17)[39m
-[2m   Start at [22m 13:17:01
-[2m   Duration [22m 2.56s[2m (transform 724ms, setup 0ms, import 1.10s, tests 173ms, environment 1.08s)[22m
+[2m   Start at [22m 16:00:48
+[2m   Duration [22m 2.55s[2m (transform 716ms, setup 0ms, import 1.09s, tests 171ms, environment 1.09s)[22m
 
 
 

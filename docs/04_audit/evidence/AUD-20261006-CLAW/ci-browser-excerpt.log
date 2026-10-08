@@ -1,0 +1,120 @@
+2026-10-05T21:59:20.8034140Z     [2m    - waiting for element to be stable[22m
+2026-10-05T21:59:20.8035670Z     [2m  - Expected an image 351px by 4006px, received 351px by 4125px. 108224 pixels (ratio 0.08 of all image pixels) are different.[22m
+2026-10-05T21:59:20.8036640Z     [2m  - waiting 100ms before taking screenshot[22m
+2026-10-05T21:59:20.8037290Z     [2m  - waiting for locator('#orchestration-panel')[22m
+2026-10-05T21:59:20.8038361Z     [2m    - locator resolved to <section tabindex="-1" aria-busy="false" id="orchestration-panel" class="panel orchestrationPanel" aria-labelledby="orchestration-title">…</section>[22m
+2026-10-05T21:59:20.8039238Z     [2m  - taking element screenshot[22m
+2026-10-05T21:59:20.8039614Z     [2m    - disabled all CSS animations[22m
+2026-10-05T21:59:20.8039983Z     [2m  - waiting for fonts to load...[22m
+2026-10-05T21:59:20.8040312Z     [2m  - fonts loaded[22m
+2026-10-05T21:59:20.8040667Z     [2m  - attempting scroll into view action[22m
+2026-10-05T21:59:20.8041078Z     [2m    - waiting for element to be stable[22m
+2026-10-05T21:59:20.8041461Z     [2m  - captured a stable screenshot[22m
+2026-10-05T21:59:20.8042227Z     [2m  - Expected an image 351px by 4006px, received 351px by 4125px. 108224 pixels (ratio 0.08 of all image pixels) are different.[22m
+2026-10-05T21:59:20.8042726Z 
+2026-10-05T21:59:20.8042907Z 
+2026-10-05T21:59:20.8043142Z       472 |     await expect(panel.getByLabel('Incerto: 1')).toBeVisible()
+2026-10-05T21:59:20.8044146Z       473 |     await expect(panel.getByText('Iterações', { exact: true })).toBeVisible()
+2026-10-05T21:59:20.8044643Z     > 474 |     await expect(panel).toHaveScreenshot(
+2026-10-05T21:59:20.8044965Z           |                         ^
+2026-10-05T21:59:20.8045318Z       475 |       viewport.name === 'desktop'
+2026-10-05T21:59:20.8045670Z       476 |         ? 'orchestration-state-matrix.png'
+2026-10-05T21:59:20.8046108Z       477 |         : `orchestration-state-matrix-${viewport.name}.png`,
+2026-10-05T21:59:20.8046644Z         at /home/runner/work/cvg-claw/cvg-claw/tests/e2e/visual-shell.spec.ts:474:25
+2026-10-05T21:59:20.8046962Z 
+2026-10-05T21:59:20.8047411Z     attachment #1: orchestration-state-matrix-mobile (image/png) ───────────────────────────────────
+2026-10-05T21:59:20.8048213Z     Expected: tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-mobile-webkit-linux.png
+2026-10-05T21:59:20.8049275Z     Received: test-results/visual-shell-orchestration-74d41-etic-state-matrix-read-only-webkit-retry1/orchestration-state-matrix-mobile-actual.png
+2026-10-05T21:59:20.8050492Z     Diff:     test-results/visual-shell-orchestration-74d41-etic-state-matrix-read-only-webkit-retry1/orchestration-state-matrix-mobile-diff.png
+2026-10-05T21:59:20.8051465Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-05T21:59:20.8051758Z 
+2026-10-05T21:59:20.8052350Z     attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+2026-10-05T21:59:20.8053158Z     test-results/visual-shell-orchestration-74d41-etic-state-matrix-read-only-webkit-retry1/test-failed-1.png
+2026-10-05T21:59:20.8054416Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-05T21:59:20.8054720Z 
+2026-10-05T21:59:20.8055112Z     attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+2026-10-05T21:59:20.8055911Z     test-results/visual-shell-orchestration-74d41-etic-state-matrix-read-only-webkit-retry1/video.webm
+2026-10-05T21:59:20.8056711Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-05T21:59:20.8056998Z 
+2026-10-05T21:59:20.8057506Z     Error Context: test-results/visual-shell-orchestration-74d41-etic-state-matrix-read-only-webkit-retry1/error-context.md
+2026-10-05T21:59:20.8058041Z 
+2026-10-05T21:59:20.8058447Z     attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+2026-10-05T21:59:20.8059188Z     test-results/visual-shell-orchestration-74d41-etic-state-matrix-read-only-webkit-retry1/trace.zip
+2026-10-05T21:59:20.8059716Z     Usage:
+2026-10-05T21:59:20.8059826Z 
+2026-10-05T21:59:20.8060354Z         npx playwright show-trace test-results/visual-shell-orchestration-74d41-etic-state-matrix-read-only-webkit-retry1/trace.zip
+2026-10-05T21:59:20.8061085Z 
+2026-10-05T21:59:20.8061441Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-05T21:59:20.8061731Z 
+2026-10-05T21:59:20.8062086Z     Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+2026-10-05T21:59:20.8062387Z 
+2026-10-05T21:59:20.8062841Z     Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveScreenshot[2m([22m[32mexpected[39m[2m)[22m failed
+2026-10-05T21:59:20.8063553Z 
+2026-10-05T21:59:20.8063742Z     Locator: locator('#orchestration-panel')
+2026-10-05T21:59:20.8064400Z       Expected an image 351px by 4006px, received 351px by 4125px. 108224 pixels (ratio 0.08 of all image pixels) are different.
+2026-10-05T21:59:20.8064870Z 
+2026-10-05T21:59:20.8065064Z       Snapshot: orchestration-state-matrix-mobile.png
+2026-10-05T21:59:20.8065300Z 
+2026-10-05T21:59:20.8065388Z     Call log:
+2026-10-05T21:59:20.8065958Z     [2m  - Expect "toHaveScreenshot(orchestration-state-matrix-mobile.png)" with timeout 5000ms[22m
+2026-10-05T21:59:20.8066605Z     [2m    - verifying given screenshot expectation[22m
+2026-10-05T21:59:20.8067066Z     [2m  - waiting for locator('#orchestration-panel')[22m
+2026-10-05T21:59:20.8068136Z     [2m    - locator resolved to <section tabindex="-1" aria-busy="false" id="orchestration-panel" class="panel orchestrationPanel" aria-labelledby="orchestration-title">…</section>[22m
+2026-10-05T21:59:20.8068995Z     [2m  - taking element screenshot[22m
+2026-10-05T21:59:20.8069504Z     [2m    - disabled all CSS animations[22m
+2026-10-05T21:59:20.8069944Z     [2m  - waiting for fonts to load...[22m
+2026-10-05T21:59:20.8070271Z     [2m  - fonts loaded[22m
+2026-10-05T21:59:20.8070619Z     [2m  - attempting scroll into view action[22m
+2026-10-05T21:59:20.8071009Z     [2m    - waiting for element to be stable[22m
+2026-10-05T21:59:20.8071772Z     [2m  - Expected an image 351px by 4006px, received 351px by 4125px. 108224 pixels (ratio 0.08 of all image pixels) are different.[22m
+2026-10-05T21:59:20.8072464Z     [2m  - waiting 100ms before taking screenshot[22m
+2026-10-05T21:59:20.8072905Z     [2m  - waiting for locator('#orchestration-panel')[22m
+2026-10-05T21:59:20.8074220Z     [2m    - locator resolved to <section tabindex="-1" aria-busy="false" id="orchestration-panel" class="panel orchestrationPanel" aria-labelledby="orchestration-title">…</section>[22m
+2026-10-05T21:59:20.8075080Z     [2m  - taking element screenshot[22m
+2026-10-05T21:59:20.8075455Z     [2m    - disabled all CSS animations[22m
+2026-10-05T21:59:20.8075832Z     [2m  - waiting for fonts to load...[22m
+2026-10-05T21:59:20.8076155Z     [2m  - fonts loaded[22m
+2026-10-05T21:59:20.8076504Z     [2m  - attempting scroll into view action[22m
+2026-10-05T21:59:20.8076895Z     [2m    - waiting for element to be stable[22m
+2026-10-05T21:59:20.8077329Z     [2m  - captured a stable screenshot[22m
+2026-10-05T21:59:20.8078085Z     [2m  - Expected an image 351px by 4006px, received 351px by 4125px. 108224 pixels (ratio 0.08 of all image pixels) are different.[22m
+2026-10-05T21:59:20.8078577Z 
+2026-10-05T21:59:20.8078583Z 
+2026-10-05T21:59:20.8078813Z       472 |     await expect(panel.getByLabel('Incerto: 1')).toBeVisible()
+2026-10-05T21:59:20.8079443Z       473 |     await expect(panel.getByText('Iterações', { exact: true })).toBeVisible()
+2026-10-05T21:59:20.8079936Z     > 474 |     await expect(panel).toHaveScreenshot(
+2026-10-05T21:59:20.8080255Z           |                         ^
+2026-10-05T21:59:20.8080563Z       475 |       viewport.name === 'desktop'
+2026-10-05T21:59:20.8080922Z       476 |         ? 'orchestration-state-matrix.png'
+2026-10-05T21:59:20.8081345Z       477 |         : `orchestration-state-matrix-${viewport.name}.png`,
+2026-10-05T21:59:20.8081869Z         at /home/runner/work/cvg-claw/cvg-claw/tests/e2e/visual-shell.spec.ts:474:25
+2026-10-05T21:59:20.8082196Z 
+2026-10-05T21:59:20.8082641Z     attachment #1: orchestration-state-matrix-mobile (image/png) ───────────────────────────────────
+2026-10-05T21:59:20.8083874Z     Expected: tests/e2e/visual-shell.spec.ts-snapshots/orchestration-state-matrix-mobile-webkit-linux.png
+2026-10-05T21:59:20.8084949Z     Received: test-results/visual-shell-orchestration-74d41-etic-state-matrix-read-only-webkit-retry2/orchestration-state-matrix-mobile-actual.png
+2026-10-05T21:59:20.8086176Z     Diff:     test-results/visual-shell-orchestration-74d41-etic-state-matrix-read-only-webkit-retry2/orchestration-state-matrix-mobile-diff.png
+2026-10-05T21:59:20.8087175Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-05T21:59:20.8087481Z 
+2026-10-05T21:59:20.8087892Z     attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+2026-10-05T21:59:20.8088733Z     test-results/visual-shell-orchestration-74d41-etic-state-matrix-read-only-webkit-retry2/test-failed-1.png
+2026-10-05T21:59:20.8089579Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-05T21:59:20.8089877Z 
+2026-10-05T21:59:20.8090262Z     attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+2026-10-05T21:59:20.8091015Z     test-results/visual-shell-orchestration-74d41-etic-state-matrix-read-only-webkit-retry2/video.webm
+2026-10-05T21:59:20.8091841Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-10-05T21:59:20.8092135Z 
+2026-10-05T21:59:20.8092793Z     Error Context: test-results/visual-shell-orchestration-74d41-etic-state-matrix-read-only-webkit-retry2/error-context.md
+2026-10-05T21:59:20.8093638Z 
+2026-10-05T21:59:20.8093644Z 
+2026-10-05T21:59:20.8460023Z [1A[2K  9 failed
+2026-10-05T21:59:20.8460918Z     [chromium] › tests/e2e/visual-shell.spec.ts:10:5 › console shell preserves layout, focus and control sizing across viewports 
+2026-10-05T21:59:20.8461982Z     [chromium] › tests/e2e/visual-shell.spec.ts:100:5 › dead-letter diagnostics wrap long errors and remain tenant scoped 
+2026-10-05T21:59:20.8462992Z     [chromium] › tests/e2e/visual-shell.spec.ts:181:5 › orchestration console exposes the synthetic state matrix read-only 
+2026-10-05T21:59:20.8464256Z     [firefox] › tests/e2e/visual-shell.spec.ts:10:5 › console shell preserves layout, focus and control sizing across viewports 
+2026-10-05T21:59:20.8465220Z     [firefox] › tests/e2e/visual-shell.spec.ts:100:5 › dead-letter diagnostics wrap long errors and remain tenant scoped 
+2026-10-05T21:59:20.8466187Z     [firefox] › tests/e2e/visual-shell.spec.ts:181:5 › orchestration console exposes the synthetic state matrix read-only 
+2026-10-05T21:59:20.8467176Z     [webkit] › tests/e2e/visual-shell.spec.ts:10:5 › console shell preserves layout, focus and control sizing across viewports 
+2026-10-05T21:59:20.8468122Z     [webkit] › tests/e2e/visual-shell.spec.ts:100:5 › dead-letter diagnostics wrap long errors and remain tenant scoped 
+2026-10-05T21:59:20.8478495Z     [webkit] › tests/e2e/visual-shell.spec.ts:181:5 › orchestration console exposes the synthetic state matrix read-only 
+2026-10-05T21:59:20.8479112Z   66 passed (5.3m)
+2026-10-05T21:59:20.9136794Z ##[error]Process completed with exit code 1.

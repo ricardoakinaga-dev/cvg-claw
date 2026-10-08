@@ -1,0 +1,4583 @@
+import { randomBytes } from 'node:crypto'
+import { performance } from 'node:perf_hooks'
+import Fastify from 'fastify'
+import type { ApprovalAuthority, ApprovalRecord } from '@cvg/approval-engine'
+import {
+  auditEvidenceGovernance,
+  createCorrelationId,
+  DomainError,
+  fail,
+  IDENTITY_MODE_ENV,
+  ok,
+  parseIdentityMode,
+  redactSensitiveText,
+  ResolveApprovalSchema,
+  sanitizeAuditEvidencePayload,
+  TaskStatusSchema,
+  toSafeError,
+  type Channel,
+  type IdentityMode,
+  type OperatorIdentity,
+  type OperatorIdentityResolver,
+  type TaskStatus
+} from '@cvg/shared'
+import {
+  AgentConfigSchema,
+  AgentIdSchema,
+  AgentVersionIdSchema,
+  AgentVersionStatusSchema,
+  ApprovedKnowledgeForTestSchema,
+  assertReleaseCandidatePublishAuthority,
+  assertPromptProfileClone,
+  KnowledgeSourceCreateInputSchema,
+  KnowledgeSourceIdSchema,
+  KnowledgeSourceTransitionInputSchema,
+  ReleaseCandidateCreateInputSchema,
+  ReleaseCandidateIdSchema,
+  ReleaseCandidateTransitionInputSchema,
+  PluginCatalogCreateInputSchema,
+  PluginCatalogIdSchema,
+  PluginCatalogTransitionInputSchema,
+  canBotRespond,
+  createControlledCapabilityGateway,
+  createTestSuiteRunId,
+  executeConfiguredAgent,
+  ensureControlledSecretaryPreset,
+  InMemoryControlPlaneStore,
+  TenantIdSchema,
+  TestLabCaseSchema,
+  TestSuiteCloneInputSchema,
+  TestSuiteCreateInputSchema,
+  TestSuiteIdSchema,
+  runCriticalSafetyPreflight,
+  assessConversationSafety,
+  evaluateTestLabSuite,
+  runTestLab,
+  sanitizeTraceForPersistence,
+  type AgentExecutionActor,
+  type CapabilityActorAuthorizer,
+  type CapabilityApproval,
+  type CapabilityApprovalAuthority,
+  type CapabilityApprovalRecord,
+  type ApprovedKnowledgeResolver,
+  type AgentId,
+  type PluginAuditEvent,
+  type TenantId,
+  type AgentVersionId,
+  type ControlPlaneStore,
+  type TestLabCase,
+  type TestSuiteRecord,
+  type TestSuiteRunRecord,
+  type TestSuiteVariantResult
+} from '@cvg/platform'
+import {
+  type AtomicRuntimeApprovalDecisionInput,
+  type OutboxEventRecord,
+  AuditEvidenceCheckpointCreateInputSchema,
+  AuditEvidenceCheckpointIdSchema,
+  AuditEvidenceCheckpointTransitionInputSchema,
+  type DurableOutboxAdapter,
+  JourneyRepository,
+  MAX_UNPAGINATED_LIST_ROWS as MAX_LIST_ROWS,
+  type JourneyRepositoryPort,
+  PostgresControlPlaneRepository,
+  TenantScopedPostgresControlPlaneRepository,
+  type PostgresPoolLike,
+  type SessionRecord,
+  runPostgresMigrations,
+  type PostgresQueryable
+} from '@cvg/persistence'
+import {
+  createInternalTask,
+  createInboundIdempotencyKey,
+  executePublishedAgent,
+  getConversationTimeline,
+  receiveInboundMessage,
+  requestHumanApproval
+} from '@cvg/agent-core'
+import type { ObservabilityCollectorPort } from '@cvg/observability'
+import { Pool } from 'pg'
+import { z } from 'zod'
+import {
+  installHttpSecurityHooks,
+  normalizeHttpSecurityOptions,
+  parseHttpSecurityEnv,
+  type HttpSecurityOptions
+} from './http-security.ts'
+import {
+  InMemoryRateLimiter,
+  RATE_LIMIT_ACQUISITION_TIMEOUT_MS,
+  type RateLimiter,
+  type RateLimitResult
+} from './rate-limit.ts'
+import { PostgresRateLimiter } from './postgres-rate-limit.ts'
+import {
+  createConfiguredOperatorReplayGuard,
+  type OperatorReplayGuard
+} from './operator-identity.ts'
+import {
+  assertProductionReplayConfiguration,
+  createOperatorReplayStoreFromEnv,
+  type OperatorReplayStore
+} from './operator-replay-store.ts'
+import { createRequestContext } from './server/request-context.ts'
+import type { InboundTenantResolver } from './server/request-context.ts'
+import {
+  parseAuditEvidenceQuery,
+  parseOrchestrationGoalQuery,
+  parsePagination,
+  parseTraceLimit
+} from './server/request-query.ts'
+export type { InboundTenantResolver } from './server/request-context.ts'
+import { ControlledRequestMetrics } from './request-metrics.ts'
+import { installResponseCorrelationHook } from './response-correlation.ts'
+import { registerHealthRoutes } from './routes/health.ts'
+import type { ReadinessProbe } from './readiness.ts'
+import {
+  classifyHttpRequestError,
+  HTTP_REQUEST_BODY_LIMIT_BYTES
+} from './http-request-boundary.ts'
+import {
+  classifyHttpRequestTarget,
+  HTTP_REQUEST_MAX_PARAM_LENGTH
+} from './http-target-boundary.ts'
+import { PAGINATION_OFFSET_ERROR_MESSAGE } from './pagination-boundary.ts'
+import {
+  HmacWebhookVerifier,
+  PostgresWebhookReplayStore,
+  type WebhookReplayStore,
+  type WebhookVerificationLease
+} from './webhook-security.ts'
+import {
+  loadOrchestrationGoalDetail,
+  toOrchestrationGoalView
+} from './orchestration-observability.ts'
+
+import {
+  createCapabilityApprovalAuthority,
+  createPersistence,
+  createRuntimeApprovalAuthority,
+  withDefaultCapabilityGateway,
+  withDefaultInboundCompletion,
+  withDefaultKnowledgeResolver,
+  type AgentRuntimeOptions,
+  type RuntimePersistence
+} from './server/bootstrap-persistence.ts'
+import {
+  assertMigrationRoleIsLeastPrivilege,
+  assertMigrationRoleSecurityBoundary,
+  assertRuntimeRoleIsLeastPrivilege,
+  assertRuntimeRoleIsNotRlsBypass,
+  readCurrentDatabaseRole
+} from './server/postgres-role-checks.ts'
+import {
+  assertTenantIsolationMigrationState,
+  assertTenantIsolationSchema,
+  assertWebhookReplaySchema
+} from './server/tenant-isolation.ts'
+
+export type {
+  AgentRuntimeOptions,
+  InboundRuntimeCompletion
+} from './server/bootstrap-persistence.ts'
+export {
+  assertMigrationRoleIsLeastPrivilege,
+  assertMigrationRoleSecurityBoundary,
+  assertRuntimeRoleIsLeastPrivilege
+} from './server/postgres-role-checks.ts'
+export {
+  assertTenantIsolationMigrationState,
+  assertTenantIsolationSchema,
+  assertWebhookReplaySchema
+} from './server/tenant-isolation.ts'
+
+export interface RuntimeLogEntry {
+  event: string
+  correlationId: string
+  route: string
+  status: 'ok' | 'error'
+  sessionId?: string | null
+  conversationId?: string | null
+  resourceId?: string | null
+  errorCode?: string
+}
+
+export type { OperatorIdentityResolver } from '@cvg/shared'
+
+export type WebhookVerification = boolean | WebhookVerificationLease | null
+
+export type WebhookVerifier = (input: {
+  headers: Record<string, unknown>
+  body: unknown
+  channel: string
+  rawBody?: string
+}) => WebhookVerification | Promise<WebhookVerification>
+
+const CONTROLLED_CAPABILITY_PERMISSION = 'scheduling:read'
+const serverCapabilityActorAuthorizer: CapabilityActorAuthorizer = ({
+  actor,
+  requiredPermission
+}) => {
+  if (requiredPermission !== CONTROLLED_CAPABILITY_PERMISSION) return []
+  if (actor.role === 'System') {
+    return actor.id.startsWith('system.') ? [requiredPermission] : []
+  }
+  return ['Operator', 'Approver', 'Supervisor', 'Admin'].includes(actor.role)
+    ? [requiredPermission]
+    : []
+}
+
+export interface BuildServerOptions {
+  runtimeLogger?: (entry: RuntimeLogEntry) => void
+  persistence?:
+    | { kind: 'memory' }
+    | { kind: 'postgres'; client: PostgresQueryable }
+    | { kind: 'postgres-pool'; pool: PostgresPoolLike }
+  platform?: ControlPlaneStore
+  operatorIdentityResolver?: OperatorIdentityResolver
+  /** Distributed operator JTI replay guard; absent keeps the local cache. */
+  operatorReplayGuard?: OperatorReplayGuard
+  /** Explicit identity mode; defaults to `simulation` only for `NODE_ENV=test`. */
+  identityMode?: IdentityMode
+  webhookVerifier?: WebhookVerifier
+  inboundTenantResolver?: InboundTenantResolver
+  agentRuntime?: AgentRuntimeOptions
+  resolveApprovedKnowledge?: ApprovedKnowledgeResolver
+  capabilityApprovalAuthority?: CapabilityApprovalAuthority
+  requireAuthenticatedMutations?: boolean
+  httpSecurity?: HttpSecurityOptions
+  requestMetrics?: ControlledRequestMetrics
+  requestMetricsEnabled?: boolean
+  /** Queue inbound work for the durable worker contract; inline stays default. */
+  durableInbound?: boolean
+  /** Explicit adapter override, useful for deterministic controlled tests. */
+  outbox?: DurableOutboxAdapter
+  /** Extra bounded readiness probes (the database probe needs no injection). */
+  readinessProbes?: readonly ReadinessProbe[]
+  /** Explicit journey persistence override; `null` keeps routes fail-closed. */
+  journeyRepository?: JourneyRepositoryPort | null
+  /** Canonical governed-kernel approval authority (distinct from legacy approvals). */
+  runtimeApprovalAuthority?: ApprovalAuthority
+  /** Harness-only collector injection; `app.close()` awaits flush and close. */
+  runtimeCollector?: ObservabilityCollectorPort
+  /** Shared pre-authentication quota; storage failures deny the HTTP request. */
+  rateLimiter?: RateLimiter
+}
+
+export type BuildServerFromEnvOptions = Omit<
+  BuildServerOptions,
+  'persistence'
+> & {
+  webhookReplayStore?: WebhookReplayStore
+  /** Explicit operator replay store override (tests/composition). */
+  operatorReplayStore?: OperatorReplayStore
+}
+
+export function buildServer(options: BuildServerOptions = {}) {
+  const requestContext = createRequestContext({
+    nodeEnv: process.env.NODE_ENV,
+    controlledTenantId: CONTROLLED_TENANT_ID
+  })
+  const {
+    createEffectiveOperatorIdentityResolver,
+    bindOperatorAuthorization: bindAuth,
+    installRequestMetricsHooks,
+    journeyAuditContext,
+    parseInboundChannel,
+    requirePlatformScope,
+    resolveDataPlaneTenant,
+    resolveInboundTenant,
+    resolveOperatorIdentity,
+    resolveOptionalRequestTenant,
+    requiresAuthenticatedMutations: authRequired
+  } = requestContext
+  const identityMode =
+    options.identityMode === undefined
+      ? parseIdentityMode(process.env[IDENTITY_MODE_ENV], process.env.NODE_ENV)
+      : parseIdentityMode(options.identityMode, process.env.NODE_ENV)
+  if (process.env.NODE_ENV === 'production' && identityMode === 'simulation') {
+    throw new Error(
+      'Production requires trusted operator identity mode; simulation is forbidden'
+    )
+  }
+  const operatorIdentityResolver = createEffectiveOperatorIdentityResolver(
+    identityMode,
+    options.operatorIdentityResolver
+  )
+  if (
+    process.env.NODE_ENV !== 'test' &&
+    options.persistence?.kind === 'postgres'
+  ) {
+    throw new Error(
+      'Production PostgreSQL requires a tenant-scoped pool and startup preflight'
+    )
+  }
+  const persistence = createPersistence(
+    options.persistence,
+    options.journeyRepository
+  )
+  const outbox = options.outbox ?? persistence.outbox
+  const runtimeApprovalAuthority =
+    options.runtimeApprovalAuthority ??
+    createRuntimeApprovalAuthority(options.persistence)
+  const durableInbound = options.durableInbound ?? false
+  const databaseProbe = createReadinessDatabaseProbe(options.persistence)
+  const readinessProbes: ReadinessProbe[] = [
+    ...(databaseProbe
+      ? [{ name: 'database', check: databaseProbe, timeoutMs: 1_000 }]
+      : []),
+    ...(options.readinessProbes ?? [])
+  ]
+  if (durableInbound && !outbox) {
+    throw new Error('Durable inbound processing requires an outbox adapter')
+  }
+  if (process.env.NODE_ENV === 'production' && !durableInbound) {
+    throw new Error(
+      'Production requires durable inbound processing; inline execution is forbidden'
+    )
+  }
+  const capabilityApprovalAuthority = createCapabilityApprovalAuthority(
+    options.capabilityApprovalAuthority,
+    options.persistence
+  )
+  const configuredRuntimeWithKnowledge = withDefaultKnowledgeResolver(
+    options.agentRuntime,
+    options.resolveApprovedKnowledge
+  )
+  const configuredAgentRuntime = withDefaultCapabilityGateway(
+    configuredRuntimeWithKnowledge,
+    capabilityApprovalAuthority,
+    serverCapabilityActorAuthorizer
+  )
+  const agentRuntime = withDefaultInboundCompletion(
+    configuredAgentRuntime,
+    options.persistence
+  )
+  const platform =
+    options.platform ??
+    (options.persistence?.kind === 'postgres'
+      ? new PostgresControlPlaneRepository(options.persistence.client)
+      : options.persistence?.kind === 'postgres-pool'
+        ? new TenantScopedPostgresControlPlaneRepository(
+            options.persistence.pool
+          )
+        : new InMemoryControlPlaneStore())
+  const httpSecurity = normalizeHttpSecurityOptions(options.httpSecurity)
+  const requestMetrics =
+    options.requestMetrics ?? new ControlledRequestMetrics()
+  const requestMetricsEnabled =
+    (process.env.NODE_ENV === 'test' ||
+      process.env.NODE_ENV === 'development') &&
+    options.requestMetricsEnabled !== false
+  const app = Object.assign(
+    Fastify({
+      logger: false,
+      trustProxy: httpSecurity.trustedProxyAddresses.length
+        ? [...httpSecurity.trustedProxyAddresses]
+        : false,
+      bodyLimit: HTTP_REQUEST_BODY_LIMIT_BYTES,
+      routerOptions: { maxParamLength: HTTP_REQUEST_MAX_PARAM_LENGTH }
+    }),
+    {
+      persistence,
+      platform,
+      requestMetrics
+    }
+  )
+  app.setErrorHandler((error, _request, reply) => {
+    const failure = classifyHttpRequestError(error)
+    reply.code(failure.statusCode)
+    return reply.send(
+      fail(failure.code, failure.message, createCorrelationId())
+    )
+  })
+  app.setNotFoundHandler((request, reply) => {
+    const targetFailure = classifyHttpRequestTarget(request.raw.url)
+    if (targetFailure) {
+      reply.code(targetFailure.statusCode)
+      return reply.send(
+        fail(targetFailure.code, targetFailure.message, createCorrelationId())
+      )
+    }
+
+    reply.code(404)
+    return reply.send(
+      fail('not_found', 'Route not found', createCorrelationId())
+    )
+  })
+  app.addHook('onRequest', async (request, reply) => {
+    const targetFailure = classifyHttpRequestTarget(request.raw.url)
+    if (!targetFailure) return
+
+    reply.code(targetFailure.statusCode)
+    return reply.send(
+      fail(targetFailure.code, targetFailure.message, createCorrelationId())
+    )
+  })
+  installHttpSecurityHooks(app, httpSecurity)
+  installResponseCorrelationHook(app)
+  installRequestMetricsHooks(app, requestMetrics, () => performance.now())
+  const getRawBody = requestContext.installRawBodyParser(app)
+  const rateLimiter = options.rateLimiter ?? new InMemoryRateLimiter()
+  app.addHook('onRequest', async (request, reply) => {
+    let limit: RateLimitResult
+    try {
+      limit = await rateLimiter.check(`ip:${request.ip}`, {
+        max: 300,
+        windowMs: 60_000
+      })
+    } catch {
+      reply
+        .code(503)
+        .header('cache-control', 'no-store')
+        .header('retry-after', '1')
+      return reply.send(
+        fail(
+          'rate_limit_unavailable',
+          'Request quota could not be verified. Retry later.',
+          createCorrelationId()
+        )
+      )
+    }
+    if (!limit.allowed) {
+      const correlationId = createCorrelationId()
+      reply
+        .code(429)
+        .header('retry-after', String(limit.retryAfterSeconds))
+        .header('cache-control', 'no-store')
+      return reply.send(
+        fail(
+          'rate_limited',
+          'Request rate limit exceeded. Retry later.',
+          correlationId
+        )
+      )
+    }
+  })
+  const operatorReplayGuard = options.operatorReplayGuard
+  if (operatorReplayGuard && identityMode === 'trusted') {
+    app.addHook('onRequest', async (request, reply) => {
+      try {
+        await operatorReplayGuard(request.headers as Record<string, unknown>)
+      } catch {
+        reply.code(401).header('cache-control', 'no-store')
+        return reply.send(
+          fail(
+            'unauthorized',
+            'Trusted operator token is invalid or replayed',
+            createCorrelationId()
+          )
+        )
+      }
+    })
+  }
+  const conversations = persistence.conversations
+  const tasks = persistence.tasks
+  const approvals = persistence.approvals
+  const audit = persistence.audit
+  const journeys = persistence.journeys
+  const fallbackCapabilityGateway = createControlledCapabilityGateway({
+    approvalAuthority: capabilityApprovalAuthority,
+    actorAuthorizer: serverCapabilityActorAuthorizer
+  })
+  const emitRuntimeLog = (entry: RuntimeLogEntry) => {
+    options.runtimeLogger?.(entry)
+    options.runtimeCollector?.recordLog({
+      level: entry.status === 'error' ? 'error' : 'info',
+      message: entry.event,
+      fields: {
+        correlationId: entry.correlationId,
+        operation: 'runtime',
+        outcome: entry.status
+      },
+      timestamp: new Date().toISOString()
+    })
+  }
+  const auth = bindAuth(operatorIdentityResolver)
+  const { requireIdentity, requireAnyIdentity } = auth
+  const { requireAuthenticatedMutations: mutationOverride } = options
+  const authMutations = authRequired(identityMode, mutationOverride)
+  registerHealthRoutes(app, {
+    readiness: () => ({
+      persistenceMode: options.persistence?.kind ?? 'memory',
+      durableInbound,
+      production: process.env.NODE_ENV === 'production',
+      probes: readinessProbes
+    }),
+    metrics: requestMetrics,
+    metricsEnabled: requestMetricsEnabled
+  })
+
+  app.get('/v1/conversations', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = requireIdentity(
+        request.headers,
+        'conversation:view_assigned'
+      )
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      const pagination = parsePagination(request.query)
+      if (!pagination) {
+        throw new DomainError(
+          'invalid_pagination',
+          `limit must be between 1 and 100 and ${PAGINATION_OFFSET_ERROR_MESSAGE}`
+        )
+      }
+
+      const page = await conversations.listPage(tenantId, pagination)
+      emitRuntimeLog({
+        event: 'conversation.list_read',
+        correlationId,
+        route: '/v1/conversations',
+        status: 'ok'
+      })
+      return ok(page, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      emitRuntimeLog({
+        event: 'conversation.list_failed',
+        correlationId,
+        route: '/v1/conversations',
+        status: 'error',
+        errorCode: safeError.code
+      })
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post(
+    '/v1/webhooks/channels/:channel/messages',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      const traceId = randomBytes(16).toString('hex')
+      let webhookLease: WebhookVerificationLease | undefined
+      try {
+        const params = request.params as { channel: string }
+        if (options.webhookVerifier) {
+          const rawBody = getRawBody(request.raw) ?? getRawBody(request)
+          const verified = await options.webhookVerifier({
+            headers: request.headers,
+            body: request.body,
+            channel: params.channel,
+            ...(rawBody !== undefined ? { rawBody } : {})
+          })
+          if (isWebhookVerificationLease(verified)) {
+            webhookLease = verified
+          } else if (!verified) {
+            throw new DomainError('unauthorized', 'Webhook verification failed')
+          }
+        } else if (process.env.NODE_ENV !== 'test') {
+          throw new DomainError(
+            'unauthorized',
+            'A trusted webhook verifier is required in production'
+          )
+        }
+        const body = request.body as Record<string, unknown>
+        const channel = parseInboundChannel(params.channel)
+        const tenantId = await resolveInboundTenant(
+          {
+            headers: request.headers,
+            body,
+            channel
+          },
+          options.inboundTenantResolver
+        )
+        const result = await receiveInboundMessage(
+          {
+            conversations,
+            ...(durableInbound ? { outbox } : {}),
+            correlationId,
+            traceId
+          },
+          { ...body, tenantId, channel }
+        )
+        let runtimeSessionId = result.sessionId
+        const shouldRetryRuntime = Boolean(
+          !result.accepted && result.runtimeStatus === 'pending' && agentRuntime
+        )
+        if (shouldRetryRuntime) {
+          const timeline = await getConversationTimeline(
+            conversations,
+            tenantId,
+            result.conversationId
+          )
+          runtimeSessionId = timeline.sessions.at(-1)?.id ?? null
+        }
+        const shouldQueueInbound =
+          durableInbound &&
+          (result.accepted || result.runtimeStatus === 'pending')
+        const queuedOutbox = shouldQueueInbound
+          ? (result.outbox ??
+            (await outbox!.enqueue({
+              tenantId,
+              type: 'inbound.process',
+              payload: {
+                tenantId,
+                channel,
+                senderRef: redactSensitiveText(String(body.senderRef ?? '')),
+                body: redactSensitiveText(String(body.body ?? '')),
+                externalMessageId: String(body.externalMessageId ?? ''),
+                conversationId: result.conversationId,
+                sessionId: runtimeSessionId,
+                messageId: result.messageId
+              },
+              correlationId: result.correlationId ?? correlationId,
+              traceId: result.traceId ?? traceId,
+              idempotencyKey: createInboundIdempotencyKey(
+                channel,
+                String(body.externalMessageId ?? '')
+              ),
+              conversationId: result.conversationId,
+              sessionId: runtimeSessionId,
+              inboundMessageId: result.messageId
+            })))
+          : undefined
+        const runtime =
+          !durableInbound &&
+          (result.accepted || shouldRetryRuntime) &&
+          agentRuntime
+            ? await executeInboundRuntime({
+                options: agentRuntime,
+                platform,
+                tenantId,
+                correlationId: result.correlationId ?? correlationId,
+                channel,
+                senderRef: String(body.senderRef ?? ''),
+                message: String(body.body ?? ''),
+                conversationId: result.conversationId,
+                sessionId: runtimeSessionId,
+                messageId: result.messageId,
+                audit,
+                conversations,
+                sessionVersionPinning: persistence.sessionVersionPinning
+              })
+            : undefined
+        if (
+          !(
+            (result.accepted || shouldRetryRuntime) &&
+            runtime?.status === 'completed' &&
+            agentRuntime?.completeInboundRuntime
+          )
+        ) {
+          await audit.append(
+            {
+              type: 'integration_event',
+              actorType: 'System',
+              actorId: 'api',
+              correlationId: result.correlationId ?? correlationId,
+              policyVersion: 'api-runtime-v1',
+              payload: {
+                sessionId: result.sessionId,
+                conversationId: result.conversationId,
+                accepted: result.accepted,
+                tenantId,
+                ...(queuedOutbox
+                  ? {
+                      processing: 'queued',
+                      outboxEventId: queuedOutbox.id,
+                      outboxStatus: queuedOutbox.status
+                    }
+                  : {}),
+                ...(runtime
+                  ? {
+                      runtimeStatus: runtime.status,
+                      traceId: runtime.trace?.traceId ?? null,
+                      externalCall:
+                        runtime.trace?.provider.externalCall ?? false
+                    }
+                  : {})
+              }
+            },
+            tenantId
+          )
+        }
+        if (webhookLease) {
+          await webhookLease.commit()
+          webhookLease = undefined
+        }
+        emitRuntimeLog({
+          event: result.accepted ? 'inbound.accepted' : 'inbound.duplicate',
+          correlationId: result.correlationId ?? correlationId,
+          route: '/v1/webhooks/channels/:channel/messages',
+          status: 'ok',
+          sessionId: result.sessionId,
+          conversationId: result.conversationId,
+          resourceId: result.messageId
+        })
+        return ok(
+          queuedOutbox
+            ? { ...result, processing: 'queued', outbox: queuedOutbox }
+            : runtime
+              ? { ...result, runtime }
+              : result,
+          result.correlationId ?? correlationId
+        )
+      } catch (error) {
+        if (webhookLease) {
+          await Promise.resolve(webhookLease.release()).catch(() => undefined)
+        }
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        emitRuntimeLog({
+          event: 'inbound.failed',
+          correlationId,
+          route: '/v1/webhooks/channels/:channel/messages',
+          status: 'error',
+          errorCode: safeError.code
+        })
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.post('/v1/sessions/:sessionId/takeover', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = requireIdentity(request.headers, 'conversation:assume')
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      const params = request.params as { sessionId: string }
+      const body = TakeoverRequestSchema.parse(request.body)
+      const session = await conversations.transitionTakeover(
+        tenantId,
+        params.sessionId,
+        body.event
+      )
+      if (!session) {
+        throw new DomainError('invalid_action', 'Session not found')
+      }
+      await audit.append(
+        {
+          type: 'handoff',
+          actorType: identity.role,
+          actorId: identity.operatorId,
+          correlationId,
+          policyVersion: 'human-takeover-v1',
+          payload: {
+            tenantId,
+            sessionId: session.id,
+            event: body.event,
+            state: session.takeoverState,
+            effect: 'human_takeover_state_only'
+          }
+        },
+        tenantId
+      )
+      return ok(session, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get(
+    '/v1/conversations/:conversationId/timeline',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const identity = requireIdentity(
+          request.headers,
+          'conversation:view_assigned'
+        )
+        const tenantId = resolveDataPlaneTenant(request.headers, identity)
+        const params = request.params as { conversationId: string }
+        const timeline = await getConversationTimeline(
+          conversations,
+          tenantId,
+          params.conversationId
+        )
+        if (timeline.messages.length === 0 && timeline.sessions.length === 0) {
+          throw new DomainError('invalid_action', 'Conversation not found')
+        }
+        return ok(timeline, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.get('/v1/journeys/owners/search', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = requireIdentity(
+        request.headers,
+        'conversation:view_assigned'
+      )
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      if (!journeys)
+        throw new DomainError(
+          'invalid_action',
+          'Journey persistence is unavailable in this mode'
+        )
+      const query = request.query as { phone?: unknown }
+      return ok(
+        { matches: await journeys.searchOwnerByPhone(tenantId, query.phone) },
+        correlationId
+      )
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/journeys/patients/search', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = requireIdentity(
+        request.headers,
+        'conversation:view_assigned'
+      )
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      if (!journeys)
+        throw new DomainError(
+          'invalid_action',
+          'Journey persistence is unavailable in this mode'
+        )
+      const query = request.query as {
+        ownerDraftId?: string
+        ownerCandidateId?: string
+        name?: string
+      }
+      return ok(
+        {
+          matches: await journeys.searchPatient({
+            tenantId,
+            ...(query.ownerDraftId ? { ownerDraftId: query.ownerDraftId } : {}),
+            ...(query.ownerCandidateId
+              ? { ownerCandidateId: query.ownerCandidateId }
+              : {}),
+            ...(query.name ? { name: query.name } : {})
+          })
+        },
+        correlationId
+      )
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post('/v1/journeys/owner-drafts', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = authMutations
+        ? requireIdentity(request.headers, 'conversation:update')
+        : null
+      const tenantId = identity
+        ? resolveDataPlaneTenant(request.headers, identity)
+        : resolveOptionalRequestTenant(request.headers)
+      if (!tenantId)
+        throw new DomainError('unauthorized', 'Tenant scope is required')
+      if (!journeys)
+        throw new DomainError(
+          'invalid_action',
+          'Journey persistence is unavailable in this mode'
+        )
+      const draft = await journeys.createOwnerDraft({
+        ...(request.body as Record<string, unknown>),
+        tenantId,
+        auditContext: journeyAuditContext(identity, correlationId)
+      } as Parameters<JourneyRepository['createOwnerDraft']>[0])
+      return ok(draft, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/journeys/owner-drafts', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = requireIdentity(
+        request.headers,
+        'conversation:view_assigned'
+      )
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      if (!journeys)
+        throw new DomainError(
+          'invalid_action',
+          'Journey persistence is unavailable in this mode'
+        )
+      return ok(
+        await Promise.resolve(journeys.listOwnerDrafts(tenantId)),
+        correlationId
+      )
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post('/v1/journeys/patient-drafts', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = authMutations
+        ? requireIdentity(request.headers, 'conversation:update')
+        : null
+      const tenantId = identity
+        ? resolveDataPlaneTenant(request.headers, identity)
+        : resolveOptionalRequestTenant(request.headers)
+      if (!tenantId)
+        throw new DomainError('unauthorized', 'Tenant scope is required')
+      if (!journeys)
+        throw new DomainError(
+          'invalid_action',
+          'Journey persistence is unavailable in this mode'
+        )
+      const draft = await journeys.createPatientDraft({
+        ...(request.body as Record<string, unknown>),
+        tenantId,
+        auditContext: journeyAuditContext(identity, correlationId)
+      } as Parameters<JourneyRepository['createPatientDraft']>[0])
+      return ok(draft, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/journeys/patient-drafts', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = requireIdentity(
+        request.headers,
+        'conversation:view_assigned'
+      )
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      if (!journeys)
+        throw new DomainError(
+          'invalid_action',
+          'Journey persistence is unavailable in this mode'
+        )
+      return ok(
+        { drafts: await journeys.listPatientDrafts(tenantId) },
+        correlationId
+      )
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post(
+    '/v1/journeys/patient-drafts/:draftId/link',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const identity = authMutations
+          ? requireIdentity(request.headers, 'conversation:update')
+          : null
+        const tenantId = identity
+          ? resolveDataPlaneTenant(request.headers, identity)
+          : resolveOptionalRequestTenant(request.headers)
+        if (!tenantId)
+          throw new DomainError('unauthorized', 'Tenant scope is required')
+        if (!journeys)
+          throw new DomainError(
+            'invalid_action',
+            'Journey persistence is unavailable in this mode'
+          )
+        const body = request.body as { candidateId?: unknown }
+        if (typeof body.candidateId !== 'string')
+          throw new DomainError('validation_failed', 'candidateId is required')
+        return ok(
+          await journeys.linkPatient({
+            tenantId,
+            patientDraftId: (request.params as { draftId: string }).draftId,
+            candidateId: body.candidateId,
+            auditContext: journeyAuditContext(identity, correlationId)
+          }),
+          correlationId
+        )
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.get('/v1/journeys/slots', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = requireIdentity(
+        request.headers,
+        'conversation:view_assigned'
+      )
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      if (!journeys)
+        throw new DomainError(
+          'invalid_action',
+          'Journey persistence is unavailable in this mode'
+        )
+      return ok(
+        { slots: await journeys.findAvailableSlots(tenantId) },
+        correlationId
+      )
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post('/v1/journeys/appointment-drafts', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = authMutations
+        ? requireIdentity(request.headers, 'conversation:update')
+        : null
+      const tenantId = identity
+        ? resolveDataPlaneTenant(request.headers, identity)
+        : resolveOptionalRequestTenant(request.headers)
+      if (!tenantId)
+        throw new DomainError('unauthorized', 'Tenant scope is required')
+      if (!journeys)
+        throw new DomainError(
+          'invalid_action',
+          'Journey persistence is unavailable in this mode'
+        )
+      return ok(
+        await journeys.createAppointmentDraft({
+          ...(request.body as Record<string, unknown>),
+          tenantId,
+          auditContext: journeyAuditContext(identity, correlationId)
+        } as Parameters<JourneyRepository['createAppointmentDraft']>[0]),
+        correlationId
+      )
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/journeys/appointment-drafts', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = requireIdentity(
+        request.headers,
+        'conversation:view_assigned'
+      )
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      if (!journeys)
+        throw new DomainError(
+          'invalid_action',
+          'Journey persistence is unavailable in this mode'
+        )
+      return ok(
+        { drafts: await journeys.listAppointmentDrafts(tenantId) },
+        correlationId
+      )
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post('/v1/journeys/tasks', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = authMutations
+        ? requireIdentity(request.headers, 'task:update')
+        : null
+      const tenantId = identity
+        ? resolveDataPlaneTenant(request.headers, identity)
+        : resolveOptionalRequestTenant(request.headers)
+      if (!tenantId)
+        throw new DomainError('unauthorized', 'Tenant scope is required')
+      if (!journeys)
+        throw new DomainError(
+          'invalid_action',
+          'Journey persistence is unavailable in this mode'
+        )
+      const body = request.body as Record<string, unknown>
+      const task = await journeys.createJourneyTask({
+        ...(body as Parameters<JourneyRepository['createJourneyTask']>[0]),
+        tenantId,
+        auditContext: journeyAuditContext(identity, correlationId)
+      } as Parameters<JourneyRepository['createJourneyTask']>[0])
+      return ok(task, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post('/v1/tasks', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = authMutations
+        ? requireIdentity(request.headers, 'task:update')
+        : null
+      const tenantId = identity
+        ? resolveDataPlaneTenant(request.headers, identity)
+        : resolveOptionalRequestTenant(request.headers)
+      const task = await createInternalTask({ tasks }, request.body, tenantId)
+      await audit.append(
+        {
+          type: 'integration_event',
+          actorType: 'System',
+          actorId: 'api',
+          correlationId,
+          policyVersion: 'api-runtime-v1',
+          payload: {
+            sessionId: task.sessionId,
+            taskId: task.id,
+            source: task.source,
+            tenantId
+          }
+        },
+        tenantId
+      )
+      emitRuntimeLog({
+        event: 'task.created',
+        correlationId,
+        route: '/v1/tasks',
+        status: 'ok',
+        sessionId: task.sessionId,
+        resourceId: task.id
+      })
+      return ok(task, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      emitRuntimeLog({
+        event: 'task.failed',
+        correlationId,
+        route: '/v1/tasks',
+        status: 'error',
+        errorCode: safeError.code
+      })
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/tasks', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = requireIdentity(request.headers, 'task:view')
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      const items = await tasks.list(tenantId)
+      headerIfTruncated(reply, items.length)
+      return ok(items, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.patch('/v1/tasks/:taskId/status', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const params = request.params as { taskId: string }
+      const body = request.body as { status?: unknown }
+      const identity = requireIdentity(request.headers, 'task:update')
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      const status = TaskStatusSchema.safeParse(body.status)
+      if (!status.success) {
+        throw new DomainError('validation_failed', 'Task status is required')
+      }
+      const existing = await tasks.findById(params.taskId, tenantId)
+      if (!existing) throw new DomainError('invalid_action', 'Task not found')
+      assertTaskTransition(existing.status, status.data)
+      const updated = await tasks.updateStatus(
+        params.taskId,
+        status.data,
+        tenantId,
+        existing.status
+      )
+      if (!updated) {
+        throw new DomainError('conflict', 'Task status changed concurrently')
+      }
+      await audit.append(
+        {
+          type: 'integration_event',
+          actorType: identity.role,
+          actorId: identity.operatorId,
+          correlationId,
+          policyVersion: 'api-runtime-v1',
+          payload: {
+            sessionId: updated.sessionId,
+            taskId: updated.id,
+            fromStatus: existing.status,
+            toStatus: updated.status,
+            effect: 'internal_task_state_only',
+            tenantId
+          }
+        },
+        tenantId
+      )
+      emitRuntimeLog({
+        event: 'task.status_changed',
+        correlationId,
+        route: '/v1/tasks/:taskId/status',
+        status: 'ok',
+        sessionId: updated.sessionId,
+        resourceId: updated.id
+      })
+      return ok(updated, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      emitRuntimeLog({
+        event: 'task.status_failed',
+        correlationId,
+        route: '/v1/tasks/:taskId/status',
+        status: 'error',
+        errorCode: safeError.code
+      })
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post('/v1/approvals', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = authMutations
+        ? requireIdentity(request.headers, 'approval:view')
+        : null
+      const tenantId = identity
+        ? resolveDataPlaneTenant(request.headers, identity)
+        : resolveOptionalRequestTenant(request.headers)
+      const requestedApproval = requestHumanApproval(request.body)
+      const requester =
+        requestedApproval.proposedAction === 'audit_evidence_export_review'
+          ? requireIdentity(request.headers, 'audit:view_full')
+          : null
+      const approval = await approvals.save(requestedApproval, tenantId)
+      await audit.append(
+        {
+          type: 'approval_decision',
+          actorType: requester?.role ?? 'System',
+          actorId: requester?.operatorId ?? 'api',
+          correlationId,
+          policyVersion: 'api-runtime-v1',
+          payload: {
+            sessionId: approval.sessionId,
+            approvalRequestId: approval.id,
+            status: approval.status,
+            tenantId
+          }
+        },
+        tenantId
+      )
+      emitRuntimeLog({
+        event: 'approval.created',
+        correlationId,
+        route: '/v1/approvals',
+        status: 'ok',
+        sessionId: approval.sessionId,
+        resourceId: approval.id
+      })
+      return ok(approval, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      emitRuntimeLog({
+        event: 'approval.create_failed',
+        correlationId,
+        route: '/v1/approvals',
+        status: 'error',
+        errorCode: safeError.code
+      })
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post(
+    '/v1/approvals/:approvalRequestId/decision',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const params = request.params as { approvalRequestId: string }
+        const identity = requireIdentity(request.headers, 'approval:decide')
+        const tenantId = resolveDataPlaneTenant(request.headers, identity)
+        const parsedBody = ResolveApprovalSchema.parse({
+          ...(request.body as Record<string, unknown>),
+          approvalRequestId: params.approvalRequestId,
+          operatorId: identity.operatorId
+        })
+        const decided = await approvals.decideWithAudit(
+          {
+            approvalRequestId: parsedBody.approvalRequestId,
+            decision: parsedBody.decision,
+            operatorId: parsedBody.operatorId,
+            role: identity.role,
+            correlationId,
+            ...(parsedBody.note === undefined ? {} : { note: parsedBody.note })
+          },
+          tenantId
+        )
+        const event =
+          decided.status === 'assumed'
+            ? 'approval.handoff_assumed'
+            : 'approval.decided'
+        emitRuntimeLog({
+          event,
+          correlationId,
+          route: '/v1/approvals/:approvalRequestId/decision',
+          status: 'ok',
+          sessionId: decided.sessionId,
+          resourceId: decided.id
+        })
+        return ok(decided, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        emitRuntimeLog({
+          event: 'approval.decision_failed',
+          correlationId,
+          route: '/v1/approvals/:approvalRequestId/decision',
+          status: 'error',
+          errorCode: safeError.code
+        })
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.get('/v1/approvals', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = requireIdentity(request.headers, 'approval:view')
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      const items = await approvals.list(tenantId)
+      headerIfTruncated(reply, items.length)
+      return ok(items, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/runtime-approvals', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      if (!runtimeApprovalAuthority) {
+        throw new DomainError(
+          'invalid_action',
+          'Governed runtime approval persistence is unavailable in this mode'
+        )
+      }
+      const identity = requireIdentity(request.headers, 'approval:view')
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      return ok(await runtimeApprovalAuthority.list(tenantId), correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/orchestration/goals', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = requireIdentity(request.headers, 'orchestration:view')
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      const query = parseOrchestrationGoalQuery(request.query)
+      if (!persistence.orchestration) {
+        throw new DomainError(
+          'invalid_action',
+          'Durable Goal inspection is unavailable in this persistence mode'
+        )
+      }
+      const goals = await persistence.orchestration.listGoals(tenantId, {
+        limit: query.limit + 1,
+        ...(query.status ? { statuses: [query.status] } : {})
+      })
+      const hasNextPage = goals.length > query.limit
+      return ok(
+        {
+          items: goals.slice(0, query.limit).map(toOrchestrationGoalView),
+          pageInfo: {
+            limit: query.limit,
+            hasNextPage
+          }
+        },
+        correlationId
+      )
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/orchestration/goals/:goalId', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = requireIdentity(request.headers, 'orchestration:view')
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      if (!persistence.orchestration) {
+        throw new DomainError(
+          'invalid_action',
+          'Durable Goal inspection is unavailable in this persistence mode'
+        )
+      }
+      const params = z
+        .object({ goalId: z.string().trim().min(1).max(200) })
+        .strict()
+        .parse(request.params)
+      const goal = await persistence.orchestration.getGoal(
+        tenantId,
+        params.goalId
+      )
+      if (!goal) throw new DomainError('not_found', 'Goal not found')
+      const detail = await loadOrchestrationGoalDetail(
+        persistence.orchestration,
+        tenantId,
+        goal
+      )
+      return ok(detail, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post(
+    '/v1/runtime-approvals/:approvalId/decision',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        if (!runtimeApprovalAuthority) {
+          throw new DomainError(
+            'invalid_action',
+            'Governed runtime approval persistence is unavailable in this mode'
+          )
+        }
+        const identity = requireIdentity(request.headers, 'approval:decide')
+        const tenantId = resolveDataPlaneTenant(request.headers, identity)
+        const params = request.params as { approvalId: string }
+        const body = z
+          .object({
+            decision: z.enum(['approve', 'reject']),
+            reason: z.string().trim().min(1).max(500).optional()
+          })
+          .strict()
+          .parse(request.body)
+        const approvalId = params.approvalId
+        const atomicAuthority =
+          runtimeApprovalAuthority as ApprovalAuthority & {
+            decideAndEnqueueContinuation?: (
+              input: AtomicRuntimeApprovalDecisionInput
+            ) => Promise<{
+              approval: ApprovalRecord
+              continuationEvent: OutboxEventRecord
+            }>
+          }
+        let decided: ApprovalRecord
+        let continuationEventId: string | undefined
+        if (
+          typeof atomicAuthority.decideAndEnqueueContinuation === 'function'
+        ) {
+          const result = await atomicAuthority.decideAndEnqueueContinuation({
+            tenantId,
+            approvalId,
+            decision: body.decision,
+            approverId: identity.operatorId,
+            actorType: identity.role,
+            requestCorrelationId: correlationId,
+            ...(body.reason !== undefined ? { reason: body.reason } : {})
+          })
+          decided = result.approval
+          continuationEventId = result.continuationEvent.id
+        } else {
+          let current = await runtimeApprovalAuthority.get(tenantId, approvalId)
+          if (current.status === 'REQUESTED') {
+            current = await runtimeApprovalAuthority.submit(
+              tenantId,
+              approvalId,
+              current.operatorId
+            )
+          }
+          decided = await decideRuntimeApproval({
+            authority: runtimeApprovalAuthority,
+            current,
+            tenantId,
+            approvalId,
+            decision: body.decision,
+            approverId: identity.operatorId,
+            ...(body.reason !== undefined ? { reason: body.reason } : {})
+          })
+
+          if (decided.continuation) {
+            if (!outbox) {
+              throw new DomainError(
+                'invalid_action',
+                'Approved runtime continuation requires a durable outbox'
+              )
+            }
+            const continuation = decided.continuation
+            if (continuation.traceId === undefined) {
+              throw new DomainError(
+                'invalid_action',
+                'Approved runtime continuation is missing its durable trace root'
+              )
+            }
+            const traceId = z
+              .string()
+              .regex(/^[0-9a-f]{32}$/)
+              .safeParse(continuation.traceId)
+            if (!traceId.success) {
+              throw new DomainError(
+                'invalid_action',
+                'Approved runtime continuation has an invalid durable trace root'
+              )
+            }
+            const event = await outbox.enqueue({
+              tenantId,
+              type: 'inbound.process',
+              payload: {
+                kind: 'runtime_approval.continue',
+                approvalId,
+                decision: body.decision
+              },
+              correlationId: decided.correlationId,
+              traceId: traceId.data,
+              idempotencyKey: `runtime-approval-continuation:${approvalId}`,
+              conversationId: continuation.conversationId,
+              sessionId: continuation.sessionId,
+              inboundMessageId: continuation.inboundMessageId
+            })
+            continuationEventId = event.id
+          }
+
+          await audit.append(
+            {
+              type: 'approval_decision',
+              actorType: identity.role,
+              actorId: identity.operatorId,
+              correlationId: decided.correlationId,
+              policyVersion: decided.policyVersion,
+              payload: {
+                approvalId,
+                status: decided.status,
+                tenantId,
+                requestCorrelationId: correlationId,
+                ...(continuationEventId !== undefined
+                  ? { continuationEventId }
+                  : {})
+              }
+            },
+            tenantId
+          )
+        }
+        return ok(
+          {
+            approval: decided,
+            ...(continuationEventId !== undefined
+              ? { continuationEventId }
+              : {})
+          },
+          correlationId
+        )
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.get('/v1/outbox/dead-letters', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = requireIdentity(request.headers, 'outbox:view')
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      if (typeof outbox.listDeadLetters !== 'function') {
+        throw new DomainError(
+          'invalid_action',
+          'Dead-letter inspection is unavailable in this mode'
+        )
+      }
+      const events = await outbox.listDeadLetters(tenantId)
+      return ok(events.map(toDeadLetterView), correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post(
+    '/v1/outbox/dead-letters/:eventId/requeue',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const identity = requireIdentity(request.headers, 'outbox:requeue')
+        const tenantId = resolveDataPlaneTenant(request.headers, identity)
+        const params = request.params as { eventId: string }
+        const requeued = await outbox.requeueDeadLetter({
+          tenantId,
+          eventId: params.eventId,
+          operatorId: identity.operatorId,
+          correlationId
+        })
+        emitRuntimeLog({
+          event: 'outbox.dead_letter_requeued',
+          correlationId,
+          route: '/v1/outbox/dead-letters/:eventId/requeue',
+          status: 'ok',
+          resourceId: requeued.id
+        })
+        return ok(toDeadLetterView(requeued), correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        emitRuntimeLog({
+          event: 'outbox.dead_letter_requeue_failed',
+          correlationId,
+          route: '/v1/outbox/dead-letters/:eventId/requeue',
+          status: 'error',
+          errorCode: safeError.code
+        })
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.post('/v1/admin/capability-approvals', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'approval:decide',
+        operatorIdentityResolver
+      )
+      const identity = resolveOperatorIdentity(
+        request.headers,
+        operatorIdentityResolver
+      )
+      const body = CapabilityApprovalIssueRequestSchema.parse(request.body)
+      const version = await platform.getVersion(scope, body.versionId)
+      if (
+        !version ||
+        version.agentId !== body.agentId ||
+        !['APPROVED', 'PUBLISHED'].includes(version.status)
+      ) {
+        throw new DomainError(
+          'invalid_action',
+          'Only an approved agent version can receive a capability approval'
+        )
+      }
+      const approvalGateway =
+        agentRuntime?.capabilityGateway ?? fallbackCapabilityGateway
+      const configuredTool = approvalGateway.resolveConfiguredTool(
+        version.config,
+        body.toolName
+      )
+      if (configuredTool.status !== 'resolved') {
+        throw new DomainError(
+          'invalid_action',
+          'Capability tool is not available in the approved agent version'
+        )
+      }
+      if (body.actorId === identity.operatorId) {
+        throw new DomainError(
+          'forbidden',
+          'Capability approvals require a separate executor'
+        )
+      }
+      const approval = await capabilityApprovalAuthority.issue({
+        tenantId: scope.tenantId,
+        agentId: body.agentId,
+        versionId: body.versionId,
+        toolName: body.toolName,
+        input: { message: redactSensitiveText(body.input.message) },
+        actorId: body.actorId,
+        issuer: identity.operatorId,
+        expiresAt: body.expiresAt,
+        ...(body.nonce ? { nonce: body.nonce } : {})
+      })
+      await appendPlatformAudit(
+        audit,
+        identity,
+        correlationId,
+        scope.tenantId,
+        {
+          event: 'capability_approval_issued',
+          tenantId: scope.tenantId,
+          approvalId: approval.id,
+          agentId: approval.agentId,
+          versionId: approval.versionId,
+          toolName: approval.toolName,
+          actorId: approval.actorId,
+          expiresAt: approval.expiresAt.toISOString()
+        }
+      )
+      return ok(approval, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get(
+    '/v1/admin/capability-approvals/:approvalId',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const scope = requirePlatformScope(
+          request.headers,
+          'approval:view',
+          operatorIdentityResolver
+        )
+        const params = CapabilityApprovalParamsSchema.parse(request.params)
+        const approval = await capabilityApprovalAuthority.get(
+          params.approvalId,
+          scope.tenantId
+        )
+        if (!approval) {
+          throw new DomainError(
+            'invalid_action',
+            'Capability approval not found'
+          )
+        }
+        return ok(approval, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.post(
+    '/v1/admin/capability-approvals/:approvalId/revoke',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const scope = requirePlatformScope(
+          request.headers,
+          'approval:decide',
+          operatorIdentityResolver
+        )
+        const identity = resolveOperatorIdentity(
+          request.headers,
+          operatorIdentityResolver
+        )
+        const params = CapabilityApprovalParamsSchema.parse(request.params)
+        const revoked = await capabilityApprovalAuthority.revoke(
+          params.approvalId,
+          identity.operatorId,
+          scope.tenantId
+        )
+        if (!revoked) {
+          throw new DomainError(
+            'invalid_action',
+            'Capability approval cannot be revoked by this issuer'
+          )
+        }
+        await appendPlatformAudit(
+          audit,
+          identity,
+          correlationId,
+          scope.tenantId,
+          {
+            event: 'capability_approval_revoked',
+            tenantId: scope.tenantId,
+            approvalId: params.approvalId
+          }
+        )
+        return ok(
+          { revoked: true, approvalId: params.approvalId },
+          correlationId
+        )
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.post(
+    '/v1/admin/capability-approvals/:approvalId/execute',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const scope = requirePlatformScope(
+          request.headers,
+          'approval:execute',
+          operatorIdentityResolver
+        )
+        const identity = resolveOperatorIdentity(
+          request.headers,
+          operatorIdentityResolver
+        )
+        const params = CapabilityApprovalParamsSchema.parse(request.params)
+        const body = CapabilityApprovalExecutionRequestSchema.parse(
+          request.body
+        )
+        const record = await capabilityApprovalAuthority.get(
+          params.approvalId,
+          scope.tenantId
+        )
+        if (!record || record.status !== 'issued') {
+          throw new DomainError(
+            'invalid_action',
+            'Capability approval is not available for execution'
+          )
+        }
+        if (record.actorId !== identity.operatorId) {
+          throw new DomainError(
+            'forbidden',
+            'Capability approval is bound to another operator'
+          )
+        }
+        const version = await platform.getVersion(scope, record.versionId)
+        if (
+          !version ||
+          version.agentId !== record.agentId ||
+          !['APPROVED', 'PUBLISHED'].includes(version.status)
+        ) {
+          throw new DomainError(
+            'invalid_action',
+            'Approved agent version is no longer executable'
+          )
+        }
+        const runtimeGateway =
+          agentRuntime?.capabilityGateway ?? fallbackCapabilityGateway
+        const configuredTool = runtimeGateway.resolveConfiguredTool(
+          version.config,
+          record.toolName
+        )
+        if (configuredTool.status !== 'resolved') {
+          throw new DomainError(
+            'invalid_action',
+            'Capability tool is not available in the approved agent version'
+          )
+        }
+        const actor: AgentExecutionActor = {
+          id: identity.operatorId,
+          role: identity.role,
+          permissions: [configuredTool.permission]
+        }
+        const trace = await executeConfiguredAgent({
+          store: platform,
+          tenantId: scope.tenantId,
+          agentId: record.agentId,
+          versionId: record.versionId,
+          message: body.message,
+          history: body.history,
+          executionMode: 'CONTROLLED_RUNTIME',
+          capabilityGateway: runtimeGateway,
+          actor,
+          capabilityApproval: capabilityApprovalReference(record),
+          requireCapabilityApproval: true,
+          onToolAudit: async (event) => {
+            await audit.append(
+              {
+                type: event.type,
+                actorType: 'System',
+                actorId: 'capability-approval-runtime',
+                correlationId: event.correlationId,
+                policyVersion: 'plugin-gateway-v1',
+                payload: {
+                  tenantId: event.tenantId,
+                  agentId: event.agentId,
+                  versionId: event.versionId,
+                  traceId: event.traceId,
+                  plugin: event.plugin,
+                  toolName: event.toolName,
+                  status: event.status,
+                  payload: event.payload
+                }
+              },
+              event.tenantId
+            )
+          },
+          ...(options.resolveApprovedKnowledge
+            ? { resolveApprovedKnowledge: options.resolveApprovedKnowledge }
+            : {}),
+          ...(body.approvedKnowledge && !options.resolveApprovedKnowledge
+            ? { approvedKnowledge: body.approvedKnowledge }
+            : {})
+        })
+        const capabilityResult = trace.tools.find(
+          (tool) => tool.name === record.toolName
+        )
+        if (capabilityResult?.status !== 'succeeded') {
+          throw new DomainError(
+            'invalid_action',
+            'Capability approval was not consumed by the controlled tool'
+          )
+        }
+        await appendPlatformAudit(
+          audit,
+          identity,
+          correlationId,
+          scope.tenantId,
+          {
+            event: 'capability_approval_executed',
+            tenantId: scope.tenantId,
+            approvalId: record.id,
+            traceId: trace.traceId,
+            toolName: record.toolName,
+            externalCall: trace.provider.externalCall
+          }
+        )
+        return ok(trace, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.get('/v1/audit/sessions/:sessionId', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = requireAnyIdentity(request.headers, [
+        'audit:view_full',
+        'audit:view_limited'
+      ])
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      const params = request.params as { sessionId: string }
+      const events = await audit.listBySession(params.sessionId, tenantId)
+      if (events.length === 0) {
+        throw new DomainError('invalid_action', 'Audit session not found')
+      }
+      headerIfTruncated(reply, events.length)
+      emitRuntimeLog({
+        event: 'audit.session_read',
+        correlationId,
+        route: '/v1/audit/sessions/:sessionId',
+        status: 'ok',
+        sessionId: params.sessionId
+      })
+      return ok({ events }, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/observability/audit-evidence', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const identity = requireIdentity(request.headers, 'audit:view_full')
+      const tenantId = resolveDataPlaneTenant(request.headers, identity)
+      const evidenceQuery = parseAuditEvidenceQuery(request.query)
+      const [summary, page] = await Promise.all([
+        audit.summarizeEvidence(evidenceQuery.filters, tenantId),
+        audit.listEvidence(evidenceQuery.query, tenantId)
+      ])
+      emitRuntimeLog({
+        event: 'observability.audit_evidence_exported',
+        correlationId,
+        route: '/v1/observability/audit-evidence',
+        status: 'ok',
+        sessionId: evidenceQuery.filters.sessionId ?? null,
+        resourceId: identity.operatorId
+      })
+      return ok(
+        {
+          summary,
+          ...sanitizeAuditEvidencePage(page),
+          export: {
+            format: 'json',
+            controlled: true,
+            externalDispatch: false,
+            requestedBy: identity.operatorId
+          }
+        },
+        correlationId
+      )
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      emitRuntimeLog({
+        event: 'observability.audit_evidence_failed',
+        correlationId,
+        route: '/v1/observability/audit-evidence',
+        status: 'error',
+        errorCode: safeError.code
+      })
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post(
+    '/v1/observability/audit-evidence/checkpoints',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const identity = requireIdentity(request.headers, 'audit:view_full')
+        const tenantId = resolveDataPlaneTenant(request.headers, identity)
+        const input = AuditEvidenceCheckpointCreateInputSchema.parse(
+          request.body
+        )
+        const checkpoint = await audit.createAuditEvidenceCheckpoint(
+          input,
+          identity.operatorId,
+          tenantId
+        )
+        await appendPlatformAudit(audit, identity, correlationId, tenantId, {
+          event: 'audit_evidence_checkpoint_sealed',
+          tenantId,
+          checkpointId: checkpoint.id,
+          eventIds: checkpoint.eventIds,
+          eventCount: checkpoint.eventCount,
+          evidenceDigest: checkpoint.evidenceDigest,
+          status: checkpoint.status,
+          filters: checkpoint.filters
+        })
+        emitRuntimeLog({
+          event: 'observability.audit_evidence_checkpoint_sealed',
+          correlationId,
+          route: '/v1/observability/audit-evidence/checkpoints',
+          status: 'ok',
+          sessionId: checkpoint.filters.sessionId ?? null,
+          resourceId: checkpoint.id
+        })
+        return ok({ checkpoint }, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        emitRuntimeLog({
+          event: 'observability.audit_evidence_checkpoint_failed',
+          correlationId,
+          route: '/v1/observability/audit-evidence/checkpoints',
+          status: 'error',
+          errorCode: safeError.code
+        })
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.get(
+    '/v1/observability/audit-evidence/checkpoints',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const identity = requireIdentity(request.headers, 'audit:view_full')
+        const tenantId = resolveDataPlaneTenant(request.headers, identity)
+        const checkpoints = await audit.listAuditEvidenceCheckpoints(tenantId)
+        return ok({ checkpoints }, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.get(
+    '/v1/observability/audit-evidence/checkpoints/:checkpointId',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const identity = requireIdentity(request.headers, 'audit:view_full')
+        const tenantId = resolveDataPlaneTenant(request.headers, identity)
+        const params = request.params as { checkpointId: string }
+        const checkpointId = AuditEvidenceCheckpointIdSchema.parse(
+          params.checkpointId
+        )
+        const checkpoint = await audit.getAuditEvidenceCheckpoint(
+          checkpointId,
+          tenantId
+        )
+        if (!checkpoint) {
+          throw new DomainError(
+            'invalid_action',
+            'Audit evidence checkpoint not found'
+          )
+        }
+        return ok({ checkpoint }, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.post(
+    '/v1/observability/audit-evidence/checkpoints/:checkpointId/transition',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const identity = requireIdentity(request.headers, 'audit:view_full')
+        const tenantId = resolveDataPlaneTenant(request.headers, identity)
+        const params = request.params as { checkpointId: string }
+        const checkpointId = AuditEvidenceCheckpointIdSchema.parse(
+          params.checkpointId
+        )
+        const input = AuditEvidenceCheckpointTransitionInputSchema.parse(
+          request.body
+        )
+        const checkpoint = await audit.transitionAuditEvidenceCheckpoint(
+          checkpointId,
+          input.status,
+          identity.operatorId,
+          input.expectedStatus,
+          tenantId
+        )
+        if (!checkpoint) {
+          throw new DomainError(
+            'invalid_action',
+            'Audit evidence checkpoint not found'
+          )
+        }
+        await appendPlatformAudit(audit, identity, correlationId, tenantId, {
+          event: 'audit_evidence_checkpoint_archived',
+          tenantId,
+          checkpointId: checkpoint.id,
+          eventCount: checkpoint.eventCount,
+          evidenceDigest: checkpoint.evidenceDigest,
+          status: checkpoint.status,
+          filters: checkpoint.filters
+        })
+        emitRuntimeLog({
+          event: 'observability.audit_evidence_checkpoint_archived',
+          correlationId,
+          route:
+            '/v1/observability/audit-evidence/checkpoints/:checkpointId/transition',
+          status: 'ok',
+          sessionId: checkpoint.filters.sessionId ?? null,
+          resourceId: checkpoint.id
+        })
+        return ok({ checkpoint }, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        emitRuntimeLog({
+          event: 'observability.audit_evidence_checkpoint_transition_failed',
+          correlationId,
+          route:
+            '/v1/observability/audit-evidence/checkpoints/:checkpointId/transition',
+          status: 'error',
+          errorCode: safeError.code
+        })
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.post('/v1/admin/plugins/catalog', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'agent:configure',
+        operatorIdentityResolver
+      )
+      const identity = resolveOperatorIdentity(
+        request.headers,
+        operatorIdentityResolver
+      )
+      const entry = await platform.createPluginCatalogEntry(
+        scope,
+        PluginCatalogCreateInputSchema.parse(request.body),
+        identity.operatorId
+      )
+      await appendPlatformAudit(
+        audit,
+        identity,
+        correlationId,
+        scope.tenantId,
+        {
+          event: 'plugin_catalog_created',
+          tenantId: scope.tenantId,
+          pluginCatalogId: entry.id,
+          pluginName: entry.manifest.name,
+          pluginVersion: entry.manifest.version,
+          status: entry.status
+        }
+      )
+      return ok(entry, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/admin/plugins/catalog', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'agent:configure',
+        operatorIdentityResolver
+      )
+      const query = z
+        .object({
+          name: z
+            .string()
+            .trim()
+            .min(1)
+            .max(120)
+            .regex(/^[A-Za-z0-9._:-]+$/)
+            .optional()
+        })
+        .strict()
+        .parse(request.query)
+      return ok(
+        await platform.listPluginCatalogEntries(scope, query.name),
+        correlationId
+      )
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/admin/plugins/catalog/:pluginId', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'agent:configure',
+        operatorIdentityResolver
+      )
+      const params = z
+        .object({ pluginId: PluginCatalogIdSchema })
+        .strict()
+        .parse(request.params)
+      const entry = await platform.getPluginCatalogEntry(scope, params.pluginId)
+      if (!entry) {
+        throw new DomainError(
+          'invalid_action',
+          'Plugin catalog entry not found'
+        )
+      }
+      return ok(entry, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post(
+    '/v1/admin/plugins/catalog/:pluginId/transition',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const scope = requirePlatformScope(
+          request.headers,
+          'agent:configure',
+          operatorIdentityResolver
+        )
+        const identity = resolveOperatorIdentity(
+          request.headers,
+          operatorIdentityResolver
+        )
+        const params = z
+          .object({ pluginId: PluginCatalogIdSchema })
+          .strict()
+          .parse(request.params)
+        const body = PluginCatalogTransitionInputSchema.parse(request.body)
+        const entry = await platform.transitionPluginCatalogEntry(
+          scope,
+          params.pluginId,
+          body.target,
+          identity.operatorId,
+          body.expectedStatus
+        )
+        await appendPlatformAudit(
+          audit,
+          identity,
+          correlationId,
+          scope.tenantId,
+          {
+            event: 'plugin_catalog_transitioned',
+            tenantId: scope.tenantId,
+            pluginCatalogId: entry.id,
+            pluginName: entry.manifest.name,
+            pluginVersion: entry.manifest.version,
+            status: entry.status
+          }
+        )
+        return ok(entry, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.post('/v1/admin/knowledge-sources', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'agent:configure',
+        operatorIdentityResolver
+      )
+      const identity = resolveOperatorIdentity(
+        request.headers,
+        operatorIdentityResolver
+      )
+      const source = await platform.createKnowledgeSource(
+        scope,
+        KnowledgeSourceCreateInputSchema.parse(request.body),
+        identity.operatorId
+      )
+      await appendPlatformAudit(
+        audit,
+        identity,
+        correlationId,
+        scope.tenantId,
+        {
+          event: 'knowledge_source_created',
+          tenantId: scope.tenantId,
+          knowledgeSourceId: source.id,
+          source: source.source,
+          version: source.version,
+          status: source.status
+        }
+      )
+      return ok(source, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/admin/knowledge-sources', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'agent:configure',
+        operatorIdentityResolver
+      )
+      return ok(await platform.listKnowledgeSources(scope), correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/admin/knowledge-sources/:sourceId', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'agent:configure',
+        operatorIdentityResolver
+      )
+      const params = z
+        .object({ sourceId: KnowledgeSourceIdSchema })
+        .strict()
+        .parse(request.params)
+      const source = await platform.getKnowledgeSource(scope, params.sourceId)
+      if (!source) {
+        throw new DomainError('invalid_action', 'Knowledge source not found')
+      }
+      return ok(source, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post(
+    '/v1/admin/knowledge-sources/:sourceId/transition',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const scope = requirePlatformScope(
+          request.headers,
+          'agent:configure',
+          operatorIdentityResolver
+        )
+        const identity = resolveOperatorIdentity(
+          request.headers,
+          operatorIdentityResolver
+        )
+        const params = z
+          .object({ sourceId: KnowledgeSourceIdSchema })
+          .strict()
+          .parse(request.params)
+        const body = KnowledgeSourceTransitionInputSchema.parse(request.body)
+        const source = await platform.transitionKnowledgeSource(
+          scope,
+          params.sourceId,
+          body.target,
+          identity.operatorId,
+          body.expectedStatus
+        )
+        await appendPlatformAudit(
+          audit,
+          identity,
+          correlationId,
+          scope.tenantId,
+          {
+            event: 'knowledge_source_transitioned',
+            tenantId: scope.tenantId,
+            knowledgeSourceId: source.id,
+            source: source.source,
+            version: source.version,
+            status: source.status
+          }
+        )
+        return ok(source, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.post('/v1/admin/release-candidates', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'agent:configure',
+        operatorIdentityResolver
+      )
+      const identity = resolveOperatorIdentity(
+        request.headers,
+        operatorIdentityResolver
+      )
+      const candidate = await platform.createReleaseCandidate(
+        scope,
+        ReleaseCandidateCreateInputSchema.parse(request.body),
+        identity.operatorId
+      )
+      await appendPlatformAudit(
+        audit,
+        identity,
+        correlationId,
+        scope.tenantId,
+        {
+          event: 'release_candidate_created',
+          tenantId: scope.tenantId,
+          releaseCandidateId: candidate.id,
+          agentId: candidate.agentId,
+          versionId: candidate.versionId,
+          evidenceDigest: candidate.evidenceDigest,
+          status: candidate.status,
+          gateKeys: candidate.gateResults.map((gate) => gate.key)
+        }
+      )
+      return ok(candidate, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/admin/release-candidates', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'agent:configure',
+        operatorIdentityResolver
+      )
+      const query = z
+        .object({ agentId: AgentIdSchema })
+        .strict()
+        .parse(request.query)
+      return ok(
+        await platform.listReleaseCandidates(scope, query.agentId),
+        correlationId
+      )
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get(
+    '/v1/admin/release-candidates/:candidateId',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const scope = requirePlatformScope(
+          request.headers,
+          'agent:configure',
+          operatorIdentityResolver
+        )
+        const params = z
+          .object({ candidateId: ReleaseCandidateIdSchema })
+          .strict()
+          .parse(request.params)
+        const candidate = await platform.getReleaseCandidate(
+          scope,
+          params.candidateId
+        )
+        if (!candidate) {
+          throw new DomainError('invalid_action', 'Release candidate not found')
+        }
+        return ok(candidate, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.post(
+    '/v1/admin/release-candidates/:candidateId/transition',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const scope = requirePlatformScope(
+          request.headers,
+          'agent:configure',
+          operatorIdentityResolver
+        )
+        const identity = resolveOperatorIdentity(
+          request.headers,
+          operatorIdentityResolver
+        )
+        const params = z
+          .object({ candidateId: ReleaseCandidateIdSchema })
+          .strict()
+          .parse(request.params)
+        const body = ReleaseCandidateTransitionInputSchema.parse(request.body)
+        const candidate = await platform.transitionReleaseCandidate(
+          scope,
+          params.candidateId,
+          body.target,
+          identity.operatorId,
+          body.expectedStatus
+        )
+        await appendPlatformAudit(
+          audit,
+          identity,
+          correlationId,
+          scope.tenantId,
+          {
+            event: 'release_candidate_transitioned',
+            tenantId: scope.tenantId,
+            releaseCandidateId: candidate.id,
+            agentId: candidate.agentId,
+            versionId: candidate.versionId,
+            evidenceDigest: candidate.evidenceDigest,
+            status: candidate.status,
+            gateKeys: candidate.gateResults.map((gate) => gate.key)
+          }
+        )
+        return ok(candidate, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.post('/v1/admin/agents', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'agent:configure',
+        operatorIdentityResolver
+      )
+      const identity = resolveOperatorIdentity(
+        request.headers,
+        operatorIdentityResolver
+      )
+      const agent = await platform.createAgent(
+        { tenantId: scope.tenantId },
+        request.body as { slug: string; name: string; description: string }
+      )
+      await appendPlatformAudit(
+        audit,
+        identity,
+        correlationId,
+        scope.tenantId,
+        {
+          event: 'agent_created',
+          tenantId: scope.tenantId,
+          agentId: agent.id
+        }
+      )
+      emitRuntimeLog({
+        event: 'platform.agent_created',
+        correlationId,
+        route: '/v1/admin/agents',
+        status: 'ok',
+        resourceId: agent.id
+      })
+      return ok(agent, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/admin/agents', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'agent:view',
+        operatorIdentityResolver
+      )
+      return ok(await platform.listAgents(scope), correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post('/v1/admin/agents/:agentId/versions', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'agent:configure',
+        operatorIdentityResolver
+      )
+      const identity = resolveOperatorIdentity(
+        request.headers,
+        operatorIdentityResolver
+      )
+      const params = request.params as { agentId: string }
+      const agentId = AgentIdSchema.parse(params.agentId)
+      const body = request.body as { config?: unknown }
+      const version = await platform.createVersion(
+        scope,
+        agentId,
+        AgentConfigSchema.parse(body.config),
+        identity.operatorId
+      )
+      await appendPlatformAudit(
+        audit,
+        identity,
+        correlationId,
+        scope.tenantId,
+        {
+          event: 'version_created',
+          tenantId: scope.tenantId,
+          agentId,
+          versionId: version.id,
+          version: version.version
+        }
+      )
+      return ok(version, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post(
+    '/v1/admin/agents/:agentId/versions/:versionId/clone',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const scope = requirePlatformScope(
+          request.headers,
+          'agent:configure',
+          operatorIdentityResolver
+        )
+        const identity = resolveOperatorIdentity(
+          request.headers,
+          operatorIdentityResolver
+        )
+        const params = request.params as {
+          agentId: string
+          versionId: string
+        }
+        const agentId = AgentIdSchema.parse(params.agentId)
+        const versionId = AgentVersionIdSchema.parse(params.versionId)
+        const source = await platform.getVersion(scope, versionId)
+        if (!source || source.agentId !== agentId) {
+          throw new DomainError('invalid_action', 'Agent version not found')
+        }
+        const body = VersionCloneRequestSchema.parse(request.body)
+        if (body.config) {
+          assertPromptProfileClone(source.config, body.config)
+        }
+        const version = await platform.createVersion(
+          scope,
+          agentId,
+          body.config ?? source.config,
+          identity.operatorId
+        )
+        await appendPlatformAudit(
+          audit,
+          identity,
+          correlationId,
+          scope.tenantId,
+          {
+            event: 'version_cloned',
+            tenantId: scope.tenantId,
+            agentId,
+            sourceVersionId: source.id,
+            versionId: version.id,
+            version: version.version
+          }
+        )
+        return ok(version, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.get('/v1/admin/agents/:agentId/versions', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'agent:view',
+        operatorIdentityResolver
+      )
+      const params = request.params as { agentId: string }
+      const agentId = AgentIdSchema.parse(params.agentId)
+      return ok(await platform.listVersions(scope, agentId), correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post(
+    '/v1/admin/agents/:agentId/versions/:versionId/transition',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const scope = requirePlatformScope(
+          request.headers,
+          'agent:configure',
+          operatorIdentityResolver
+        )
+        const params = request.params as {
+          agentId: string
+          versionId: string
+        }
+        const agentId = AgentIdSchema.parse(params.agentId)
+        const versionId = AgentVersionIdSchema.parse(params.versionId)
+        const body = z
+          .object({
+            target: AgentVersionStatusSchema,
+            expectedStatus: AgentVersionStatusSchema.optional()
+          })
+          .strict()
+          .parse(request.body)
+        const version = await platform.getVersion(scope, versionId)
+        if (!version || version.agentId !== agentId) {
+          throw new DomainError('invalid_action', 'Agent version not found')
+        }
+        const identity = resolveOperatorIdentity(
+          request.headers,
+          operatorIdentityResolver
+        )
+        const updated = await platform.transitionVersion(
+          scope,
+          versionId,
+          body.target,
+          body.expectedStatus
+        )
+        await appendPlatformAudit(
+          audit,
+          identity,
+          correlationId,
+          scope.tenantId,
+          {
+            event: 'version_transitioned',
+            tenantId: scope.tenantId,
+            agentId,
+            versionId,
+            target: updated.status
+          }
+        )
+        return ok(updated, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.post(
+    '/v1/admin/agents/:agentId/versions/:versionId/publish-preflight',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const scope = requirePlatformScope(
+          request.headers,
+          'agent:configure',
+          operatorIdentityResolver
+        )
+        const params = request.params as {
+          agentId: string
+          versionId: string
+        }
+        const agentId = AgentIdSchema.parse(params.agentId)
+        const versionId = AgentVersionIdSchema.parse(params.versionId)
+        const version = await platform.getVersion(scope, versionId)
+        if (!version || version.agentId !== agentId) {
+          throw new DomainError('invalid_action', 'Agent version not found')
+        }
+        z.object({})
+          .strict()
+          .parse(request.body ?? {})
+        const report = await runCriticalSafetyPreflight({
+          store: platform,
+          tenantId: scope.tenantId,
+          agentId,
+          versionId
+        })
+        const identity = resolveOperatorIdentity(
+          request.headers,
+          operatorIdentityResolver
+        )
+        await appendPlatformAudit(
+          audit,
+          identity,
+          correlationId,
+          scope.tenantId,
+          {
+            event: 'version_publish_preflight',
+            tenantId: scope.tenantId,
+            agentId,
+            versionId,
+            passed: report.passed,
+            caseCount: report.caseCount,
+            externalCall: report.externalCall,
+            failedCaseIds: report.failures.map((failure) => failure.caseId)
+          }
+        )
+        return ok(report, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.post(
+    '/v1/admin/agents/:agentId/versions/:versionId/publish',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const scope = requirePlatformScope(
+          request.headers,
+          'agent:configure',
+          operatorIdentityResolver
+        )
+        const params = request.params as {
+          agentId: string
+          versionId: string
+        }
+        const agentId = AgentIdSchema.parse(params.agentId)
+        const versionId = AgentVersionIdSchema.parse(params.versionId)
+        const version = await platform.getVersion(scope, versionId)
+        if (!version || version.agentId !== agentId) {
+          throw new DomainError('invalid_action', 'Agent version not found')
+        }
+        const identity = resolveOperatorIdentity(
+          request.headers,
+          operatorIdentityResolver
+        )
+        const body = z
+          .object({
+            releaseCandidateId: ReleaseCandidateIdSchema,
+            expectedStatus: AgentVersionStatusSchema.optional()
+          })
+          .strict()
+          .parse(request.body ?? {})
+        const releaseCandidate = await platform.getReleaseCandidate(
+          scope,
+          body.releaseCandidateId
+        )
+        assertReleaseCandidatePublishAuthority({
+          candidate: releaseCandidate,
+          tenantId: scope.tenantId,
+          agentId,
+          versionId
+        })
+        const preflight = await runCriticalSafetyPreflight({
+          store: platform,
+          tenantId: scope.tenantId,
+          agentId,
+          versionId
+        })
+        if (!preflight.passed) {
+          await appendPlatformAudit(
+            audit,
+            identity,
+            correlationId,
+            scope.tenantId,
+            {
+              event: 'version_publish_preflight_failed',
+              tenantId: scope.tenantId,
+              agentId,
+              versionId,
+              caseCount: preflight.caseCount,
+              externalCall: preflight.externalCall,
+              failedCaseIds: preflight.failures.map((failure) => failure.caseId)
+            }
+          )
+          throw new DomainError(
+            'invalid_action',
+            'Critical safety preflight failed; version was not published'
+          )
+        }
+        const published = await platform.publishVersion(
+          scope,
+          versionId,
+          body.releaseCandidateId,
+          body.expectedStatus
+        )
+        await appendPlatformAudit(
+          audit,
+          identity,
+          correlationId,
+          scope.tenantId,
+          {
+            event: 'version_published',
+            tenantId: scope.tenantId,
+            agentId,
+            versionId: published.id,
+            version: published.version,
+            safetyPreflight: {
+              passed: preflight.passed,
+              caseCount: preflight.caseCount
+            }
+          }
+        )
+        return ok(published, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.post('/v1/admin/agents/:agentId/rollback', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'agent:configure',
+        operatorIdentityResolver
+      )
+      const identity = resolveOperatorIdentity(
+        request.headers,
+        operatorIdentityResolver
+      )
+      const params = request.params as { agentId: string }
+      const agentId = AgentIdSchema.parse(params.agentId)
+      const body = z
+        .object({
+          versionId: AgentVersionIdSchema,
+          releaseCandidateId: ReleaseCandidateIdSchema,
+          expectedStatus: AgentVersionStatusSchema.optional()
+        })
+        .strict()
+        .parse(request.body)
+      const versionId = body.versionId
+      const source = await platform.getVersion(scope, versionId)
+      if (!source || source.agentId !== agentId) {
+        throw new DomainError('invalid_action', 'Agent version not found')
+      }
+      const releaseCandidate = await platform.getReleaseCandidate(
+        scope,
+        body.releaseCandidateId
+      )
+      assertReleaseCandidatePublishAuthority({
+        candidate: releaseCandidate,
+        tenantId: scope.tenantId,
+        agentId,
+        versionId
+      })
+      const preflight = await runCriticalSafetyPreflight({
+        store: platform,
+        tenantId: scope.tenantId,
+        agentId,
+        versionId
+      })
+      if (!preflight.passed) {
+        await appendPlatformAudit(
+          audit,
+          identity,
+          correlationId,
+          scope.tenantId,
+          {
+            event: 'version_rollback_preflight_failed',
+            tenantId: scope.tenantId,
+            agentId,
+            sourceVersionId: versionId,
+            caseCount: preflight.caseCount,
+            externalCall: preflight.externalCall,
+            failedCaseIds: preflight.failures.map((failure) => failure.caseId)
+          }
+        )
+        throw new DomainError(
+          'invalid_action',
+          'Critical safety preflight failed; rollback was not published'
+        )
+      }
+      const version = await platform.rollback(
+        scope,
+        agentId,
+        versionId,
+        identity.operatorId,
+        body.releaseCandidateId,
+        body.expectedStatus
+      )
+      await appendPlatformAudit(
+        audit,
+        identity,
+        correlationId,
+        scope.tenantId,
+        {
+          event: 'version_rollback',
+          tenantId: scope.tenantId,
+          agentId,
+          sourceVersionId: versionId,
+          publishedVersionId: version.id,
+          version: version.version,
+          safetyPreflight: {
+            passed: preflight.passed,
+            caseCount: preflight.caseCount
+          }
+        }
+      )
+      return ok(version, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post('/v1/admin/test-lab/runs', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'test:run',
+        operatorIdentityResolver
+      )
+      const body = TestLabRequestSchema.parse(request.body)
+      const trace = await runTestLab({
+        store: platform,
+        tenantId: scope.tenantId,
+        agentId: body.agentId,
+        versionId: body.versionId,
+        message: body.message,
+        history: body.history,
+        ...(options.resolveApprovedKnowledge
+          ? { resolveApprovedKnowledge: options.resolveApprovedKnowledge }
+          : {}),
+        ...(body.approvedKnowledge && !options.resolveApprovedKnowledge
+          ? { approvedKnowledge: body.approvedKnowledge }
+          : {})
+      })
+      const identity = resolveOperatorIdentity(
+        request.headers,
+        operatorIdentityResolver
+      )
+      await appendPlatformAudit(
+        audit,
+        identity,
+        correlationId,
+        scope.tenantId,
+        {
+          event: 'test_lab_completed',
+          tenantId: scope.tenantId,
+          agentId: trace.agentId,
+          versionId: trace.versionId,
+          traceId: trace.traceId,
+          externalCall: trace.provider.externalCall
+        }
+      )
+      emitRuntimeLog({
+        event: 'platform.test_lab_completed',
+        correlationId,
+        route: '/v1/admin/test-lab/runs',
+        status: 'ok',
+        resourceId: trace.traceId
+      })
+      return ok(trace, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post('/v1/admin/test-lab/suites', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'agent:configure',
+        operatorIdentityResolver
+      )
+      const identity = resolveOperatorIdentity(
+        request.headers,
+        operatorIdentityResolver
+      )
+      const suite = await platform.createTestSuite(
+        scope,
+        TestSuiteCreateInputSchema.parse(request.body),
+        identity.operatorId
+      )
+      await appendPlatformAudit(
+        audit,
+        identity,
+        correlationId,
+        scope.tenantId,
+        {
+          event: 'test_suite_created',
+          tenantId: scope.tenantId,
+          suiteId: suite.id,
+          agentId: suite.agentId,
+          versionId: suite.versionId,
+          version: suite.version
+        }
+      )
+      return ok(suite, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/admin/test-lab/suites', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'test:run',
+        operatorIdentityResolver
+      )
+      const query = z
+        .object({ agentId: AgentIdSchema })
+        .strict()
+        .parse(request.query)
+      return ok(
+        await platform.listTestSuites(scope, query.agentId),
+        correlationId
+      )
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post(
+    '/v1/admin/test-lab/suites/:suiteId/clone',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const scope = requirePlatformScope(
+          request.headers,
+          'agent:configure',
+          operatorIdentityResolver
+        )
+        const identity = resolveOperatorIdentity(
+          request.headers,
+          operatorIdentityResolver
+        )
+        const params = z
+          .object({ suiteId: TestSuiteIdSchema })
+          .strict()
+          .parse(request.params)
+        return ok(
+          await platform.cloneTestSuite(
+            scope,
+            params.suiteId,
+            TestSuiteCloneInputSchema.parse(request.body),
+            identity.operatorId
+          ),
+          correlationId
+        )
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.post(
+    '/v1/admin/test-lab/suites/:suiteId/evaluate',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const scope = requirePlatformScope(
+          request.headers,
+          'test:run',
+          operatorIdentityResolver
+        )
+        const identity = resolveOperatorIdentity(
+          request.headers,
+          operatorIdentityResolver
+        )
+        const params = z
+          .object({ suiteId: TestSuiteIdSchema })
+          .strict()
+          .parse(request.params)
+        const body = z
+          .object({ versionId: AgentVersionIdSchema.optional() })
+          .strict()
+          .parse(request.body)
+        const suite = await platform.getTestSuite(scope, params.suiteId)
+        if (!suite)
+          throw new DomainError('invalid_action', 'Test suite not found')
+        const versionId = body.versionId ?? suite.versionId
+        const variant = await evaluateTestSuiteVariant({
+          store: platform,
+          tenantId: scope.tenantId,
+          agentId: suite.agentId,
+          versionId,
+          cases: suite.cases,
+          label: 'A',
+          ...(options.resolveApprovedKnowledge
+            ? { resolveApprovedKnowledge: options.resolveApprovedKnowledge }
+            : {})
+        })
+        const run = await recordSuiteRun({
+          platform,
+          scope,
+          suite,
+          variants: [variant],
+          createdBy: identity.operatorId
+        })
+        return ok(run, correlationId)
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.post(
+    '/v1/admin/test-lab/suites/:suiteId/compare',
+    async (request, reply) => {
+      const correlationId = createCorrelationId()
+      try {
+        const scope = requirePlatformScope(
+          request.headers,
+          'test:run',
+          operatorIdentityResolver
+        )
+        const identity = resolveOperatorIdentity(
+          request.headers,
+          operatorIdentityResolver
+        )
+        const params = z
+          .object({ suiteId: TestSuiteIdSchema })
+          .strict()
+          .parse(request.params)
+        const body = z
+          .object({
+            versionAId: AgentVersionIdSchema,
+            versionBId: AgentVersionIdSchema
+          })
+          .strict()
+          .parse(request.body)
+        const suite = await platform.getTestSuite(scope, params.suiteId)
+        if (!suite)
+          throw new DomainError('invalid_action', 'Test suite not found')
+        const variants: TestSuiteVariantResult[] = await Promise.all([
+          evaluateTestSuiteVariant({
+            store: platform,
+            tenantId: scope.tenantId,
+            agentId: suite.agentId,
+            versionId: body.versionAId,
+            cases: suite.cases,
+            label: 'A',
+            ...(options.resolveApprovedKnowledge
+              ? { resolveApprovedKnowledge: options.resolveApprovedKnowledge }
+              : {})
+          }),
+          evaluateTestSuiteVariant({
+            store: platform,
+            tenantId: scope.tenantId,
+            agentId: suite.agentId,
+            versionId: body.versionBId,
+            cases: suite.cases,
+            label: 'B',
+            ...(options.resolveApprovedKnowledge
+              ? { resolveApprovedKnowledge: options.resolveApprovedKnowledge }
+              : {})
+          })
+        ])
+        return ok(
+          await recordSuiteRun({
+            platform,
+            scope,
+            suite,
+            variants,
+            createdBy: identity.operatorId
+          }),
+          correlationId
+        )
+      } catch (error) {
+        const safeError = toSafeError(error)
+        reply.code(statusCodeForError(safeError.code))
+        return fail(safeError.code, safeError.message, correlationId)
+      }
+    }
+  )
+
+  app.get('/v1/admin/test-lab/suites/:suiteId/runs', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'test:run',
+        operatorIdentityResolver
+      )
+      const params = z
+        .object({ suiteId: TestSuiteIdSchema })
+        .strict()
+        .parse(request.params)
+      const limit = parseTraceLimit(request.query)
+      const items = await platform.listTestSuiteRuns(
+        scope,
+        params.suiteId,
+        limit
+      )
+      return ok(
+        {
+          items,
+          pageInfo: {
+            limit,
+            offset: 0,
+            total: items.length,
+            hasNextPage: false
+          }
+        },
+        correlationId
+      )
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/admin/test-lab/runs', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'test:run',
+        operatorIdentityResolver
+      )
+      const limit = parseTraceLimit(request.query)
+      const items = await platform.listTestRuns(scope, limit)
+      return ok(
+        {
+          items,
+          pageInfo: {
+            limit,
+            offset: 0,
+            total: items.length,
+            hasNextPage: false
+          }
+        },
+        correlationId
+      )
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.get('/v1/admin/execution-traces', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'audit:view_full',
+        operatorIdentityResolver
+      )
+      const limit = parseTraceLimit(request.query)
+      const items = await platform.listExecutionTraces(scope, limit)
+      return ok(
+        {
+          items,
+          pageInfo: {
+            limit,
+            offset: 0,
+            total: items.length,
+            hasNextPage: false
+          }
+        },
+        correlationId
+      )
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  app.post('/v1/admin/test-lab/evaluate', async (request, reply) => {
+    const correlationId = createCorrelationId()
+    try {
+      const scope = requirePlatformScope(
+        request.headers,
+        'test:run',
+        operatorIdentityResolver
+      )
+      const body = TestLabEvaluationRequestSchema.parse(request.body)
+      const result = await evaluateTestLabSuite({
+        store: platform,
+        tenantId: scope.tenantId,
+        agentId: body.agentId,
+        versionId: body.versionId,
+        cases: body.cases,
+        ...(options.resolveApprovedKnowledge
+          ? { resolveApprovedKnowledge: options.resolveApprovedKnowledge }
+          : {})
+      })
+      const identity = resolveOperatorIdentity(
+        request.headers,
+        operatorIdentityResolver
+      )
+      await appendPlatformAudit(
+        audit,
+        identity,
+        correlationId,
+        scope.tenantId,
+        {
+          event: 'test_lab_evaluated',
+          tenantId: scope.tenantId,
+          agentId: body.agentId,
+          versionId: body.versionId,
+          caseCount: result.results.length,
+          passed: result.passed
+        }
+      )
+      return ok(result, correlationId)
+    } catch (error) {
+      const safeError = toSafeError(error)
+      reply.code(statusCodeForError(safeError.code))
+      return fail(safeError.code, safeError.message, correlationId)
+    }
+  })
+
+  if (options.runtimeCollector) {
+    const collector = options.runtimeCollector
+    app.addHook('onClose', () =>
+      collector.flush().finally(() => collector.close())
+    )
+  }
+
+  return app
+}
+const CONTROLLED_TENANT_ID = TenantIdSchema.parse(
+  'tenant_00000000-0000-4000-8000-000000000001'
+)
+
+async function evaluateTestSuiteVariant(input: {
+  store: ControlPlaneStore
+  tenantId: TenantId
+  agentId: AgentId
+  versionId: AgentVersionId
+  cases: TestLabCase[]
+  resolveApprovedKnowledge?: ApprovedKnowledgeResolver
+  label: 'A' | 'B'
+}): Promise<TestSuiteVariantResult> {
+  const version = await input.store.getVersion(
+    { tenantId: input.tenantId },
+    input.versionId
+  )
+  if (!version || version.agentId !== input.agentId) {
+    throw new DomainError(
+      'invalid_action',
+      'A/B version is outside agent scope'
+    )
+  }
+  const result = await evaluateTestLabSuite({
+    store: input.store,
+    tenantId: input.tenantId,
+    agentId: input.agentId,
+    versionId: version.id,
+    cases: input.cases,
+    ...(input.resolveApprovedKnowledge
+      ? { resolveApprovedKnowledge: input.resolveApprovedKnowledge }
+      : {})
+  })
+  return {
+    label: input.label,
+    versionId: version.id,
+    passed: result.passed,
+    results: result.results
+  }
+}
+
+async function recordSuiteRun(input: {
+  platform: ControlPlaneStore
+  scope: { tenantId: TenantId }
+  suite: TestSuiteRecord
+  variants: TestSuiteVariantResult[]
+  createdBy: string
+}): Promise<TestSuiteRunRecord> {
+  const run: TestSuiteRunRecord = {
+    id: createTestSuiteRunId(),
+    tenantId: input.scope.tenantId,
+    suiteId: input.suite.id,
+    agentId: input.suite.agentId,
+    variants: input.variants,
+    passed: input.variants.every((variant) => variant.passed),
+    createdBy: input.createdBy,
+    createdAt: new Date()
+  }
+  return input.platform.recordTestSuiteRun(input.scope, run)
+}
+
+async function executeInboundRuntime(input: {
+  options: AgentRuntimeOptions
+  platform: ControlPlaneStore
+  tenantId: TenantId
+  correlationId: string
+  channel: Channel
+  senderRef: string
+  message: string
+  conversationId: string
+  sessionId: string | null
+  messageId: string
+  audit: RuntimePersistence['audit']
+  conversations: RuntimePersistence['conversations']
+  sessionVersionPinning: boolean
+}) {
+  let history: string[] = []
+  let session: SessionRecord | null = null
+  let parsedAgentId: AgentId | undefined
+  let pinnedVersionId: AgentVersionId | undefined
+  const toolAuditEvents: PluginAuditEvent[] = []
+  if (input.sessionId) {
+    const timeline = await getConversationTimeline(
+      input.conversations,
+      input.tenantId,
+      input.conversationId
+    )
+    session =
+      timeline.sessions.find((candidate) => candidate.id === input.sessionId) ??
+      null
+    if (!session) {
+      throw new DomainError('invalid_action', 'Session not found')
+    }
+    if (!canBotRespond(session.takeoverState)) {
+      return {
+        status: 'paused' as const,
+        trace: null,
+        reason: 'human_takeover_active' as const
+      }
+    }
+    const timelineHistory = timeline.messages
+      .filter((message) => message.id !== input.messageId)
+      .map(
+        (message) =>
+          `${message.direction}: ${redactSensitiveText(message.body)}`
+      )
+    const historicalSafety = assessConversationSafety('', timelineHistory)
+    history = timelineHistory.slice(-20)
+    // Keep the model context bounded without discarding an older safety
+    // signal. The marker carries no user text and is intentionally lexical so
+    // the independent Test Lab gate remains conservative after truncation.
+    if (historicalSafety.level === 'critical') {
+      history = ['history: medication safety signal', ...history]
+    } else if (historicalSafety.level === 'high') {
+      history = ['history: unresolved symptom dor signal', ...history]
+    }
+  }
+  if (session) {
+    const hasAgent = session.agentId !== undefined
+    const hasVersion = session.agentVersionId !== undefined
+    if (hasAgent !== hasVersion) {
+      throw new DomainError(
+        'invalid_action',
+        'Session agent binding is incomplete'
+      )
+    }
+    if (hasAgent && hasVersion) {
+      parsedAgentId = AgentIdSchema.parse(session.agentId)
+      pinnedVersionId = AgentVersionIdSchema.parse(session.agentVersionId)
+    }
+  }
+  if (!parsedAgentId) {
+    const agentId = await input.options.resolveAgentId({
+      tenantId: input.tenantId,
+      channel: input.channel,
+      senderRef: input.senderRef
+    })
+    if (!agentId) {
+      await input.conversations.markInboundRuntimeCompleted(
+        input.messageId,
+        input.tenantId
+      )
+      return {
+        status: 'not_configured' as const,
+        trace: null,
+        reason: 'agent_mapping_missing' as const
+      }
+    }
+    parsedAgentId = AgentIdSchema.parse(agentId)
+    if (session && input.sessionVersionPinning) {
+      const published = await input.platform.resolvePublished(
+        { tenantId: input.tenantId },
+        parsedAgentId
+      )
+      if (!published) {
+        await input.conversations.markInboundRuntimeCompleted(
+          input.messageId,
+          input.tenantId
+        )
+        return {
+          status: 'not_configured' as const,
+          trace: null,
+          reason: 'published_version_missing' as const
+        }
+      }
+      if (!input.sessionId) {
+        throw new DomainError(
+          'invalid_action',
+          'Session id is required for runtime pinning'
+        )
+      }
+      const bound = await input.conversations.bindSessionAgentVersion(
+        input.tenantId,
+        input.sessionId,
+        parsedAgentId,
+        published.id
+      )
+      if (!bound?.agentId || !bound.agentVersionId) {
+        throw new DomainError(
+          'invalid_action',
+          'Session agent binding could not be established'
+        )
+      }
+      parsedAgentId = AgentIdSchema.parse(bound.agentId)
+      pinnedVersionId = AgentVersionIdSchema.parse(bound.agentVersionId)
+    }
+  }
+  if (!parsedAgentId) {
+    throw new DomainError(
+      'invalid_action',
+      'Agent mapping could not be resolved'
+    )
+  }
+  const result = await executePublishedAgent({
+    store: input.platform,
+    tenantId: input.tenantId,
+    agentId: parsedAgentId,
+    ...(pinnedVersionId ? { versionId: pinnedVersionId } : {}),
+    message: input.message,
+    history,
+    ...(input.options.capabilityGateway
+      ? { capabilityGateway: input.options.capabilityGateway }
+      : {}),
+    ...(input.options.actor ? { actor: input.options.actor } : {}),
+    ...(input.options.resolveCapabilityApproval
+      ? { resolveCapabilityApproval: input.options.resolveCapabilityApproval }
+      : {}),
+    onToolAudit: async (event) => {
+      if (input.options.completeInboundRuntime) {
+        toolAuditEvents.push(event)
+        return
+      }
+      await input.audit.append(
+        {
+          type: event.type,
+          actorType: 'System',
+          actorId: 'agent-runtime',
+          correlationId: event.correlationId,
+          policyVersion: 'plugin-gateway-v1',
+          payload: {
+            tenantId: event.tenantId,
+            agentId: event.agentId,
+            versionId: event.versionId,
+            traceId: event.traceId,
+            conversationId: input.conversationId,
+            sessionId: input.sessionId,
+            plugin: event.plugin,
+            toolName: event.toolName,
+            status: event.status,
+            payload: event.payload
+          }
+        },
+        event.tenantId
+      )
+    },
+    context: {
+      conversationId: input.conversationId,
+      ...(input.sessionId ? { sessionId: input.sessionId } : {})
+    },
+    ...(input.options.resolveApprovedKnowledge
+      ? { resolveApprovedKnowledge: input.options.resolveApprovedKnowledge }
+      : {}),
+    ...(input.options.approvedKnowledge &&
+    !input.options.resolveApprovedKnowledge
+      ? { approvedKnowledge: input.options.approvedKnowledge }
+      : {})
+  })
+  if (result.status === 'completed') {
+    const safeTrace = sanitizeTraceForPersistence(result.trace)
+    if (input.options.completeInboundRuntime) {
+      const completion = await input.options.completeInboundRuntime({
+        tenantId: input.tenantId,
+        conversationId: input.conversationId,
+        sessionId: input.sessionId,
+        inboundMessageId: input.messageId,
+        trace: safeTrace,
+        toolAuditEvents,
+        correlationId: input.correlationId
+      })
+      if (completion.status === 'paused') {
+        return {
+          status: 'paused' as const,
+          trace: null,
+          reason: 'human_takeover_active' as const
+        }
+      }
+      return { ...result, trace: safeTrace }
+    }
+    if (input.sessionId) {
+      const latestTimeline = await getConversationTimeline(
+        input.conversations,
+        input.tenantId,
+        input.conversationId
+      )
+      const latestSession = latestTimeline.sessions.find(
+        (candidate) => candidate.id === input.sessionId
+      )
+      if (!latestSession || !canBotRespond(latestSession.takeoverState)) {
+        return {
+          status: 'paused' as const,
+          trace: null,
+          reason: 'human_takeover_active' as const
+        }
+      }
+    }
+    if (safeTrace.handoff.requested && input.sessionId) {
+      const session = await input.conversations.transitionTakeover(
+        input.tenantId,
+        input.sessionId,
+        'request_handoff'
+      )
+      if (!session) {
+        throw new DomainError('invalid_action', 'Session not found')
+      }
+      await input.audit.append(
+        {
+          type: 'handoff',
+          actorType: 'System',
+          actorId: 'agent-runtime',
+          correlationId: input.correlationId,
+          policyVersion: 'human-takeover-v1',
+          payload: {
+            tenantId: input.tenantId,
+            conversationId: input.conversationId,
+            sessionId: input.sessionId,
+            traceId: safeTrace.traceId,
+            state: session.takeoverState,
+            reason: safeTrace.handoff.reason,
+            effect: 'human_handoff_requested'
+          }
+        },
+        input.tenantId
+      )
+    }
+    if (safeTrace.response.text.trim().length > 0) {
+      await input.conversations.appendOutboundMessage({
+        tenantId: input.tenantId,
+        conversationId: input.conversationId,
+        externalMessageId: `runtime:${safeTrace.traceId}`,
+        body: safeTrace.response.text
+      })
+    }
+    await input.platform.recordExecutionTrace(
+      { tenantId: input.tenantId },
+      safeTrace
+    )
+    await input.conversations.markInboundRuntimeCompleted(
+      input.messageId,
+      input.tenantId
+    )
+    return { ...result, trace: safeTrace }
+  }
+  return result
+}
+
+const TestLabRequestSchema = z
+  .object({
+    agentId: AgentIdSchema,
+    versionId: AgentVersionIdSchema,
+    message: z.string().trim().min(1).max(4000),
+    history: z.array(z.string().max(4000)).max(50).default([]),
+    approvedKnowledge: ApprovedKnowledgeForTestSchema.optional()
+  })
+  .strict()
+
+const VersionCloneRequestSchema = z
+  .object({ config: AgentConfigSchema.optional() })
+  .strict()
+
+const TakeoverRequestSchema = z
+  .object({
+    event: z.enum([
+      'request_handoff',
+      'accept_handoff',
+      'resolve_handoff',
+      'release_to_bot'
+    ])
+  })
+  .strict()
+
+const TestLabEvaluationRequestSchema = z
+  .object({
+    agentId: AgentIdSchema,
+    versionId: AgentVersionIdSchema,
+    cases: z.array(TestLabCaseSchema).min(1).max(100)
+  })
+  .strict()
+
+const CapabilityApprovalParamsSchema = z
+  .object({ approvalId: z.string().trim().min(1).max(160) })
+  .strict()
+
+const CapabilityApprovalIssueRequestSchema = z
+  .object({
+    agentId: AgentIdSchema,
+    versionId: AgentVersionIdSchema,
+    toolName: z
+      .string()
+      .trim()
+      .min(1)
+      .max(120)
+      .regex(/^[A-Za-z0-9._:-]+$/),
+    actorId: z
+      .string()
+      .trim()
+      .min(3)
+      .max(80)
+      .regex(/^[A-Za-z0-9._:-]+$/),
+    input: z
+      .object({
+        message: z.string().trim().min(1).max(4000)
+      })
+      .strict(),
+    expiresAt: z.coerce.date(),
+    nonce: z
+      .string()
+      .trim()
+      .min(8)
+      .max(160)
+      .regex(/^[A-Za-z0-9._:-]+$/)
+      .optional()
+  })
+  .strict()
+  .superRefine((input, context) => {
+    const now = Date.now()
+    const expiry = input.expiresAt.getTime()
+    if (!Number.isFinite(expiry) || expiry <= now) {
+      context.addIssue({
+        code: 'custom',
+        path: ['expiresAt'],
+        message: 'Approval expiry must be in the future'
+      })
+    } else if (expiry > now + 15 * 60 * 1000) {
+      context.addIssue({
+        code: 'custom',
+        path: ['expiresAt'],
+        message: 'Approval lifetime cannot exceed 15 minutes'
+      })
+    }
+  })
+
+const CapabilityApprovalExecutionRequestSchema = z
+  .object({
+    message: z.string().trim().min(1).max(4000),
+    history: z.array(z.string().max(4000)).max(50).default([]),
+    approvedKnowledge: ApprovedKnowledgeForTestSchema.optional()
+  })
+  .strict()
+
+function capabilityApprovalReference(
+  record: CapabilityApprovalRecord
+): CapabilityApproval {
+  return {
+    id: record.id,
+    tenantId: record.tenantId,
+    agentId: record.agentId,
+    versionId: record.versionId,
+    toolName: record.toolName,
+    actorId: record.actorId,
+    expiresAt: new Date(record.expiresAt.getTime())
+  }
+}
+
+async function appendPlatformAudit(
+  audit: RuntimePersistence['audit'],
+  identity: OperatorIdentity,
+  correlationId: string,
+  tenantId: TenantId,
+  payload: Record<string, unknown>
+): Promise<void> {
+  await audit.append(
+    {
+      type: 'integration_event',
+      actorType: identity.role,
+      actorId: identity.operatorId,
+      correlationId,
+      policyVersion: 'platform-control-plane-v1',
+      payload
+    },
+    tenantId
+  )
+}
+
+/**
+ * Makes silent truncation observable: list reads without pagination are
+ * bounded by `MAX_LIST_ROWS`, and a full page means the caller should page
+ * or narrow the query.
+ */
+function headerIfTruncated(
+  reply: { header(name: string, value: string): unknown },
+  rowCount: number
+): void {
+  if (rowCount >= MAX_LIST_ROWS) {
+    reply.header('x-result-truncated', 'true')
+  }
+}
+
+function statusCodeForError(code: string): number {
+  if (code === 'unauthorized') return 401
+  if (code === 'forbidden') return 403
+  if (code === 'conflict') return 409
+  if (code === 'rate_limited') return 429
+  if (code === 'payload_too_large') return 413
+  if (code === 'unsupported_media_type') return 415
+  if (code === 'not_found') return 404
+  if (code === 'request_uri_too_long') return 414
+  if (code === 'internal_error') return 500
+  return 400
+}
+
+function assertSafeRuntimeSchemaName(schemaName: string | undefined): void {
+  if (schemaName && !/^[a-z][a-z0-9_]{0,62}$/.test(schemaName)) {
+    throw new Error('Invalid PostgreSQL schema name')
+  }
+}
+
+/**
+ * Builds a bounded database readiness probe from the configured persistence.
+ * Pool connections are returned on success and destroyed on failure/timeout so
+ * repeated probes cannot accumulate leaked clients.
+ */
+function createReadinessDatabaseProbe(
+  persistence: BuildServerOptions['persistence']
+): (() => Promise<void>) | undefined {
+  if (!persistence || persistence.kind === 'memory') return undefined
+  if (persistence.kind === 'postgres') {
+    const client = persistence.client
+    return async () => {
+      await client.query('SELECT 1')
+    }
+  }
+  const pool = persistence.pool
+  // Keep admission occupied until the underlying acquisition/query settles.
+  // A deadline cannot cancel pool.connect(), so admitting another probe while
+  // it is pending would grow the pool queue on every health check.
+  let occupied = false
+  return async () => {
+    if (occupied) throw new Error('readiness probe is still pending')
+    occupied = true
+    let expired = false
+    let releaseClient: ((error?: Error) => void) | undefined
+    const timeoutError = new Error('readiness probe timeout')
+    let timer: ReturnType<typeof setTimeout> | undefined
+    const deadline = new Promise<never>((_resolve, reject) => {
+      timer = setTimeout(() => {
+        expired = true
+        reject(timeoutError)
+        releaseClient?.(timeoutError)
+      }, 900)
+      timer.unref?.()
+    })
+    const operation = (async () => {
+      try {
+        const client = await pool.connect()
+        let released = false
+        releaseClient = (error?: Error): void => {
+          if (released) return
+          released = true
+          client.release(error)
+        }
+        if (expired) {
+          releaseClient(timeoutError)
+          throw timeoutError
+        }
+        try {
+          await client.query('SELECT 1')
+          if (expired) throw timeoutError
+          releaseClient()
+        } catch (error) {
+          releaseClient(
+            error instanceof Error ? error : new Error('readiness failed')
+          )
+          throw error
+        }
+      } finally {
+        occupied = false
+      }
+    })()
+    try {
+      await Promise.race([operation, deadline])
+    } finally {
+      clearTimeout(timer)
+    }
+  }
+}
+
+function createPostgresPool(
+  connectionString: string,
+  schemaName: string | undefined
+): Pool {
+  assertSafeRuntimeSchemaName(schemaName)
+  return new Pool({
+    connectionString,
+    connectionTimeoutMillis: RATE_LIMIT_ACQUISITION_TIMEOUT_MS,
+    ...(schemaName ? { options: `-c search_path=${schemaName}` } : {})
+  })
+}
+
+function sanitizeAuditEvidencePage(page: {
+  items: Array<{ payload: unknown }>
+  pageInfo: unknown
+}) {
+  const redactedFields = new Set<string>()
+  const items = page.items.map((event) => {
+    const sanitized = sanitizeAuditEvidencePayload(event.payload)
+    sanitized.redactedFields.forEach((field) => redactedFields.add(field))
+    return { ...event, payload: sanitized.payload }
+  })
+
+  return {
+    page: { ...page, items },
+    governance: {
+      ...auditEvidenceGovernance,
+      payload: {
+        ...auditEvidenceGovernance.payload,
+        redactedFields: Array.from(redactedFields)
+      }
+    }
+  }
+}
+
+function assertTaskTransition(
+  fromStatus: TaskStatus,
+  toStatus: TaskStatus
+): void {
+  if (fromStatus === toStatus) return
+  const allowed: Record<TaskStatus, TaskStatus[]> = {
+    open: ['in_progress', 'done', 'canceled'],
+    in_progress: ['done', 'canceled'],
+    done: [],
+    canceled: []
+  }
+  if (!allowed[fromStatus].includes(toStatus)) {
+    throw new DomainError(
+      'invalid_action',
+      'Task status transition is not allowed'
+    )
+  }
+}
+
+async function decideRuntimeApproval(input: {
+  authority: ApprovalAuthority
+  current: ApprovalRecord
+  tenantId: TenantId
+  approvalId: string
+  decision: 'approve' | 'reject'
+  approverId: string
+  reason?: string
+}): Promise<ApprovalRecord> {
+  if (input.decision === 'approve') {
+    if (input.current.status === 'APPROVED') return input.current
+    if (input.current.status !== 'PENDING') {
+      throw new DomainError(
+        'conflict',
+        `Runtime approval cannot be approved from ${input.current.status}`
+      )
+    }
+    return input.authority.approve(input.tenantId, input.approvalId, {
+      approverId: input.approverId,
+      ...(input.reason !== undefined ? { reason: input.reason } : {})
+    })
+  }
+
+  if (input.current.status === 'REJECTED') return input.current
+  if (input.current.status !== 'PENDING') {
+    throw new DomainError(
+      'conflict',
+      `Runtime approval cannot be rejected from ${input.current.status}`
+    )
+  }
+  return input.authority.reject(input.tenantId, input.approvalId, {
+    approverId: input.approverId,
+    ...(input.reason !== undefined ? { reason: input.reason } : {})
+  })
+}
+
+/**
+ * Safe DLQ projection. Queue payloads are intentionally excluded even though
+ * the persistence adapter already redacts them; operators need disposition
+ * metadata and a stable requeue handle, not a second message viewer.
+ */
+function toDeadLetterView(event: OutboxEventRecord) {
+  return {
+    id: event.id,
+    type: event.type,
+    status: event.status,
+    correlationId: event.correlationId,
+    traceId: event.traceId ?? null,
+    conversationId: event.conversationId,
+    sessionId: event.sessionId,
+    inboundMessageId: event.inboundMessageId,
+    attempts: event.attempts,
+    lastError: event.lastError,
+    createdAt: event.createdAt.toISOString(),
+    availableAt: event.availableAt?.toISOString() ?? null,
+    deadLetteredAt: event.deadLetteredAt?.toISOString() ?? null
+  }
+}
+export async function buildServerFromEnv(
+  env: NodeJS.ProcessEnv = process.env,
+  options: BuildServerFromEnvOptions = {}
+) {
+  if (!['development', 'test', 'production'].includes(env.NODE_ENV ?? '')) {
+    throw new Error(
+      'NODE_ENV must be explicitly set to development, test or production'
+    )
+  }
+  const {
+    webhookReplayStore,
+    operatorReplayStore: injectedOperatorReplayStore,
+    ...buildOptions
+  } = options
+  /**
+   * The identity mode follows the explicit option, then `CVG_IDENTITY_MODE`,
+   * then the process environment (the source `buildServer` itself reads).
+   * Production always composes as trusted so a simulated environment can never
+   * fall back to self-asserted headers.
+   */
+  const identityMode =
+    buildOptions.identityMode ??
+    (env[IDENTITY_MODE_ENV]?.trim()
+      ? parseIdentityMode(env[IDENTITY_MODE_ENV], env.NODE_ENV)
+      : env.NODE_ENV === 'production'
+        ? ('trusted' as const)
+        : parseIdentityMode(undefined, process.env.NODE_ENV))
+  if (env.NODE_ENV === 'production' && identityMode === 'simulation') {
+    throw new Error(
+      'Production requires trusted operator identity mode; simulation is forbidden'
+    )
+  }
+  const persistenceMode = env.API_PERSISTENCE_MODE ?? 'memory'
+  if (persistenceMode !== 'memory' && persistenceMode !== 'postgres') {
+    throw new Error('API_PERSISTENCE_MODE must be memory or postgres')
+  }
+  const rateLimitStore = env.API_RATE_LIMIT_STORE ?? 'memory'
+  if (rateLimitStore !== 'memory' && rateLimitStore !== 'postgres') {
+    throw new Error('API_RATE_LIMIT_STORE must be memory or postgres')
+  }
+  if (rateLimitStore === 'postgres' && persistenceMode !== 'postgres') {
+    throw new Error('Shared rate limits require PostgreSQL persistence')
+  }
+  if (env.NODE_ENV === 'production' && persistenceMode !== 'postgres') {
+    throw new Error(
+      'Production requires PostgreSQL persistence; in-memory mode is forbidden'
+    )
+  }
+  const durableInbound =
+    buildOptions.durableInbound ?? env.OUTBOX_DURABLE_INBOUND === 'true'
+  if (persistenceMode === 'memory') {
+    const httpSecurity = parseHttpSecurityEnv(env, buildOptions.httpSecurity)
+    const configuredWebhookVerifier = createConfiguredWebhookVerifier(
+      env,
+      buildOptions.webhookVerifier,
+      webhookReplayStore
+    )
+    let configuredInboundAgentRuntime = createConfiguredInboundAgentRuntime(
+      env,
+      buildOptions.agentRuntime
+    )
+    let controlledAgentId: AgentId | undefined
+    if (env.NODE_ENV === 'development' && !configuredInboundAgentRuntime) {
+      configuredInboundAgentRuntime = {
+        resolveAgentId: () => {
+          if (!controlledAgentId) {
+            throw new Error('Controlled Secretary agent is not initialized')
+          }
+          return controlledAgentId
+        }
+      }
+    }
+    const configuredInboundTenantResolver =
+      createConfiguredInboundTenantResolver(
+        env,
+        buildOptions.inboundTenantResolver
+      )
+    const operatorReplayStore =
+      injectedOperatorReplayStore ?? createOperatorReplayStoreFromEnv(env)
+    if (operatorReplayStore) await operatorReplayStore.assertReady?.()
+    const operatorReplayGuard = operatorReplayStore
+      ? createConfiguredOperatorReplayGuard(env, operatorReplayStore)
+      : undefined
+    const app = buildServer({
+      ...buildOptions,
+      ...(configuredInboundAgentRuntime
+        ? { agentRuntime: configuredInboundAgentRuntime }
+        : {}),
+      ...(configuredWebhookVerifier
+        ? { webhookVerifier: configuredWebhookVerifier }
+        : {}),
+      ...(operatorReplayGuard ? { operatorReplayGuard } : {}),
+      ...(configuredInboundTenantResolver
+        ? { inboundTenantResolver: configuredInboundTenantResolver }
+        : {}),
+      identityMode,
+      durableInbound: durableInbound,
+      httpSecurity,
+      persistence: { kind: 'memory' }
+    })
+    if (env.NODE_ENV === 'development') {
+      try {
+        const controlledAgent = await ensureControlledSecretaryPreset(
+          app.platform
+        )
+        controlledAgentId = controlledAgent.id
+      } catch (error) {
+        await app.close()
+        throw error
+      }
+    }
+    return app
+  }
+
+  if (!env.DATABASE_URL) {
+    throw new Error('DATABASE_URL is required for PostgreSQL persistence mode')
+  }
+
+  if (
+    env.NODE_ENV === 'production' &&
+    env.POSTGRES_RLS_ENFORCEMENT !== 'true'
+  ) {
+    throw new Error(
+      'Production requires tenant-scoped PostgreSQL RLS enforcement'
+    )
+  }
+  if (env.NODE_ENV === 'production' && !durableInbound) {
+    throw new Error(
+      'Production requires OUTBOX_DURABLE_INBOUND=true; inline inbound execution is forbidden'
+    )
+  }
+  const configuredInboundTenantResolver = createConfiguredInboundTenantResolver(
+    env,
+    buildOptions.inboundTenantResolver
+  )
+  const configuredInboundAgentRuntime = createConfiguredInboundAgentRuntime(
+    env,
+    buildOptions.agentRuntime
+  )
+  const effectiveBuildOptions = {
+    ...buildOptions,
+    ...(configuredInboundTenantResolver
+      ? { inboundTenantResolver: configuredInboundTenantResolver }
+      : {}),
+    ...(configuredInboundAgentRuntime
+      ? { agentRuntime: configuredInboundAgentRuntime }
+      : {})
+  }
+  if (
+    env.NODE_ENV === 'production' &&
+    !effectiveBuildOptions.operatorIdentityResolver
+  ) {
+    throw new Error(
+      'Production requires an injected operator identity resolver'
+    )
+  }
+  assertProductionReplayConfiguration(env)
+  const configuredHttpSecurity = parseHttpSecurityEnv(
+    env,
+    buildOptions.httpSecurity
+  )
+  const schemaName = env.POSTGRES_SCHEMA?.trim() || undefined
+  assertSafeRuntimeSchemaName(schemaName)
+  const pool = createPostgresPool(env.DATABASE_URL, schemaName)
+  const migrationPool = env.DATABASE_MIGRATION_URL
+    ? createPostgresPool(env.DATABASE_MIGRATION_URL, schemaName)
+    : pool
+  const closePools = async () => {
+    if (migrationPool !== pool) await migrationPool.end()
+    await pool.end()
+  }
+  let configuredWebhookVerifier: WebhookVerifier | undefined
+  let operatorReplayGuard: OperatorReplayGuard | undefined
+  const configuredRateLimiter =
+    rateLimitStore === 'postgres' ? new PostgresRateLimiter(pool) : undefined
+  try {
+    const effectiveReplayStore =
+      webhookReplayStore ??
+      (env.NODE_ENV === 'production'
+        ? new PostgresWebhookReplayStore(pool)
+        : undefined)
+    configuredWebhookVerifier = createConfiguredWebhookVerifier(
+      env,
+      effectiveBuildOptions.webhookVerifier,
+      effectiveReplayStore
+    )
+    const operatorReplayStore =
+      injectedOperatorReplayStore ?? createOperatorReplayStoreFromEnv(env, pool)
+    if (operatorReplayStore) {
+      await operatorReplayStore.assertReady?.()
+      operatorReplayGuard = createConfiguredOperatorReplayGuard(
+        env,
+        operatorReplayStore
+      )
+    }
+    assertProductionReplayConfiguration(env, Boolean(operatorReplayGuard))
+    let migrationRoleName: string | undefined
+    let runtimeRoleName: string | undefined
+    if (env.POSTGRES_RLS_ENFORCEMENT === 'true') {
+      const runtimeCheckClient = await pool.connect()
+      try {
+        await assertRuntimeRoleIsNotRlsBypass(runtimeCheckClient)
+        runtimeRoleName = await readCurrentDatabaseRole(runtimeCheckClient)
+      } finally {
+        runtimeCheckClient.release()
+      }
+      if (env.NODE_ENV === 'production' && !env.DATABASE_MIGRATION_URL) {
+        throw new Error(
+          'Production tenant RLS requires a separate DATABASE_MIGRATION_URL'
+        )
+      }
+      const migrationIdentityClient = await migrationPool.connect()
+      try {
+        migrationRoleName = await readCurrentDatabaseRole(
+          migrationIdentityClient
+        )
+        await assertMigrationRoleSecurityBoundary(
+          migrationIdentityClient,
+          runtimeRoleName
+        )
+      } finally {
+        migrationIdentityClient.release()
+      }
+    }
+
+    if (env.POSTGRES_AUTO_MIGRATE === 'true') {
+      if (env.NODE_ENV === 'production' && !env.DATABASE_MIGRATION_URL) {
+        throw new Error(
+          'Production auto-migration requires a separate DATABASE_MIGRATION_URL'
+        )
+      }
+      const migrationClient = await migrationPool.connect()
+      try {
+        const migrationOptions = schemaName
+          ? {
+              schemaName,
+              ...(env.DATABASE_MIGRATION_URL ? { createSchema: false } : {})
+            }
+          : {}
+        await runPostgresMigrations(migrationClient, migrationOptions)
+      } finally {
+        migrationClient.release()
+      }
+    }
+    if (env.POSTGRES_RLS_ENFORCEMENT === 'true') {
+      const migrationRoleClient = await migrationPool.connect()
+      try {
+        await assertMigrationRoleIsLeastPrivilege(
+          migrationRoleClient,
+          runtimeRoleName
+        )
+      } finally {
+        migrationRoleClient.release()
+      }
+      const runtimeSchemaClient = await pool.connect()
+      try {
+        await assertRuntimeRoleIsLeastPrivilege(
+          runtimeSchemaClient,
+          migrationRoleName
+        )
+        if (runtimeRoleName === migrationRoleName) {
+          throw new Error(
+            'PostgreSQL runtime and migration roles must be distinct'
+          )
+        }
+        await assertTenantIsolationMigrationState(runtimeSchemaClient)
+        await assertTenantIsolationSchema(runtimeSchemaClient)
+        await assertWebhookReplaySchema(runtimeSchemaClient)
+      } finally {
+        runtimeSchemaClient.release()
+      }
+    }
+    await configuredRateLimiter?.assertReady()
+  } catch (error) {
+    await closePools()
+    throw error
+  }
+
+  const useTenantScopedPersistence = env.POSTGRES_RLS_ENFORCEMENT === 'true'
+  const persistenceConfig = useTenantScopedPersistence
+    ? ({ kind: 'postgres-pool', pool } as const)
+    : ({ kind: 'postgres', client: await pool.connect() } as const)
+  const legacyClient =
+    persistenceConfig.kind === 'postgres' ? persistenceConfig.client : null
+
+  const app = buildServer({
+    ...effectiveBuildOptions,
+    ...(configuredRateLimiter ? { rateLimiter: configuredRateLimiter } : {}),
+    ...(configuredWebhookVerifier
+      ? { webhookVerifier: configuredWebhookVerifier }
+      : {}),
+    ...(operatorReplayGuard ? { operatorReplayGuard } : {}),
+    ...(env.NODE_ENV === 'production'
+      ? { requireAuthenticatedMutations: true }
+      : {}),
+    identityMode,
+    durableInbound: durableInbound,
+    httpSecurity: configuredHttpSecurity,
+    persistence: persistenceConfig
+  })
+  app.addHook('onClose', async () => {
+    legacyClient?.release()
+    await closePools()
+  })
+  return app
+}
+
+function createConfiguredWebhookVerifier(
+  env: NodeJS.ProcessEnv,
+  configuredVerifier: WebhookVerifier | undefined,
+  replayStore: WebhookReplayStore | undefined
+): WebhookVerifier | undefined {
+  if (configuredVerifier) return configuredVerifier
+  if (env.NODE_ENV === 'test') return undefined
+  const secret = env.WEBHOOK_SIGNING_SECRET?.trim()
+  if (!secret) {
+    throw new Error(
+      'WEBHOOK_SIGNING_SECRET is required outside test mode when no verifier is injected'
+    )
+  }
+  if (
+    env.NODE_ENV === 'production' &&
+    (secret.length < 32 || /replace[_-]?me|change[_-]?me|example/i.test(secret))
+  ) {
+    throw new Error(
+      'Production webhook signing secret must contain at least 32 non-placeholder characters'
+    )
+  }
+  if (env.NODE_ENV === 'production' && !replayStore) {
+    throw new Error(
+      'Production requires a distributed webhook replay store when no verifier is injected'
+    )
+  }
+  return new HmacWebhookVerifier({
+    secret,
+    ...(replayStore ? { replayStore } : {})
+  }).verifyWithLease
+}
+
+function createConfiguredInboundTenantResolver(
+  env: NodeJS.ProcessEnv,
+  configuredResolver: InboundTenantResolver | undefined
+): InboundTenantResolver | undefined {
+  if (configuredResolver) return configuredResolver
+  const rawTenantId = env.INBOUND_TENANT_ID?.trim()
+  if (!rawTenantId) {
+    if (env.NODE_ENV === 'production') {
+      throw new Error(
+        'Production requires INBOUND_TENANT_ID or an injected tenant resolver'
+      )
+    }
+    return undefined
+  }
+  const tenantId = TenantIdSchema.safeParse(rawTenantId)
+  if (!tenantId.success) {
+    throw new Error('INBOUND_TENANT_ID must be a valid tenant identifier')
+  }
+  return () => tenantId.data
+}
+
+function createConfiguredInboundAgentRuntime(
+  env: NodeJS.ProcessEnv,
+  configuredRuntime: AgentRuntimeOptions | undefined
+): AgentRuntimeOptions | undefined {
+  if (configuredRuntime) return configuredRuntime
+  const rawAgentId = env.INBOUND_AGENT_ID?.trim()
+  if (!rawAgentId) {
+    if (env.NODE_ENV === 'production') {
+      throw new Error(
+        'Production requires INBOUND_AGENT_ID or an injected agent runtime'
+      )
+    }
+    return undefined
+  }
+  const agentId = AgentIdSchema.safeParse(rawAgentId)
+  if (!agentId.success) {
+    throw new Error('INBOUND_AGENT_ID must be a valid agent id')
+  }
+  return {
+    resolveAgentId: () => agentId.data
+  }
+}
+
+function isWebhookVerificationLease(
+  value: WebhookVerification
+): value is WebhookVerificationLease {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    value.verified === true &&
+    typeof value.commit === 'function' &&
+    typeof value.release === 'function'
+  )
+}

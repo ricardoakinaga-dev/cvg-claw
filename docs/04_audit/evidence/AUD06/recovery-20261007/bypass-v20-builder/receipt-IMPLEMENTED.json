@@ -1,0 +1,276 @@
+{
+  "schemaVersion": 1,
+  "status": "IMPLEMENTED",
+  "version": "AUD06-v20",
+  "sourceFrozen": true,
+  "ownershipEnded": true,
+  "noSelfApproval": true,
+  "frozenAtUTC": "2026-10-08T12:35:19.360057+00:00",
+  "scope": [
+    "scripts/phase11-bypass-audit.mjs",
+    "tests/phase11-bypass-audit.test.js"
+  ],
+  "sourceHashes": {
+    "scripts/phase11-bypass-audit.mjs": "ad5ed6c3d3b1499a4ee5a77e939383d472bbcca5f8ece62b592cf4a12b5110d1",
+    "tests/phase11-bypass-audit.test.js": "82306075b8612f6cb55c990f870bae1f3dc78ca78de4d8e97a143ceca7a40e83",
+    "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+    "docs/02_spec/aud06_remediation_20261006.md": "d846fce11c9dc7c3b4281a68e2602040cfab59dbf04d1ec6771e114d499527a1",
+    "docs/04_audit/evidence/AUD06/quality-bar.json": "94f3ed94460a2e938635e3d4f8cedc7769666b7682eb42149087aad8c2976b5d"
+  },
+  "sourceCopies": {
+    "scanner-frozen.rawtxt": "ad5ed6c3d3b1499a4ee5a77e939383d472bbcca5f8ece62b592cf4a12b5110d1",
+    "tests-frozen.rawtxt": "82306075b8612f6cb55c990f870bae1f3dc78ca78de4d8e97a143ceca7a40e83"
+  },
+  "node": "v22.23.2",
+  "nodeBinary": "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+  "maxConcurrency": 1,
+  "maxWorkers": 1,
+  "repair": "Shared selectedValues creates stable function identities for already supported native call/apply/bind selections. Same supported intrinsic operation references share their own stores and distinct operations remain separate from each other and from selection owners. An intrinsic descriptor, without any HTTP effect or captured receiver, preserves existing generic invocation normalization and effective arguments. Known own values retain priority; stored effects/SQL/prefixes and mutation/escape use the shared projection.",
+  "finiteMatrix": {
+    "file": "cases.json",
+    "sha256": "b6dee87efaa04100dc40c29f3a803d67e53b2f14a621e53bdd51990316750876",
+    "count": 48,
+    "declaredBeforeProbesAndEdits": true,
+    "declaration": "finite-plan.json",
+    "fiveExactCriticControls": [
+      "intrinsic-selected-store",
+      "intrinsic-store-direct-alias",
+      "own-store-direct-control",
+      "intrinsic-selected-pure-control",
+      "intrinsic-distinct-store"
+    ],
+    "sameRootVariations": 43,
+    "maxAllowed": 50,
+    "expandedAfterDeclaration": false,
+    "invalidParseFixtureIncluded": false,
+    "qualifiedAbsentHTTPExpectationUsed": false
+  },
+  "RED": {
+    "cases": 48,
+    "matches": 28,
+    "divergences": 20,
+    "valid": true,
+    "raw": "red-summary.json",
+    "sourceBinding": "red-before-source-binding.json",
+    "baselineScanner": "29066bfb9600580c9f7862366a5fb8a3817d557dbd984cdda041344d462428f8",
+    "baselineTests": "02f9329bbbd176391c461d1ee42447ee7c0e34d58154641e5f098749dcdd7c88",
+    "beforeSourceEdits": true
+  },
+  "GREEN": {
+    "CLI": {
+      "cases": 48,
+      "matches": 48,
+      "valid": true,
+      "raw": "green-summary.json"
+    },
+    "full4": {
+      "files": 4,
+      "tests": 1489,
+      "passed": 1489,
+      "skips": 0,
+      "exit": 0,
+      "durationSeconds": 479.40353441238403,
+      "raw": "check-all-four-tests.json"
+    },
+    "corpus": {
+      "scannedFiles": 59,
+      "status": "PASS",
+      "findings": 0,
+      "exit": 0,
+      "durationSeconds": 269.1857862472534,
+      "declaredTimeoutSeconds": 300,
+      "attempts": 1,
+      "timedOut": false,
+      "retry": false,
+      "raw": "check-corpus.json"
+    },
+    "gates": [
+      {
+        "name": "all-four-tests",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "corpus",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "lint",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "eslint-scoped",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "format",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "syntax-scanner",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "syntax-tests",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "docs-check",
+        "exit": 0,
+        "stable": true
+      }
+    ],
+    "allExitZero": true,
+    "sourcesStable": true,
+    "raw": "checks-summary.json",
+    "docsCheck": {
+      "exit": 0,
+      "raw": "check-docs-check.json",
+      "writersCompleteBeforeCheck": true,
+      "invalidJSON": [],
+      "receiptWrittenAfterDocsGate": true,
+      "docsGateCoveredThisReceipt": false,
+      "chronology": "All prior builder JSON writers completed before docs-check. Receipt JSON/MD and frozen source copies were created after that gate. No subsequent builder check was run; lead owns whole-MAIN format/docs validation after integration."
+    }
+  },
+  "commands": {
+    "all-four-tests": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "tests/phase11-bypass-audit.test.js",
+      "tests/bypass-sql-audit.test.js",
+      "tests/docs-readiness.test.js",
+      "tests/docs-integrity.test.js",
+      "--no-file-parallelism",
+      "--maxWorkers=1"
+    ],
+    "corpus": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "scripts/phase11-bypass-audit.mjs"
+    ],
+    "lint": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "node_modules/eslint/bin/eslint.js",
+      "."
+    ],
+    "eslint-scoped": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "node_modules/eslint/bin/eslint.js",
+      "scripts/phase11-bypass-audit.mjs",
+      "tests/phase11-bypass-audit.test.js"
+    ],
+    "format": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "node_modules/prettier/bin/prettier.cjs",
+      "--check",
+      "scripts/phase11-bypass-audit.mjs",
+      "tests/phase11-bypass-audit.test.js"
+    ],
+    "syntax-scanner": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "--check",
+      "scripts/phase11-bypass-audit.mjs"
+    ],
+    "syntax-tests": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "--check",
+      "tests/phase11-bypass-audit.test.js"
+    ],
+    "docs-check": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "scripts/docs-check.mjs"
+    ]
+  },
+  "durationsSeconds": {
+    "all-four-tests": 479.40353441238403,
+    "corpus": 269.1857862472534,
+    "lint": 10.309653282165527,
+    "eslint-scoped": 1.3787963390350342,
+    "format": 0.6190347671508789,
+    "syntax-scanner": 0.03168988227844238,
+    "syntax-tests": 0.028095006942749023,
+    "docs-check": 3.021106719970703
+  },
+  "publicCLIMatrix": {
+    "RED": [
+      "python3",
+      "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v20-builder/run-cases.py",
+      "red"
+    ],
+    "GREEN": [
+      "python3",
+      "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v20-builder/run-cases.py",
+      "green"
+    ],
+    "actualCommand": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "scripts/phase11-bypass-audit.mjs"
+    ],
+    "cwd": "Own disposable per-case roots recorded in raw JSON; byte-identical scanner/helper copied from MAIN; inputs parsed, never executed"
+  },
+  "sourceFormattingCommand": [
+    "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+    "node_modules/prettier/bin/prettier.cjs",
+    "--write",
+    "scripts/phase11-bypass-audit.mjs",
+    "tests/phase11-bypass-audit.test.js"
+  ],
+  "protectedBeforeAfter": {
+    "metadata-grants": {
+      "unchanged": true,
+      "before": "f87f502ba145cb2cab3378687b308a123da18f5773560d8b226dd5938025a194",
+      "after": "f87f502ba145cb2cab3378687b308a123da18f5773560d8b226dd5938025a194"
+    },
+    "exact-forwarder": {
+      "unchanged": true,
+      "before": "fb66ce2b46f6f3df9ea130b6a7e85102fd8c14053fb89878d0808ebf59f3bf9e",
+      "after": "fb66ce2b46f6f3df9ea130b6a7e85102fd8c14053fb89878d0808ebf59f3bf9e"
+    },
+    "report-effect-boundaries": {
+      "unchanged": true,
+      "before": "d5b5ab19d7364b0b0d8cacd6fefb1c09f31629ff4cded912fc4cfbdffd236b63",
+      "after": "d5b5ab19d7364b0b0d8cacd6fefb1c09f31629ff4cded912fc4cfbdffd236b63"
+    }
+  },
+  "sourceDiff": "scanner-change.diff.rawtxt",
+  "inputEvidenceHashes": {
+    "docs/04_audit/evidence/AUD06/recovery-20261007/quality-bar-v20-independent-provenance.json": "abf9428832c721311d5207978abedb5759b612f1aa4cb2e8b3d3c0b2aa5bbbbb",
+    "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v19-fresh-reject-I1/report.json": "76214d7234a3e5d4d0f58c47836f499d7f15d1ec53c491a4897e1590e91eff27",
+    "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v19-fresh-reject-I1/case-matrix.json": "2e34c2207450344b48b5857f78d52b83c46338b42f50bb90350dae4827e6b370"
+  },
+  "preservation": {
+    "allRawAttemptsPreserved": true,
+    "RED": "red-*.json and red-console.log",
+    "GREEN": "green-*.json and green-console.log",
+    "checks": "check-*.json/log and verify-console.log",
+    "failedVerificationAttempts": 0,
+    "qualifiedAbsentHTTPObservation": "Remains conservative and unadjudicated; not a confirmed P2 and no waived PASS expectation used.",
+    "invalidCriticParserControlNotUsed": true
+  },
+  "constraints": {
+    "onlyTwoSourceFilesWritten": true,
+    "helperRuntimeServerWorkerQuotaImmutable": true,
+    "specBarMastersStateUntouched": true,
+    "mainGauntletCurrentCertificationUntouched": true,
+    "metadataGrantsFrontiersExactForwarderBytesUnchanged": true,
+    "noPathNameTableExemptions": true,
+    "HTTPDirectEffectsNativeArraysModulesExportsShadowsBindAllocationsPreserved": true,
+    "noPrivateCloneReadsOrWrites": true,
+    "fixturesParsedOnly": true,
+    "noNetworkDatabaseDockerInstallCommitPushDescendants": true,
+    "mainGit": "No direct MAIN Git commands/mutations; required public scanner read-only inventory and own disposable fixture Git inventory only",
+    "noChecksAfterOwnershipEnded": true
+  },
+  "limits": [
+    "Supported known intrinsic member selection only; no factory/reflection/opaque export/general prototype model added and no direct HTTP effect attached merely for identity.",
+    "Exactly48 initial cases, without expansion after coherence. Local implementation evidence is not independent approval/canonical acceptance; lead owns integration/freeze/fresh criticism.",
+    "N3 DENY; pilot11 DEFERRED; Q14 pending; remote CI/publication pending; global NO_GO; pass4 NOT_STARTED."
+  ]
+}

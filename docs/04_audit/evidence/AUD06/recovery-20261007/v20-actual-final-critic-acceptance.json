@@ -1,0 +1,55 @@
+{
+  "createdAt": "2026-10-08T16:30:23.961981+00:00",
+  "actualFinalCritic": {
+    "threadId": "01a11c45-fee4-7243-bbdc-e75eb18920ec",
+    "nickname": "Socrates",
+    "role": "NOVO FinalCritic I1 independente pós-verificação integrada real",
+    "freshFork": {
+      "fork_context": false,
+      "model": "omitido/inherited, conforme atestação factual pós-dispatch do usuário/parent",
+      "identitySource": "Atestação recebida apósdispatch nesta conversa; dispatchfile/history não abertos"
+    },
+    "descendants": 0,
+    "distinctFromCurrentIntegrationValidatorInput": true,
+    "priorConclusionsUsed": false
+  },
+  "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+  "HEAD": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+  "fullManifestRecordsVerified": 30675,
+  "recordCounts": {
+    "regular": 27476,
+    "directory": 3156,
+    "symlink": 43
+  },
+  "mismatches": 0,
+  "copiedFiles": 81,
+  "bytesCopied": 68683955,
+  "allDirectCriterionEvidenceCopied": true,
+  "nonMutationVerified": true,
+  "sentinelEntries": 28651,
+  "parentHelperDigest": "4f47692c33adcecf50baade1e69800aa60e782a100338d7bfec81d72047d20d9",
+  "originalTemp": "/tmp/aud06-finalcritic-I1-db55luic",
+  "omittedOwncopyAndDependenciesRetainedOriginal": true,
+  "decision": {
+    "fullOriginalGoal": "NO_GO_NOT_COMPLETED",
+    "globalProduction": "NO_GO",
+    "boundedLocalTechnical": "CONDITIONAL_GO_CONTROLLED_LOCAL_SYNTHETIC_ONLY",
+    "requiredItemsSatisfiedInBoundedScope": 11,
+    "requiredItemsUnsatisfied": [
+      "Q11",
+      "Q13",
+      "Q14"
+    ],
+    "N3": "DENY",
+    "pilot11": "DEFERRED_BY_USER",
+    "remoteVerifySecurity": "NOT_RUN_UNSATISFIED",
+    "Q14": "PENDING",
+    "synthesizedApproval": false,
+    "noAverageOverridesRequiredGate": true,
+    "publishAuthorityGranted": false
+  },
+  "targetInstallation": false,
+  "reportPath": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/v20-actual-final-critic-I1/final/report.json",
+  "reportSHA256": "da0cbf133d63b7ae0c48a1a0b88ef5b230d29bd646982fb3a584c8ac8b825614",
+  "fullVerification": true
+}

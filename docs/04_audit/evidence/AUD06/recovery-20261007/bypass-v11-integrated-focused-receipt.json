@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "kind": "aud06-v11-focused-integration",
+  "at": "2026-10-08T06:33:42.565551+00:00",
+  "green": {
+    "testsPassed": 692,
+    "testsFailed": 0,
+    "exitCode": 0
+  },
+  "public": {
+    "scannedFiles": 59,
+    "status": "PASS",
+    "exitCode": 0
+  },
+  "red": {
+    "failed": 21,
+    "passed": 208,
+    "exitCode": 1
+  },
+  "independentAcceptance": "PENDING",
+  "globalVerdict": "FAIL",
+  "staging": "NO_GO",
+  "production": "NO_GO",
+  "artifacts": [
+    {
+      "path": "bypass-v11-green-final.log",
+      "sha256": "91ef239926289fed789ea79cf45c0ca6e4607b130cdd30a2354b9366cf57ed03"
+    },
+    {
+      "path": "bypass-v11-public-final-2.json",
+      "sha256": "0f1011e9d2b116443a624e42aea138c9976e157fc0ec70499c5ba22e77b19ead"
+    },
+    {
+      "path": "bypass-v11-red-source-binding.json",
+      "sha256": "fdf651812ff6c339ef6f96ca1dfec91cdf1e1da4e5f7fb6cac031a98cf0f351e"
+    },
+    {
+      "path": "bypass-v11-ast-lint-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

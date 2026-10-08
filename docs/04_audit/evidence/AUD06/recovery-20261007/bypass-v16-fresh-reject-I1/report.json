@@ -1,0 +1,704 @@
+{
+  "schema_version": 1,
+  "kind": "AUD06-v16-Q13-focused-independent-critic",
+  "critic_identity": "AUD06-v16-I1-fresh-independent-k250541g",
+  "independence": {
+    "level": "I1",
+    "fresh_context": true,
+    "role": "focused critic",
+    "builders_or_prior_critic_reports_read": false,
+    "subagents_spawned": 0,
+    "mode": "Direct read-only critique",
+    "fresh_context_basis": "Fresh sealed task context; no builder rationales/receipts or prior focused reports used to form claims. SPEC and bar normative contract read; their embedded history was not used as proof."
+  },
+  "verdict": "REJECT",
+  "focused_approval": false,
+  "final_gauntlet": false,
+  "global_readiness": "NO_GO",
+  "production": "NO_GO",
+  "external_gates": {
+    "Q11": "DEFERRED / NOT SATISFIED",
+    "Q13_remote": "UNSATISFIED",
+    "Q14": "PENDING / NOT SATISFIED"
+  },
+  "quality_bar": {
+    "version": "AUD06-v16-bound-callable-identity-audit",
+    "sha256": "dcf0e104be03da4b09e1e42706fae477fa06a6c1f687444777430144f8111816",
+    "spec_sha256": "1a81ba9aafbc4c4b31867a16076882d66583989e2e6b0b66945db3b2349c895f",
+    "focused_criterion": "Q13 bounded AST/SQL bypass measurement; not full Q13 certification or remote CI"
+  },
+  "binding": {
+    "target": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+    "candidate_sha256": "2f23600b7001d85a0dfc6afdefeaf0f42b467d210feda0510bdc5b7a9ed260f6",
+    "commit": "0e653670128308ef9957499405ff7b145d8aa5aa",
+    "behavior_tree_sha256": "2ff93c9a801bc450efdd5716773088be53eab1b133ee5dbe21803d75684d314e",
+    "declared_binding_provenance": "Candidate and behavior-tree identifiers supplied in sealed user task; not independently recomputed from excluded certification receipts. Commit independently read via git --no-optional-locks rev-parse HEAD.",
+    "source_sha256": {
+      "scripts/phase11-bypass-audit.mjs": "52aa6254bf8a97fa081310789ae10e77869e18a8b2c38b6b12bb9636ad191d72",
+      "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+      "docs/02_spec/aud06_remediation_20261006.md": "1a81ba9aafbc4c4b31867a16076882d66583989e2e6b0b66945db3b2349c895f",
+      "docs/04_audit/evidence/AUD06/quality-bar.json": "dcf0e104be03da4b09e1e42706fae477fa06a6c1f687444777430144f8111816"
+    },
+    "node_path": "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+    "node_version": "v22.23.2",
+    "node_sha256": "3517c2df0b2f8cd7f422b4b8450ef81c6889f08eb03e281d6de9079b15e6a327",
+    "shim_sha256": "ccebb23b0fbfc227877b9f6ae50826a9f339456bc0c56b65d6c08763920b1a89",
+    "shim_diff_sha256": "72fa8c6c372a66efafd0acc9f15e5942a1bc38773d6a023c2ac20e00b664be3b",
+    "typescript_dependency_snapshot": "All regular files under target node_modules/typescript copied via O_NOATIME into own TEMP; actual loaded lib/typescript.js byte hash matches before sentinel.",
+    "typescript_js_sha256": "569177652966bd528c319171c7dd22860dbf72bde116cbc4f644f1d02bb12e39"
+  },
+  "scope": "Known static callable allocation/alias/member/holder/array/rest/spread projection, native call/apply/bind construction/invocation and extracted layers, effective first SQL arguments; finite direct SQL helper regression. Only own Git fixtures and copied 59-source corpus parsed.",
+  "counts": {
+    "cli_fixture_scans": 120,
+    "cli_actual_PASS": 65,
+    "cli_actual_FAIL": 55,
+    "cli_expected_PASS": 61,
+    "cli_expected_FAIL": 59,
+    "false_PASS": 7,
+    "false_FAIL": 3,
+    "cli_errors": 0,
+    "sql_checks": 44,
+    "sql_correct": 44,
+    "actual_corpus_scans": 1,
+    "actual_corpus_files": 59,
+    "total_static_cli_invocations": 121
+  },
+  "findings": [
+    {
+      "id": "AUD06-v16-F01",
+      "severity": "P1",
+      "confidence": "high",
+      "title": "Known own members of a bound callable bypass effect and SQL inspection",
+      "root_cause": "selectedValues projects stored own members on FunctionLike receivers only for bind/call/apply (lines 605-613). materializedMembers handles object/array literals, and memberEffect filters fallback receiver candidates to object/array literals (lines 835-845), excluding the bound synthetic FunctionLike allocation. A literal own custom member therefore loses its known fetch/query origin, including known bound SQL prefix.",
+      "source_locations": [
+        "scripts/phase11-bypass-audit.mjs:605",
+        "scripts/phase11-bypass-audit.mjs:835"
+      ],
+      "effective_behavior": "custom=fetch invoked with a literal URL is an HTTP effect; custom=db.query invoked with a domain UPDATE is a forbidden SQL write; custom=db.query.bind(db, DOMAIN_UPDATE) invoked with SELECT 1 still has DOMAIN_UPDATE as effective first SQL argument.",
+      "violated_contract": "Q13 bounded static aliases/member projection and effective SQL arguments; known static assigned members require no reflection, prototype or user factory interpretation.",
+      "reproductions": [
+        {
+          "id": "own-custom-fetch",
+          "code": "const b = (()=>0).bind(null); b.custom = fetch; b.custom('https://example.invalid/probe');",
+          "expected": "FAIL",
+          "why": "",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 9,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/fixtures/009",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/fixtures/009",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 0,
+          "actual": "PASS",
+          "findings": [],
+          "seconds": 0.3157954216003418,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/raw/009.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/raw/009.stderr"
+        },
+        {
+          "id": "own-custom-db.query",
+          "code": "const b = (()=>0).bind(null); b.custom = db.query; b.custom(\"UPDATE appointments SET status = 'cancelled'\");",
+          "expected": "FAIL",
+          "why": "",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 10,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/fixtures/010",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/fixtures/010",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 0,
+          "actual": "PASS",
+          "findings": [],
+          "seconds": 0.3334324359893799,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/raw/010.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/raw/010.stderr"
+        },
+        {
+          "id": "bound-custom-extracted",
+          "code": "const b=(()=>0).bind(null);b.custom=db.query;const x=b.custom;x(\"UPDATE appointments SET status = 'cancelled'\");",
+          "expected": "FAIL",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 7,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/007",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/007",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 0,
+          "actual": "PASS",
+          "findings": [],
+          "seconds": 0.3542318344116211,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/007.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/007.stderr"
+        },
+        {
+          "id": "bound-custom-aliased",
+          "code": "const b=(()=>0).bind(null);b.custom=db.query;const a=b;a.custom(\"UPDATE appointments SET status = 'cancelled'\");",
+          "expected": "FAIL",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 8,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/008",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/008",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 0,
+          "actual": "PASS",
+          "findings": [],
+          "seconds": 0.3533504009246826,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/008.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/008.stderr"
+        },
+        {
+          "id": "bound-custom-holder",
+          "code": "const b=(()=>0).bind(null);b.custom=db.query;const h={b};h.b.custom(\"UPDATE appointments SET status = 'cancelled'\");",
+          "expected": "FAIL",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 9,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/009",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/009",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 0,
+          "actual": "PASS",
+          "findings": [],
+          "seconds": 0.33674025535583496,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/009.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/009.stderr"
+        },
+        {
+          "id": "bound-custom-array",
+          "code": "const b=(()=>0).bind(null);b.custom=db.query;const arr=[b];arr[0].custom(\"UPDATE appointments SET status = 'cancelled'\");",
+          "expected": "FAIL",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 10,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/010",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/010",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 0,
+          "actual": "PASS",
+          "findings": [],
+          "seconds": 0.33716726303100586,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/010.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/010.stderr"
+        },
+        {
+          "id": "bound-custom-prefix",
+          "code": "const b=(()=>0).bind(null);b.custom=db.query.bind(db,\"UPDATE appointments SET status = 'cancelled'\");b.custom('SELECT 1');",
+          "expected": "FAIL",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 11,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/011",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/011",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 0,
+          "actual": "PASS",
+          "findings": [],
+          "seconds": 0.3365929126739502,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/011.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/011.stderr"
+        }
+      ],
+      "controls": [
+        {
+          "id": "direct-http",
+          "code": "fetch('https://example.invalid/probe');",
+          "expected": "FAIL",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 0,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/000",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/000",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 1,
+          "actual": "FAIL",
+          "findings": [
+            {
+              "id": "direct_fetch",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            }
+          ],
+          "seconds": 0.31044530868530273,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/000.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/000.stderr"
+        },
+        {
+          "id": "direct-domain",
+          "code": "db.query(\"UPDATE appointments SET status = 'cancelled'\");",
+          "expected": "FAIL",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 1,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/001",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/001",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 1,
+          "actual": "FAIL",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "UPDATE is outside the authorized SQL write boundary",
+              "offset": 0,
+              "target": "appointments"
+            }
+          ],
+          "seconds": 0.33620429039001465,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/001.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/001.stderr"
+        },
+        {
+          "id": "object-http",
+          "code": "const b={custom:fetch}; b.custom('https://example.invalid/probe');",
+          "expected": "FAIL",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 2,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/002",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/002",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 1,
+          "actual": "FAIL",
+          "findings": [
+            {
+              "id": "direct_fetch",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            }
+          ],
+          "seconds": 0.33916521072387695,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/002.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/002.stderr"
+        },
+        {
+          "id": "object-domain",
+          "code": "const b={custom:db.query};b.custom(\"UPDATE appointments SET status = 'cancelled'\");",
+          "expected": "FAIL",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 3,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/003",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/003",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 1,
+          "actual": "FAIL",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "UPDATE is outside the authorized SQL write boundary",
+              "offset": 0,
+              "target": "appointments"
+            }
+          ],
+          "seconds": 0.34253358840942383,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/003.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/003.stderr"
+        },
+        {
+          "id": "bound-pure-custom",
+          "code": "const b=(()=>0).bind(null);b.custom=(x=>x);b.custom('SELECT 1');",
+          "expected": "PASS",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 4,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/004",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/004",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 0,
+          "actual": "PASS",
+          "findings": [],
+          "seconds": 0.3367009162902832,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/004.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/004.stderr"
+        },
+        {
+          "id": "bound-custom-read",
+          "code": "const b=(()=>0).bind(null);b.custom=db.query;b.custom('SELECT 1');",
+          "expected": "PASS",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 5,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/005",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/005",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 0,
+          "actual": "PASS",
+          "findings": [],
+          "seconds": 0.32856249809265137,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/005.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/005.stderr"
+        },
+        {
+          "id": "bound-custom-quota",
+          "code": "const b=(()=>0).bind(null);b.custom=db.query;b.custom('UPDATE api_rate_limit_buckets SET count=1');",
+          "expected": "PASS",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 6,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/006",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/006",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 0,
+          "actual": "PASS",
+          "findings": [],
+          "seconds": 0.3322274684906006,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/006.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/006.stderr"
+        },
+        {
+          "id": "bound-custom-inert",
+          "code": "const b=(()=>0).bind(null);b.custom=fetch;",
+          "expected": "PASS",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 12,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/012",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/012",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 0,
+          "actual": "PASS",
+          "findings": [],
+          "seconds": 0.3246638774871826,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/012.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/012.stderr"
+        }
+      ],
+      "recommendation": "Extend the existing shared stored-own-member projection to all statically known own members of known FunctionLike allocations, preserving callable origin/prefix and ordinary receiver identity. Re-run paired controls and freeze a new candidate before further certification."
+    },
+    {
+      "id": "AUD06-v16-F02",
+      "severity": "P2",
+      "confidence": "high",
+      "title": "Pure own sendMessage on a bound callable is rejected by spelling",
+      "root_cause": "The same missing FunctionLike own-member projection falls through memberEffect to effects.has(name) at line 857. A known own pure arrow is replaced by direct_channel_send solely because its property name is sendMessage.",
+      "source_locations": [
+        "scripts/phase11-bypass-audit.mjs:605",
+        "scripts/phase11-bypass-audit.mjs:857"
+      ],
+      "effective_behavior": "The exact own arrow (x=>x) returns its scalar argument and performs no channel effect. Direct, extracted and call-layer invocations incorrectly report direct_channel_send.",
+      "violated_contract": "Pure/inert own-member controls and lexical known-origin classification.",
+      "reproductions": [
+        {
+          "id": "own-sendMessage-(x => x)",
+          "code": "const b = (()=>0).bind(null); b.sendMessage = (x => x); b.sendMessage('SELECT 1');",
+          "expected": "PASS",
+          "why": "",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 17,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/fixtures/017",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/fixtures/017",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 1,
+          "actual": "FAIL",
+          "findings": [
+            {
+              "id": "direct_channel_send",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            }
+          ],
+          "seconds": 0.3204021453857422,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/raw/017.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/raw/017.stderr"
+        },
+        {
+          "id": "bound-pure-send-extracted",
+          "code": "const b=(()=>0).bind(null);b.sendMessage=(x=>x);const x=b.sendMessage;x('SELECT 1');",
+          "expected": "PASS",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 14,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/014",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/014",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 1,
+          "actual": "FAIL",
+          "findings": [
+            {
+              "id": "direct_channel_send",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            }
+          ],
+          "seconds": 0.3361175060272217,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/014.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/014.stderr"
+        },
+        {
+          "id": "bound-pure-send-call",
+          "code": "const b=(()=>0).bind(null);b.sendMessage=(x=>x);b.sendMessage.call(null,'SELECT 1');",
+          "expected": "PASS",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 15,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/015",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/015",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 1,
+          "actual": "FAIL",
+          "findings": [
+            {
+              "id": "direct_channel_send",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            }
+          ],
+          "seconds": 0.34160637855529785,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/015.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/015.stderr"
+        }
+      ],
+      "controls": [
+        {
+          "id": "bound-pure-custom",
+          "code": "const b=(()=>0).bind(null);b.custom=(x=>x);b.custom('SELECT 1');",
+          "expected": "PASS",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 4,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/004",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/004",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 0,
+          "actual": "PASS",
+          "findings": [],
+          "seconds": 0.3367009162902832,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/004.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/004.stderr"
+        },
+        {
+          "id": "object-pure-send",
+          "code": "const b={sendMessage:(x=>x)};b.sendMessage('SELECT 1');",
+          "expected": "PASS",
+          "why": "bounded discriminating control",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "index": 13,
+          "command": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs"
+          ],
+          "cwd": "/tmp/aud06-v16-independent-k250541g",
+          "fixture": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/013",
+          "env": {
+            "AUD06_CRITIC_FIXTURE_ROOT": "/tmp/aud06-v16-independent-k250541g/paired-fixtures/013",
+            "GIT_OPTIONAL_LOCKS": "0",
+            "TMPDIR": "/tmp/aud06-v16-independent-k250541g"
+          },
+          "exit": 0,
+          "actual": "PASS",
+          "findings": [],
+          "seconds": 0.32830309867858887,
+          "raw_stdout": "/tmp/aud06-v16-independent-k250541g/paired-raw/013.stdout",
+          "raw_stderr": "/tmp/aud06-v16-independent-k250541g/paired-raw/013.stderr"
+        }
+      ],
+      "recommendation": "Prefer projected own callable origin over member-name fallback; keep real sendMessage origins rejectable."
+    }
+  ],
+  "actual_corpus": {
+    "status": "PASS",
+    "exit": 0,
+    "scannedFiles": 59,
+    "findings": [],
+    "forwardingQueries": [
+      {
+        "path": "apps/api/src/server/bootstrap-persistence.ts",
+        "line": 295,
+        "kind": "existing-transparent-parameter-forwarder",
+        "sqlTargetExemption": false
+      }
+    ],
+    "raw_stdout": "/tmp/aud06-v16-independent-k250541g/actual-corpus.stdout",
+    "raw_stderr": "/tmp/aud06-v16-independent-k250541g/actual-corpus.stderr",
+    "qualification": "Own new Git fixture with all 59 scoped non-test sources copied byte-identically from target; inventory of this fixture is untracked. Does not certify original Git inventory or full system."
+  },
+  "immutability": {
+    "status": "PASS",
+    "before_records": 28120,
+    "after_records": 28120,
+    "before_records_sha256": "3ba3503a317ad9fee86ce0c0ae772e57f25122f52c8b370f245649a963d8d13f",
+    "after_records_sha256": "3ba3503a317ad9fee86ce0c0ae772e57f25122f52c8b370f245649a963d8d13f",
+    "differences": [],
+    "compared_fields": "path,byte hash,size,mode,uid,gid,atime_ns,mtime_ns,ctime_ns,dev,ino,nlink,symlink target,symlink post-readlink atime",
+    "exclusions": [
+      ".git"
+    ],
+    "o_noatime": true
+  },
+  "non_mutation": "No target edits, installs, fixture effect execution, network, Docker, DB, commits, pushes, target caches or certification writes. Direct target byte reads and directory enumeration used O_NOATIME. Symlink readlink did not change atime. Git rev-parse/status were read-only and .git excluded; the final sentinel shows no change outside .git, including actual atime. User confirmed no other target readers/writers except sidecar Git object reads inside excluded .git.",
+  "limits": [
+    "Finite concrete coverage only; no arbitrary reflection, arbitrary prototypes, user factories, general interprocedural analysis or external PostgreSQL function semantics.",
+    "Actual AST/SQL logic ran from byte-identical own copies with only root constant substituted to AUD06_CRITIC_FIXTURE_ROOT; exact source/shim/diff retained. TypeScript dependency copied, no target imports.",
+    "Candidate/behavior-tree IDs are sealed task declarations; exact source, dependency and SPEC hashes and Git commit were independently checked. Full candidate hashing/certification not rerun.",
+    "No full test frameworks, build, lint, docs checks, remote CI or runtime effect execution run.",
+    "Target state/log/backlog/evidence untouched under explicit read-only authorization; report supplies handoff for Lead."
+  ],
+  "stop_reason": "Material P1 reproduced with paired pure/read/quota/inert controls; bounded intrinsic/SQL regression completed; expansion stopped and immutable whole-tree sentinel finished.",
+  "artifacts": {
+    "cli_initial": "/tmp/aud06-v16-independent-k250541g/results.json",
+    "cli_paired": "/tmp/aud06-v16-independent-k250541g/paired-results.json",
+    "sql": "/tmp/aud06-v16-independent-k250541g/sql-results.json",
+    "corpus": "/tmp/aud06-v16-independent-k250541g/actual-corpus-result.json",
+    "before": "/tmp/aud06-v16-independent-k250541g/before.json",
+    "after": "/tmp/aud06-v16-independent-k250541g/after.json",
+    "sentinel": "/tmp/aud06-v16-independent-k250541g/sentinel-comparison.json",
+    "source": "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit.mjs",
+    "shim": "/tmp/aud06-v16-independent-k250541g/source/scripts/phase11-bypass-audit-shim.mjs",
+    "diff": "/tmp/aud06-v16-independent-k250541g/root-only-shim.diff"
+  },
+  "finished_utc": "2026-10-08T09:34:35.946473+00:00"
+}

@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "kind": "phase11-bypass-finding-adjudication",
+  "at": "2026-10-08T03:49:47.229865+00:00",
+  "scope": "Read-only bounded static adjudication, not final certification",
+  "binding": {
+    "candidateId": "9cacf65ddf8c2a0deebe60c135ebb891f5166b170df21a85bf8919a0d03029a6",
+    "commit": "f86fb0a6bf52e8d41eb9dd4ceb3bcc2240dab313",
+    "treeHash": "1c806d5385313238ecaf148877185321910e3915ef7cf68e87e8038fb41e0e9f"
+  },
+  "gateObserved": {
+    "id": "bypass_audit",
+    "exitCode": 1,
+    "status": "FAIL",
+    "finding": "direct_sql_write",
+    "path": "apps/api/src/postgres-rate-limit.ts",
+    "reportedLine": 115,
+    "actualInsertLine": 119,
+    "headersMatchFrozenBinding": true
+  },
+  "adjudication": {
+    "category": "SECURITY_INFRASTRUCTURE_CLASSIFIER_MISMATCH",
+    "confidence": "HIGH for observed quota SQL",
+    "domainBypassDemonstrated": false,
+    "reason": "Quota is explicitly admitted by AUD06 SPEC as preauthentication security metadata; observed static SQL writes target only api_rate_limit_buckets, with parameterized values and immutable table identifiers. HTTP hook binds verified request.ip before domain routes; errors deny with503. It does not emit a governed business effect, outbox effect, clinical/financial/record mutation or external HTTP. Current classifier admits two exact prekernel replay-store files but not the new admitted quota boundary.",
+    "requiredCriterionPreserved": "Detect relevant effects and direct domain SQL outside permitted governed boundaries; legitimate prekernel security metadata persistence is an explicitly defined permitted boundary.",
+    "currentGateDisposition": "FAIL remains; raw package remains NO_GO. This adjudication neither edits evidence nor retroactively upgrades a failing gate."
+  },
+  "necessaryCorrection": {
+    "beforeImplementation": "Record a scoped checker/SPEC/backlog correction with this raw gate failure retained; user request authorizes adjudication only here.",
+    "scope": "Permit direct quota DML only for exact source apps/api/src/postgres-rate-limit.ts and exact static target api_rate_limit_buckets; retain scans for other effects in that file and SQL writes outside that file. A whole-directory or unconditional whole-file SQL exemption cannot establish this boundary.",
+    "detection": "Cover ordinary INSERT INTO, UPDATE table, DELETE FROM table including case, whitespace and multiline forms. Inspect all write targets in a statement, not only its first approved target; unsupported/dynamic targets must not receive quota exemption. The current regex INSERT|UPDATE|DELETE followed by INTO? misses UPDATE table and DELETE FROM table.",
+    "doNotChange": [
+      "Required bypass_audit gate",
+      "Domain effect governance",
+      "N3 denial",
+      "Tenant/identity boundaries",
+      "Skip or coverage floors",
+      "External/human gate posture"
+    ]
+  },
+  "neededTestsNotExecuted": [
+    {
+      "case": "Positive admitted security quota",
+      "expect": "Current quota INSERT/ON CONFLICT UPDATE/expired-bucket DELETE is accepted as exact path+table infrastructure; existing replay exceptions retain intended behavior."
+    },
+    {
+      "case": "Wrong path, same table",
+      "expect": "Quota SQL placed in server.ts, worker or arbitrary sibling is rejected."
+    },
+    {
+      "case": "Approved path, wrong table",
+      "expect": "INSERT INTO appointments, UPDATE patient_records, DELETE FROM billing_items each remains a bypass finding inside quota file."
+    },
+    {
+      "case": "Mixed write targets",
+      "expect": "Approved quota statement plus second domain statement or data-modifying CTE must reject domain target; ON CONFLICT must not mask secondary writes."
+    },
+    {
+      "case": "Dynamic target and lexical variants",
+      "expect": "Dynamic/interpolated table target receives no exemption; case/newline/comment variants of forbidden writes remain detectable."
+    },
+    {
+      "case": "Other forbidden effects in quota file",
+      "expect": "Direct fetch/external HTTP/sendMessage remains rejected despite SQL infrastructure classification."
+    },
+    {
+      "case": "Known-bad and known-good corpus",
+      "expect": "Demonstrate pre-fix current quota rejection, post-fix acceptance, and all injected forbidden domain operations still rejection; retain all raw outcomes."
+    }
+  ],
+  "requalification": "Any source/checker/test/contract edit creates a new candidate. Freeze and recompute binding, rerun affected canonical gates and fresh independent critique before any local seal. Current independent_critic stale and package NO_GO are not waived.",
+  "nonMutation": "Own/tmp outputs only; no source edits or tests/Docker/network; whole-filesystem PRE/POST still deferred because archive writer may be active.",
+  "artifacts": [
+    {
+      "path": "certification/phase11/logs/bypass_audit.log",
+      "sha256": "b3c3ef6e89eb91c8db2b2056aa1da4913eebd81b6dd177bcf9ca86b5e848b6ad",
+      "size": 1462
+    },
+    {
+      "path": "scripts/phase11-bypass-audit.mjs",
+      "sha256": "422a677a7ab8ae3e28726e71e2454d8a721c84b732d10fc500c0560c5dd15066",
+      "size": 3445
+    },
+    {
+      "path": "apps/api/src/postgres-rate-limit.ts",
+      "sha256": "ab5cfb3a5017cf964bef597cf6876239a16202ea37a81a2596a86fa17c04c6a1",
+      "size": 5470
+    },
+    {
+      "path": "apps/api/src/server.ts",
+      "sha256": "81b40fceee095b7a98787f2680f5f6afff2d06140e7f6339cffe33b638f35270",
+      "size": 149144
+    },
+    {
+      "path": "packages/persistence/migrations/0030_api_rate_limits.sql",
+      "sha256": "67ba6d0a4b61cf7577c8d03f9afe371266a444ae8814dc553f8ce5df6742022f",
+      "size": 608
+    },
+    {
+      "path": "docs/02_spec/aud06_remediation_20261006.md",
+      "sha256": "2a705aed577478d385c95807977ddd0f05d9d0179f8c9cb8e1d1310520cdb9e0",
+      "size": 9637
+    },
+    {
+      "path": "docs/11_phase11/prompt-master/20260915-formal-closure/source/pasted-text-1.txt",
+      "sha256": "04219513b71ea777af52f79a3e11769fc6cd26c0fb02d43c9f3c306075bf9585",
+      "size": 14575
+    }
+  ]
+}

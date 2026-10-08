@@ -1,0 +1,150 @@
+{
+  "runId": "cvg-aud06-stack-1791422392227-f517287933",
+  "scope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY",
+  "status": "IMPLEMENTED_LOCAL_CHECKS_PASSED",
+  "production": "NO_GO",
+  "realPilot": false,
+  "realRpoRtoQualified": false,
+  "humanSignoff": false,
+  "startedAt": "2026-10-08T01:19:52.227Z",
+  "checks": {
+    "migration": {
+      "count": 31,
+      "repeatedWithoutChanges": true,
+      "sha256": "63e2cb0f21630bd5b5538935a3e92f70f27be069d3f1a9ca63cfcc02cfe4f92b"
+    },
+    "startup": true,
+    "containerIsolation": true,
+    "telemetryPeriodicFiles": true,
+    "workerRestartDurability": true,
+    "httpTlsHeaders": true,
+    "sharedQuota": {
+      "accepted": 300,
+      "limited": 2,
+      "replicas": 2,
+      "storageFailureStatus": 503,
+      "recovered": true
+    },
+    "productionPreflightStillDenies": true,
+    "telemetryExport": {
+      "mode": "local_file",
+      "profile": "CONTROLLED_LOCAL_SYNTHETIC",
+      "processFiles": {
+        "api-a": {
+          "bytes": 1451,
+          "sha256": "1450af5cb7c2514b0462feeabb60c43cb912b26e248eea7c503015a66841a72e",
+          "batches": 2,
+          "counts": {
+            "logs": 3,
+            "metrics": 0,
+            "spans": 0
+          },
+          "events": [
+            "conversation.list_failed"
+          ],
+          "metricNames": [],
+          "firstExportedAt": "2026-10-08T01:20:28.749Z",
+          "lastExportedAt": "2026-10-08T01:20:46.600Z"
+        },
+        "api-b": {
+          "bytes": 1451,
+          "sha256": "8ebba8373568f800936a3dd0928d785cd4a243f94995c5f20cbe1102f606de76",
+          "batches": 2,
+          "counts": {
+            "logs": 3,
+            "metrics": 0,
+            "spans": 0
+          },
+          "events": [
+            "conversation.list_failed"
+          ],
+          "metricNames": [],
+          "firstExportedAt": "2026-10-08T01:20:28.749Z",
+          "lastExportedAt": "2026-10-08T01:20:46.785Z"
+        },
+        "worker": {
+          "bytes": 13728,
+          "sha256": "7b3b0901d525524dd64fc55bdaabcd0017cf39a3bc7702d1ea92c691e366f22c",
+          "batches": 10,
+          "counts": {
+            "logs": 42,
+            "metrics": 26,
+            "spans": 0
+          },
+          "events": [
+            "worker.continuous_drained",
+            "worker.continuous_ready",
+            "worker.draining",
+            "worker.idle_backoff",
+            "worker.outbox.processed",
+            "worker.outbox.summary",
+            "worker.ready",
+            "worker.runtime.span",
+            "worker.shutdown.started",
+            "worker.started",
+            "worker.stopped",
+            "worker.sweep_started",
+            "worker.sweep_stopped",
+            "worker.sweep_tick"
+          ],
+          "metricNames": [
+            "orchestrator_goal_recovery_total",
+            "worker_outbox_lag",
+            "worker_outbox_processed_total",
+            "worker_sweep_approvals_released_total",
+            "worker_sweep_approvals_uncertain_total",
+            "worker_sweep_goal_recovery_failures_total",
+            "worker_sweep_goals_completed_total",
+            "worker_sweep_goals_inspected_total",
+            "worker_sweep_goals_resumed_total",
+            "worker_sweep_journal_released_total"
+          ],
+          "firstExportedAt": "2026-10-08T01:20:23.619Z",
+          "lastExportedAt": "2026-10-08T01:20:46.970Z"
+        }
+      },
+      "periodicFlushObserved": true,
+      "apiShutdownBufferedRecords": {
+        "api-a": {
+          "status": 401,
+          "correlationId": "corr_6e4d604c-9c80-4ca9-b348-0622cc65bfa2",
+          "bufferedBeforeSignal": true
+        },
+        "api-b": {
+          "status": 401,
+          "correlationId": "corr_fd922346-36d4-4071-ae2d-eeafc2a00a9d",
+          "bufferedBeforeSignal": true
+        }
+      },
+      "workerShutdownDrainObserved": true,
+      "retainedAcrossWorkerRestart": true,
+      "forbiddenSyntheticValuesAbsent": true,
+      "apiMetrics": true,
+      "scope": "actual sanitized collector files from isolated synthetic entrypoints"
+    },
+    "restore": {
+      "tables": 44,
+      "rows": 41,
+      "sha256": "bb2c651468eedc82a1e5ad37957b184e946de2df7e0136a39263447ff59055b0",
+      "target": "separate disposable PostgreSQL container/volume"
+    }
+  },
+  "cleanupErrors": [],
+  "sourceManifestSha256": "db34a2651bbd55169585e57f3a8ed198bf35bb1b653f784dfb374724cdb02816",
+  "ports": {
+    "http": "127.0.0.1:39067",
+    "https": "127.0.0.1:38021"
+  },
+  "backupSha256": "b4f7c7c380a475e4b15b8de5f799e6e3bb186e82dc7fc2b0901f207b04d2b4e2",
+  "teardown": {
+    "remaining": {
+      "containers": [],
+      "networks": [],
+      "volumes": []
+    },
+    "passed": true
+  },
+  "sourceDriftSinceSnapshot": [],
+  "exitCode": 0,
+  "endedAt": "2026-10-08T01:20:55.943Z"
+}

@@ -1,0 +1,53 @@
+{
+  "at": "2026-10-08T05:41:26.359735+00:00",
+  "status": "IMPLEMENTED_INTEGRATED_FOCUSED_ONLY",
+  "redHost": {
+    "exitCode": 1,
+    "failed": 25,
+    "passed": 128,
+    "log": "bypass-v10-red-host.log",
+    "beforeScannerSha256": "8316f495375ba9724f599423eaaed516227f39ad004c9f11790aba35cdda3af1"
+  },
+  "redHelper": {
+    "exitCode": 1,
+    "failed": 180,
+    "passed": 224,
+    "receipt": "sql-command-builder/red-receipt.json"
+  },
+  "green": {
+    "exitCode": 0,
+    "files": 4,
+    "passed": 632,
+    "log": "bypass-v10-green-final-2.log"
+  },
+  "publicScanner": {
+    "exitCode": 0,
+    "scannedFiles": 59,
+    "report": "bypass-v10-public-final-3.json"
+  },
+  "lint": {
+    "exitCode": 0,
+    "log": "bypass-v10-ast-lint-final-3.log"
+  },
+  "docsCheck": {
+    "exitCode": 0,
+    "log": "bypass-v10-docs-final-2.log",
+    "priorFailure": "Public JSON was transiently empty during concurrent write; raw failed docs check preserved. Rerun after writer exit passed."
+  },
+  "priorFocusedRuns": {
+    "firstHost153": "GREEN_INTERMEDIATE",
+    "integration606": "GREEN_INTERMEDIATE_TWO_FILES",
+    "integration625": "GREEN_INTERMEDIATE_FOUR_FILES",
+    "forwarder627": "GREEN_INTERMEDIATE_FOUR_FILES"
+  },
+  "sources": {
+    "scripts/phase11-bypass-audit.mjs": "50c42124137a894992db48363588fa76da1b059447cfb02c49e2e03650f742e1",
+    "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+    "tests/phase11-bypass-audit.test.js": "322950c32c21ee5da28c895aab60ee0b5524a106ea8b1fec641d445a4fda7473",
+    "tests/bypass-sql-audit.test.js": "6351cc6c3cf22e261586448a1f97048e2fa9e876e9d0a0aa447fe486bbacce54"
+  },
+  "independentAcceptance": "PENDING",
+  "canonicalQualification": "NOT_STARTED",
+  "runtimeStackSources": "UNCHANGED",
+  "exitProvenance": "Actual lead tool exit codes; builder raw receipts independently preserved; no fabricated process receipt"
+}
