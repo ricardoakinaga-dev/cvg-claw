@@ -601,13 +601,18 @@ for (const relativePath of files) {
   ) {
     if (key === null) return []
     const values = []
-    // Function own invocation members use the same stored-value projection as
+    // Known function own members use the same stored-value projection as
     // literal holders. This also retains a bound prefix for every consumer.
-    if (!forSql && ['bind', 'call', 'apply'].includes(key)) {
+    if (!forSql) {
       for (const owner of receiverOrigins(input, new Set(seen))) {
         if (!ts.isFunctionLike(owner)) continue
-        values.push(...(assignedProperties.get(owner)?.get(key) ?? []))
-        if (unknownAssignedProperties.has(owner) || escapedObjects.has(owner))
+        const stored = assignedProperties.get(owner)?.get(key) ?? []
+        values.push(...stored)
+        if (
+          unknownAssignedProperties.has(owner) ||
+          (escapedObjects.has(owner) &&
+            (stored.length || ['bind', 'call', 'apply'].includes(key)))
+        )
           values.push(unknownValue)
       }
     }
@@ -802,6 +807,21 @@ for (const relativePath of files) {
   }
   function memberEffect(base, name, seen) {
     if (!base || name === null) return null
+    // A selected own value, including a pure callable, takes precedence over
+    // inherited operation or member-name inference. Unknown stays unknown.
+    const own = ts.isFunctionLike(unwrap(base))
+      ? selectedValues(base, name, new Set(seen))
+      : []
+    if (own.length) {
+      const possible = own.map((value) => callee(value, new Set(seen)))
+      return (
+        possible.find((value) => effects.has(value)) ??
+        possible.find(
+          (value) => value === 'query' || value === 'unresolved_static_callable'
+        ) ??
+        null
+      )
+    }
     if (nativeFunctionMember(base, name, seen))
       return callee(base, new Set(seen))
     const baseEffect = callee(base, new Set(seen))
@@ -831,7 +851,8 @@ for (const relativePath of files) {
     ].filter(
       (owner) =>
         ts.isObjectLiteralExpression(owner) ||
-        ts.isArrayLiteralExpression(owner)
+        ts.isArrayLiteralExpression(owner) ||
+        ts.isFunctionLike(owner)
     )
     if (candidates.length) {
       const possible = candidates.map((owner) =>

@@ -4358,3 +4358,1072 @@ describe('v16 bound callable allocation and operation layers', () => {
     expect(result.exitCode).toBe(expected)
   })
 })
+
+describe('v17 known callable own member origins', () => {
+  it.each([
+    {
+      name: 'critic-initial-000-own-bind-fetch',
+      source:
+        "const b = (()=>0).bind(null); b.bind = fetch; b.bind('https://example.invalid/probe');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-001-own-bind-db-query',
+      source:
+        'const b = (()=>0).bind(null); b.bind = db.query; b.bind("UPDATE appointments SET status = \'cancelled\'");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-002-own-bind--x-x',
+      source:
+        "const b = (()=>0).bind(null); b.bind = (x => x); b.bind('SELECT 1');",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-003-own-call-fetch',
+      source:
+        "const b = (()=>0).bind(null); b.call = fetch; b.call('https://example.invalid/probe');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-004-own-call-db-query',
+      source:
+        'const b = (()=>0).bind(null); b.call = db.query; b.call("UPDATE appointments SET status = \'cancelled\'");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-005-own-call--x-x',
+      source:
+        "const b = (()=>0).bind(null); b.call = (x => x); b.call('SELECT 1');",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-006-own-apply-fetch',
+      source:
+        "const b = (()=>0).bind(null); b.apply = fetch; b.apply('https://example.invalid/probe');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-007-own-apply-db-query',
+      source:
+        'const b = (()=>0).bind(null); b.apply = db.query; b.apply("UPDATE appointments SET status = \'cancelled\'");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-008-own-apply--x-x',
+      source:
+        "const b = (()=>0).bind(null); b.apply = (x => x); b.apply('SELECT 1');",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-009-own-custom-fetch',
+      source:
+        "const b = (()=>0).bind(null); b.custom = fetch; b.custom('https://example.invalid/probe');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-010-own-custom-db-query',
+      source:
+        'const b = (()=>0).bind(null); b.custom = db.query; b.custom("UPDATE appointments SET status = \'cancelled\'");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-011-own-custom--x-x',
+      source:
+        "const b = (()=>0).bind(null); b.custom = (x => x); b.custom('SELECT 1');",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-012-own-query-fetch',
+      source:
+        "const b = (()=>0).bind(null); b.query = fetch; b.query('https://example.invalid/probe');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-013-own-query-db-query',
+      source:
+        'const b = (()=>0).bind(null); b.query = db.query; b.query("UPDATE appointments SET status = \'cancelled\'");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-014-own-query--x-x',
+      source:
+        "const b = (()=>0).bind(null); b.query = (x => x); b.query('SELECT 1');",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-015-own-sendMessage-fetch',
+      source:
+        "const b = (()=>0).bind(null); b.sendMessage = fetch; b.sendMessage('https://example.invalid/probe');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-016-own-sendMessage-db-query',
+      source:
+        'const b = (()=>0).bind(null); b.sendMessage = db.query; b.sendMessage("UPDATE appointments SET status = \'cancelled\'");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-017-own-sendMessage--x-x',
+      source:
+        "const b = (()=>0).bind(null); b.sendMessage = (x => x); b.sendMessage('SELECT 1');",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-018-alias-own-bind',
+      source:
+        "const b = (()=>0).bind(null); b.bind = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const a = b; a.bind('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-019-alias-own-call',
+      source:
+        "const b = (()=>0).bind(null); b.call = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const a = b; a.call('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-020-alias-own-apply',
+      source:
+        "const b = (()=>0).bind(null); b.apply = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const a = b; a.apply('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-021-holder-own-bind',
+      source:
+        "const b = (()=>0).bind(null); b.bind = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const holder = { b }; holder.b.bind('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-022-holder-own-call',
+      source:
+        "const b = (()=>0).bind(null); b.call = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const holder = { b }; holder.b.call('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-023-holder-own-apply',
+      source:
+        "const b = (()=>0).bind(null); b.apply = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const holder = { b }; holder.b.apply('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-024-array-own-bind',
+      source:
+        "const b = (()=>0).bind(null); b.bind = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const arr = [b]; arr[0].bind('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-025-array-own-call',
+      source:
+        "const b = (()=>0).bind(null); b.call = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const arr = [b]; arr[0].call('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-026-array-own-apply',
+      source:
+        "const b = (()=>0).bind(null); b.apply = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const arr = [b]; arr[0].apply('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-027-object-rest-own-bind',
+      source:
+        "const b = (()=>0).bind(null); b.bind = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const { skip, ...rest } = {skip:0,b}; rest.b.bind('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-028-object-rest-own-call',
+      source:
+        "const b = (()=>0).bind(null); b.call = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const { skip, ...rest } = {skip:0,b}; rest.b.call('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-029-object-rest-own-apply',
+      source:
+        "const b = (()=>0).bind(null); b.apply = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const { skip, ...rest } = {skip:0,b}; rest.b.apply('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-030-array-rest-own-bind',
+      source:
+        "const b = (()=>0).bind(null); b.bind = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const [skip, ...rest] = [0,b]; rest[0].bind('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-031-array-rest-own-call',
+      source:
+        "const b = (()=>0).bind(null); b.call = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const [skip, ...rest] = [0,b]; rest[0].call('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-032-array-rest-own-apply',
+      source:
+        "const b = (()=>0).bind(null); b.apply = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const [skip, ...rest] = [0,b]; rest[0].apply('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-033-spread-own-bind',
+      source:
+        "const b = (()=>0).bind(null); b.bind = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const copy = {...{b}}; copy.b.bind('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-034-spread-own-call',
+      source:
+        "const b = (()=>0).bind(null); b.call = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const copy = {...{b}}; copy.b.call('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-035-spread-own-apply',
+      source:
+        "const b = (()=>0).bind(null); b.apply = db.query.bind(db, \"UPDATE appointments SET status = 'cancelled'\"); const copy = {...{b}}; copy.b.apply('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-036-direct-FAIL-UPDATE',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const b = db.query.bind(db, SQL); b();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-037-direct-inert-UPDATE',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const b = db.query.bind(db, SQL);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-038-direct-PASS-UPDATE',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const b = db.query.bind(db, SQL); b();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-039-direct-inert-UPDATE',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const b = db.query.bind(db, SQL);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-040-direct-PASS-SELECT',
+      source: "const SQL='SELECT 1';const b = db.query.bind(db, SQL); b();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-041-direct-inert-SELECT',
+      source: "const SQL='SELECT 1';const b = db.query.bind(db, SQL);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-042-bind-call-FAIL-UPDATE',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const b = db.query.bind.call(db.query, db, SQL); b();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-043-bind-call-inert-UPDATE',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const b = db.query.bind.call(db.query, db, SQL);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-044-bind-call-PASS-UPDATE',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const b = db.query.bind.call(db.query, db, SQL); b();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-045-bind-call-inert-UPDATE',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const b = db.query.bind.call(db.query, db, SQL);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-046-bind-call-PASS-SELECT',
+      source:
+        "const SQL='SELECT 1';const b = db.query.bind.call(db.query, db, SQL); b();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-047-bind-call-inert-SELECT',
+      source:
+        "const SQL='SELECT 1';const b = db.query.bind.call(db.query, db, SQL);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-048-bind-apply-FAIL-UPDATE',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const b = db.query.bind.apply(db.query, [db, SQL]); b();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-049-bind-apply-inert-UPDATE',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const b = db.query.bind.apply(db.query, [db, SQL]);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-050-bind-apply-PASS-UPDATE',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const b = db.query.bind.apply(db.query, [db, SQL]); b();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-051-bind-apply-inert-UPDATE',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const b = db.query.bind.apply(db.query, [db, SQL]);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-052-bind-apply-PASS-SELECT',
+      source:
+        "const SQL='SELECT 1';const b = db.query.bind.apply(db.query, [db, SQL]); b();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-053-bind-apply-inert-SELECT',
+      source:
+        "const SQL='SELECT 1';const b = db.query.bind.apply(db.query, [db, SQL]);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-054-layer-54',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const bind = db.query.bind; const b=bind.call(db.query,db,SQL); b();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-055-layer-55',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const bind = db.query.bind; const b=bind.call(db.query,db,SQL); b();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-056-layer-56',
+      source:
+        "const SQL='SELECT 1';const bind = db.query.bind; const b=bind.call(db.query,db,SQL); b();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-057-layer-57',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const bind=db.query.bind; const apply=bind.apply; const b=apply.call(bind,db.query,[db,SQL]); b();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-058-layer-58',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const bind=db.query.bind; const apply=bind.apply; const b=apply.call(bind,db.query,[db,SQL]); b();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-059-layer-59',
+      source:
+        "const SQL='SELECT 1';const bind=db.query.bind; const apply=bind.apply; const b=apply.call(bind,db.query,[db,SQL]); b();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-060-layer-60',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const call=db.query.call; call.call(db.query,db,SQL);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-061-layer-61',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const call=db.query.call; call.call(db.query,db,SQL);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-062-layer-62',
+      source:
+        "const SQL='SELECT 1';const call=db.query.call; call.call(db.query,db,SQL);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-063-layer-63',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const apply=db.query.apply; apply.call(db.query,db,[SQL]);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-064-layer-64',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const apply=db.query.apply; apply.call(db.query,db,[SQL]);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-065-layer-65',
+      source:
+        "const SQL='SELECT 1';const apply=db.query.apply; apply.call(db.query,db,[SQL]);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-066-layer-66',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const call=db.query.call; const bound=call.bind(db.query,db,SQL); bound();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-067-layer-67',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const call=db.query.call; const bound=call.bind(db.query,db,SQL); bound();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-068-layer-68',
+      source:
+        "const SQL='SELECT 1';const call=db.query.call; const bound=call.bind(db.query,db,SQL); bound();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-069-layer-69',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const apply=db.query.apply; const bound=apply.bind(db.query,db,[SQL]); bound();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-070-layer-70',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const apply=db.query.apply; const bound=apply.bind(db.query,db,[SQL]); bound();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-071-layer-71',
+      source:
+        "const SQL='SELECT 1';const apply=db.query.apply; const bound=apply.bind(db.query,db,[SQL]); bound();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-072-layer-72',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";db.query.call.call(db.query,db,SQL);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-073-layer-73',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';db.query.call.call(db.query,db,SQL);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-074-layer-74',
+      source: "const SQL='SELECT 1';db.query.call.call(db.query,db,SQL);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-075-layer-75',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";db.query.apply.call(db.query,db,[SQL]);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-076-layer-76',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';db.query.apply.call(db.query,db,[SQL]);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-077-layer-77',
+      source: "const SQL='SELECT 1';db.query.apply.call(db.query,db,[SQL]);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-078-layer-78',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";db.query.call.apply(db.query,[db,SQL]);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-079-layer-79',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';db.query.call.apply(db.query,[db,SQL]);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-080-layer-80',
+      source: "const SQL='SELECT 1';db.query.call.apply(db.query,[db,SQL]);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-081-layer-81',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";db.query.apply.apply(db.query,[db,[SQL]]);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-082-layer-82',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';db.query.apply.apply(db.query,[db,[SQL]]);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-083-layer-83',
+      source: "const SQL='SELECT 1';db.query.apply.apply(db.query,[db,[SQL]]);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-084-layer-84',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const b=db.query.bind(db,SQL); const call=b.call; call.call(b,null);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-085-layer-85',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const b=db.query.bind(db,SQL); const call=b.call; call.call(b,null);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-086-layer-86',
+      source:
+        "const SQL='SELECT 1';const b=db.query.bind(db,SQL); const call=b.call; call.call(b,null);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-087-layer-87',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const b=db.query.bind(db,SQL); const apply=b.apply; apply.call(b,null,[]);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-088-layer-88',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const b=db.query.bind(db,SQL); const apply=b.apply; apply.call(b,null,[]);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-089-layer-89',
+      source:
+        "const SQL='SELECT 1';const b=db.query.bind(db,SQL); const apply=b.apply; apply.call(b,null,[]);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-090-allocation-90',
+      source:
+        'const f=()=>0;const first=f.bind(null);const second = first; second.call=fetch;first.call(null);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-091-allocation-91',
+      source:
+        'const f=()=>0;const first=f.bind(null);const second = f.bind(null); second.call=fetch;first.call(null);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-092-spread-92',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const args=[db,SQL]; const nested=[...args];const b=db.query.bind(...nested);b();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-093-spread-93',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const args=[db,SQL]; const nested=[...args];const b=db.query.bind(...nested);b();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-094-spread-94',
+      source:
+        "const SQL='SELECT 1';const args=[db,SQL]; const nested=[...args];const b=db.query.bind(...nested);b();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-095-spread-95',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const args=[SQL];db.query.apply(db,[...args]);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-096-spread-96',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const args=[SQL];db.query.apply(db,[...args]);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-097-spread-97',
+      source:
+        "const SQL='SELECT 1';const args=[SQL];db.query.apply(db,[...args]);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-098-spread-98',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const b=db.query.bind(db,SQL);const holder={b};const {b:x}=holder;x.apply(null,[]);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-099-spread-99',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const b=db.query.bind(db,SQL);const holder={b};const {b:x}=holder;x.apply(null,[]);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-100-spread-100',
+      source:
+        "const SQL='SELECT 1';const b=db.query.bind(db,SQL);const holder={b};const {b:x}=holder;x.apply(null,[]);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-101-spread-101',
+      source:
+        'const SQL="UPDATE appointments SET status = \'cancelled\'";const b=db.query.bind(db,SQL);const [x,...tail]=[b,0];x.call(null);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-102-spread-102',
+      source:
+        "const SQL='UPDATE api_rate_limit_buckets SET count = 1';const b=db.query.bind(db,SQL);const [x,...tail]=[b,0];x.call(null);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-initial-103-spread-103',
+      source:
+        "const SQL='SELECT 1';const b=db.query.bind(db,SQL);const [x,...tail]=[b,0];x.call(null);",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-paired-000-direct-http',
+      source: "fetch('https://example.invalid/probe');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-paired-001-direct-domain',
+      source: 'db.query("UPDATE appointments SET status = \'cancelled\'");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-paired-002-object-http',
+      source:
+        "const b={custom:fetch}; b.custom('https://example.invalid/probe');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-paired-003-object-domain',
+      source:
+        'const b={custom:db.query};b.custom("UPDATE appointments SET status = \'cancelled\'");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-paired-004-bound-pure-custom',
+      source:
+        "const b=(()=>0).bind(null);b.custom=(x=>x);b.custom('SELECT 1');",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-paired-005-bound-custom-read',
+      source:
+        "const b=(()=>0).bind(null);b.custom=db.query;b.custom('SELECT 1');",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-paired-006-bound-custom-quota',
+      source:
+        "const b=(()=>0).bind(null);b.custom=db.query;b.custom('UPDATE api_rate_limit_buckets SET count=1');",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-paired-007-bound-custom-extracted',
+      source:
+        'const b=(()=>0).bind(null);b.custom=db.query;const x=b.custom;x("UPDATE appointments SET status = \'cancelled\'");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-paired-008-bound-custom-aliased',
+      source:
+        'const b=(()=>0).bind(null);b.custom=db.query;const a=b;a.custom("UPDATE appointments SET status = \'cancelled\'");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-paired-009-bound-custom-holder',
+      source:
+        'const b=(()=>0).bind(null);b.custom=db.query;const h={b};h.b.custom("UPDATE appointments SET status = \'cancelled\'");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-paired-010-bound-custom-array',
+      source:
+        'const b=(()=>0).bind(null);b.custom=db.query;const arr=[b];arr[0].custom("UPDATE appointments SET status = \'cancelled\'");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-paired-011-bound-custom-prefix',
+      source:
+        "const b=(()=>0).bind(null);b.custom=db.query.bind(db,\"UPDATE appointments SET status = 'cancelled'\");b.custom('SELECT 1');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-paired-012-bound-custom-inert',
+      source: 'const b=(()=>0).bind(null);b.custom=fetch;',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-paired-013-object-pure-send',
+      source: "const b={sendMessage:(x=>x)};b.sendMessage('SELECT 1');",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-paired-014-bound-pure-send-extracted',
+      source:
+        "const b=(()=>0).bind(null);b.sendMessage=(x=>x);const x=b.sendMessage;x('SELECT 1');",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-paired-015-bound-pure-send-call',
+      source:
+        "const b=(()=>0).bind(null);b.sendMessage=(x=>x);b.sendMessage.call(null,'SELECT 1');",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-declaration-http',
+      source: 'function f(){return 0};f.custom=fetch;f.custom("url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-declaration-domain',
+      source:
+        'function f(){return 0};f.custom=db.query;f.custom("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-declaration-read',
+      source: 'function f(){return 0};f.custom=db.query;f.custom("SELECT 1")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-declaration-pure',
+      source: 'function f(){return 0};f.custom=x=>x;f.custom("inert")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-expression-http',
+      source: 'const f=function(){return 0};;f.custom=fetch;f.custom("url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-expression-domain',
+      source:
+        'const f=function(){return 0};;f.custom=db.query;f.custom("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-expression-read',
+      source:
+        'const f=function(){return 0};;f.custom=db.query;f.custom("SELECT 1")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-expression-pure',
+      source: 'const f=function(){return 0};;f.custom=x=>x;f.custom("inert")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-arrow-http',
+      source: 'const f=()=>0;;f.custom=fetch;f.custom("url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-arrow-domain',
+      source:
+        'const f=()=>0;;f.custom=db.query;f.custom("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-arrow-read',
+      source: 'const f=()=>0;;f.custom=db.query;f.custom("SELECT 1")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-arrow-pure',
+      source: 'const f=()=>0;;f.custom=x=>x;f.custom("inert")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-declaration-pure-send',
+      source: 'function f(){return 0}f.sendMessage=x=>x;f.sendMessage("inert")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-expression-pure-send',
+      source:
+        'const f=function(){return 0};f.sendMessage=x=>x;f.sendMessage("inert")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-pure-send-apply',
+      source:
+        'const f=fetch.bind(null);f.sendMessage=x=>x;f.sendMessage.apply(null,["inert"])',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-real-send',
+      source:
+        'const f=(()=>0).bind(null);f.custom=sendMessage;f.custom("message")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-mixed-http',
+      source:
+        'const f=(()=>0).bind(null);f.custom=x=>x;f.custom=fetch;f.custom("url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-mixed-domain',
+      source:
+        'const f=(()=>0).bind(null);f.custom=x=>x;f.custom=db.query;f.custom("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-prefix-read',
+      source:
+        'const f=(()=>0).bind(null);f.custom=db.query.bind(db,"SELECT 1");f.custom("DELETE FROM appointments")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-prefix-quota',
+      source:
+        'const f=(()=>0).bind(null);f.custom=db.query.bind(db,"UPDATE api_rate_limit_buckets SET count=1");const h={f};h.f.custom("DELETE FROM appointments")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-prefix-extracted-domain',
+      source:
+        'const f=(()=>0).bind(null);f.custom=db.query.bind(db,"DELETE FROM appointments");const q=f.custom;q("SELECT 1")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-default-alias',
+      source:
+        'const f=(()=>0).bind(null);f.custom=fetch;const {g=f}={};g.custom("url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-array-rest-alias',
+      source:
+        'const f=(()=>0).bind(null);f.custom=fetch;const [...a]=[f];a[0].custom("url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-object-spread-alias',
+      source:
+        'const f=(()=>0).bind(null);f.custom=fetch;const a={...{f}};a.f.custom("url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-allocation-independent',
+      source:
+        'const f=()=>0;const a=f.bind(null);const b=f.bind(null);a.custom=x=>x;b.custom=fetch;a.custom("inert")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-allocation-shared',
+      source:
+        'const f=()=>0;const a=f.bind(null);const b=a;a.custom=x=>x;b.custom=fetch;a.custom("url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-uninvoked-domain',
+      source:
+        'const f=(()=>0).bind(null);f.custom=db.query.bind(db,"DELETE FROM appointments")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-unknown-not-absent',
+      source:
+        'const f=(()=>0).bind(null);f[key]=fetch;const {custom=x=>x}=f;custom("url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-query-config-read',
+      source:
+        'const f=(()=>0).bind(null);f.custom=db.query;const q={text:"SELECT 1"};f.custom(q);client.query(q)',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'generic-query-config-mutated',
+      source:
+        'const f=(()=>0).bind(null);f.custom=db.query;const q={text:"SELECT 1"};mutate(q);f.custom(q)',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'regression-native-array-push',
+      source: 'const a=[];a.push(1);a.push(2)',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'regression-native-array-filter',
+      source: 'const a=[1,2];expose(a);a.filter(x=>x)',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'regression-own-array-push-fetch',
+      source: 'const a=[];a.push=fetch;a.push("url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'regression-own-array-push-pure',
+      source: 'const a=[];a.push=x=>x;a.push("inert")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    }
+  ])('$name', ({ source, expected, path: fixturePath }) => {
+    const result = scan(fixturePath, source)
+    expect(result.report.scannedFiles).toBe(1)
+    expect(
+      result.report.findings.some(({ id }) =>
+        ['source_parse_failed', 'source_inventory_failed'].includes(id)
+      )
+    ).toBe(false)
+    expect(result.exitCode).toBe(expected)
+  })
+})
