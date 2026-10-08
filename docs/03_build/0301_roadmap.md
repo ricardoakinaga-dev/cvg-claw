@@ -1,5 +1,9 @@
 # 0301 — Roadmap
 
+## Roadmap corrente — AUD06 — 2026-10-06
+
+Consultar [0348](0348_aud06_roadmap.md) e [0349](0349_aud06_backlog.md). Pedido executivo atual admite correções locais; histórico abaixo não define a próxima ação. Produção `NO_GO`.
+
 ## Roadmap corrente em ondas — 2026-10-05
 
 Consultar [0346](0346_claw_waves_roadmap_20261005.md), com [backlog 0347](0347_claw_waves_backlog_20261005.md) e [auditoria 0575](../04_audit/0575_repository_audit_2026-10-05.md). Oito ondas, de base sólida até produção controlada; a Onda 1 foi admitida em 2026-10-05. 0344 e as seções abaixo permanecem históricas.

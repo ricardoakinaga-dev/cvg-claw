@@ -104,7 +104,13 @@ import {
   parseHttpSecurityEnv,
   type HttpSecurityOptions
 } from './http-security.ts'
-import { InMemoryRateLimiter } from './rate-limit.ts'
+import {
+  InMemoryRateLimiter,
+  RATE_LIMIT_ACQUISITION_TIMEOUT_MS,
+  type RateLimiter,
+  type RateLimitResult
+} from './rate-limit.ts'
+import { PostgresRateLimiter } from './postgres-rate-limit.ts'
 import {
   createConfiguredOperatorReplayGuard,
   type OperatorReplayGuard
@@ -125,11 +131,8 @@ import {
 export type { InboundTenantResolver } from './server/request-context.ts'
 import { ControlledRequestMetrics } from './request-metrics.ts'
 import { installResponseCorrelationHook } from './response-correlation.ts'
-import { healthRoute, liveRoute, readyRoute } from './routes/health.ts'
-import {
-  evaluateReadinessWithProbes,
-  type ReadinessProbe
-} from './readiness.ts'
+import { registerHealthRoutes } from './routes/health.ts'
+import type { ReadinessProbe } from './readiness.ts'
 import {
   classifyHttpRequestError,
   HTTP_REQUEST_BODY_LIMIT_BYTES
@@ -257,6 +260,8 @@ export interface BuildServerOptions {
   runtimeApprovalAuthority?: ApprovalAuthority
   /** Harness-only collector injection; `app.close()` awaits flush and close. */
   runtimeCollector?: ObservabilityCollectorPort
+  /** Shared pre-authentication quota; storage failures deny the HTTP request. */
+  rateLimiter?: RateLimiter
 }
 
 export type BuildServerFromEnvOptions = Omit<
@@ -413,12 +418,27 @@ export function buildServer(options: BuildServerOptions = {}) {
   installResponseCorrelationHook(app)
   installRequestMetricsHooks(app, requestMetrics, () => performance.now())
   const getRawBody = requestContext.installRawBodyParser(app)
-  const rateLimiter = new InMemoryRateLimiter()
+  const rateLimiter = options.rateLimiter ?? new InMemoryRateLimiter()
   app.addHook('onRequest', async (request, reply) => {
-    const limit = rateLimiter.check(`ip:${request.ip}`, {
-      max: 300,
-      windowMs: 60_000
-    })
+    let limit: RateLimitResult
+    try {
+      limit = await rateLimiter.check(`ip:${request.ip}`, {
+        max: 300,
+        windowMs: 60_000
+      })
+    } catch {
+      reply
+        .code(503)
+        .header('cache-control', 'no-store')
+        .header('retry-after', '1')
+      return reply.send(
+        fail(
+          'rate_limit_unavailable',
+          'Request quota could not be verified. Retry later.',
+          createCorrelationId()
+        )
+      )
+    }
     if (!limit.allowed) {
       const correlationId = createCorrelationId()
       reply
@@ -477,34 +497,15 @@ export function buildServer(options: BuildServerOptions = {}) {
   const { requireIdentity, requireAnyIdentity } = auth
   const { requireAuthenticatedMutations: mutationOverride } = options
   const authMutations = authRequired(identityMode, mutationOverride)
-  app.get(healthRoute, async () =>
-    ok({ status: 'ok', runtime: 'api' }, createCorrelationId())
-  )
-
-  app.get(liveRoute, async () =>
-    ok({ status: 'ok', runtime: 'api', probe: 'live' }, createCorrelationId())
-  )
-
-  app.get(readyRoute, async (_request, reply) => {
-    const readiness = await evaluateReadinessWithProbes({
+  registerHealthRoutes(app, {
+    readiness: () => ({
       persistenceMode: options.persistence?.kind ?? 'memory',
       durableInbound,
       production: process.env.NODE_ENV === 'production',
       probes: readinessProbes
-    })
-    reply.header('cache-control', 'no-store')
-    reply.code(readiness.ready ? 200 : 503)
-    return ok(readiness, createCorrelationId())
-  })
-
-  app.get('/health/metrics', async (_request, reply) => {
-    const correlationId = createCorrelationId()
-    reply.header('cache-control', 'no-store')
-    if (!requestMetricsEnabled) {
-      reply.code(404)
-      return fail('invalid_action', 'Not found', correlationId)
-    }
-    return ok({ metrics: requestMetrics.snapshot() }, correlationId)
+    }),
+    metrics: requestMetrics,
+    metricsEnabled: requestMetricsEnabled
   })
 
   app.get('/v1/conversations', async (request, reply) => {
@@ -4081,6 +4082,7 @@ function createPostgresPool(
   assertSafeRuntimeSchemaName(schemaName)
   return new Pool({
     connectionString,
+    connectionTimeoutMillis: RATE_LIMIT_ACQUISITION_TIMEOUT_MS,
     ...(schemaName ? { options: `-c search_path=${schemaName}` } : {})
   })
 }
@@ -4221,6 +4223,13 @@ export async function buildServerFromEnv(
   if (persistenceMode !== 'memory' && persistenceMode !== 'postgres') {
     throw new Error('API_PERSISTENCE_MODE must be memory or postgres')
   }
+  const rateLimitStore = env.API_RATE_LIMIT_STORE ?? 'memory'
+  if (rateLimitStore !== 'memory' && rateLimitStore !== 'postgres') {
+    throw new Error('API_RATE_LIMIT_STORE must be memory or postgres')
+  }
+  if (rateLimitStore === 'postgres' && persistenceMode !== 'postgres') {
+    throw new Error('Shared rate limits require PostgreSQL persistence')
+  }
   if (env.NODE_ENV === 'production' && persistenceMode !== 'postgres') {
     throw new Error(
       'Production requires PostgreSQL persistence; in-memory mode is forbidden'
@@ -4351,6 +4360,8 @@ export async function buildServerFromEnv(
   }
   let configuredWebhookVerifier: WebhookVerifier | undefined
   let operatorReplayGuard: OperatorReplayGuard | undefined
+  const configuredRateLimiter =
+    rateLimitStore === 'postgres' ? new PostgresRateLimiter(pool) : undefined
   try {
     const effectiveReplayStore =
       webhookReplayStore ??
@@ -4448,6 +4459,7 @@ export async function buildServerFromEnv(
         runtimeSchemaClient.release()
       }
     }
+    await configuredRateLimiter?.assertReady()
   } catch (error) {
     await closePools()
     throw error
@@ -4462,6 +4474,7 @@ export async function buildServerFromEnv(
 
   const app = buildServer({
     ...effectiveBuildOptions,
+    ...(configuredRateLimiter ? { rateLimiter: configuredRateLimiter } : {}),
     ...(configuredWebhookVerifier
       ? { webhookVerifier: configuredWebhookVerifier }
       : {}),

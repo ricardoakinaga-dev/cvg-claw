@@ -334,7 +334,9 @@ describe('architecture boundaries (AUD19-07)', () => {
       serverSource.indexOf('installResponseCorrelationHook(app)'),
       serverSource.indexOf('installRequestMetricsHooks(app, requestMetrics,'),
       serverSource.indexOf('installRawBodyParser(app)'),
-      serverSource.indexOf('const rateLimiter = new InMemoryRateLimiter()')
+      serverSource.indexOf(
+        'const rateLimiter = options.rateLimiter ?? new InMemoryRateLimiter()'
+      )
     ]
     expect(registrationOrder.every((position) => position >= 0)).toBe(true)
     expect(registrationOrder).toEqual(

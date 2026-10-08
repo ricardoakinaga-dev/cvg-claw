@@ -18,6 +18,16 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    # Approved visual baselines were rendered in this exact Noble image.
+    # Keep its browsers, font packages and system libraries together.
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble@sha256:b0ab6f3cb99aa7803adbc14d9027ec1785fc6e433b97e134e0f8fe61683b6b53
+      options: --shm-size=1g
+    defaults:
+      run:
+        shell: bash
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
     services:
       postgres:
         image: postgres:16-alpine
@@ -25,8 +35,6 @@ jobs:
           POSTGRES_DB: cvg_test
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
-        ports:
-          - 5432:5432
         options: >-
           --health-cmd "pg_isready -U postgres -d cvg_test"
           --health-interval 10s
@@ -58,7 +66,7 @@ jobs:
           # Coverage must be PostgreSQL-backed: the critical-branch floors of
           # kernel-composition (90%) and runtime-approval-store (85%) are only
           # reachable when the integration tests run.
-          TEST_DATABASE_URL: postgres://postgres:postgres@localhost:5432/cvg_test
+          TEST_DATABASE_URL: postgres://postgres:postgres@postgres:5432/cvg_test
         run: npm run verify
 
       - name: Critical branch coverage
@@ -93,10 +101,22 @@ jobs:
 
       - name: PostgreSQL migration smoke
         env:
-          TEST_DATABASE_URL: postgres://postgres:postgres@localhost:5432/cvg_test
+          TEST_DATABASE_URL: postgres://postgres:postgres@postgres:5432/cvg_test
         run: npm run test:postgres
 
-      - name: E2E
-        run: npx playwright install --with-deps chromium firefox webkit
+      - name: Browser environment contract
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict'
+          import fs from 'node:fs'
+          import { createRequire } from 'node:module'
+          const require = createRequire(import.meta.url)
+          assert.equal(process.versions.node, fs.readFileSync('.nvmrc', 'utf8').trim())
+          assert.equal(require('@playwright/test/package.json').version, '1.59.1')
+          assert.equal(process.env.PLAYWRIGHT_BROWSERS_PATH, '/ms-playwright')
+          console.log(`Browser parity: Node ${process.versions.node}, Playwright 1.59.1`)
+          NODE
+          source /etc/os-release
+          test "$VERSION_CODENAME" = noble
       - name: Browser E2E
         run: npm run test:e2e

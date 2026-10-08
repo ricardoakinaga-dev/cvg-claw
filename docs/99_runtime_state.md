@@ -1,3 +1,21 @@
+# Estado operacional corrente
+
+O programa corrente é AUD06. Consulte [CURRENT](CURRENT.md), o
+[estado canônico](03_build/tracking/current_state.json) e o
+[backlog 0349](03_build/0349_aud06_backlog.md). Os registros abaixo são um
+histórico cumulativo: datas e decisões antigas não definem a tarefa vigente.
+O registro AUD06 mais recente está no final deste documento.
+
+# Auditoria AUD-20261006-CLAW — 2026-10-06
+
+- Estado da rodada documental: `COMPLETED`; relatório [0576](04_audit/0576_repository_audit_2026-10-06.md) e [evidências](04_audit/evidence/AUD-20261006-CLAW/README.md).
+- Referência auditada: `1a66436ffed42b656aa980bd64ac6bed45548ba4`; nota ponderada 61,11/100; produção e piloto com efeitos reais `NO_GO`.
+- Verificações: 2.682 testes locais PASS, 194 ignorados; typecheck/lint/build/documentação PASS; audit de dependências com uma high de build; CI do mesmo commit com nove falhas visuais e 66 PASS.
+- Segurança: sondagem sintética do motor genérico exige aprovação para cinco operações sujeitas à regra N3; nenhum efeito foi executado. Remediação exige contrato admitido.
+- Certificação: baseline verificado PASS. Este registro e o relatório integram o hash do candidato; o worktree resultante exige nova qualificação, sem reseal automático nesta auditoria.
+- Reconciliação: selo/publicação e decisão de renovação sintética de tombstone já constam nos recibos da Onda 1. Os registros congelados abaixo permanecem históricos; a implementação da renovação continua pendente.
+- Encaminhamento desta auditoria: priorizar F01–F03, admitir as correções correspondentes e reconciliar o estado canônico com os recibos. A rodada não amplia permissões nem admite novos efeitos.
+
 # Decisões humanas 2026-09-25 — R2 solicitado; PostgreSQL/mutation admitidos; sessão adiada
 
 - current_engine: `AUDIT -> PLAN`; status oficial `WAITING_HUMAN_APPROVAL`; task primária `AUD20-17` (aberta, sem aceite); staging/produção `NO_GO`.
@@ -5251,3 +5269,44 @@ PASS`; suíte integral `289 PASS` arquivos/12 skipped e `2.256 PASS`
 - next_action: obter o parecer do crítico independente no opencode para o candidato congelado da Onda 1 (pedido em `docs/04_audit/evidence/CLAW-W1/`); rodar a passada 2 no contêiner de paridade, commitar o selo com recibo só em `docs/04_audit/evidence/` e fazer push (CLAW-W1-06); decidir a renovação da política de tombstone antes de 2026-12-31 (CLAW-W1-07); responder às 6 perguntas abertas da Discovery 0026 (CLAW-W2-01).
 - evidence: [decisões e pedido ao crítico](04_audit/evidence/CLAW-W1/).
 - verification: typecheck, lint, `docs:check`, Prettier e suíte (2.682 PASS/194 skips/0 falhas) PASS antes do commit; nenhum dado real ou deploy.
+
+# AUD06 — remediação executiva em andamento — 2026-10-06
+
+- current_engine: `BUILD`; status: `IN_PROGRESS`; task corrente: `AUD06-07`; staging/produção `NO_GO`.
+- last_completed_action: criar roadmap/backlog/PRD/SPEC e distribuir as três frentes autorizadas; atualizar source-map-js para 1.2.2 com audit sem vulnerabilidades.
+- next_action: validar a integração das correções AUD06-02 a AUD06-07 com os testes focados e os recibos desta rodada.
+- evidence: [programa](03_build/0349_aud06_backlog.md), [barra](04_audit/evidence/AUD06/quality-bar.json), [audit](04_audit/evidence/AUD06/supply/after-audit.json).
+
+# AUD06-12 — integração e qualificação local — 2026-10-06
+
+- current_engine: `AUDIT`; status: `IN_PROGRESS`; task corrente: `AUD06-12`; staging/produção `NO_GO`.
+- last_completed_action: integrar N3, dependência, retenção, runner, CI visual, health/contratos web, quota PostgreSQL e exportação local API/worker; iniciar cópia isolada e preservar o Gauntlet anterior.
+- next_action: concluir a regressão integrada AUD06-12 e a crítica independente; preservar AUD06-11, AUD06-13 e AUD06-14 sem aceite enquanto faltarem seus gates.
+- evidence: [matriz](03_build/tracking/aud06_tasks.json), [N3 independente](04_audit/evidence/AUD06/policy-independent-acceptance.md), [stack e telemetria](04_audit/evidence/AUD06/stack/BUILDER-D-TELEMETRY-20261006.md), [integração](04_audit/evidence/AUD06/integration-worktree.json).
+- verification: N3 critic e sentinel PASS; 39 testes health/arquitetura, 7 testes cliente e 8 testes quota PASS. A primeira passada PostgreSQL teve 363 PASS/1 FAIL no contador esperado do teste; a correção está incluída nos 8 PASS posteriores. Regressão completa e E2E do candidato integrado em execução, sem aceite global.
+
+# AUD06 — recuperação e rework independente — 2026-10-07
+
+- current_engine: `AUDIT -> BUILD -> AUDIT`; task `AUD06-12` `IN_PROGRESS`; staging/produção `NO_GO`.
+- last_completed_action: E2E atual 75/75 exit 0 e sentinel 1.252 arquivos intactos; crítica I1 aprova Q05/Q08, pede rework Q09/Q10. Corrigidos cleanup independente após falha de logs e aquisição de quota com prazo de 2s/liberação tardia. Testes focados quota/arquitetura 20/20, stack 18/18 e typecheck exit 0. Mock tipado ajustado após dois typechecks rejeitados, logs preservados.
+- next_action: concluir a regressão integrada AUD06-12 e a crítica independente; preservar AUD06-11, AUD06-13 e AUD06-14 sem aceite enquanto faltarem seus gates.
+- evidence: [recuperação](04_audit/evidence/AUD06/recovery-20261007/), [stack rework](04_audit/evidence/AUD06/stack-rework-I1/), [backlog](03_build/0349_aud06_backlog.md).
+- verification: verify-4 interrompido (143), sem conclusão nem recibo final; não é PASS. Selo histórico preservado.
+- user_steering: definições do piloto adiadas (`pula essa etapa`); F01/F03 prioritários e identidade HIS apenas em avaliação. Scout de referência confirma Bearer, token curto ainda proposto e conflito N3 em POST /billing/items. AUD06-11 não qualificado. Sem novo aceite de produção, escrita financeira ou credencial.
+
+# AUD06-12 — rework de estado e crítica inválida — 2026-10-07
+
+- current_engine: `AUDIT -> BUILD -> AUDIT`; task `AUD06-12` `IN_PROGRESS`; staging/produção `NO_GO`.
+- last_completed_action: concluir verify-7 exit0 (3059 testes + cobertura), PostgreSQL 369/369 e browsers75/75; preservar parecer final INVALID por escrita de cache do crítico. Corrigir divergência dos estados09/10 e adicionar checagem de todas as tarefas AUD06 com RED6FAIL/7PASS e GREEN25/25; sem promover aceite global.
+- next_action: concluir a regressão integrada AUD06-12 e a crítica independente; preservar AUD06-11, AUD06-13 e AUD06-14 sem aceite enquanto faltarem seus gates.
+- evidence: [recuperação](04_audit/evidence/AUD06/recovery-20261007/), [matriz](03_build/tracking/aud06_tasks.json).
+- verification: o snapshot19387020 permanece comprovado; Q07 mudou checker/documentação/teste depois da regressão. Novos gates e crítico fresh-context isolado serão executados. Piloto adiado, identidade em avaliação, selo principal intacto.
+
+# AUD06 — aceite técnico local e reauditoria — 2026-10-07
+
+- current_engine: `AUDIT`; task `AUD06-13` `IN_PROGRESS`; staging/produção `NO_GO`.
+- last_completed_action: registrar Q01–Q10/Q12 PASS pelo crítico independente I1 Descartes, sentinel 1.252 fontes/24.147 arquivos intactos; concluir AUD06-01..10/12 somente no escopo local sintético e publicar relatório 0577, nota ponderada 74,27/100 (baseline61,11).
+- next_action: preparar a certificação local AUD06-13 sobre candidato documental estável; validar CI remoto somente com autoridade de publicação; preservar AUD06-11 e AUD06-14 sem aceite.
+- evidence: [relatório0577](04_audit/0577_aud06_remediation_reaudit_2026-10-07.md), [aceite](04_audit/evidence/AUD06/recovery-20261007/local-technical-acceptance.json), [crítico](04_audit/evidence/AUD06/recovery-20261007/final-critic-v4/final-report.json).
+- verification: verify9 exit0, unit e coverage332/3066 sem skips; PostgreSQL32/369 sem skips; browsers75/75; audit0; cobertura97,16/94,38/96,81/97,77 e pisos críticos95% PASS. Banco próprio removido pelo ID imutável e ausência comprovada.
+- limitations: Q11/Q14 BLOCKED e Q13 STALE na revisão congelada; resultado global FAIL. Relatório/aceite/mudança de estado alteram o hash documental, exigindo novo binding. Certificado/Gauntlet históricos principais intactos; sem commit, push, deploy ou signoff novo. Piloto continua DEFERRED_BY_USER e identidade apenas avaliada.

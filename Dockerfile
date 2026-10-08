@@ -52,6 +52,35 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=45s --retries=3 \
   CMD grep -q '"status":"ready"' /tmp/cvg-worker-ready || exit 1
 CMD ["./node_modules/.bin/tsx", "apps/worker/src/main.ts"]
 
+# AUD06 is an explicitly synthetic, digest-pinned local qualification target.
+# Existing production targets and their bootstrap preflight remain unchanged.
+FROM node:22.23.2-trixie-slim@sha256:7b8a0c89c54499bee567618f96578e1a12a800f062fbdbfd1fb6a443fa6f6284 AS aud06-build
+WORKDIR /app
+ENV NPM_CONFIG_FUND=false NPM_CONFIG_AUDIT=false
+COPY package.json package-lock.json tsconfig.base.json tsconfig.json tsconfig.typecheck.json vite.config.mts ./
+COPY apps ./apps
+COPY packages ./packages
+RUN npm ci --ignore-scripts && npm run build:web
+
+FROM aud06-build AS aud06-runtime
+ENV NODE_ENV=test CVG_AUD06_SYNTHETIC=true
+COPY scripts/lib/production-preflight-core.mjs ./scripts/lib/production-preflight-core.mjs
+COPY scripts/aud06-migrate.ts scripts/aud06-stack-db.ts ./scripts/
+RUN npm prune --omit=dev --ignore-scripts && npm cache clean --force
+USER node
+STOPSIGNAL SIGTERM
+CMD ["node", "--import", "tsx", "apps/api/src/main.ts"]
+
+FROM caddy:2-alpine@sha256:6aeddd44c3078b0f9a35206472a11420648a79c184603ef95957d0a20044cb2b AS aud06-web
+# No privileged ports are used. The upstream file capability otherwise makes
+# exec fail when the container correctly drops its entire capability set.
+RUN setcap -r /usr/bin/caddy
+COPY --from=aud06-build /app/apps/web/dist /srv
+COPY deploy/aud06/Caddyfile /etc/caddy/Caddyfile
+USER 10001:10001
+EXPOSE 8080 8443
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+
 FROM nginxinc/nginx-unprivileged:1.27-alpine AS web
 COPY --from=build /app/apps/web/dist /usr/share/nginx/html
 COPY deploy/nginx.web.conf /etc/nginx/conf.d/default.conf

@@ -1,5 +1,11 @@
 # 0090 — PRD Validation
 
+## AUD06 — manutenção corretiva — 2026-10-06
+
+PRODUCT_DEFINED para [0034](0034_aud06_remediation.md): correções da base,
+restrição N3 e infraestrutura sintética. Produto/integrações do piloto mantêm
+as dependências explícitas de 0026, sem aceite presumido.
+
 ## Gate incremental AUD20-19 — 2026-09-22
 
 `PRODUCT_DEFINED`:

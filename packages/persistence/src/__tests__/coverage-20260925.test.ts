@@ -521,7 +521,7 @@ describe('tombstone policy gate without database', () => {
   it('accepts a clock inside the approved validity window', () => {
     expect(() =>
       assertInboundTombstonePolicyEffective(
-        new Date('2026-10-01T00:00:00.000Z')
+        new Date(new Date(INBOUND_TOMBSTONE_POLICY_APPROVED_AT).getTime() + 1)
       )
     ).not.toThrow()
   })
@@ -534,7 +534,7 @@ describe('tombstone policy gate without database', () => {
     ).not.toThrow()
     expect(() =>
       assertInboundTombstonePolicyEffective(
-        new Date('2027-02-01T00:00:00.000Z')
+        new Date(new Date(INBOUND_TOMBSTONE_POLICY_VALID_UNTIL).getTime() + 1)
       )
     ).toThrow(/expired/)
   })

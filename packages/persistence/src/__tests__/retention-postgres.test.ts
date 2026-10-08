@@ -1315,11 +1315,13 @@ describeWithPostgres('AUD20-04 inbound dedupe retention', () => {
     ).not.toThrow()
     expect(() =>
       assertInboundTombstonePolicyEffective(
-        new Date('2027-01-01T03:00:00.000Z')
+        new Date(Date.parse(INBOUND_TOMBSTONE_POLICY_VALID_UNTIL) + 1)
       )
     ).toThrow('approval has expired')
     expect(() =>
-      assertInboundTombstonePolicyEffective(new Date('2026-09-22T01:09:09Z'))
+      assertInboundTombstonePolicyEffective(
+        new Date(Date.parse(INBOUND_TOMBSTONE_POLICY_APPROVED_AT) - 1)
+      )
     ).toThrow('approval is not effective')
   })
 })

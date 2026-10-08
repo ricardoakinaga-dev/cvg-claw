@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { RoleSchema } from '@cvg/shared'
+import { isN3Capability } from './autonomy.ts'
 import {
-  CAPABILITY_CATALOG,
   CapabilitySchema,
   type Capability,
   type ToolRiskLevel
@@ -50,7 +50,8 @@ const SCHEDULING_CAPABILITIES: Capability[] = [
 
 /**
  * Capability ceiling per agent profile. Absence is DENY. Policies can only
- * restrict these grants, never expand them.
+ * restrict these grants, never expand them. The institutional N3 ceiling
+ * applies even if a legacy caller attempts to mutate these tables.
  */
 export const AGENT_PROFILE_GRANTS: Readonly<
   Record<AgentProfileName, readonly CapabilityGrant[]>
@@ -78,20 +79,9 @@ export const AGENT_PROFILE_GRANTS: Readonly<
     { capability: 'conversation.read', level: 'allow' },
     { capability: 'patient.summary.read', level: 'allow' },
     { capability: 'patient.record.read', level: 'allow' },
-    { capability: 'exam.read', level: 'allow' },
-    { capability: 'patient.record.write', level: 'require_approval' },
-    { capability: 'exam.release', level: 'require_approval' },
-    { capability: 'clinical.diagnose', level: 'require_approval' },
-    {
-      capability: 'clinical.prescribe',
-      level: 'require_approval',
-      requiresMedicalOperator: true
-    }
+    { capability: 'exam.read', level: 'allow' }
   ],
-  financial: [
-    { capability: 'finance.read', level: 'allow' },
-    { capability: 'finance.write', level: 'require_approval' }
-  ],
+  financial: [{ capability: 'finance.read', level: 'allow' }],
   admin: [
     { capability: 'admin.policy.manage', level: 'require_approval' },
     { capability: 'admin.agent.manage', level: 'require_approval' },
@@ -99,6 +89,10 @@ export const AGENT_PROFILE_GRANTS: Readonly<
     { capability: 'finance.read', level: 'allow' }
   ]
 }
+
+const NON_N3_CAPABILITIES = CapabilitySchema.options.filter(
+  (capability) => !isN3Capability(capability)
+)
 
 /**
  * Operator role ceiling. An agent cannot exercise a capability that the acting
@@ -111,16 +105,13 @@ export const OPERATOR_ROLE_CAPABILITIES: Readonly<
   Approver: [
     ...SCHEDULING_CAPABILITIES,
     ...READ_CAPABILITIES,
-    'exam.release',
-    'finance.write',
-    'appointment.cancel',
-    'patient.record.write'
+    'appointment.cancel'
   ],
-  Supervisor: (Object.keys(CAPABILITY_CATALOG) as Capability[]).filter(
+  Supervisor: NON_N3_CAPABILITIES.filter(
     (capability) => !capability.startsWith('admin.')
   ),
-  Admin: Object.keys(CAPABILITY_CATALOG) as Capability[],
-  System: Object.keys(CAPABILITY_CATALOG) as Capability[]
+  Admin: [...NON_N3_CAPABILITIES],
+  System: [...NON_N3_CAPABILITIES]
 }
 
 export const APPROVER_ROLES: readonly RoleName[] = [
@@ -134,6 +125,7 @@ export function grantFor(
   profile: AgentProfileName,
   capability: Capability
 ): CapabilityGrant | undefined {
+  if (isN3Capability(capability)) return undefined
   return AGENT_PROFILE_GRANTS[profile].find(
     (grant) => grant.capability === capability
   )
@@ -143,6 +135,7 @@ export function roleAllowsCapability(
   role: RoleName,
   capability: Capability
 ): boolean {
+  if (isN3Capability(capability)) return false
   return OPERATOR_ROLE_CAPABILITIES[role].includes(capability)
 }
 
@@ -160,7 +153,10 @@ export function riskRequiresApproval(risk: ToolRiskLevel): boolean {
 }
 
 export const CapabilityGrantSchema = z.object({
-  capability: CapabilitySchema,
+  capability: CapabilitySchema.refine(
+    (capability) => !isN3Capability(capability),
+    { message: 'Institutional N3 capabilities cannot be granted' }
+  ),
   level: GrantLevelSchema,
   limitedFields: z.boolean().optional(),
   requiresMedicalOperator: z.boolean().optional()

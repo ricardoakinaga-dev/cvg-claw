@@ -1,0 +1,46 @@
+{
+	admin off
+	auto_https off
+	persist_config off
+}
+
+(security) {
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		Referrer-Policy no-referrer
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'"
+		-Server
+	}
+}
+
+http://:8080 {
+	import security
+	handle /edge-health {
+		respond "SYNTHETIC AUD06 edge ready" 200
+	}
+	handle {
+		redir https://localhost:{$AUD06_HTTPS_PORT}{uri} 308
+	}
+}
+
+https://:8443 {
+	tls /certs/localhost.crt /certs/localhost.key
+	import security
+	header Strict-Transport-Security "max-age=300"
+	@api path /v1/* /health /health/* /ready /live
+	handle @api {
+		reverse_proxy api-a:3000 api-b:3000 {
+			lb_policy round_robin
+			header_up X-Forwarded-For {remote_host}
+			header_up X-Forwarded-Proto https
+			header_down X-AUD06-Upstream {http.reverse_proxy.upstream.hostport}
+		}
+	}
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+	}
+}

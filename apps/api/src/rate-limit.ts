@@ -1,3 +1,5 @@
+export const RATE_LIMIT_ACQUISITION_TIMEOUT_MS = 2000
+
 export interface RateLimitPolicy {
   max: number
   windowMs: number
@@ -6,6 +8,14 @@ export interface RateLimitPolicy {
 export interface RateLimitResult {
   allowed: boolean
   retryAfterSeconds: number
+}
+
+/** Shared stores may be asynchronous; callers must await the decision. */
+export interface RateLimiter {
+  check(
+    key: string,
+    policy: RateLimitPolicy
+  ): RateLimitResult | Promise<RateLimitResult>
 }
 
 export interface InMemoryRateLimiterOptions {
@@ -103,7 +113,7 @@ function validateMaxBuckets(value: number | undefined): number {
   return maxBuckets
 }
 
-function normalizeRateLimitKey(key: string): string {
+export function normalizeRateLimitKey(key: string): string {
   if (typeof key !== 'string') {
     throw new RangeError('Rate limit key must be a non-empty string')
   }
@@ -119,7 +129,7 @@ function normalizeRateLimitKey(key: string): string {
   return normalizedKey
 }
 
-function validateRateLimitPolicy(policy: RateLimitPolicy): void {
+export function validateRateLimitPolicy(policy: RateLimitPolicy): void {
   if (
     !policy ||
     !Number.isSafeInteger(policy.max) ||

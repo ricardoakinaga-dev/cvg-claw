@@ -4,6 +4,7 @@ import {
   type DataClassification
 } from '@cvg/shared'
 import { z } from 'zod'
+import { isN3Capability } from './autonomy.ts'
 import {
   CAPABILITY_CATALOG,
   CapabilitySchema,
@@ -103,8 +104,9 @@ export interface PolicyEngineOptions {
 
 /**
  * Deterministic authorization engine. The model has no seat at this table:
- * decisions come exclusively from capability grants, operator role ceilings
- * and versioned policy documents. Missing context or missing tenants deny.
+ * the immutable institutional ceiling precedes capability grants, operator
+ * role ceilings and versioned documents. N3 can never become an approval
+ * request. Missing context or missing tenants deny.
  */
 export class PolicyEngine {
   readonly #documents: PolicyDocument[]
@@ -182,6 +184,21 @@ export class PolicyEngine {
       return this.#deny(
         'action_capability_mismatch',
         'Action is not bound to the requested capability',
+        undefined,
+        {
+          correlationId: request.correlationId,
+          capability: request.capability,
+          profile: request.agentProfile
+        }
+      )
+    }
+
+    // A grant, role, policy document or emergency context cannot promote N3.
+    // The runtime re-evaluates this boundary before consuming any approval.
+    if (isN3Capability(request.capability)) {
+      return this.#deny(
+        'autonomy_n3_blocked',
+        'Institutional N3 capabilities cannot be executed or approved',
         undefined,
         {
           correlationId: request.correlationId,

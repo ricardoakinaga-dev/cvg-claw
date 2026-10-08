@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "kind": "aud06-task-matrix",
+  "program": "AUD06",
+  "currentTask": "AUD06-13",
+  "currentStatus": "IN_PROGRESS",
+  "backlog": "docs/03_build/0349_aud06_backlog.md",
+  "tasks": [
+    {
+      "id": "AUD06-01",
+      "finding": "Todos",
+      "objective": "Criar roadmap, backlog, PRD/SPEC e barra Q01–Q14 em docs",
+      "dependenciesDescription": "Auditoria",
+      "acceptance": "Q01; links válidos, escopo completo",
+      "status": "COMPLETED",
+      "evidence": [
+        "docs/04_audit/evidence/AUD06/quality-bar.json",
+        "docs/04_audit/evidence/AUD06/docs-integration-2.log",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-technical-acceptance.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/final-critic-v4/final-report.json"
+      ],
+      "acceptedScope": "CONTROLLED_LOCAL_SYNTHETIC"
+    },
+    {
+      "id": "AUD06-02",
+      "finding": "F01",
+      "objective": "Atualizar source-map-js no lockfile com instalação reproduzível",
+      "dependenciesDescription": "01",
+      "acceptance": "Q02; audit sem high/critical, build/testes",
+      "status": "COMPLETED",
+      "evidence": [
+        "docs/04_audit/evidence/AUD06/supply/after-audit.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-technical-acceptance.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/final-critic-v4/final-report.json"
+      ],
+      "acceptedScope": "CONTROLLED_LOCAL_SYNTHETIC"
+    },
+    {
+      "id": "AUD06-03",
+      "finding": "F02",
+      "objective": "N3 canônico e irredutível em policy-engine, negativos no runtime",
+      "dependenciesDescription": "01",
+      "acceptance": "Q03; cinco operações DENY sem executor, sem promoção",
+      "status": "COMPLETED",
+      "evidence": [
+        "docs/04_audit/evidence/AUD06/policy-independent-acceptance.md",
+        "docs/04_audit/evidence/AUD06/policy-critic-after.json",
+        "docs/04_audit/evidence/AUD06/policy-critic-probe-lead.log",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-technical-acceptance.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/final-critic-v4/final-report.json"
+      ],
+      "acceptedScope": "CONTROLLED_LOCAL_SYNTHETIC"
+    },
+    {
+      "id": "AUD06-04",
+      "finding": "F03",
+      "objective": "Ambiente visual CI e runner Playwright pinados; diagnóstico por imagens",
+      "dependenciesDescription": "01",
+      "acceptance": "Q04; 75/75 nos três browsers, tolerâncias preservadas",
+      "status": "COMPLETED",
+      "evidence": [
+        "docs/04_audit/evidence/AUD06/visual/verification-receipt.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/browser-current/command-receipt.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/browser-current/source-after.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-technical-acceptance.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/final-critic-v4/final-report.json"
+      ],
+      "acceptedScope": "CONTROLLED_LOCAL_SYNTHETIC"
+    },
+    {
+      "id": "AUD06-05",
+      "finding": "F07",
+      "objective": "Runner scripts/ preserva exit, cleanup próprio e prazo",
+      "dependenciesDescription": "01",
+      "acceptance": "Q05; sucesso/falha/timeout/sinal demonstrados",
+      "status": "COMPLETED",
+      "evidence": [
+        "docs/04_audit/evidence/AUD06/retention-runner/implementation-receipt.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-technical-acceptance.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/final-critic-v4/final-report.json"
+      ],
+      "acceptedScope": "CONTROLLED_LOCAL_SYNTHETIC"
+    },
+    {
+      "id": "AUD06-06",
+      "finding": "F05",
+      "objective": "Implementar decisão de retenção em retention.ts e testes",
+      "dependenciesDescription": "01; receipt CLAW-W1-07",
+      "acceptance": "Q06; janela, aviso, fronteiras e PostgreSQL PASS",
+      "status": "COMPLETED",
+      "evidence": [
+        "docs/04_audit/evidence/AUD06/retention-runner/retention-report.json",
+        "docs/04_audit/evidence/AUD06/retention-runner/postgres-report.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-technical-acceptance.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/final-critic-v4/final-report.json"
+      ],
+      "acceptedScope": "CONTROLLED_LOCAL_SYNTHETIC"
+    },
+    {
+      "id": "AUD06-07",
+      "finding": "F05/F08",
+      "objective": "Reconciliar CURRENT/runtime/matriz/backlog, manter histórico",
+      "dependenciesDescription": "01",
+      "acceptance": "Q07; checker e ponteiros refletem o estado observado",
+      "status": "COMPLETED",
+      "evidence": [
+        "docs/04_audit/evidence/AUD06/state-tests.log",
+        "docs/04_audit/evidence/AUD06/docs-integration-2.log",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-technical-acceptance.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/final-critic-v4/final-report.json"
+      ],
+      "rework": "non-current matrix/backlog consistency gate; new final critic required",
+      "acceptedScope": "CONTROLLED_LOCAL_SYNTHETIC"
+    },
+    {
+      "id": "AUD06-08",
+      "finding": "F08",
+      "objective": "Extrair registrador coeso da API e reduzir acoplamento de cliente",
+      "dependenciesDescription": "03/04 para integração",
+      "acceptance": "Q08; regressão pública e redução medida",
+      "status": "COMPLETED",
+      "evidence": [
+        "docs/04_audit/evidence/AUD06/architecture/final-source-binding.json",
+        "docs/04_audit/evidence/AUD06/architecture/client-tests.log",
+        "docs/04_audit/evidence/AUD06/health-rate-integration.log",
+        "docs/04_audit/evidence/AUD06/typecheck-integration-1.log",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-technical-acceptance.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/final-critic-v4/final-report.json"
+      ],
+      "acceptedScope": "CONTROLLED_LOCAL_SYNTHETIC"
+    },
+    {
+      "id": "AUD06-09",
+      "finding": "F06",
+      "objective": "Composição descartável API/worker/web/banco, migração, TLS/headers",
+      "dependenciesDescription": "01",
+      "acceptance": "Q09; startup/health/teardown isolados observados",
+      "status": "COMPLETED",
+      "evidence": [
+        "docs/04_audit/evidence/AUD06/stack/BUILDER-D-TELEMETRY-20261006.md",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-technical-acceptance.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/final-critic-v4/final-report.json"
+      ],
+      "rework": "F-I1-01/F-I1-02 plus current stack evidence F-I1-03",
+      "acceptedScope": "CONTROLLED_LOCAL_SYNTHETIC"
+    },
+    {
+      "id": "AUD06-10",
+      "finding": "F06",
+      "objective": "Rate compartilhado, coleta/exportação e ensaio de restore",
+      "dependenciesDescription": "09",
+      "acceptance": "Q10; duas réplicas, falha de storage, telemetria, integridade restaurada",
+      "status": "COMPLETED",
+      "evidence": [
+        "docs/04_audit/evidence/AUD06/rate/policy-change-green-2.log",
+        "docs/04_audit/evidence/AUD06/telemetry/verification-receipt.json",
+        "docs/04_audit/evidence/AUD06/stack/BUILDER-D-TELEMETRY-20261006.md",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-technical-acceptance.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/final-critic-v4/final-report.json"
+      ],
+      "rework": "F-I1-01/F-I1-02 plus current stack evidence F-I1-03",
+      "acceptedScope": "CONTROLLED_LOCAL_SYNTHETIC"
+    },
+    {
+      "id": "AUD06-11",
+      "finding": "F04",
+      "objective": "Resolver Discovery 0026 e contratos/integrações HIS/piloto",
+      "dependenciesDescription": "Respostas de produto e identidade",
+      "acceptance": "Q11; contratos aprovados e fluxo ponta a ponta qualificado",
+      "status": "WAITING_HUMAN_APPROVAL",
+      "evidence": [
+        "docs/04_audit/evidence/AUD06/recovery-20261007/user-pilot-steering.json"
+      ],
+      "executionDisposition": "DEFERRED_BY_USER"
+    },
+    {
+      "id": "AUD06-12",
+      "finding": "Todos",
+      "objective": "Regressão integrada e Gauntlet com crítica fresca",
+      "dependenciesDescription": "02–10",
+      "acceptance": "Q12; testes, PostgreSQL, E2E, critic sem achado material",
+      "status": "COMPLETED",
+      "evidence": [
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-technical-acceptance.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/final-critic-v4/final-report.json"
+      ],
+      "acceptedScope": "CONTROLLED_LOCAL_SYNTHETIC"
+    },
+    {
+      "id": "AUD06-13",
+      "finding": "F03/certificação",
+      "objective": "Selar candidato após docs estáveis; validar CI do mesmo candidato",
+      "dependenciesDescription": "12; autoridade de publicação",
+      "acceptance": "Q13; certificado+Verify/Security com SHA correspondente",
+      "status": "IN_PROGRESS",
+      "evidence": [
+        "docs/04_audit/evidence/AUD06/recovery-20261007/current-candidate-certification-verifier-receipt.json"
+      ]
+    },
+    {
+      "id": "AUD06-14",
+      "finding": "F04/F06",
+      "objective": "Oito gates externos/humanos em ambiente e janela autorizados",
+      "dependenciesDescription": "11/13; owners/ambiente",
+      "acceptance": "Q14; evidências reais e signoff, sem síntese de aprovação",
+      "status": "WAITING_HUMAN_APPROVAL",
+      "evidence": []
+    }
+  ]
+}

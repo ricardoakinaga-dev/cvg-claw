@@ -11,6 +11,8 @@ export default defineConfig({
   // (playwright.aud20-19-human-session.config.ts) and must not run here.
   testIgnore: ['**/aud20-19-human-session-harness.spec.ts'],
   fullyParallel: false,
+  // Verification must fail on absent baselines instead of writing new ones.
+  updateSnapshots: 'none',
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
   workers: 1,
@@ -20,7 +22,8 @@ export default defineConfig({
   use: {
     baseURL: process.env.BASE_URL ?? consoleOrigin,
     trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
+    // CI evidence includes successful renders for review, not only failures.
+    screenshot: process.env.CI ? 'on' : 'only-on-failure',
     video: 'retain-on-failure',
     actionTimeout: 10000,
     navigationTimeout: 30000

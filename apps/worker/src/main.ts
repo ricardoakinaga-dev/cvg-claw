@@ -8,7 +8,14 @@ import {
   parseControlledDrainLimit,
   POSTGRES_CONTROLLED_QUEUE_ADAPTER
 } from './postgres-controlled.ts'
-import { createJsonWorkerTelemetry } from './worker-observability.ts'
+import {
+  createCollectorWorkerTelemetry,
+  createJsonWorkerTelemetry
+} from './worker-observability.ts'
+import {
+  createRuntimeCollector,
+  parseRuntimeCollectorConfig
+} from '@cvg/observability'
 import { getWorkerStartupFailure } from './worker.ts'
 import { assertPostgresWorkerPreflight } from './postgres-role-preflight.ts'
 import {
@@ -25,6 +32,7 @@ import {
 
 const startupFailure = getWorkerStartupFailure()
 let productionBootstrapFailure: Error | undefined
+let telemetryConfigurationFailure = false
 try {
   assertProductionBootstrap(process.env)
 } catch (error) {
@@ -32,6 +40,23 @@ try {
     error instanceof Error
       ? error
       : new Error('Production bootstrap preflight failed')
+}
+
+if (!productionBootstrapFailure && !startupFailure) {
+  try {
+    const collectorConfig = parseRuntimeCollectorConfig(process.env, 'worker')
+    if (
+      collectorConfig &&
+      (process.env.CVG_WORKER_RUN_MODE?.trim() !== CONTINUOUS_WORKER_RUN_MODE ||
+        !['postgres', POSTGRES_CONTROLLED_QUEUE_ADAPTER].includes(
+          process.env.CVG_WORKER_QUEUE_ADAPTER ?? ''
+        ))
+    ) {
+      throw new Error('Local telemetry requires the continuous durable worker')
+    }
+  } catch {
+    telemetryConfigurationFailure = true
+  }
 }
 
 if (productionBootstrapFailure) {
@@ -49,6 +74,15 @@ if (productionBootstrapFailure) {
       event: 'worker.startup_failed',
       code: startupFailure.code,
       message: startupFailure.message
+    })
+  )
+  process.exitCode = 1
+} else if (telemetryConfigurationFailure) {
+  console.error(
+    JSON.stringify({
+      event: 'worker.startup_failed',
+      code: 'telemetry_configuration_invalid',
+      message: 'Runtime telemetry configuration is invalid'
     })
   )
   process.exitCode = 1
@@ -208,71 +242,107 @@ async function runPostgresControlledWorker(env: NodeJS.ProcessEnv) {
  * effect-journal sweep; the published-agent path remains unchanged.
  */
 async function runPostgresContinuousWorker(env: NodeJS.ProcessEnv) {
-  const telemetry = createJsonWorkerTelemetry()
-  const runtime = createPostgresContinuousWorker(env, { telemetry })
-  const health = await createWorkerHealthReporter(
-    parseWorkerHealthConfig(env),
-    {
+  const runtimeCollector = createRuntimeCollector(env, 'worker')
+  const telemetry = runtimeCollector
+    ? createCollectorWorkerTelemetry(runtimeCollector)
+    : createJsonWorkerTelemetry()
+  let runtime: ReturnType<typeof createPostgresContinuousWorker> | undefined
+  let health: Awaited<ReturnType<typeof createWorkerHealthReporter>> | undefined
+  try {
+    runtime = createPostgresContinuousWorker(env, { telemetry })
+    const activeRuntime = runtime
+    health = await createWorkerHealthReporter(parseWorkerHealthConfig(env), {
       workerId: runtime.workerId,
       log: (event, fields) => telemetry.log(event, fields)
-    }
-  )
-  try {
+    })
+    const activeHealth = health
     await assertPostgresWorkerPreflight(runtime.pool, {
       tenantId: runtime.tenantId
     })
     if (resolveWorkerRuntimeKind(env) === KERNEL_WORKER_RUNTIME) {
       await assertPostgresKernelPrerequisites(runtime.pool, runtime.tenantId)
     }
-  } catch (error) {
-    await runtime.pool.end().catch(() => undefined)
-    throw error
-  }
-  const shutdown = createShutdownController({
-    close: async () => {
-      await health.markDraining()
-      const stopped = await runtime.worker.stop()
-      telemetry.log('worker.continuous_drained', {
-        drained: stopped.drained,
-        released: stopped.released,
-        releaseFailed: stopped.releaseFailed
-      })
-      await health.markStopped()
-      await runtime.pool.end()
-    },
-    exit: (code) => process.exit(code),
-    timeoutMs: runtime.tuning.drainMs + 5_000,
-    log: (event) => {
-      telemetry.log(
-        `worker.${event.type}`,
-        {
-          ...(event.signal ? { signal: event.signal } : {}),
-          ...(event.code !== undefined ? { code: event.code } : {}),
-          ...(event.error ? { error: event.error } : {})
-        },
-        event.type === 'shutdown.failed' ? 'error' : 'info'
-      )
-    }
-  })
-  shutdown.install(process)
-  runtime.worker.start()
-  try {
+    const shutdown = createShutdownController({
+      close: async () => {
+        let failed = false
+        let failure: unknown
+        const cleanup = async (
+          action: () => Promise<unknown>
+        ): Promise<void> => {
+          try {
+            await action()
+          } catch (error) {
+            if (!failed) failure = error
+            failed = true
+          }
+        }
+        await cleanup(() => activeHealth.markDraining())
+        await cleanup(async () => {
+          const stopped = await activeRuntime.worker.stop()
+          telemetry.log('worker.continuous_drained', {
+            drained: stopped.drained,
+            released: stopped.released,
+            releaseFailed: stopped.releaseFailed
+          })
+        })
+        await cleanup(() => activeHealth.markStopped())
+        await cleanup(() => activeRuntime.pool.end())
+        await cleanup(async () => runtimeCollector?.close())
+        if (failed) throw failure
+      },
+      exit: (code) => process.exit(code),
+      timeoutMs: runtime.tuning.drainMs + 5_000,
+      log: (event) => {
+        // Terminal controller events occur after collector.close(). Keep them
+        // observable on stderr without forwarding exception messages or paths.
+        if (
+          runtimeCollector &&
+          [
+            'shutdown.completed',
+            'shutdown.failed',
+            'shutdown.timeout'
+          ].includes(event.type)
+        ) {
+          console.error(
+            JSON.stringify({
+              event: `worker.${event.type}`,
+              signal: event.signal,
+              code: event.code
+            })
+          )
+          return
+        }
+        telemetry.log(
+          `worker.${event.type}`,
+          {
+            ...(event.signal ? { signal: event.signal } : {}),
+            ...(event.code !== undefined ? { code: event.code } : {}),
+            ...(event.error ? { error: event.error } : {})
+          },
+          event.type === 'shutdown.failed' ? 'error' : 'info'
+        )
+      }
+    })
+    shutdown.install(process)
+    runtime.worker.start()
     await health.markReady({
       adapter: POSTGRES_CONTROLLED_QUEUE_ADAPTER,
       durable: true,
       externalEffects: false
     })
+    telemetry.log('worker.continuous_ready', {
+      adapter: POSTGRES_CONTROLLED_QUEUE_ADAPTER,
+      concurrency: runtime.tuning.concurrency,
+      pollIntervalMs: runtime.tuning.pollIntervalMs,
+      leaseMs: runtime.tuning.leaseMs,
+      durable: true,
+      externalEffects: false
+    })
   } catch (error) {
-    await runtime.worker.stop().catch(() => undefined)
-    await runtime.pool.end().catch(() => undefined)
+    await runtime?.worker.stop().catch(() => undefined)
+    await health?.markStopped().catch(() => undefined)
+    await runtime?.pool.end().catch(() => undefined)
+    await runtimeCollector?.close().catch(() => undefined)
     throw error
   }
-  telemetry.log('worker.continuous_ready', {
-    adapter: POSTGRES_CONTROLLED_QUEUE_ADAPTER,
-    concurrency: runtime.tuning.concurrency,
-    pollIntervalMs: runtime.tuning.pollIntervalMs,
-    leaseMs: runtime.tuning.leaseMs,
-    durable: true,
-    externalEffects: false
-  })
 }

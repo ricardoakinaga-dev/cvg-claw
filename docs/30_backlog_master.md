@@ -1,3 +1,30 @@
+# AUD-20261006-CLAW — auditoria e pendências — 2026-10-06
+
+## Backlog corrente — AUD06 — 2026-10-06
+
+Consultar [0348](03_build/0348_aud06_roadmap.md) e [0349](03_build/0349_aud06_backlog.md). Pedido executivo atual admite correções locais; histórico abaixo não define a próxima ação. Produção `NO_GO`.
+
+Estado corrente: [matriz AUD06](03_build/tracking/aud06_tasks.json).
+Q01 e Q03 possuem aceite local; implementações 02/04–10 aguardam qualificação
+integrada em AUD06-12. Produto/HIS (11), certificação/CI (13) e gates reais (14)
+continuam parte do plano e não têm aceite global.
+
+### Achados registrados na abertura da auditoria — histórico
+
+- [x] Auditoria [0576](04_audit/0576_repository_audit_2026-10-06.md) concluída, nota ponderada 61,11/100, 13 dimensões; [validação final](04_audit/evidence/AUD-20261006-CLAW/final-validation.json). Escopo da task: auditoria e registros; código de produto não alterado.
+- [ ] F01/P1: admitir atualização verificada de `source-map-js` transitivo para versão corrigida; revalidar auditoria, build e testes afetados.
+- [ ] F02/P1: formalizar N0–N3 e implementar proibição obrigatória de N3 por PRD/SPEC admitidas; manter bloqueio de efeitos reais.
+- [ ] F03/P1: investigar nove falhas visuais em Chromium/Firefox/WebKit no CI do commit auditado; revisar causa antes de atualizar snapshots.
+- [ ] F04/P1: concluir Discovery 0026 e contratos do piloto, identidade HIS e integrações; seguir as dependências de CLAW-W2 e posteriores.
+- [ ] F05/P2: reconciliar documentos congelados com recibos posteriores. CLAW-W1-07 já tem decisão humana de renovação sintética aprovada; falta implementação até 30/11/2026, não nova aprovação da mesma decisão.
+- [ ] F06/P1 antes de operação externa: qualificar implantação, TLS, rate limit entre réplicas, telemetria, backup/restore e gates externos.
+- [ ] F07/P2: admitir correção do wrapper de certificação para propagar erro preservando teardown.
+- [ ] F08/P2: planejar decomposição incremental dos arquivos centrais e melhoria do índice de histórico.
+- [ ] Requalificar o candidato após remediações e registros documentais; esta lista não autoriza reseal, promoção ou execução sensível automaticamente.
+
+Os achados estão detalhados com escopo, evidência e aceite no relatório. São
+pendências de remediação, sem substituir o pipeline de admissão existente.
+
 # CLAW-W1 — Onda 1 (base sólida) — 2026-10-05
 
 - [x] Auditoria [0575](04_audit/0575_repository_audit_2026-10-05.md) registrada (nota geral 60/100).
@@ -3177,3 +3204,29 @@ O aceite desta sprint é exclusivamente controlado: schema fictício de fixture,
 - **Negativos obrigatorios:** `AUD20-N03` para lineage canonica divergente e `AUD20-N04` para crash/redelivery/last-attempt sem duplicacao ou falso DLQ.
 - **Limites:** AUD20-04..15 continuam bloqueadas; staging real, producao, provider/canal/IdP/RAG, dados reais e efeitos externos permanecem `NO_GO`.
 - **Proxima acao:** ler o contrato de AUD20-03, capturar RED executavel e implementar somente a menor correcao necessaria.
+
+# AUD06 — recuperação e rework independente — 2026-10-07
+
+- current_engine: `AUDIT -> BUILD -> AUDIT`; task `AUD06-12` `IN_PROGRESS`; staging/produção `NO_GO`.
+- last_completed_action: E2E atual 75/75 exit 0 e sentinel 1.252 arquivos intactos; crítica I1 aprova Q05/Q08, pede rework Q09/Q10. Corrigidos cleanup independente após falha de logs e aquisição de quota com prazo de 2s/liberação tardia. Testes focados quota/arquitetura 20/20, stack 18/18 e typecheck exit 0. Mock tipado ajustado após dois typechecks rejeitados, logs preservados.
+- next_action: concluir a regressão integrada AUD06-12 e a crítica independente; preservar AUD06-11, AUD06-13 e AUD06-14 sem aceite enquanto faltarem seus gates.
+- evidence: [recuperação](04_audit/evidence/AUD06/recovery-20261007/), [stack rework](04_audit/evidence/AUD06/stack-rework-I1/), [backlog](03_build/0349_aud06_backlog.md).
+- verification: verify-4 interrompido (143), sem conclusão nem recibo final; não é PASS. Selo histórico preservado.
+- user_steering: definições do piloto adiadas (`pula essa etapa`); F01/F03 prioritários e identidade HIS apenas em avaliação. Scout de referência confirma Bearer, token curto ainda proposto e conflito N3 em POST /billing/items. AUD06-11 não qualificado. Sem novo aceite de produção, escrita financeira ou credencial.
+
+# AUD06-12 — rework de estado e crítica inválida — 2026-10-07
+
+- current_engine: `AUDIT -> BUILD -> AUDIT`; task `AUD06-12` `IN_PROGRESS`; staging/produção `NO_GO`.
+- last_completed_action: concluir verify-7 exit0 (3059 testes + cobertura), PostgreSQL 369/369 e browsers75/75; preservar parecer final INVALID por escrita de cache do crítico. Corrigir divergência dos estados09/10 e adicionar checagem de todas as tarefas AUD06 com RED6FAIL/7PASS e GREEN25/25; sem promover aceite global.
+- next_action: concluir a regressão integrada AUD06-12 e a crítica independente; preservar AUD06-11, AUD06-13 e AUD06-14 sem aceite enquanto faltarem seus gates.
+- evidence: [recuperação](04_audit/evidence/AUD06/recovery-20261007/), [matriz](03_build/tracking/aud06_tasks.json).
+- verification: o snapshot19387020 permanece comprovado; Q07 mudou checker/documentação/teste depois da regressão. Novos gates e crítico fresh-context isolado serão executados. Piloto adiado, identidade em avaliação, selo principal intacto.
+
+# AUD06 — aceite técnico local e reauditoria — 2026-10-07
+
+- current_engine: `AUDIT`; task `AUD06-13` `IN_PROGRESS`; staging/produção `NO_GO`.
+- last_completed_action: registrar Q01–Q10/Q12 PASS pelo crítico independente I1 Descartes, sentinel 1.252 fontes/24.147 arquivos intactos; concluir AUD06-01..10/12 somente no escopo local sintético e publicar relatório 0577, nota ponderada 74,27/100 (baseline61,11).
+- next_action: preparar a certificação local AUD06-13 sobre candidato documental estável; validar CI remoto somente com autoridade de publicação; preservar AUD06-11 e AUD06-14 sem aceite.
+- evidence: [relatório0577](04_audit/0577_aud06_remediation_reaudit_2026-10-07.md), [aceite](04_audit/evidence/AUD06/recovery-20261007/local-technical-acceptance.json), [crítico](04_audit/evidence/AUD06/recovery-20261007/final-critic-v4/final-report.json).
+- verification: verify9 exit0, unit e coverage332/3066 sem skips; PostgreSQL32/369 sem skips; browsers75/75; audit0; cobertura97,16/94,38/96,81/97,77 e pisos críticos95% PASS. Banco próprio removido pelo ID imutável e ausência comprovada.
+- limitations: Q11/Q14 BLOCKED e Q13 STALE na revisão congelada; resultado global FAIL. Relatório/aceite/mudança de estado alteram o hash documental, exigindo novo binding. Certificado/Gauntlet históricos principais intactos; sem commit, push, deploy ou signoff novo. Piloto continua DEFERRED_BY_USER e identidade apenas avaliada.

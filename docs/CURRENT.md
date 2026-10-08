@@ -1,5 +1,21 @@
 # CURRENT — índice canônico de estado
 
+## Programa AUD06 — 2026-10-06
+
+- status: `IN_PROGRESS`
+- task corrente: `AUD06-13`
+- Próxima ação: preparar a certificação local AUD06-13 sobre candidato documental estável; validar CI remoto somente com autoridade de publicação; preservar AUD06-11 e AUD06-14 sem aceite.
+
+[Roadmap 0348](03_build/0348_aud06_roadmap.md) · [Backlog 0349](03_build/0349_aud06_backlog.md) · [SPEC](02_spec/aud06_remediation_20261006.md). A matriz AUD06 é a projeção do backlog atual; AUD20 permanece histórico.
+
+Selo/publicação e renovação sintética de 05/10 são decisões já registradas; não devem ser solicitadas de novo. Faltam correções, qualificação e decisões do novo piloto. Staging/produção `NO_GO`.
+
+## Referências e checkpoints anteriores
+
+- Auditoria corrente: [0577 — remediação AUD06](04_audit/0577_aud06_remediation_reaudit_2026-10-07.md), nota ponderada **74,27/100**, aceite técnico local Q01–Q10/Q12 e resultado global FAIL/NO_GO.
+- Auditoria baseline: [0576 — 2026-10-06](04_audit/0576_repository_audit_2026-10-06.md), nota ponderada **61,11/100**. O selo passou no commit de referência; os registros desta rodada exigem nova qualificação do worktree. Produção e piloto com efeitos reais permanecem `NO_GO`. Resultados e limites no [recibo](04_audit/evidence/AUD-20261006-CLAW/verification-receipt.md).
+- Reconciliação pendente: os ponteiros congelados abaixo devem ser lidos com os recibos posteriores de [selo da Onda 1](04_audit/evidence/CLAW-W1/CLAW-W1-06-seal-receipt-20261005.md), [publicação](04_audit/evidence/CLAW-W1/CLAW-W1-06-git-publication-20261005.json) e [renovação sintética aprovada](04_audit/evidence/CLAW-W1/CLAW-W1-07-tombstone-policy-renewal-decision-20261005.json). A auditoria não reabre decisões já tomadas nem admite novas capabilities.
+
 - Projeto: `cvg-claw` (renomeado em 2026-10-04 a partir de `cvg-agent-secretary-v2`); Discovery do novo escopo em [0026](00_discovery/0026_cvg_claw_hospital_autonomous_agent.md) (`DRAFT`). Documentos anteriores mantêm o nome original.
 
 - Plano corrente até produção: [roadmap em ondas 0346](03_build/0346_claw_waves_roadmap_20261005.md) e [backlog 0347](03_build/0347_claw_waves_backlog_20261005.md), a partir da [auditoria 0575](04_audit/0575_repository_audit_2026-10-05.md) (nota geral 60/100). Onda 1 (base sólida) admitida, executada e commitada em 2026-10-05; candidato congelado para o crítico; selo e push na sequência.
@@ -19,7 +35,8 @@
 | Pipeline e governança         | [AGENTS.md operacional](07_agents/AGENTS.md) e [AGENTS.md raiz](../AGENTS.md)                                                                                |
 | Contrato de qualidade (AAA)   | [aaa_quality_contract.md](02_spec/aaa_quality_contract.md) v2 e anexos em `docs/04_audit/evidence/AAA/AAA-04/`                                               |
 | Execução corrente do programa | [runtime state](99_runtime_state.md), [execution log](20_master_execution_log.md), [backlog master](30_backlog_master.md)                                    |
-| Backlog operacional corrente  | [0337](03_build/0337_aud20260921_backlog.md) (`AUD20-REM v2`, 20 tasks)                                                                                      |
+| Backlog operacional corrente  | [0349](03_build/0349_aud06_backlog.md) (`AUD06`, 14 tarefas); matriz em [aud06_tasks.json](03_build/tracking/aud06_tasks.json)                               |
+| Backlog operacional AUD20     | [0337](03_build/0337_aud20260921_backlog.md) (`AUD20-REM v2`, 20 tasks), preservado como histórico                                                           |
 | Backlog operacional AUD19     | [0332](03_build/0332_aud20260919_backlog.md), agora histórico/supersedido pela reauditoria 0567                                                              |
 | Backlog operacional AUD17     | [0330](03_build/0330_aud20260917_backlog.md) e [0329](03_build/0329_aud20260917_roadmap.md); tasks locais com evidência                                      |
 | Certificação current          | [certification/current.json](../certification/current.json) (ponteiro) → `certification/phase11/`                                                            |

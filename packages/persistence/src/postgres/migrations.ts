@@ -60,7 +60,8 @@ const defaultPostgresMigrations = [
   '0026_operator_replay_events',
   '0027_inbound_idempotency_tombstones',
   '0028_retention_batch_semantics',
-  '0029_inbound_tombstone_lifecycle'
+  '0029_inbound_tombstone_lifecycle',
+  '0030_api_rate_limits'
 ]
 
 function migrationTimeoutMs(

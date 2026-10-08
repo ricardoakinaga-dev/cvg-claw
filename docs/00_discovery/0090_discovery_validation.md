@@ -1,5 +1,10 @@
 # 0090 — Discovery Validation
 
+## AUD06 — manutenção corretiva — 2026-10-06
+
+DISCOVERY_READY para [0027](0027_aud06_remediation.md), com fatos da auditoria
+0576 e pedido executivo atual. Não altera o gate da Discovery 0026 do piloto.
+
 ## Proposta CLAW-01 / cvg-claw — 2026-10-04
 
 `BLOCKED` para `DISCOVERY_READY`; nenhum PRD ou BUILD admitido:

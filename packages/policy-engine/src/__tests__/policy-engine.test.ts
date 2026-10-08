@@ -13,6 +13,13 @@ import { PolicyEngine, type PolicyEvaluationInput } from '../engine.ts'
 const TENANT = 'tenant_00000000-0000-4000-8000-000000000001'
 const OTHER_TENANT = 'tenant_00000000-0000-4000-8000-000000000002'
 const NOW = new Date('2026-09-11T12:00:00.000Z')
+const N3: readonly Capability[] = [
+  'finance.write',
+  'clinical.diagnose',
+  'clinical.prescribe',
+  'patient.record.write',
+  'exam.release'
+]
 
 function input(
   overrides: Partial<PolicyEvaluationInput> = {}
@@ -76,7 +83,8 @@ describe('capability catalog and least privilege', () => {
 
   it('keeps operators and approvers separated', () => {
     expect(canApproveCapability('Operator', 'exam.release')).toBe(false)
-    expect(canApproveCapability('Approver', 'exam.release')).toBe(true)
+    expect(canApproveCapability('Approver', 'exam.release')).toBe(false)
+    expect(canApproveCapability('Approver', 'appointment.cancel')).toBe(true)
     expect(canApproveCapability('Supervisor', 'appointment.cancel')).toBe(true)
     expect(APPROVER_ROLES).not.toContain('Operator')
     expect(roleAllowsCapability('Operator', 'admin.policy.manage')).toBe(false)
@@ -144,11 +152,15 @@ describe('policy engine decisions', () => {
         input({ capability, action: capability })
       )
       expect(decision.decision, capability).toBe('DENY')
-      expect(decision.reason, capability).toBe('capability_not_granted')
+      expect(decision.reason, capability).toBe(
+        N3.includes(capability)
+          ? 'autonomy_n3_blocked'
+          : 'capability_not_granted'
+      )
     }
   })
 
-  it('requires approval for declared grant levels and high-risk capabilities', () => {
+  it('retains approval for cancellation and mandatorily denies N3 writes', () => {
     const policy = engine()
     expect(
       policy.evaluate(
@@ -167,7 +179,7 @@ describe('policy engine decisions', () => {
           agentProfile: 'clinical'
         })
       ).decision
-    ).toBe('REQUIRE_APPROVAL')
+    ).toBe('DENY')
     expect(
       policy.evaluate(
         input({
@@ -176,7 +188,7 @@ describe('policy engine decisions', () => {
           agentProfile: 'financial'
         })
       ).decision
-    ).toBe('REQUIRE_APPROVAL')
+    ).toBe('DENY')
     expect(
       policy.evaluate(
         input({
@@ -185,7 +197,7 @@ describe('policy engine decisions', () => {
           agentProfile: 'clinical'
         })
       ).decision
-    ).toBe('REQUIRE_APPROVAL')
+    ).toBe('DENY')
   })
 
   it('denies when tenant, identity or context cannot be verified', () => {
@@ -246,7 +258,7 @@ describe('policy engine decisions', () => {
             id: 'allow-finance',
             effect: 'ALLOW',
             priority: 50,
-            capabilities: ['finance.write'],
+            capabilities: ['finance.write', 'finance.read'],
             reason: 'Attempt to expand finance capability'
           }
         ]
@@ -263,7 +275,12 @@ describe('policy engine decisions', () => {
       input({ capability: 'finance.write', action: 'finance.write' })
     )
     expect(expansion.decision).toBe('DENY')
-    expect(expansion.reason).toBe('capability_not_granted')
+    expect(expansion.reason).toBe('autonomy_n3_blocked')
+    const nonN3Expansion = policy.evaluate(
+      input({ capability: 'finance.read', action: 'finance.read' })
+    )
+    expect(nonN3Expansion.decision).toBe('DENY')
+    expect(nonN3Expansion.reason).toBe('capability_not_granted')
   })
 
   it('selects the most restrictive matching rule deterministically', () => {
@@ -338,7 +355,7 @@ describe('policy engine decisions', () => {
     expect(clinical.policyId).toBe('clinical.guard')
   })
 
-  it('requires a medical operator for medical capabilities', () => {
+  it('blocks N3 prescribing instead of offering medical approval', () => {
     const policy = engine()
     const withoutMedical = policy.evaluate(
       input({
@@ -347,8 +364,8 @@ describe('policy engine decisions', () => {
         agentProfile: 'clinical'
       })
     )
-    expect(withoutMedical.decision).toBe('REQUIRE_APPROVAL')
-    expect(withoutMedical.reason).toMatch(/medical operator/)
+    expect(withoutMedical.decision).toBe('DENY')
+    expect(withoutMedical.reason).toBe('autonomy_n3_blocked')
   })
 
   it('ignores tenant documents from other tenants and respects effective windows', () => {

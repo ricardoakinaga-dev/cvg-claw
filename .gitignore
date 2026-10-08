@@ -19,3 +19,8 @@ certification/phase11-manifest.json
 certification/phase11-candidate-manifest.json
 certification/phase11-logs/
 .gauntlet/
+
+# Retained synthetic audit evidence must survive a clean checkout.
+!docs/04_audit/evidence/AUD06/visual/playwright-results.xml
+!docs/04_audit/evidence/AUD06/visual/test-results/
+!docs/04_audit/evidence/AUD06/visual/test-results/**

@@ -1,0 +1,7 @@
+{
+  "extends": "../../tsconfig.typecheck.json",
+  "include": [
+    "../../scripts/aud06-migrate.ts",
+    "../../scripts/aud06-stack-db.ts"
+  ]
+}

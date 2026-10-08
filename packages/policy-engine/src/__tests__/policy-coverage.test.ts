@@ -47,9 +47,7 @@ describe('capability helpers', () => {
   })
 
   it('resolves grants and approval authority', () => {
-    expect(grantFor('clinical', 'clinical.prescribe')?.level).toBe(
-      'require_approval'
-    )
+    expect(grantFor('clinical', 'clinical.prescribe')).toBeUndefined()
     expect(grantFor('secretary', 'clinical.prescribe')).toBeUndefined()
     expect(
       AGENT_PROFILE_GRANTS.hospitalization.some(
@@ -58,7 +56,8 @@ describe('capability helpers', () => {
     ).toBe(true)
     expect(canApproveCapability('System', 'admin.policy.manage')).toBe(true)
     expect(canApproveCapability('Operator', 'admin.policy.manage')).toBe(false)
-    expect(canApproveCapability('Approver', 'finance.write')).toBe(true)
+    expect(canApproveCapability('Approver', 'finance.write')).toBe(false)
+    expect(canApproveCapability('Approver', 'appointment.cancel')).toBe(true)
     expect(roleAllowsCapability('Admin', 'admin.agent.manage')).toBe(true)
     expect(APPROVER_ROLES).toContain('Supervisor')
   })
