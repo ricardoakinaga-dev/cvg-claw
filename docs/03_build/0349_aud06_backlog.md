@@ -110,3 +110,11 @@ e tentativa de gerador inválida preservados. Uso do parser TypeScript existente
 para reconhecer comentários/literais, SQL comments/aliases e basename de teste;
 nenhuma dependência nova, fonte runtime de stack ou fronteira de domínio muda.
 P2 de classificação de skips exige prova por identidade na revisão atual.
+
+### Q13 — separação host/SQL após REJECT v7 — 2026-10-08
+
+Passada3 interrompida143 após2P1; cleanup0 e ausência de todos os próprios
+recursos/temp. RED4FAIL/65PASS e GREEN95/95. ASTs executáveis separados de
+texto SQL com placeholders e strings ordinárias/E-prefix/identificadores
+tratados distintamente; léxico não resolvido rejeitado. Crítica e nova
+certificação ainda pendentes. Sem efeito de domínio, CI ou aprovação real.

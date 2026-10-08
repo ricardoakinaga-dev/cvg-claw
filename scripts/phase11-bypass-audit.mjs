@@ -52,27 +52,40 @@ const quotaTable = 'api_rate_limit_buckets'
 
 // SQL comments are recognized only inside decoded host-language literals.
 // SQL quoted values/identifiers retain comment markers as ordinary text.
-function stripSqlComments(text) {
-  let result = ''
+function normalizeSql(text) {
+  let sql = ''
+  let writeView = ''
   let quote = null
+  let escapeString = false
+  let unresolved = false
+  function append(char, value = false) {
+    sql += char
+    writeView += value && char !== '\n' ? ' ' : char
+  }
   for (let index = 0; index < text.length; index += 1) {
     const char = text[index]
     const next = text[index + 1]
     if (quote) {
-      result += char
-      if (char === quote && next === quote) result += text[++index]
-      else if (char === '\\' && next) result += text[++index]
+      append(char, quote === "'")
+      if (char === quote && next === quote) append(text[++index], quote === "'")
+      else if (char === '\\' && quote === "'" && escapeString && next)
+        append(text[++index], true)
       else if (char === quote) quote = null
+      else if (char === '\\' && quote === "'") unresolved = true
     } else if (char === "'" || char === '"') {
       quote = char
-      result += char
+      escapeString =
+        char === "'" &&
+        /[eE]/.test(text[index - 1] ?? '') &&
+        !/[\w$]/.test(text[index - 2] ?? '')
+      append(char, quote === "'")
     } else if (char === '-' && next === '-') {
       while (index < text.length && text[index] !== '\n') index += 1
-      result += '\n'
+      append('\n')
     } else if (char === '/' && next === '*') {
       let depth = 1
       index += 2
-      result += ' '
+      append(' ')
       while (index < text.length && depth > 0) {
         if (text[index] === '/' && text[index + 1] === '*') {
           depth += 1
@@ -81,47 +94,29 @@ function stripSqlComments(text) {
           depth -= 1
           index += 2
         } else {
-          if (text[index] === '\n') result += '\n'
+          if (text[index] === '\n') append('\n')
           index += 1
         }
       }
+      if (depth > 0) unresolved = true
       index -= 1
-    } else result += char
+    } else append(char)
   }
-  return result
-}
-
-function maskSqlValues(text) {
-  let result = ''
-  let quoted = false
-  for (let index = 0; index < text.length; index += 1) {
-    const char = text[index]
-    if (char === "'") {
-      if (quoted && text[index + 1] === "'") {
-        result += '  '
-        index += 1
-      } else {
-        quoted = !quoted
-        result += ' '
-      }
-    } else if (quoted && char === '\\' && text[index + 1]) {
-      result += '  '
-      index += 1
-    } else result += quoted && char !== '\n' ? ' ' : char
-  }
-  return result
+  return { sql, writeView, unresolved: unresolved || quote !== null }
 }
 
 // The repository's pinned TypeScript parser owns host syntax: comments are
 // trivia, while URLs, escapes, regexes and template expressions stay intact.
 function normalizeSource(file) {
   const sqlLiterals = []
+  const hostExpressions = []
+  let unresolvedSql = false
   function normalizeLiteral(text) {
-    const sql = stripSqlComments(text)
+    const { sql, writeView, unresolved } = normalizeSql(text)
     if (/^\s*(?:WITH|SELECT|INSERT|UPDATE|DELETE)\s/i.test(sql)) {
-      const statement = maskSqlValues(sql)
-      sqlLiterals.push(statement)
-      return '`' + statement + '`'
+      unresolvedSql ||= unresolved
+      sqlLiterals.push(writeView)
+      return '`' + writeView + '`'
     }
     return '`' + sql + '`'
   }
@@ -132,14 +127,34 @@ function normalizeSource(file) {
     if (ts.isTemplateExpression(node)) {
       let literal = node.head.text
       for (const span of node.templateSpans) {
-        literal += '${' + visit(span.expression) + '}' + span.literal.text
+        hostExpressions.push(visit(span.expression))
+        // SQL values/comments may mask placeholders, never executable ASTs.
+        literal +=
+          '${__cvg_expression_' +
+          hostExpressions.length +
+          '__}' +
+          span.literal.text
       }
       return normalizeLiteral(literal)
+    }
+    if (ts.isTaggedTemplateExpression(node)) {
+      const tag = ts.isIdentifier(node.tag)
+        ? node.tag.text
+        : ts.isPropertyAccessExpression(node.tag)
+          ? node.tag.name.text
+          : null
+      if (['fetch', 'sendMessage', 'axios', 'got', 'undici'].includes(tag))
+        hostExpressions.push(tag + '(')
     }
     const children = node.getChildren(file)
     return children.length ? children.map(visit).join(' ') : node.getText(file)
   }
-  return { source: visit(file), sqlLiterals }
+  const source = visit(file)
+  return {
+    source: [source, ...hostExpressions].join('\n'),
+    sqlLiterals,
+    unresolvedSql
+  }
 }
 
 const allowedBoundary = (relativePath, findingId, sqlTarget) => {
@@ -197,7 +212,9 @@ for (const relativePath of files) {
     findings.push({ id: 'source_parse_failed', path: relativePath })
     continue
   }
-  const { source, sqlLiterals } = normalizeSource(parsed)
+  const { source, sqlLiterals, unresolvedSql } = normalizeSource(parsed)
+  if (unresolvedSql)
+    findings.push({ id: 'sql_lexical_unresolved', path: relativePath })
   for (const rule of forbidden) {
     rule.pattern.lastIndex = 0
     let match

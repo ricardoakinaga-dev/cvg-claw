@@ -3264,3 +3264,12 @@ O aceite desta sprint é exclusivamente controlado: schema fictício de fixture,
 - evidence: [recibo](04_audit/evidence/AUD06/recovery-20261007/bypass-I1-final-focused-receipt.json), [rejeição](04_audit/evidence/AUD06/recovery-20261007/bypass-focused-reject-I1/q13-focused-review-reject.json).
 - verification: tentativas intermediárias/gerador inválido preservados e qualificados; nenhum GREEN substitui aceite independente. Fontes runtime e provas stack370 permanecem intactas; candidato anterior8a108f29 STALE para a nova revisão. Fonte/documentação devem ser religadas antes do ensaio.
 - limitations: resultado global FAIL/NO_GO; sem novo selo principal, CI, publicação, produto ou signoff. Auditoria0577 mantém nota74,27 vinculada ao snapshot380ccc52; piloto adiado e identidade em avaliação. P2 de classificação de skip requer reconciliação das identidades executadas, sem presumir cobertura por nome.
+
+# AUD06-13 — separação host/SQL; nova revisão pendente — 2026-10-08
+
+- current_engine: `AUDIT`; task `AUD06-13` `WAITING_HUMAN_APPROVAL` na fronteira de publicação; qualificação local autorizada; staging/produção `NO_GO`.
+- last_completed_action: interromper passada3 após REJECT I1 v7 (2P1), exit143, cleanup0, contêineres/volume/temp próprios ausentes. Reproduzir RED4FAIL/65PASS; separar ASTs executáveis de templates e léxico SQL com modos ordinário/E-string/identificador; GREEN95/95, scanner público e lint exit0. Nova crítica/certificação pendentes.
+- next_action: conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.
+- evidence: [recibo](04_audit/evidence/AUD06/recovery-20261007/bypass-v8-focused-receipt.json), [crítica](04_audit/evidence/AUD06/recovery-20261007/bypass-v7-reject-I1/focused-review-reject.json), [cleanup](04_audit/evidence/AUD06/recovery-20261007/local-certification-pass3-teardown.json).
+- verification: fonte dc7be3a7 anterior não qualifica o novo reparo. Nenhuma passada interrompida ou teste focado recebe aceite integrado. Source runtime da stack e runner frozen original permanecem intactos. Preservar todos os REJECT/NO_GO e selo histórico principal.
+- limitations: global FAIL/NO_GO; piloto adiado, identidade avaliada, CI/signoff reais pendentes. Nota0577 74,27 é snapshot380ccc52. Recibos futuros não concedem aprovação automaticamente.

@@ -385,3 +385,86 @@ describe('host syntax and SQL literal preservation', () => {
     ).toBe(true)
   })
 })
+
+describe('independent v7 template/SQL reproductions', () => {
+  it.each([
+    {
+      name: 'sql-value-fetch-expression',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'client.query(`INSERT INTO api_rate_limit_buckets (bucket_key) VALUES (\'${fetch("https://example.invalid")}\')`)',
+      tracked: true,
+      expectedScannerExit: 1
+    },
+    {
+      name: 'sql-comment-fetch-expression',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'client.query(`SELECT 1 -- ${fetch("https://example.invalid")}\\n`)',
+      tracked: true,
+      expectedScannerExit: 1
+    },
+    {
+      name: 'sql-blockcomment-send-expression',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'client.query(`SELECT /* ${sendMessage("synthetic")} */ 1`)',
+      tracked: true,
+      expectedScannerExit: 1
+    },
+    {
+      name: 'sql-value-pure-expression',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        "client.query(`INSERT INTO api_rate_limit_buckets (bucket_key) VALUES ('${safeValue}')`)",
+      tracked: true,
+      expectedScannerExit: 0
+    },
+    {
+      name: 'SQL-standard-backslash-value',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        "client.query(`INSERT INTO api_rate_limit_buckets VALUES ('literal\\\\'); DELETE FROM billing_items WHERE id=$1`)",
+      tracked: true,
+      expectedScannerExit: 1
+    },
+    {
+      name: 'SQL-escaped-value-positive',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        "client.query(`INSERT INTO api_rate_limit_buckets VALUES ('a''DELETE FROM billing_items')`)",
+      tracked: true,
+      expectedScannerExit: 0
+    }
+  ])('$name', ({ file, source, tracked, expectedScannerExit }) => {
+    const result = scan(file, source, tracked)
+    expect(result.exitCode).toBe(expectedScannerExit)
+    expect(
+      result.report.findings.some((f) => f.id === 'source_parse_failed')
+    ).toBe(false)
+  })
+})
+
+describe('separate executable templates and SQL lexical modes', () => {
+  it.each([
+    'client.query(`SELECT \'${`inner${fetch("https://example.invalid")}`}\'`)',
+    'sqlTag`SELECT /* ${sendMessage("synthetic")} */ 1`',
+    'fetch`https://example.invalid`',
+    'globalThis.fetch`https://example.invalid`',
+    'client.query(`INSERT INTO api_rate_limit_buckets VALUES ($1); UPDATE api_rate_limit_buckets AS "b\'x" SET request_count=2; DELETE FROM billing_items WHERE id=$1`)'
+  ])('rejects real expressions and following writes: %s', (source) => {
+    const result = scan(quotaFile, source)
+    expect(result.exitCode).toBe(1)
+    expect(
+      result.report.findings.some((f) => f.id === 'source_parse_failed')
+    ).toBe(false)
+  })
+
+  it('retains inert explicitly escaped SQL strings', () => {
+    const source = String.raw`client.query("INSERT INTO api_rate_limit_buckets VALUES (E'a\\'DELETE FROM billing_items')")`
+    expect(scan(quotaFile, source).exitCode).toBe(0)
+  })
+
+  it('preserves a pure tagged-template interpolation', () => {
+    expect(scan(quotaFile, 'sqlTag`SELECT ${safeValue}`').exitCode).toBe(0)
+  })
+})

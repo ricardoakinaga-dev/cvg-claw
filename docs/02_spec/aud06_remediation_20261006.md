@@ -170,3 +170,17 @@ rastreadas ou novas. Provar os exemplos negativos independentes, além dos
 controles benignos e da exceção restrita. Não promover os48 testes anteriores
 a aceite; preservar REJECT e sentinel13arquivos intactos. Nenhuma fronteira
 de domínio, alvo Q01–Q14 ou gate externo muda. Novo congelamento/reteste.
+
+### Rework lexical de templates e SQL Q13 — 2026-10-08
+
+Crítica I1 v7 REJECT: quatro PASS incorretos em44 sondagens. Separar
+expressões executáveis de template do texto SQL: nenhuma máscara de valor ou
+comentário SQL pode ocultar fetch/sendMessage/HTTP real de uma interpolação,
+inclusive aninhada. Texto recebe placeholders desconhecidos, enquanto ASTs
+das expressões são inspecionadas independentemente. Corrigir aspas de valores
+SQL ordinários versus E-prefixed e identificadores entre aspas; barra invertida
+ordinária não pode ocultar a próxima escrita. Léxico não resolvido não recebe
+exceção de quota. Preservar valores inertes, apóstrofos dobrados, E-strings
+benignas e interpolação pura. RED/GREEN dos casos independentes e requalificação
+obrigatórios; passada3 interrompida143, com cleanup0 e recursos próprios
+ausentes, permanece sem PASS. Q01–Q14/gates reais e autoridade inalterados.
