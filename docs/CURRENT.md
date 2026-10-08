@@ -2,9 +2,9 @@
 
 ## Programa AUD06 — 2026-10-06
 
-- status: `IN_PROGRESS`
+- status: `WAITING_HUMAN_APPROVAL`
 - task corrente: `AUD06-13`
-- Próxima ação: preparar a certificação local AUD06-13 sobre candidato documental estável; validar CI remoto somente com autoridade de publicação; preservar AUD06-11 e AUD06-14 sem aceite.
+- Próxima ação: conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.
 
 [Roadmap 0348](03_build/0348_aud06_roadmap.md) · [Backlog 0349](03_build/0349_aud06_backlog.md) · [SPEC](02_spec/aud06_remediation_20261006.md). A matriz AUD06 é a projeção do backlog atual; AUD20 permanece histórico.
 

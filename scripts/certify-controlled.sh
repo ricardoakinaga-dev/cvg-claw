@@ -104,8 +104,10 @@ cleanup() {
           "$cid" "$logs_status" >> "$log"
       fi
     fi
+    # PostgreSQL creates an anonymous data volume. Remove those attached to
+    # this owned container too; named volumes and bind sources are preserved.
     if ! run_child timeout --foreground --signal=TERM --kill-after=1s \
-      "${cleanup_seconds}s" docker rm -f -- "$cid" >> "$log" 2>&1; then
+      "${cleanup_seconds}s" docker rm -f --volumes -- "$cid" >> "$log" 2>&1; then
       printf 'cleanup failed: container %s\n' "$cid" >> "$log"
       cleanup_failed=1
     fi

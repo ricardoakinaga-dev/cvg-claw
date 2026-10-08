@@ -18,7 +18,7 @@ Estados oficiais; COMPLETED exige evidência, não só mudança de arquivo.
 | AUD06-10 | F06              | Rate compartilhado, coleta/exportação e ensaio de restore               | 09                                | Q10; duas réplicas, falha de storage, telemetria, integridade restaurada | COMPLETED              |
 | AUD06-11 | F04              | Resolver Discovery 0026 e contratos/integrações HIS/piloto              | Respostas de produto e identidade | Q11; contratos aprovados e fluxo ponta a ponta qualificado               | WAITING_HUMAN_APPROVAL |
 | AUD06-12 | Todos            | Regressão integrada e Gauntlet com crítica fresca                       | 02–10                             | Q12; testes, PostgreSQL, E2E, critic sem achado material                 | COMPLETED              |
-| AUD06-13 | F03/certificação | Selar candidato após docs estáveis; validar CI do mesmo candidato       | 12; autoridade de publicação      | Q13; certificado+Verify/Security com SHA correspondente                  | IN_PROGRESS            |
+| AUD06-13 | F03/certificação | Selar candidato após docs estáveis; validar CI do mesmo candidato       | 12; autoridade de publicação      | Q13; certificado+Verify/Security com SHA correspondente                  | WAITING_HUMAN_APPROVAL |
 | AUD06-14 | F04/F06          | Oito gates externos/humanos em ambiente e janela autorizados            | 11/13; owners/ambiente            | Q14; evidências reais e signoff, sem síntese de aprovação                | WAITING_HUMAN_APPROVAL |
 
 ## Evidências e pendências externas
@@ -76,3 +76,20 @@ O rework e as falhas anteriores permanecem históricos. AUD06-13 IN_PROGRESS
 para preparar certificação local sobre docs estáveis; selo/CI ainda pendentes.
 AUD06-11 adiado pelo usuário e AUD06-14 sem aceite; resultado global FAIL/NO_GO.
 [Reauditoria0577](../04_audit/0577_aud06_remediation_reaudit_2026-10-07.md):74,27/100.
+
+### Q05 — volume anônimo observado na certificação provisória
+
+AUD06-05 reaberto por prova real de resíduo próprio. Correção do runner canônico
+validada por43/43 e Docker0/37; crítica fresca pendente. Passada provisória1
+interrompida143, sem certificado válido novo. Auditoria0577/aceite anterior
+continuam vinculados ao snapshot380ccc52; alteração posterior exige nova
+qualificação, sem modificar as fontes de stack já comprovadas.
+
+### Aceite da correção Q05 e fronteira de publicação
+
+Crítico I1 fresco APPROVE; Q05 novamente COMPLETED local,43/43 e provas reais
+0/37, named/bind preservados. [Aceite](../04_audit/evidence/AUD06/recovery-20261007/runner-volume-local-acceptance.json).
+AUD06-13 WAITING_HUMAN_APPROVAL somente na fronteira de publicação/CI;
+a preparação de certificação local em cópia provisória permanece autorizada
+e deve ser concretizada antes de solicitar a decisão. Nenhum gate13 aceito.
+A sessão piloto11 segue adiada e os gates externos14 continuam sem aceite.

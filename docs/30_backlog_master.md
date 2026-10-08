@@ -3230,3 +3230,20 @@ O aceite desta sprint é exclusivamente controlado: schema fictício de fixture,
 - evidence: [relatório0577](04_audit/0577_aud06_remediation_reaudit_2026-10-07.md), [aceite](04_audit/evidence/AUD06/recovery-20261007/local-technical-acceptance.json), [crítico](04_audit/evidence/AUD06/recovery-20261007/final-critic-v4/final-report.json).
 - verification: verify9 exit0, unit e coverage332/3066 sem skips; PostgreSQL32/369 sem skips; browsers75/75; audit0; cobertura97,16/94,38/96,81/97,77 e pisos críticos95% PASS. Banco próprio removido pelo ID imutável e ausência comprovada.
 - limitations: Q11/Q14 BLOCKED e Q13 STALE na revisão congelada; resultado global FAIL. Relatório/aceite/mudança de estado alteram o hash documental, exigindo novo binding. Certificado/Gauntlet históricos principais intactos; sem commit, push, deploy ou signoff novo. Piloto continua DEFERRED_BY_USER e identidade apenas avaliada.
+
+# AUD06-05 — correção adicional de limpeza real — 2026-10-07
+
+- current_engine: `AUDIT -> BUILD -> AUDIT`; task corrente `AUD06-13` `IN_PROGRESS`; AUD06-05 reaberto; staging/produção `NO_GO`.
+- last_completed_action: reproduzir volume anônimo próprio residual após `docker rm -f`; registrar addendum Q05/barra v5 antes de código; adicionar remoção de volume pelo ID imutável com RED2FAIL e GREEN43/43. Docker real mantém exit0/37, remove volumes próprios, preserva recurso alheio ao runner; quatro contêineres ausentes. Crítica Q05 fresca pendente.
+- next_action: preparar a certificação local AUD06-13 sobre candidato documental estável; validar CI remoto somente com autoridade de publicação; preservar AUD06-11 e AUD06-14 sem aceite.
+- evidence: [RED real](04_audit/evidence/AUD06/recovery-20261007/runner-anonymous-volume-red.json), [GREEN real](04_audit/evidence/AUD06/recovery-20261007/runner-volume-real-green.json), [binding](04_audit/evidence/AUD06/recovery-20261007/runner-volume-final-binding.json).
+- verification: passada provisória1 da certificação interrompida por SIGTERM, exit143, sem selo aceito. Dois contêineres próprios removidos pelo wrapper; volume residual removido pelo lead após conferência do recibo de criação. Crítico do candidato anterior é checkpoint estático STALE, não julgamento final. Runner/teste de stack AUD06-09 permanecem intactos. Certificado principal e Gauntlet histórico principais intactos; sem publicação ou efeito real.
+
+# AUD06-13 — candidato local preparado; fronteira de publicação — 2026-10-07
+
+- current_engine: `AUDIT`; task `AUD06-13` `WAITING_HUMAN_APPROVAL` na fronteira de publicação; preparação/qualificação local autorizada; staging/produção `NO_GO`.
+- last_completed_action: concluir rework adicional Q05 com43/43, Docker0/37, anonymousvolumes ausentes, named/bind preservados e crítico fresco I1 APPROVE; registrar aceite limitado e preparar docs estáveis para certificação local.
+- next_action: conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.
+- evidence: [Q05aceite](04_audit/evidence/AUD06/recovery-20261007/runner-volume-local-acceptance.json), [crítico](04_audit/evidence/AUD06/recovery-20261007/runner-volume-independent-critic/report.json), [reauditoria0577](04_audit/0577_aud06_remediation_reaudit_2026-10-07.md). Recibos correntes da certificação local serão armazenados em `docs/04_audit/evidence/AUD06/recovery-20261007/`; ausência ou falha não concede aceite.
+- verification: passada provisória1 interrompida143, sem certificado novo; todas suas próprias instâncias e volume anônimo ausentes. A nova passada usará fonte8857c324... e candidato com docs estáveis. Não houve commit principal, publicação, dado real ou aumento de autonomia. O certificado principal/Gauntlet principal continuam históricos intactos.
+- limitations: Q11 adiado pelo usuário, Q13 sem certificado+CI aceitos e Q14 real/humano sem qualificação. Nota74,27 é do relatório0577/snapshot380ccc52; correção posterior Q05 e novo binding são registrados separadamente. Resultado global FAIL/NO_GO.

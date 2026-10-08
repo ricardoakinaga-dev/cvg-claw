@@ -3,8 +3,8 @@
   "kind": "cvg-current-operational-state",
   "program": "AUD06",
   "currentTask": "AUD06-13",
-  "currentStatus": "IN_PROGRESS",
-  "nextAction": "preparar a certificação local AUD06-13 sobre candidato documental estável; validar CI remoto somente com autoridade de publicação; preservar AUD06-11 e AUD06-14 sem aceite.",
+  "currentStatus": "WAITING_HUMAN_APPROVAL",
+  "nextAction": "conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.",
   "releaseBoundary": {
     "staging": "NO_GO",
     "production": "NO_GO"

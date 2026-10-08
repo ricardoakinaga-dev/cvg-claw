@@ -110,3 +110,20 @@ para certificação. Não foi executado novo selo principal ou CI remoto.
 Baseline: [0576](0576_repository_audit_2026-10-06.md).
 Roadmap e pendências: [0348](../03_build/0348_aud06_roadmap.md),
 [0349](../03_build/0349_aud06_backlog.md).
+
+## Correção posterior Q05 — preparação da certificação
+
+Após esta auditoria congelada, uma prova Docker real demonstrou volume anônimo
+residual no runner canônico. A task05 foi reaberta antes da mudança, com addendum
+SPEC/barra v5 sem reduzir os critérios. `docker rm -f --volumes -- ID` corrige
+exclusivamente os volumes anônimos do contêiner próprio; RED2FAIL e GREEN43/43,
+Docker real0/37 e named/bind preservados. Crítico fresco I1 APPROVE e aceite
+local registrados. Nenhuma fonte da stack370 foi alterada; a prova continua
+vinculada. A primeira certificação provisória foi interrompida143 e não é PASS.
+
+[CriticQ05](evidence/AUD06/recovery-20261007/runner-volume-independent-critic/report.json),
+[aceite](evidence/AUD06/recovery-20261007/runner-volume-local-acceptance.json),
+[prova de bind](evidence/AUD06/recovery-20261007/runner-volume-bind-post-check.json) e
+[binding da stack](evidence/AUD06/recovery-20261007/stack-after-wrapper-rework-binding.json).
+A nota deste relatório permanece74,27/100; ainda não há selo principal nem CI
+atuais aceitos. A qualificação posterior usará novo candidato e recibos próprios.

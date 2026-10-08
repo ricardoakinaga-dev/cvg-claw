@@ -127,3 +127,15 @@ AUD06, sem ampliar caminhos aceitos; comportamento histórico AUD20 preservado.
 Este gate completa Q07 sem alterar alvo ou capability. O parecer que escreveu
 cache ignorado no principal permanece INVALID; obter novo crítico fresh-context
 sem symlink de dependências compartilhadas e com artefatos apenas em /tmp.
+
+## Addendum corretivo Q05 — volume anônimo próprio — 2026-10-07
+
+A execução local provisória e sondagem real sem iniciar banco demonstraram
+que `docker rm -f` deixa o volume anônimo criado pela imagem PostgreSQL.
+AUD06-05 retorna a BUILD limitado: remover os volumes anônimos associados ao
+contêiner criado e identificado pelo cidfile privado, usando a operação Docker
+sobre esse ID imutável. Não enumerar/prunar volumes globais, nem remover volumes
+externos/nomeados ou fontes de bind mount. Preservar exit original e limites.
+Provar RED/GREEN no executável fake e com Docker real próprio, inclusive status
+0/37 e preservação de recurso externo ao runner. Q01–Q14 permanecem inalterados;
+não há nova capability ou aprovação de publicação/instituição.

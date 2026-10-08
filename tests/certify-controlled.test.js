@@ -71,9 +71,13 @@ if (args[0] === 'run' || args[0] === 'create') {
   const id = randomBytes(32).toString('hex')
   const name = args.includes('--name') ? value('--name') : id
   const entry = { id, name, kind }
+  if (kind === 'pg') {
+    entry.anonymousVolume = 'volume-' + id
+    fs.writeFileSync(path.join(dir, entry.anonymousVolume), 'owned synthetic volume')
+  }
   save(entry)
   if (args.includes('--cidfile')) fs.writeFileSync(value('--cidfile'), id)
-  record({ event: 'created', id, name, kind })
+  record({ event: 'created', id, name, kind, anonymousVolume: entry.anonymousVolume })
   if (kind === 'cert' && process.env.FAKE_STALL_STAGE === 'create-after') {
     stalled('create-after')
     return
@@ -125,13 +129,16 @@ if (args[0] === 'run' || args[0] === 'create') {
     else process.exit(process.env.FAKE_NOT_READY ? 1 : 0)
   } else console.log('0')
 } else if (args[0] === 'rm') {
-  for (const requested of args.slice(1).filter((arg) => arg !== '-f' && arg !== '--')) {
+  for (const requested of args.slice(1).filter((arg) => !['-f', '-v', '--volumes', '--'].includes(arg))) {
     const entry = fs.readdirSync(dir).filter((file) => /^[a-f0-9]{64}$/.test(file))
       .map((file) => JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')))
       .find((item) => item.id === requested || item.name === requested)
     record({ event: 'removed', requested, id: entry?.id })
     if (process.env.FAKE_CLEANUP_FAIL) process.exit(58)
     if (!entry) process.exit(97)
+    if (entry.anonymousVolume && (args.includes('-v') || args.includes('--volumes'))) {
+      fs.unlinkSync(path.join(dir, entry.anonymousVolume))
+    }
     fs.unlinkSync(path.join(dir, entry.id))
   }
 } else process.exit(96)
@@ -154,6 +161,8 @@ function fixture({ legacy = false, env = {} } = {}) {
   if (legacy)
     writeFileSync(join(bin, 'sleep'), '#!/bin/sh\nexit 0\n', { mode: 0o755 })
   const unrelatedId = 'f'.repeat(64)
+  const unrelatedVolume = 'volume-unrelated'
+  writeFileSync(join(state, unrelatedVolume), 'unrelated synthetic volume')
   writeFileSync(
     join(state, unrelatedId),
     JSON.stringify({ id: unrelatedId, name: 'claw-cert-pg', kind: 'unrelated' })
@@ -165,6 +174,7 @@ function fixture({ legacy = false, env = {} } = {}) {
     state,
     log,
     unrelatedId,
+    unrelatedVolume,
     events: () =>
       existsSync(join(state, 'events'))
         ? readFileSync(join(state, 'events'), 'utf8')
@@ -292,6 +302,25 @@ describe('AUD06-05 controlled certification runner', () => {
   it('has a canonical runner', () => {
     expect(existsSync(runner)).toBe(true)
   })
+
+  it.each([0, 37])(
+    'removes its anonymous PostgreSQL volume while preserving exit %i and unrelated resources',
+    async (code) => {
+      const handle = fixture({ env: { FAKE_CERT_EXIT: String(code) } })
+      expect((await handle.start()).code).toBe(code)
+      const database = handle
+        .events()
+        .find((event) => event.event === 'created' && event.kind === 'pg')
+      expect(database.anonymousVolume).toBeDefined()
+      expect(existsSync(join(handle.state, database.anonymousVolume))).toBe(
+        false
+      )
+      expect(
+        readFileSync(join(handle.state, handle.unrelatedVolume), 'utf8')
+      ).toBe('unrelated synthetic volume')
+      expectOwnCleanup(handle)
+    }
+  )
 
   it.each([0, 37, 125])(
     'preserves certification exit %i and cleans only its resources',

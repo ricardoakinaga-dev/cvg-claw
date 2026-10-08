@@ -3,7 +3,7 @@
   "kind": "aud06-task-matrix",
   "program": "AUD06",
   "currentTask": "AUD06-13",
-  "currentStatus": "IN_PROGRESS",
+  "currentStatus": "WAITING_HUMAN_APPROVAL",
   "backlog": "docs/03_build/0349_aud06_backlog.md",
   "tasks": [
     {
@@ -77,9 +77,14 @@
       "evidence": [
         "docs/04_audit/evidence/AUD06/retention-runner/implementation-receipt.json",
         "docs/04_audit/evidence/AUD06/recovery-20261007/local-technical-acceptance.json",
-        "docs/04_audit/evidence/AUD06/recovery-20261007/final-critic-v4/final-report.json"
+        "docs/04_audit/evidence/AUD06/recovery-20261007/final-critic-v4/final-report.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/runner-anonymous-volume-red.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-local-acceptance.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/runner-volume-independent-critic/report.json"
       ],
-      "acceptedScope": "CONTROLLED_LOCAL_SYNTHETIC"
+      "acceptedScope": "CONTROLLED_LOCAL_SYNTHETIC",
+      "rework": "Real own anonymous PostgreSQL volume remains after rm-f; extend immutable-ID removal to own anonymous volumes; regression and fresh critique required.",
+      "reworkDisposition": "Accepted local Q05 after independentAPPROVE; actual certification still pending13"
     },
     {
       "id": "AUD06-06",
@@ -192,10 +197,12 @@
       "objective": "Selar candidato após docs estáveis; validar CI do mesmo candidato",
       "dependenciesDescription": "12; autoridade de publicação",
       "acceptance": "Q13; certificado+Verify/Security com SHA correspondente",
-      "status": "IN_PROGRESS",
+      "status": "WAITING_HUMAN_APPROVAL",
       "evidence": [
-        "docs/04_audit/evidence/AUD06/recovery-20261007/current-candidate-certification-verifier-receipt.json"
-      ]
+        "docs/04_audit/evidence/AUD06/recovery-20261007/current-candidate-certification-verifier-receipt.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass1-receipt.json"
+      ],
+      "executionDisposition": "LOCAL_CERTIFICATION_PREPARATION_AUTHORIZED_PUBLICATION_PENDING"
     },
     {
       "id": "AUD06-14",
