@@ -8334,3 +8334,21 @@ commit, push ou substituição do certificado principal.
 - evidence: [recibo integrado](04_audit/evidence/AUD06/recovery-20261007/bypass-v11-integrated-focused-receipt.json), [crítica v10 rejeitada](04_audit/evidence/AUD06/recovery-20261007/bypass-v10-fresh-reject-I1/report.json), [SPEC](02_spec/aud06_remediation_20261006.md).
 - verification: closures somente leitoras e valores primitivos têm controles positivos; referências expostas e coerções com efeito têm negativos. Helper SQL permanece frozen; fonte de runtime não alterada. Passada4 ainda não iniciada; nova crítica obrigatória.
 - limitations: global FAIL/NO_GO, sem selo principal/publicação/CI/piloto/signoff novo. Nota0577 74,27 permanece snapshot380ccc52. Fontes/masters serão congelados antes da revisão e execução; recibos excluídos registrarão progresso.
+
+# AUD06-13 — v11 rejeitado; seleção estrutural registrada — 2026-10-08
+
+- current_engine: `AUDIT -> BUILD -> AUDIT`; task `AUD06-13` `WAITING_HUMAN_APPROVAL` somente na fronteira de publicação; rework local autorizado; staging/produção `NO_GO`.
+- last_completed_action: preservar REJECT fresco I1 v11,4P1/1P2,93 sondagens e18replays,25.190 arquivos intactos;5atimes de leitura qualificados. Registrar seleção array/destructuring, referências armazenadas/getters e leitura primitiva antes de BUILD.
+- next_action: conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.
+- evidence: [crítica](04_audit/evidence/AUD06/recovery-20261007/bypass-v11-fresh-reject-I1/report.json), [SPEC](02_spec/aud06_remediation_20261006.md).
+- verification: GREEN692 e corpus59 não superam contraexemplos independentes. Candidato04ff9c61 rejeitado, passada4 não iniciada; helper/runtime intactos. Stack370fontes,255artefatos/220streams e14recursos ausentes reconferidos.
+- limitations: global FAIL/NO_GO; sem selo principal, publicação/CI/piloto/signoff. Nota0577 74,27 permanece snapshot380ccc52; nenhum escritor na cópia durante crítica.
+
+# AUD06-13 — seleção estrutural integrada; nova crítica pendente — 2026-10-08
+
+- current_engine: `AUDIT`; task `AUD06-13` `WAITING_HUMAN_APPROVAL` somente na fronteira de publicação; qualificação local autorizada; staging/produção `NO_GO`.
+- last_completed_action: RED21FAIL/258PASS; GREEN741/741 em4arquivos e corpus59 PASS. Seleção de arrays/destructuring, armazenamento/getters, receptor e referência transitiva corrigidos. Rest/defaults RED4FAIL/10PASS, GREEN14PASS;279 skips de filtro explícito nessa amostra não entram na suíte final sem skips.
+- next_action: conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.
+- evidence: [recibo integrado](04_audit/evidence/AUD06/recovery-20261007/bypass-v12-integrated-focused-receipt.json), [crítica v11 rejeitada](04_audit/evidence/AUD06/recovery-20261007/bypass-v11-fresh-reject-I1/report.json), [SPEC](02_spec/aud06_remediation_20261006.md).
+- verification: falhas intermediárias preservadas/qualificadas; helper frozen e runtime intactos. Novo freeze e crítica fresca obrigatórios, passada4 não iniciada. Preparação de fechamento documental não qualifica pacote de certificação antigo.
+- limitations: global FAIL/NO_GO; sem certificado principal, publicação/CI/piloto/signoff. Nota0577 74,27 permanece snapshot380ccc52; cópia fica sem escritores durante crítica/execução.

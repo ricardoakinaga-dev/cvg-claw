@@ -1576,3 +1576,194 @@ describe('function expando identity', () => {
     }
   )
 })
+
+describe('structural selection and stored reference exposure', () => {
+  it.each([
+    [
+      'array-effect-member',
+      'const calls=[fetch];calls[0]("https://synthetic.invalid")',
+      1
+    ],
+    [
+      'array-effect-binding',
+      'const [http]=[fetch];http("https://synthetic.invalid")',
+      1
+    ],
+    [
+      'array-import-binding',
+      'import f from "node-fetch";const [http]=[f];http("https://synthetic.invalid")',
+      1
+    ],
+    [
+      'array-query-member',
+      'const calls=[client.query];calls[0]("DELETE FROM patients")',
+      1
+    ],
+    [
+      'array-query-binding',
+      'const [run]=[client.query];run("DELETE FROM patients")',
+      1
+    ],
+    [
+      'nested-array-effect',
+      'const box={a:[fetch]};box.a[0]("https://synthetic.invalid")',
+      1
+    ],
+    [
+      'spread-array-effect',
+      'const a=[fetch];const b=[...a];b[0]("https://synthetic.invalid")',
+      1
+    ],
+    [
+      'nested-binding-effect',
+      'const {a:[http]}={a:[fetch]};http("https://synthetic.invalid")',
+      1
+    ],
+    ['array-pure-member', 'const calls=[()=>1];calls[0]()', 0],
+    ['array-pure-binding', 'const [http]=[()=>1];http()', 0],
+    ['array-import-inert', 'import f from "node-fetch";const [http]=[f]', 0],
+    ['array-query-read', 'const calls=[client.query];calls[0]("SELECT 1")', 0],
+    ['nested-array-pure', 'const box={a:[()=>1]};box.a[0]()', 0],
+    [
+      'array-assigned-effect',
+      'let http;[http]=[fetch];http("https://synthetic.invalid")',
+      1
+    ],
+    [
+      'object-assigned-effect',
+      'let http;({h:http}={h:fetch});http("https://synthetic.invalid")',
+      1
+    ],
+    ['array-assigned-pure', 'let http;[http]=[()=>1];http()', 0],
+    [
+      'array-assignment-alias',
+      'const cfg={text:"SELECT 1"};function mutate(x){x.text="DELETE FROM patients"};let alias;[alias]=[cfg];mutate(alias);client.query(cfg)',
+      1
+    ],
+    [
+      'object-assignment-alias',
+      'const cfg={text:"SELECT 1"};function mutate(x){x.text="DELETE FROM patients"};let alias;({value:alias}={value:cfg});mutate(alias);client.query(cfg)',
+      1
+    ],
+    [
+      'nested-assignment-alias',
+      'const cfg={text:"SELECT 1"};let alias;({value:[alias]}={value:[cfg]});mutate(alias);client.query(cfg)',
+      1
+    ],
+    [
+      'assignment-distinct-object',
+      'const cfg={text:"SELECT 1"};function mutate(x){x.text="DELETE FROM patients"};let alias;[alias]=[{text:"SELECT 1"}];mutate(alias);client.query(cfg)',
+      0
+    ],
+    [
+      'assignment-primitive',
+      'const cfg={text:"SELECT 1"};let alias;({value:alias}={value:cfg.text});consume(alias);client.query(cfg)',
+      0
+    ],
+    [
+      'assigned-alias-direct-write',
+      'const cfg={text:"SELECT 1"};let alias;[alias]=[cfg];alias.text="DELETE FROM patients";client.query(cfg)',
+      1
+    ],
+    [
+      'closure-stored-reference',
+      'const cfg={text:"SELECT 1"};const mailbox={};function publish(){mailbox.value=cfg};function consume(fn){fn();mailbox.value.text="DELETE FROM patients"};consume(publish);client.query(cfg)',
+      1
+    ],
+    [
+      'arrow-stored-reference',
+      'const cfg={text:"SELECT 1"};const mailbox={};const publish=()=>{mailbox.value=cfg};function consume(fn){fn();mailbox.value.text="DELETE FROM patients"};consume(publish);client.query(cfg)',
+      1
+    ],
+    [
+      'closure-exposed-store-only',
+      'const cfg={text:"SELECT 1"};const mailbox={};function publish(){mailbox.value=cfg};consume(publish);client.query(cfg)',
+      1
+    ],
+    [
+      'closure-stored-copy',
+      'const cfg={text:"SELECT 1"};const mailbox={};function publish(){mailbox.value={text:cfg.text}};function consume(fn){fn();mailbox.value.text="DELETE FROM patients"};consume(publish);client.query(cfg)',
+      0
+    ],
+    [
+      'closure-local-store',
+      'const cfg={text:"SELECT 1"};function publish(){const local={};local.value=cfg;return 1};consume(publish);client.query(cfg)',
+      0
+    ],
+    [
+      'closure-read-primitive',
+      'const cfg={text:"SELECT 1"};function publish(){return cfg.text};consume(publish);client.query(cfg)',
+      0
+    ],
+    [
+      'getter-exposed-reference',
+      'const cfg={text:"SELECT 1"};const box={get value(){return cfg}};function mutate(o){o.value.text="DELETE FROM patients"};mutate(box);client.query(cfg)',
+      1
+    ],
+    [
+      'getter-distinct-copy',
+      'const cfg={text:"SELECT 1"};const box={get value(){return {text:cfg.text}}};function mutate(o){o.value.text="DELETE FROM patients"};mutate(box);client.query(cfg)',
+      0
+    ],
+    [
+      'closure-list-length',
+      'const tables=["api_rate_limit_buckets"];function expose(){return tables.length};function consume(fn){return fn()};consume(expose);for(const t of tables)client.query(`DELETE FROM ${t}`)',
+      0
+    ],
+    [
+      'closure-list-index',
+      'const tables=["api_rate_limit_buckets"];function expose(){return tables[0]};function consume(fn){return fn()};consume(expose);for(const t of tables)client.query(`DELETE FROM ${t}`)',
+      0
+    ],
+    [
+      'closure-native-join',
+      'const tables=["api_rate_limit_buckets"];function expose(){return tables.join(",")};function consume(fn){return fn()};consume(expose);for(const t of tables)client.query(`DELETE FROM ${t}`)',
+      0
+    ],
+    [
+      'closure-reference-escape',
+      'const tables=["api_rate_limit_buckets"];function expose(){return tables};function consume(fn){fn()[0]="patients"};consume(expose);for(const t of tables)client.query(`DELETE FROM ${t}`)',
+      1
+    ],
+    [
+      'array-contained-reference',
+      'const cfg={text:"SELECT 1"};const values=[cfg];consume(values[0]);client.query(cfg)',
+      1
+    ]
+  ])('%s', (name, source, expected) => {
+    expect(scan(quotaFile, source).exitCode).toBe(expected)
+  })
+})
+
+describe('rest and default selection controls', () => {
+  it.each([
+    ['const {...box}={http:fetch};box.http("https://synthetic.invalid")', 1],
+    ['const {omit,...box}={omit:fetch,run:()=>1};box.run()', 0],
+    ['const [,...calls]=[0,fetch];calls[0]("https://synthetic.invalid")', 1],
+    ['const [,...calls]=[0,()=>1];calls[0]()', 0],
+    [
+      'let box;({...box}={http:fetch});box.http("https://synthetic.invalid")',
+      1
+    ],
+    ['let box;({omit,...box}={omit:fetch,run:()=>1});box.run()', 0],
+    ['const [http=fetch]=[undefined];http("https://synthetic.invalid")', 1],
+    ['const [http=fetch]=[()=>1];http()', 0],
+    ['let http;[http=fetch]=[()=>1];http()', 0],
+    ['let http;[http=fetch]=[undefined];http("https://synthetic.invalid")', 1],
+    [
+      'const cfg={text:"SELECT 1"};const box={get value(){return cfg}};box.value.text="DELETE FROM patients";client.query(cfg)',
+      1
+    ],
+    [
+      'const cfg={text:"SELECT 1"};const box={get value(){return {text:cfg.text}}};box.value.text="DELETE FROM patients";client.query(cfg)',
+      0
+    ],
+    [
+      'const data=[1];data.join=fetch;data.join("https://synthetic.invalid")',
+      1
+    ],
+    ['const data=[1];data.join=()=>"one";data.join()', 0]
+  ])('%s', (source, expected) => {
+    expect(scan(quotaFile, source).exitCode).toBe(expected)
+  })
+})

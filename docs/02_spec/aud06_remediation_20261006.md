@@ -283,3 +283,30 @@ config de query; coerções locais com efeitos são inspecionadas. Propriedades
 adicionais de funções não eliminam sua identidade lexical nem suas referências
 carregadas. Controles negativos e positivos devem discriminar essas situações
 sem conceder dispensa ao readiness por caminho de arquivo.
+
+### Rework de seleção estrutural e exposição por armazenamento Q13 — 2026-10-08
+
+Crítico fresco v11 REJECT4P1/1P2,93 sondagens e18replays;1256 fontes
+e25.190 arquivos intactos, com5atimes de leitura explicitamente qualificados.
+Registrar antes de BUILD: usar seleção estrutural compartilhada para índices
+literais/arrays/destructuring e transportar a origem callable HTTP/query.
+Atribuições destructuring também transportam referências RHS para os destinos
+reais; não basta marcar os símbolos destinos como mutados. Closures expõem
+referências por retorno e por armazenamento; getters retornando objetos devem
+participar desse alcance. Leitura de índice primitivo, length ou join nativo
+não expõe a própria lista fechada. Cópias contendo somente valores primitivos
+permanecem distintas do objeto original. Nenhuma execução de fixture ou dispensa
+por caminho de arquivo; helper SQL frozen e critérios Q01–Q14 intactos.
+Lead possui scanner/testes; novo RED/GREEN e corpus59, freeze e crítica fresca
+antes da passada4. Candidato04ff9c61 não aceito; piloto/publicação/gates reais
+continuam sem aceite.
+
+A seleção estrutural também cobre rest literal e defaults: um valor definido
+preserva sua origem; undefined/posição omitida aplica o default. Defaults do
+padrão não são atribuições incondicionais independentes. Rest exclui as chaves
+selecionadas e mantém origens do restante estático; spreads desconhecidos não
+são inferidos. Um receptor de escrita invalida sua identidade e aliases reais,
+enquanto a exposição de um container invalida referências alcançáveis. Métodos
+nativos de array não recebem o tratamento de config local com método homônimo;
+overrides explícitos de método preservam o efeito atribuído. Não ampliar os
+limites declarados de inferência nem alegar análise universal de funções JS.

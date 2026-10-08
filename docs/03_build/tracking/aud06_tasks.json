@@ -209,10 +209,12 @@
         "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v9-fresh-reject-I1/report.json",
         "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v10-integrated-focused-receipt.json",
         "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v10-fresh-reject-I1/report.json",
-        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v11-integrated-focused-receipt.json"
+        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v11-integrated-focused-receipt.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v11-fresh-reject-I1/report.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v12-integrated-focused-receipt.json"
       ],
       "executionDisposition": "LOCAL_CERTIFICATION_PREPARATION_AUTHORIZED_PUBLICATION_PENDING",
-      "rework": "v11 transitive origin/invocation repair integrated; RED21FAIL/208PASS, GREEN692/692, scanner59 PASS; fresh critique and pass4 pending, publication authority pending"
+      "rework": "v12 structural selection/reference exposure integrated, RED21FAIL/258PASS, GREEN741/741, scanner59PASS; additional rest/default paired controls PASS; fresh critique/pass4 pending"
     },
     {
       "id": "AUD06-14",

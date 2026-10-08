@@ -93,6 +93,7 @@ for (const relativePath of files) {
   const mutatedSymbols = new Set()
   const assignedValues = new Map()
   const assignedContainerValues = new Map()
+  const assignedProperties = new Map()
   const mutatedObjects = new Set()
   const symbol = (node) =>
     node.parent &&
@@ -113,25 +114,135 @@ for (const relativePath of files) {
     ts.isVariableDeclarationList(decl.parent) &&
     Boolean(decl.parent.flags & ts.NodeFlags.Const)
 
+  function undefinedValue(node, seen = new Set()) {
+    node = unwrap(node)
+    if (!node) return true
+    if (seen.has(node)) return null
+    seen.add(node)
+    if (
+      ts.isVoidExpression(node) ||
+      (ts.isIdentifier(node) && node.text === 'undefined' && !declaration(node))
+    )
+      return true
+    if (ts.isIdentifier(node)) {
+      const value = bindingInitializer(node)
+      if (value) return undefinedValue(value, seen)
+      return effects.has(node.text) ? false : null
+    }
+    return ts.isStringLiteralLike(node) ||
+      ts.isNumericLiteral(node) ||
+      ts.isObjectLiteralExpression(node) ||
+      ts.isArrayLiteralExpression(node) ||
+      ts.isFunctionLike(node) ||
+      [
+        ts.SyntaxKind.TrueKeyword,
+        ts.SyntaxKind.FalseKeyword,
+        ts.SyntaxKind.NullKeyword
+      ].includes(node.kind)
+      ? false
+      : null
+  }
+  function objectRest(input, excluded, seen = new Set()) {
+    const object = objectNode(input, new Set(seen), false)
+    if (
+      !object ||
+      !ts.isObjectLiteralExpression(object) ||
+      seen.has(object) ||
+      mutatedObjects.has(object)
+    )
+      return null
+    seen.add(object)
+    const properties = new Map()
+    for (const prop of object.properties) {
+      if (ts.isSpreadAssignment(prop)) {
+        const nested = objectRest(prop.expression, [], new Set(seen))
+        if (!nested) return null
+        for (const item of nested.properties)
+          properties.set(propertyKey(item.name), item)
+      } else {
+        const key = prop.name ? propertyKey(prop.name) : null
+        if (key === null) return null
+        properties.set(key, prop)
+      }
+      if (properties.size > 64) return null
+    }
+    return ts.factory.createObjectLiteralExpression(
+      [...properties]
+        .filter(([key]) => !excluded.includes(key))
+        .map(([, value]) => value)
+    )
+  }
+  function bindingSource(decl, forSql = false) {
+    const pattern = decl.parent,
+      owner = pattern.parent
+    const input = ts.isVariableDeclaration(owner)
+      ? !forSql || isConst(owner)
+        ? owner.initializer
+        : null
+      : ts.isBindingElement(owner)
+        ? bindingSource(owner, forSql)
+        : null
+    if (!input) return null
+    if (ts.isArrayBindingPattern(pattern)) {
+      const index = pattern.elements.indexOf(decl)
+      const array = objectNode(input, new Set(), forSql)
+      const values =
+        array && ts.isArrayLiteralExpression(array)
+          ? arrayValues(array, new Set(), forSql)
+          : null
+      if (decl.dotDotDotToken)
+        return values
+          ? ts.factory.createArrayLiteralExpression(values.slice(index))
+          : null
+      const selected = values?.[index]
+      return decl.initializer && undefinedValue(selected) === true
+        ? decl.initializer
+        : (selected ?? null)
+    }
+    if (!ts.isObjectBindingPattern(pattern)) return null
+    if (decl.dotDotDotToken)
+      return objectRest(
+        input,
+        pattern.elements
+          .filter((item) => !item.dotDotDotToken)
+          .map((item) =>
+            item.propertyName ? propertyKey(item.propertyName) : item.name.text
+          )
+      )
+    const selected = propertyValue(
+      input,
+      decl.propertyName ? propertyKey(decl.propertyName) : decl.name.text,
+      new Set(),
+      forSql
+    )
+    return decl.initializer && undefinedValue(selected) === true
+      ? decl.initializer
+      : (selected ?? null)
+  }
   function bindingInitializer(node, forSql = false) {
     const decl = declaration(node)
     if (!decl || mutatedSymbols.has(symbol(node))) return null
     if (ts.isVariableDeclaration(decl))
       return !forSql || isConst(decl) ? decl.initializer : null
-    if (ts.isBindingElement(decl)) {
-      const container = decl.parent.parent
-      if (
-        !ts.isVariableDeclaration(container) ||
-        (forSql && !isConst(container))
-      )
-        return null
-      if (!ts.isObjectBindingPattern(decl.parent)) return null
-      return propertyValue(
-        container.initializer,
-        decl.propertyName ? propertyKey(decl.propertyName) : decl.name.text
-      )
+    return ts.isBindingElement(decl) ? bindingSource(decl, forSql) : null
+  }
+  function arrayValues(array, seen = new Set(), forSql = false) {
+    if (seen.has(array) || mutatedObjects.has(array)) return null
+    seen.add(array)
+    const values = []
+    for (const item of array.elements) {
+      if (ts.isSpreadElement(item)) {
+        const source = objectNode(item.expression, new Set(seen), forSql)
+        const nested =
+          source && ts.isArrayLiteralExpression(source)
+            ? arrayValues(source, new Set(seen), forSql)
+            : null
+        if (!nested) return null
+        values.push(...nested)
+      } else values.push(ts.isOmittedExpression(item) ? null : item)
+      if (values.length > 64) return null
     }
-    return null
+    return values
   }
   function scalar(node, seen = new Set()) {
     node = unwrap(node)
@@ -200,6 +311,15 @@ for (const relativePath of files) {
   function propertyValue(node, key, seen = new Set(), forSql = true) {
     if (key === null) return null
     const object = objectNode(node, new Set(seen), forSql)
+    if (object && ts.isArrayLiteralExpression(object)) {
+      const values = arrayValues(object, new Set(seen), forSql)
+      if (!values) return null
+      if (key === 'length')
+        return ts.factory.createNumericLiteral(values.length)
+      return /^(?:0|[1-9][0-9]*)$/.test(key)
+        ? (values[Number(key)] ?? null)
+        : null
+    }
     if (
       !object ||
       !ts.isObjectLiteralExpression(object) ||
@@ -311,6 +431,8 @@ for (const relativePath of files) {
         return importEffect(decl)
       if (decl && ts.isFunctionDeclaration(decl) && decl.body) return null
       if (decl && ts.isBindingElement(decl)) {
+        const value = bindingSource(decl)
+        if (value) return callee(value, seen)
         const container = decl.parent.parent
         if (
           ts.isVariableDeclaration(container) &&
@@ -359,17 +481,49 @@ for (const relativePath of files) {
     return null
   }
   function memberEffect(base, name, seen) {
-    if (name === null) return null
+    if (!base || name === null) return null
     if (['call', 'apply', 'bind'].includes(name))
       return callee(base, new Set(seen))
     const baseEffect = callee(base, new Set(seen))
     if (['axios', 'got', 'undici'].includes(baseEffect)) return baseEffect
     if (baseEffect === 'fetch' && name === 'default') return 'fetch'
     const object = objectNode(base)
-    if (object && ts.isObjectLiteralExpression(object)) {
+    if (object) {
+      if (
+        ts.isArrayLiteralExpression(object) &&
+        !/^(?:0|[1-9][0-9]*)$/.test(name)
+      ) {
+        const assigned = assignedProperties.get(object)?.get(name) ?? []
+        const possible = assigned.map((value) => callee(value, new Set(seen)))
+        if (possible.some((value) => effects.has(value)))
+          return possible.find((value) => effects.has(value))
+        if (possible.includes('query')) return 'query'
+        return effects.has(name) || name === 'query' ? name : null
+      }
       if (mutatedObjects.has(object)) return 'unresolved_static_callable'
-      const value = propertyValue(base, name)
+      const value = propertyValue(base, name, new Set(), false)
       return value ? callee(value, new Set(seen)) : 'unresolved_static_callable'
+    }
+    const candidates = [
+      ...(ts.isIdentifier(unwrap(base)) || member(base) !== null
+        ? receiverOrigins(base)
+        : [])
+    ].filter(
+      (owner) =>
+        ts.isObjectLiteralExpression(owner) ||
+        ts.isArrayLiteralExpression(owner)
+    )
+    if (candidates.length) {
+      const possible = candidates.map((owner) =>
+        memberEffect(owner, name, new Set(seen))
+      )
+      return (
+        possible.find((value) => effects.has(value)) ??
+        possible.find(
+          (value) => value === 'query' || value === 'unresolved_static_callable'
+        ) ??
+        null
+      )
     }
     return effects.has(name) || name === 'query' ? name : null
   }
@@ -498,6 +652,25 @@ for (const relativePath of files) {
       ].includes(node.operatorToken.kind)
     )
       return found
+    if (ts.isCallExpression(node)) {
+      const expr = unwrap(node.expression),
+        name = member(expr)
+      if (
+        ts.isPropertyAccessExpression(expr) ||
+        ts.isElementAccessExpression(expr)
+      ) {
+        const origin = objectNode(expr.expression, new Set(), false)
+        if (
+          origin &&
+          ts.isArrayLiteralExpression(origin) &&
+          !mutatedObjects.has(origin) &&
+          ['join', 'includes', 'indexOf', 'lastIndexOf', 'toString'].includes(
+            name
+          )
+        )
+          return found
+      }
+    }
     if (ts.isIdentifier(node)) {
       const decl = declaration(node)
       if (decl && ts.isVariableDeclaration(decl))
@@ -530,7 +703,9 @@ for (const relativePath of files) {
       ts.isArrowFunction(node) ||
       ts.isFunctionExpression(node) ||
       ts.isFunctionDeclaration(node) ||
-      ts.isMethodDeclaration(node)
+      ts.isMethodDeclaration(node) ||
+      ts.isGetAccessorDeclaration(node) ||
+      ts.isSetAccessorDeclaration(node)
     ) {
       found.add(node)
       for (const value of assignedContainerValues.get(node) ?? [])
@@ -544,7 +719,11 @@ for (const relativePath of files) {
           reachableOrigins(prop.name, seen, found)
         else if (ts.isSpreadAssignment(prop))
           reachableOrigins(prop.expression, seen, found)
-        else if (ts.isMethodDeclaration(prop))
+        else if (
+          ts.isMethodDeclaration(prop) ||
+          ts.isGetAccessorDeclaration(prop) ||
+          ts.isSetAccessorDeclaration(prop)
+        )
           reachableOrigins(prop, seen, found)
       }
     } else if (ts.isArrayLiteralExpression(node)) {
@@ -559,6 +738,26 @@ for (const relativePath of files) {
           return
         }
         if (ts.isFunctionLike(body)) return
+        if (
+          ts.isBinaryExpression(body) &&
+          body.operatorToken.kind === ts.SyntaxKind.EqualsToken
+        ) {
+          for (const leaf of assignmentLeaves(body.left)) {
+            let owner = leaf
+            while (
+              ts.isPropertyAccessExpression(owner) ||
+              ts.isElementAccessExpression(owner)
+            )
+              owner = unwrap(owner.expression)
+            const decl = ts.isIdentifier(owner) ? declaration(owner) : null
+            let functionOwner = decl?.parent
+            while (functionOwner && !ts.isFunctionLike(functionOwner))
+              functionOwner = functionOwner.parent
+            // A local scratch object is inaccessible unless subsequently returned.
+            if (functionOwner !== node || (decl && ts.isParameter(decl)))
+              reachableOrigins(body.right, seen, found)
+          }
+        }
         ts.forEachChild(body, returns)
       }
       if (node.body && ts.isBlock(node.body)) returns(node.body)
@@ -567,6 +766,61 @@ for (const relativePath of files) {
       ts.forEachChild(node, (child) => {
         reachableOrigins(child, seen, found)
       })
+    return found
+  }
+  function receiverOrigins(node, seen = new Set(), found = new Set()) {
+    node = unwrap(node)
+    if (!node || seen.has(node)) return found
+    seen.add(node)
+    if (ts.isIdentifier(node)) {
+      const decl = declaration(node)
+      if (decl && ts.isVariableDeclaration(decl))
+        receiverOrigins(decl.initializer, seen, found)
+      if (decl && ts.isBindingElement(decl))
+        receiverOrigins(bindingSource(decl), seen, found)
+      if (decl && ts.isFunctionDeclaration(decl)) found.add(decl)
+      for (const value of assignedValues.get(symbol(node)) ?? [])
+        receiverOrigins(value, seen, found)
+      return found
+    }
+    if (
+      ts.isPropertyAccessExpression(node) ||
+      ts.isElementAccessExpression(node)
+    ) {
+      const name = member(node),
+        owners = receiverOrigins(node.expression, new Set(seen))
+      let resolved = false
+      for (const owner of owners) {
+        const value = propertyValue(owner, name, new Set(), false)
+        if (value) {
+          resolved = true
+          receiverOrigins(value, seen, found)
+        }
+        for (const stored of assignedProperties.get(owner)?.get(name) ?? []) {
+          resolved = true
+          receiverOrigins(stored, seen, found)
+        }
+        if (ts.isObjectLiteralExpression(owner)) {
+          for (const prop of owner.properties)
+            if (
+              ts.isGetAccessorDeclaration(prop) &&
+              propertyKey(prop.name) === name
+            ) {
+              resolved = true
+              for (const ref of reachableOrigins(prop))
+                if (ref !== prop) found.add(ref)
+            }
+        }
+      }
+      if (!resolved) for (const owner of owners) found.add(owner)
+      return found
+    }
+    if (
+      ts.isObjectLiteralExpression(node) ||
+      ts.isArrayLiteralExpression(node) ||
+      ts.isFunctionLike(node)
+    )
+      found.add(node)
     return found
   }
   function assignmentLeaves(node) {
@@ -685,17 +939,110 @@ for (const relativePath of files) {
     ts.forEachChild(node, gather)
   }
   gather(file)
+  function assignedPairs(target, value) {
+    target = unwrap(target)
+    if (!target) return []
+    if (ts.isArrayLiteralExpression(target))
+      return target.elements.flatMap((item, index) => {
+        if (ts.isOmittedExpression(item)) return []
+        if (ts.isSpreadElement(item)) {
+          const array = objectNode(value, new Set(), false)
+          const values =
+            array && ts.isArrayLiteralExpression(array)
+              ? arrayValues(array)
+              : null
+          return assignedPairs(
+            item.expression,
+            values
+              ? ts.factory.createArrayLiteralExpression(values.slice(index))
+              : null
+          )
+        }
+        return assignedPairs(
+          item,
+          propertyValue(value, String(index), new Set(), false)
+        )
+      })
+    if (ts.isObjectLiteralExpression(target))
+      return target.properties.flatMap((prop) => {
+        if (ts.isSpreadAssignment(prop))
+          return assignedPairs(
+            prop.expression,
+            objectRest(
+              value,
+              target.properties
+                .filter((item) => !ts.isSpreadAssignment(item))
+                .map((item) => propertyKey(item.name))
+            )
+          )
+        const dest = ts.isPropertyAssignment(prop)
+          ? prop.initializer
+          : ts.isShorthandPropertyAssignment(prop)
+            ? prop.name
+            : null
+        return dest
+          ? assignedPairs(
+              dest,
+              propertyValue(value, propertyKey(prop.name), new Set(), false)
+            )
+          : []
+      })
+    if (
+      ts.isBinaryExpression(target) &&
+      target.operatorToken.kind === ts.SyntaxKind.EqualsToken
+    )
+      return undefinedValue(value) === true
+        ? assignedPairs(target.left, target.right)
+        : undefinedValue(value) === false
+          ? assignedPairs(target.left, value)
+          : [
+              ...assignedPairs(target.left, value),
+              ...assignedPairs(target.left, target.right)
+            ]
+    return [{ target, value }]
+  }
+  function patternDefault(node) {
+    let current = node,
+      parent = node.parent
+    while (parent) {
+      if (
+        ts.isBinaryExpression(parent) &&
+        parent.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+        parent.left === current
+      )
+        return (
+          ts.isArrayLiteralExpression(current) ||
+          ts.isObjectLiteralExpression(current)
+        )
+      if (
+        !(
+          ts.isParenthesizedExpression(parent) ||
+          ts.isArrayLiteralExpression(parent) ||
+          ts.isObjectLiteralExpression(parent) ||
+          ts.isPropertyAssignment(parent) ||
+          ts.isSpreadElement(parent) ||
+          ts.isSpreadAssignment(parent)
+        )
+      )
+        return false
+      current = parent
+      parent = parent.parent
+    }
+    return false
+  }
   for (const node of nodes) {
     if (
-      ts.isBinaryExpression(node) &&
-      node.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
-      node.operatorToken.kind <= ts.SyntaxKind.LastAssignment &&
-      ts.isIdentifier(unwrap(node.left))
-    ) {
-      const binding = symbol(unwrap(node.left))
+      !ts.isBinaryExpression(node) ||
+      node.operatorToken.kind !== ts.SyntaxKind.EqualsToken ||
+      patternDefault(node)
+    )
+      continue
+    for (const pair of assignedPairs(node.left, node.right)) {
+      if (!ts.isIdentifier(pair.target) || !pair.value) continue
+      const binding = symbol(pair.target)
       if (binding) {
         const values = assignedValues.get(binding) ?? []
-        values.push(node.right)
+        values.push(pair.value)
         assignedValues.set(binding, values)
       }
     }
@@ -704,10 +1051,12 @@ for (const relativePath of files) {
     if (
       !ts.isBinaryExpression(node) ||
       node.operatorToken.kind < ts.SyntaxKind.FirstAssignment ||
-      node.operatorToken.kind > ts.SyntaxKind.LastAssignment
+      node.operatorToken.kind > ts.SyntaxKind.LastAssignment ||
+      patternDefault(node)
     )
       continue
-    for (const leaf of assignmentLeaves(node.left)) {
+    for (const pair of assignedPairs(node.left, node.right)) {
+      const leaf = pair.target
       if (
         !(
           ts.isPropertyAccessExpression(leaf) ||
@@ -715,11 +1064,18 @@ for (const relativePath of files) {
         )
       )
         continue
-      const owner = mutationOrigin(leaf.expression)
-      if (owner) {
+      for (const owner of receiverOrigins(leaf.expression)) {
         const values = assignedContainerValues.get(owner) ?? []
-        values.push(node.right)
+        if (pair.value) values.push(pair.value)
         assignedContainerValues.set(owner, values)
+        const name = member(leaf)
+        if (name !== null && pair.value) {
+          const properties = assignedProperties.get(owner) ?? new Map()
+          const stored = properties.get(name) ?? []
+          stored.push(pair.value)
+          properties.set(name, stored)
+          assignedProperties.set(owner, properties)
+        }
       }
     }
   }
@@ -769,7 +1125,8 @@ for (const relativePath of files) {
     if (
       ts.isBinaryExpression(node) &&
       node.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
-      node.operatorToken.kind <= ts.SyntaxKind.LastAssignment
+      node.operatorToken.kind <= ts.SyntaxKind.LastAssignment &&
+      !patternDefault(node)
     )
       target = node.left
     if (
@@ -785,6 +1142,13 @@ for (const relativePath of files) {
         if (ts.isIdentifier(leaf)) mutatedSymbols.add(symbol(leaf))
         const origin = mutationOrigin(leaf)
         if (origin) mutatedObjects.add(origin)
+        if (
+          ts.isPropertyAccessExpression(leaf) ||
+          ts.isElementAccessExpression(leaf)
+        ) {
+          for (const owner of receiverOrigins(leaf.expression))
+            mutatedObjects.add(owner)
+        }
       }
     }
     if (
