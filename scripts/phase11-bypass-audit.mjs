@@ -95,6 +95,30 @@ for (const relativePath of files) {
   const assignedContainerValues = new Map()
   const assignedProperties = new Map()
   const mutatedObjects = new Set()
+  const escapedObjects = new Set()
+  // A rest/slice AST denotes one allocation, even when several consumers
+  // project it. Separate ASTs denote distinct shallow copies.
+  const allocations = new Map()
+  const copySources = new Map()
+  function allocatedCopy(site, source, create, dependencies = [source]) {
+    if (!allocations.has(site)) {
+      const copy = create()
+      allocations.set(site, copy)
+      copySources.set(copy, new Set())
+    }
+    const copy = allocations.get(site)
+    for (const dependency of dependencies) copySources.get(copy).add(dependency)
+    return copy
+  }
+  function sqlObjectSafe(node, seen = new Set()) {
+    if (mutatedObjects.has(node) || seen.has(node)) return false
+    seen.add(node)
+    const sources = copySources.get(node)
+    return (
+      !sources ||
+      [...sources].every((source) => sqlObjectSafe(source, new Set(seen)))
+    )
+  }
   const symbol = (node) =>
     node.parent &&
     ts.isShorthandPropertyAssignment(node.parent) &&
@@ -142,21 +166,18 @@ for (const relativePath of files) {
       ? false
       : null
   }
-  function objectRest(input, excluded, seen = new Set()) {
+  function objectRest(input, excluded, seen = new Set(), site = input) {
     const object = objectNode(input, new Set(seen), false)
-    if (
-      !object ||
-      !ts.isObjectLiteralExpression(object) ||
-      seen.has(object) ||
-      mutatedObjects.has(object)
-    )
+    if (!object || !ts.isObjectLiteralExpression(object) || seen.has(object))
       return null
     seen.add(object)
     const properties = new Map()
+    const dependencies = [object]
     for (const prop of object.properties) {
       if (ts.isSpreadAssignment(prop)) {
         const nested = objectRest(prop.expression, [], new Set(seen))
         if (!nested) return null
+        dependencies.push(nested)
         for (const item of nested.properties)
           properties.set(propertyKey(item.name), item)
       } else {
@@ -166,10 +187,16 @@ for (const relativePath of files) {
       }
       if (properties.size > 64) return null
     }
-    return ts.factory.createObjectLiteralExpression(
-      [...properties]
-        .filter(([key]) => !excluded.includes(key))
-        .map(([, value]) => value)
+    return allocatedCopy(
+      site,
+      object,
+      () =>
+        ts.factory.createObjectLiteralExpression(
+          [...properties]
+            .filter(([key]) => !excluded.includes(key))
+            .map(([, value]) => value)
+        ),
+      dependencies
     )
   }
   function bindingSource(decl, forSql = false) {
@@ -192,7 +219,9 @@ for (const relativePath of files) {
           : null
       if (decl.dotDotDotToken)
         return values
-          ? ts.factory.createArrayLiteralExpression(values.slice(index))
+          ? allocatedCopy(decl, array, () =>
+              ts.factory.createArrayLiteralExpression(values.slice(index))
+            )
           : null
       const selected = values?.[index]
       return decl.initializer && undefinedValue(selected) === true
@@ -207,7 +236,9 @@ for (const relativePath of files) {
           .filter((item) => !item.dotDotDotToken)
           .map((item) =>
             item.propertyName ? propertyKey(item.propertyName) : item.name.text
-          )
+          ),
+        new Set(),
+        decl
       )
     const selected = propertyValue(
       input,
@@ -227,7 +258,7 @@ for (const relativePath of files) {
     return ts.isBindingElement(decl) ? bindingSource(decl, forSql) : null
   }
   function arrayValues(array, seen = new Set(), forSql = false) {
-    if (seen.has(array) || mutatedObjects.has(array)) return null
+    if (seen.has(array) || (forSql && !sqlObjectSafe(array))) return null
     seen.add(array)
     const values = []
     for (const item of array.elements) {
@@ -288,27 +319,149 @@ for (const relativePath of files) {
       : null
   }
   function objectNode(node, seen = new Set(), forSql = false) {
+    const values = projectValues(node, seen, forSql)
+    return values.length === 1 &&
+      (ts.isObjectLiteralExpression(values[0]) ||
+        ts.isArrayLiteralExpression(values[0]))
+      ? values[0]
+      : null
+  }
+  // Shared selection projects values, not the container used to select them.
+  // Identity projection retains possible aliases after mutation; SQL projection
+  // requires a unique, const, unmodified source and copy dependency chain.
+  function projectValues(
+    node,
+    seen = new Set(),
+    forSql = false,
+    parameterDefaults = false
+  ) {
     node = unwrap(node)
-    if (!node || seen.has(node)) return null
+    if (!node || seen.has(node)) return []
     seen.add(node)
-    if (ts.isObjectLiteralExpression(node) || ts.isArrayLiteralExpression(node))
-      return node
-    if (ts.isIdentifier(node))
-      return objectNode(bindingInitializer(node, forSql), seen, forSql)
+    if (ts.isIdentifier(node)) {
+      const decl = declaration(node)
+      if (forSql && mutatedSymbols.has(symbol(node))) return []
+      const values = []
+      if (decl && ts.isVariableDeclaration(decl) && (!forSql || isConst(decl)))
+        values.push(decl.initializer)
+      else if (decl && ts.isBindingElement(decl))
+        values.push(bindingSource(decl, forSql))
+      else if (decl && ts.isParameter(decl) && !forSql && parameterDefaults)
+        values.push(decl.initializer)
+      if (!forSql) values.push(...(assignedValues.get(symbol(node)) ?? []))
+      return values.length
+        ? [
+            ...new Set(
+              values.flatMap((value) =>
+                projectValues(value, new Set(seen), forSql, parameterDefaults)
+              )
+            )
+          ]
+        : [node]
+    }
     if (
       ts.isPropertyAccessExpression(node) ||
       ts.isElementAccessExpression(node)
-    )
-      return objectNode(
-        propertyValue(node.expression, member(node), seen, forSql),
+    ) {
+      const values = selectedValues(
+        node.expression,
+        member(node),
         seen,
+        forSql,
+        parameterDefaults
+      )
+      if (values.length) return values
+      const owners = projectValues(
+        node.expression,
+        new Set(seen),
+        forSql,
+        parameterDefaults
+      )
+      return owners.some(
+        (owner) =>
+          ts.isObjectLiteralExpression(owner) ||
+          ts.isArrayLiteralExpression(owner)
+      )
+        ? []
+        : [node]
+    }
+    if (ts.isCallExpression(node) && member(node.expression) === 'slice') {
+      const origins = projectValues(
+        unwrap(node.expression).expression,
+        new Set(seen),
         forSql
       )
-    return null
+      const source = origins.length === 1 ? origins[0] : null
+      if (
+        !source ||
+        !ts.isArrayLiteralExpression(source) ||
+        assignedProperties.get(source)?.has('slice')
+      )
+        return []
+      const values = arrayValues(source, new Set(), forSql)
+      if (!values || node.arguments.length > 2) return []
+      const bounds = node.arguments.map((arg) => {
+        const value = scalar(arg)
+        if (value !== null && /^-?\d+$/.test(value)) return Number(value)
+        if (
+          ts.isPrefixUnaryExpression(arg) &&
+          arg.operator === ts.SyntaxKind.MinusToken &&
+          ts.isNumericLiteral(arg.operand)
+        )
+          return -Number(arg.operand.text)
+        return null
+      })
+      if (bounds.includes(null)) return []
+      const copy = allocatedCopy(node, source, () =>
+        ts.factory.createArrayLiteralExpression(values.slice(...bounds))
+      )
+      return forSql && !sqlObjectSafe(copy) ? [] : [copy]
+    }
+    if (
+      forSql &&
+      (ts.isObjectLiteralExpression(node) ||
+        ts.isArrayLiteralExpression(node)) &&
+      !sqlObjectSafe(node)
+    )
+      return []
+    return [node]
+  }
+  function selectedValues(
+    input,
+    key,
+    seen = new Set(),
+    forSql = false,
+    parameterDefaults = false
+  ) {
+    if (key === null) return []
+    const values = []
+    for (const owner of projectValues(
+      input,
+      new Set(seen),
+      forSql,
+      parameterDefaults
+    )) {
+      const stored = assignedProperties.get(owner)?.get(key) ?? []
+      if (forSql && stored.length) return []
+      const value = literalPropertyValue(owner, key, new Set(), forSql)
+      if (value) values.push(value)
+      if (!forSql) values.push(...stored)
+    }
+    return [
+      ...new Set(
+        values.flatMap((value) =>
+          projectValues(value, new Set(seen), forSql, parameterDefaults)
+        )
+      )
+    ]
+  }
+  function propertyValue(node, key, seen = new Set(), forSql = true) {
+    const values = selectedValues(node, key, seen, forSql)
+    return values.length === 1 ? values[0] : null
   }
   // Fold properties in runtime order. An unresolved override erases knowledge,
   // while a later explicit property can establish it again without executing a getter.
-  function propertyValue(node, key, seen = new Set(), forSql = true) {
+  function literalPropertyValue(node, key, seen = new Set(), forSql = true) {
     if (key === null) return null
     const object = objectNode(node, new Set(seen), forSql)
     if (object && ts.isArrayLiteralExpression(object)) {
@@ -324,7 +477,7 @@ for (const relativePath of files) {
       !object ||
       !ts.isObjectLiteralExpression(object) ||
       seen.has(object) ||
-      mutatedObjects.has(object)
+      (forSql && !sqlObjectSafe(object))
     )
       return null
     seen.add(object)
@@ -402,7 +555,18 @@ for (const relativePath of files) {
   function callee(node, seen = new Set()) {
     node = unwrap(node)
     if (!node || seen.has(node)) return null
+    const projected = projectValues(node, new Set(seen))
     seen.add(node)
+    if (projected.length && !projected.includes(node)) {
+      const possible = projected.map((value) => callee(value, new Set(seen)))
+      return (
+        possible.find((value) => effects.has(value)) ??
+        possible.find(
+          (value) => value === 'query' || value === 'unresolved_static_callable'
+        ) ??
+        null
+      )
+    }
     if (ts.isIdentifier(node)) {
       const decl = declaration(node)
       if (symbol(node) && mutatedSymbols.has(symbol(node))) {
@@ -530,30 +694,22 @@ for (const relativePath of files) {
   function mutationOrigin(node, seen = new Set()) {
     node = unwrap(node)
     if (!node || seen.has(node)) return null
+    const projected = projectValues(node, new Set(seen), false, true)
     seen.add(node)
+    if (projected.length && !projected.includes(node)) {
+      for (const value of projected) {
+        const origin = mutationOrigin(value, new Set(seen))
+        if (origin) return origin
+      }
+      return null
+    }
     if (ts.isIdentifier(node)) {
       const decl = declaration(node)
       if (decl && ts.isFunctionDeclaration(decl)) return decl
       if (decl && ts.isVariableDeclaration(decl))
         return mutationOrigin(decl.initializer, seen)
       if (decl && ts.isBindingElement(decl)) {
-        const container = decl.parent.parent
-        if (ts.isVariableDeclaration(container)) {
-          const value = ts.isObjectBindingPattern(decl.parent)
-            ? propertyValue(
-                container.initializer,
-                decl.propertyName
-                  ? propertyKey(decl.propertyName)
-                  : decl.name.text,
-                new Set(),
-                false
-              )
-            : null
-          return (
-            (value && mutationOrigin(value, new Set(seen))) ??
-            mutationOrigin(container.initializer, seen)
-          )
-        }
+        return mutationOrigin(bindingSource(decl), seen)
       }
       return null
     }
@@ -583,6 +739,11 @@ for (const relativePath of files) {
     }
     if (ts.isCallExpression(node) && member(node.expression) === 'bind')
       return mutationOrigin(unwrap(node.expression).expression, seen)
+    if (ts.isCallExpression(node)) {
+      const projected = projectValues(node, new Set())
+      if (projected.length === 1 && projected[0] !== node)
+        return mutationOrigin(projected[0], seen)
+    }
     return null
   }
   function pureLocalCallable(node) {
@@ -624,7 +785,12 @@ for (const relativePath of files) {
   function reachableOrigins(node, seen = new Set(), found = new Set()) {
     node = unwrap(node)
     if (!node || seen.has(node)) return found
+    const projected = projectValues(node, new Set(seen), false, true)
     seen.add(node)
+    if (projected.length && !projected.includes(node)) {
+      for (const value of projected) reachableOrigins(value, seen, found)
+      return found
+    }
     // These expressions expose a primitive value, not the objects read to
     // produce it. Their executable calls/mutations are audited separately.
     if (
@@ -771,7 +937,12 @@ for (const relativePath of files) {
   function receiverOrigins(node, seen = new Set(), found = new Set()) {
     node = unwrap(node)
     if (!node || seen.has(node)) return found
+    const projected = projectValues(node, new Set(seen))
     seen.add(node)
+    if (projected.length && !projected.includes(node)) {
+      for (const value of projected) receiverOrigins(value, seen, found)
+      return found
+    }
     if (ts.isIdentifier(node)) {
       const decl = declaration(node)
       if (decl && ts.isVariableDeclaration(decl))
@@ -873,7 +1044,24 @@ for (const relativePath of files) {
   function boundArguments(node, seen = new Set()) {
     node = unwrap(node)
     if (!node || seen.has(node)) return null
+    if (uncertainSelection(node)) return null
+    const projected = projectValues(node, new Set(seen))
     seen.add(node)
+    if (projected.length && !projected.includes(node)) {
+      const prefixes = projected.map((value) =>
+        boundArguments(value, new Set(seen))
+      )
+      const first = prefixes[0]
+      return first &&
+        prefixes.every(
+          (prefix) =>
+            prefix &&
+            prefix.length === first.length &&
+            prefix.every((value, index) => value === first[index])
+        )
+        ? first
+        : null
+    }
     if (ts.isIdentifier(node)) {
       const value = bindingInitializer(node)
       return value ? boundArguments(value, seen) : []
@@ -898,6 +1086,43 @@ for (const relativePath of files) {
       return [...prior, ...prefix]
     }
     return []
+  }
+  function uncertainSelection(node, seen = new Set()) {
+    node = unwrap(node)
+    if (!node || seen.has(node)) return false
+    seen.add(node)
+    if (ts.isIdentifier(node)) {
+      const decl = declaration(node)
+      if (decl && ts.isVariableDeclaration(decl))
+        return (
+          uncertainSelection(decl.initializer, seen) ||
+          (assignedValues.get(symbol(node)) ?? []).some((value) =>
+            uncertainSelection(value, new Set(seen))
+          )
+        )
+      if (decl && ts.isBindingElement(decl)) {
+        let owner = decl.parent.parent
+        while (ts.isBindingElement(owner)) owner = owner.parent.parent
+        return (
+          ts.isVariableDeclaration(owner) &&
+          [...receiverOrigins(owner.initializer)].some((origin) =>
+            escapedObjects.has(origin)
+          )
+        )
+      }
+    }
+    if (
+      ts.isPropertyAccessExpression(node) ||
+      ts.isElementAccessExpression(node)
+    )
+      return (
+        [...receiverOrigins(node.expression)].some((origin) =>
+          escapedObjects.has(origin)
+        ) || uncertainSelection(node.expression, seen)
+      )
+    if (ts.isCallExpression(node) && member(node.expression) === 'bind')
+      return uncertainSelection(unwrap(node.expression).expression, seen)
+    return false
   }
   function invocationSqlArgument(node) {
     if (!ts.isCallExpression(node)) return node.template
@@ -954,7 +1179,9 @@ for (const relativePath of files) {
           return assignedPairs(
             item.expression,
             values
-              ? ts.factory.createArrayLiteralExpression(values.slice(index))
+              ? allocatedCopy(item, array, () =>
+                  ts.factory.createArrayLiteralExpression(values.slice(index))
+                )
               : null
           )
         }
@@ -972,7 +1199,9 @@ for (const relativePath of files) {
               value,
               target.properties
                 .filter((item) => !ts.isSpreadAssignment(item))
-                .map((item) => propertyKey(item.name))
+                .map((item) => propertyKey(item.name)),
+              new Set(),
+              prop
             )
           )
         const dest = ts.isPropertyAssignment(prop)
@@ -980,11 +1209,24 @@ for (const relativePath of files) {
           : ts.isShorthandPropertyAssignment(prop)
             ? prop.name
             : null
+        const selected = propertyValue(
+          value,
+          propertyKey(prop.name),
+          new Set(),
+          false
+        )
         return dest
-          ? assignedPairs(
-              dest,
-              propertyValue(value, propertyKey(prop.name), new Set(), false)
-            )
+          ? ts.isShorthandPropertyAssignment(prop) &&
+            prop.objectAssignmentInitializer
+            ? undefinedValue(selected) === true
+              ? assignedPairs(dest, prop.objectAssignmentInitializer)
+              : undefinedValue(selected) === false
+                ? assignedPairs(dest, selected)
+                : [
+                    ...assignedPairs(dest, selected),
+                    ...assignedPairs(dest, prop.objectAssignmentInitializer)
+                  ]
+            : assignedPairs(dest, selected)
           : []
       })
     if (
@@ -1030,54 +1272,56 @@ for (const relativePath of files) {
     }
     return false
   }
-  for (const node of nodes) {
-    if (
-      !ts.isBinaryExpression(node) ||
-      node.operatorToken.kind !== ts.SyntaxKind.EqualsToken ||
-      patternDefault(node)
-    )
-      continue
-    for (const pair of assignedPairs(node.left, node.right)) {
-      if (!ts.isIdentifier(pair.target) || !pair.value) continue
-      const binding = symbol(pair.target)
-      if (binding) {
-        const values = assignedValues.get(binding) ?? []
-        values.push(pair.value)
-        assignedValues.set(binding, values)
+  // Collect syntactic candidates to a bounded fixed point. This is not
+  // execution order: a store in a later/hoisted body can feed an earlier
+  // destructuring site. Never overwrite competing candidates with one value.
+  for (let round = 0; round < 64; round++) {
+    let changed = false
+    const add = (map, key, value) => {
+      const values = map.get(key) ?? []
+      if (value && !values.includes(value)) {
+        values.push(value)
+        map.set(key, values)
+        changed = true
       }
     }
-  }
-  for (const node of nodes) {
-    if (
-      !ts.isBinaryExpression(node) ||
-      node.operatorToken.kind < ts.SyntaxKind.FirstAssignment ||
-      node.operatorToken.kind > ts.SyntaxKind.LastAssignment ||
-      patternDefault(node)
-    )
-      continue
-    for (const pair of assignedPairs(node.left, node.right)) {
-      const leaf = pair.target
+    for (const node of nodes) {
       if (
-        !(
-          ts.isPropertyAccessExpression(leaf) ||
-          ts.isElementAccessExpression(leaf)
-        )
+        !ts.isBinaryExpression(node) ||
+        node.operatorToken.kind < ts.SyntaxKind.FirstAssignment ||
+        node.operatorToken.kind > ts.SyntaxKind.LastAssignment ||
+        patternDefault(node)
       )
         continue
-      for (const owner of receiverOrigins(leaf.expression)) {
-        const values = assignedContainerValues.get(owner) ?? []
-        if (pair.value) values.push(pair.value)
-        assignedContainerValues.set(owner, values)
-        const name = member(leaf)
-        if (name !== null && pair.value) {
-          const properties = assignedProperties.get(owner) ?? new Map()
-          const stored = properties.get(name) ?? []
-          stored.push(pair.value)
-          properties.set(name, stored)
-          assignedProperties.set(owner, properties)
+      for (const pair of assignedPairs(node.left, node.right)) {
+        const leaf = pair.target
+        if (ts.isIdentifier(leaf)) {
+          if (
+            node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+            symbol(leaf)
+          )
+            add(assignedValues, symbol(leaf), pair.value)
+          continue
+        }
+        if (
+          !(
+            ts.isPropertyAccessExpression(leaf) ||
+            ts.isElementAccessExpression(leaf)
+          )
+        )
+          continue
+        for (const owner of receiverOrigins(leaf.expression)) {
+          add(assignedContainerValues, owner, pair.value)
+          const name = member(leaf)
+          if (name !== null && pair.value) {
+            const properties = assignedProperties.get(owner) ?? new Map()
+            add(properties, name, pair.value)
+            assignedProperties.set(owner, properties)
+          }
         }
       }
     }
+    if (!changed) break
   }
   function auditCoercion(expression) {
     for (const owner of reachableOrigins(expression)) {
@@ -1139,15 +1383,21 @@ for (const relativePath of files) {
     if (ts.isDeleteExpression(node)) target = node.expression
     if (target) {
       for (const leaf of assignmentLeaves(target)) {
+        // Resolve every alias while selection is still available, before
+        // tainting any member container or binding used by that projection.
+        const owners =
+          ts.isPropertyAccessExpression(leaf) ||
+          ts.isElementAccessExpression(leaf)
+            ? receiverOrigins(leaf.expression)
+            : new Set()
+        const origin = owners.size ? null : mutationOrigin(leaf)
         if (ts.isIdentifier(leaf)) mutatedSymbols.add(symbol(leaf))
-        const origin = mutationOrigin(leaf)
         if (origin) mutatedObjects.add(origin)
         if (
           ts.isPropertyAccessExpression(leaf) ||
           ts.isElementAccessExpression(leaf)
         ) {
-          for (const owner of receiverOrigins(leaf.expression))
-            mutatedObjects.add(owner)
+          for (const owner of owners) mutatedObjects.add(owner)
         }
       }
     }
@@ -1195,9 +1445,11 @@ for (const relativePath of files) {
       !pureLocalCallable(localMember) &&
       !pureLocalCallable(callableValue(expr))
     )
-      for (const origin of reachableOrigins(receiver))
+      for (const origin of reachableOrigins(receiver)) {
         mutatedObjects.add(origin)
-    if (nativeRead)
+        escapedObjects.add(origin)
+      }
+    if (nativeRead && name !== 'slice')
       for (const origin of reachableOrigins(receiver))
         if (origin !== receiverObject) mutatedObjects.add(origin)
     const args = ts.isTaggedTemplateExpression(node)
@@ -1207,7 +1459,10 @@ for (const relativePath of files) {
       : [...(node.arguments ?? [])]
     for (const [index, arg] of args.entries()) {
       if (effect === 'query' && index === 0) continue
-      for (const origin of reachableOrigins(arg)) mutatedObjects.add(origin)
+      for (const origin of reachableOrigins(arg)) {
+        mutatedObjects.add(origin)
+        escapedObjects.add(origin)
+      }
     }
   }
 

@@ -310,3 +310,20 @@ enquanto a exposição de um container invalida referências alcançáveis. Mét
 nativos de array não recebem o tratamento de config local com método homônimo;
 overrides explícitos de método preservam o efeito atribuído. Não ampliar os
 limites declarados de inferência nem alegar análise universal de funções JS.
+
+### Rework de projeção compartilhada de origem Q13 — 2026-10-08
+
+Crítico fresco v12 REJECT5P1/1P2 em184 sondagens;28.068 entradas intactas,
+com atime igualmente intacto. Registrar antes de BUILD: default shorthand em
+atribuição de objeto deve manter callable; seleção por membro/índice deve
+transportar argumentos prefixados de bind; destructuring de propriedades
+armazenadas deve manter aliases reais. Defaults de parâmetros de closures
+participam da referência retornada. Invalidar a origem selecionada antes de
+invalidar seu container de seleção; não perder identidade por ordem de taint.
+Cópia slice primitiva não expõe o original; cópia rasa com objetos conserva
+as referências internas. Compartilhar projeção com identidade estável de
+alocações sintéticas de rest/cópia para todos os consumidores relevantes,
+sem inferir SQL de origem mutada ou tratar cópia distinta como alias do original.
+RED/GREEN, corpus59, novo freeze e crítica fresca obrigatórios. Helper/runtime
+intactos, passada4 não iniciada, candidato017c464a rejeitado. Q01–Q14, piloto
+adiado, publicação e gates reais permanecem inalterados.

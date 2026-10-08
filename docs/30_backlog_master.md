@@ -3336,3 +3336,21 @@ O aceite desta sprint é exclusivamente controlado: schema fictício de fixture,
 - evidence: [recibo integrado](04_audit/evidence/AUD06/recovery-20261007/bypass-v12-integrated-focused-receipt.json), [crítica v11 rejeitada](04_audit/evidence/AUD06/recovery-20261007/bypass-v11-fresh-reject-I1/report.json), [SPEC](02_spec/aud06_remediation_20261006.md).
 - verification: falhas intermediárias preservadas/qualificadas; helper frozen e runtime intactos. Novo freeze e crítica fresca obrigatórios, passada4 não iniciada. Preparação de fechamento documental não qualifica pacote de certificação antigo.
 - limitations: global FAIL/NO_GO; sem certificado principal, publicação/CI/piloto/signoff. Nota0577 74,27 permanece snapshot380ccc52; cópia fica sem escritores durante crítica/execução.
+
+# AUD06-13 — v12 rejeitado; projeção compartilhada registrada — 2026-10-08
+
+- current_engine: `AUDIT -> BUILD -> AUDIT`; task `AUD06-13` `WAITING_HUMAN_APPROVAL` somente na fronteira de publicação; rework local autorizado; staging/produção `NO_GO`.
+- last_completed_action: preservar REJECT fresco I1 v12,5P1/1P2 em184 sondagens,28.068 entradas sem diferenças materiais/atime; registrar projeção compartilhada de defaults/bind/armazenamento/aliases e identidade de cópias antes de BUILD.
+- next_action: conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.
+- evidence: [crítica](04_audit/evidence/AUD06/recovery-20261007/bypass-v12-fresh-reject-I1/report.json), [SPEC](02_spec/aud06_remediation_20261006.md).
+- verification: GREEN741 e corpus59 PASS não superam os contraexemplos. Candidato017c464a rejeitado; passada4 não iniciada; helper/runtime intactos. Nenhum escritor na cópia durante crítica.
+- limitations: global FAIL/NO_GO, sem certificado principal, publicação/CI/piloto/signoff; nota0577 74,27 permanece snapshot380ccc52.
+
+# AUD06-13 — projeção compartilhada integrada; crítica fresca pendente — 2026-10-08
+
+- current_engine: `AUDIT`; task `AUD06-13` `WAITING_HUMAN_APPROVAL` somente na fronteira de publicação; qualificação local autorizada; staging/produção `NO_GO`.
+- last_completed_action: builder separado concluiu projeção compartilhada e identidades estáveis de rest/slice; RED19FAIL/28PASS, GREEN811/811 em4arquivos sem skips,70/70CLI e corpus59 PASS. Hashes de fontes conferidos; helper/runtime intactos.
+- next_action: conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.
+- evidence: [recibo builder](04_audit/evidence/AUD06/recovery-20261007/bypass-v13-builder/receipt-IMPLEMENTED.json), [crítica v12 rejeitada](04_audit/evidence/AUD06/recovery-20261007/bypass-v12-fresh-reject-I1/report.json), [SPEC](02_spec/aud06_remediation_20261006.md).
+- verification: fonte scannerf8080d78/teste72258251 e helperd668aeaa conferidos; RED de filtro293skips qualificado, sem skips na suíte final. Intermediário interrompido130 não é GREEN. Linters/formato/sintaxe/docs0 do builder; novo freeze/crítica/canonical obrigatórios.
+- limitations: global FAIL/NO_GO; passada4 não iniciada; nenhum certificado principal/publicação/CI/piloto/signoff. Nota0577 74,27 permanece snapshot380ccc52; fontes/masters da cópia não serão editados durante revisão/execução.

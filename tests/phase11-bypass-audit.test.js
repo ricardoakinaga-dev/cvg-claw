@@ -1767,3 +1767,440 @@ describe('rest and default selection controls', () => {
     expect(scan(quotaFile, source).exitCode).toBe(expected)
   })
 })
+
+describe('v13 shared origin projection and stable allocations', () => {
+  it.each([
+    {
+      name: 'F1-default-empty',
+      source: 'let f; ({f=fetch}={}); f("https://synthetic.invalid");\n',
+      expected: 1
+    },
+    {
+      name: 'F1-default-undefined',
+      source:
+        'let f; ({f=fetch}={f:undefined}); f("https://synthetic.invalid");\n',
+      expected: 1
+    },
+    {
+      name: 'F1-default-query',
+      source:
+        'let q; ({q=client.query}={}); q("UPDATE appointments SET status = 1");\n',
+      expected: 1
+    },
+    {
+      name: 'F1-default-benign',
+      source: 'let f; ({f=()=>1}={}); f();\n',
+      expected: 0
+    },
+    {
+      name: 'F1-present-benign',
+      source: 'let f; ({f=fetch}={f:()=>1}); f();\n',
+      expected: 0
+    },
+    {
+      name: 'F2-property-domain-prefix',
+      source:
+        'const holder={q:client.query.bind(client,"UPDATE appointments SET status = 1")};holder.q("UPDATE api_rate_limit_buckets SET count = 1");\n',
+      expected: 1
+    },
+    {
+      name: 'F2-array-domain-prefix',
+      source:
+        'const holder=[client.query.bind(client,"UPDATE appointments SET status = 1")];holder[0]("UPDATE api_rate_limit_buckets SET count = 1");\n',
+      expected: 1
+    },
+    {
+      name: 'F2-property-read-arg',
+      source:
+        'const holder={q:client.query.bind(client,"UPDATE appointments SET status = 1")};holder.q("SELECT 1");\n',
+      expected: 1
+    },
+    {
+      name: 'F2-property-allowed-prefix',
+      source:
+        'const holder={q:client.query.bind(client,"UPDATE api_rate_limit_buckets SET count = 1")};holder.q("SELECT 1");\n',
+      expected: 0
+    },
+    {
+      name: 'F2-member-call',
+      source:
+        'const o={q:client.query.bind(client,"UPDATE appointments SET status = 1")};o.q.call(null,"SELECT 1");\n',
+      expected: 1
+    },
+    {
+      name: 'F2-member-apply',
+      source:
+        'const o={q:client.query.bind(client,"UPDATE appointments SET status = 1")};o.q.apply(null,["SELECT 1"]);\n',
+      expected: 1
+    },
+    {
+      name: 'F2-direct-bound',
+      source:
+        'const q=client.query.bind(client,"UPDATE appointments SET status = 1");q("UPDATE api_rate_limit_buckets SET count = 1");\n',
+      expected: 1
+    },
+    {
+      name: 'F2-bound-inert',
+      source:
+        'const holder={q:client.query.bind(client,"UPDATE appointments SET status = 1")};\n',
+      expected: 0
+    },
+    {
+      name: 'F3-stored-destruct-alias',
+      source:
+        'function overwrite(x){x.text="UPDATE appointments SET status = 1";} const c={text:"UPDATE api_rate_limit_buckets SET count = 1"}; const holder={};holder.x=c;const {x}=holder;overwrite(x);client.query(c);\n',
+      expected: 1
+    },
+    {
+      name: 'F3-assigned-destruct',
+      source:
+        'function overwrite(x){x.text="UPDATE appointments SET status = 1";}const c={text:"UPDATE api_rate_limit_buckets SET count = 1"};const holder={};holder.x=c;let x;({x}=holder);overwrite(x);client.query(c);\n',
+      expected: 1
+    },
+    {
+      name: 'F3-stored-direct-alias',
+      source:
+        'function overwrite(x){x.text="UPDATE appointments SET status = 1";} const c={text:"UPDATE api_rate_limit_buckets SET count = 1"};const holder={};holder.x=c;overwrite(holder.x);client.query(c);\n',
+      expected: 1
+    },
+    {
+      name: 'F3-literal-destruct-alias',
+      source:
+        'function overwrite(x){x.text="UPDATE appointments SET status = 1";} const c={text:"UPDATE api_rate_limit_buckets SET count = 1"};const holder={x:c};const {x}=holder;overwrite(x);client.query(c);\n',
+      expected: 1
+    },
+    {
+      name: 'F3-stored-primitive',
+      source:
+        'function consume(x){return x;} const c={text:"UPDATE api_rate_limit_buckets SET count = 1"};const holder={};holder.x=c.text;const {x}=holder;consume(x);client.query(c);\n',
+      expected: 0
+    },
+    {
+      name: 'F3-unexposed-store',
+      source:
+        'const c={text:"UPDATE api_rate_limit_buckets SET count = 1"};const holder={};holder.x=c;client.query(c);\n',
+      expected: 0
+    },
+    {
+      name: 'F4-closure-default',
+      source:
+        'function alter(f){f().text="UPDATE appointments SET status = 1";}const c={text:"UPDATE api_rate_limit_buckets SET count = 1"};alter((out=c)=>out);client.query(c);\n',
+      expected: 1
+    },
+    {
+      name: 'F4-closure-explicit',
+      source:
+        'function alter(f){f().text="UPDATE appointments SET status = 1";}const c={text:"UPDATE api_rate_limit_buckets SET count = 1"};alter(()=>c);client.query(c);\n',
+      expected: 1
+    },
+    {
+      name: 'F4-closure-primitive',
+      source:
+        'function read(f){return f();}const c={text:"UPDATE api_rate_limit_buckets SET count = 1"};read((out=c.text)=>out);client.query(c);\n',
+      expected: 0
+    },
+    {
+      name: 'F5-array-selected-mutation',
+      source:
+        'const tables=["api_rate_limit_buckets"];const [a]=[tables];a[0]="appointments";for(const t of tables){client.query(`UPDATE ${t} SET count=1`);}\n',
+      expected: 1
+    },
+    {
+      name: 'F5-array-selected-unmutated',
+      source:
+        'const tables=["api_rate_limit_buckets"];const [a]=[tables];for(const t of tables){client.query(`UPDATE ${t} SET count=1`);}\n',
+      expected: 0
+    },
+    {
+      name: 'P2-native-slice-copy',
+      source:
+        'const tables=["api_rate_limit_buckets"];function mutate(a){a[0]="appointments";} mutate(tables.slice());for(const t of tables){client.query(`UPDATE ${t} SET count=1`);}\n',
+      expected: 0
+    },
+    {
+      name: 'P2-original-ref-mutation',
+      source:
+        'const tables=["api_rate_limit_buckets"];function mutate(a){a[0]="appointments";} mutate(tables);for(const t of tables){client.query(`UPDATE ${t} SET count=1`);}\n',
+      expected: 1
+    },
+    {
+      name: 'rest-config-mutated',
+      source:
+        'const {...c}={text:"UPDATE api_rate_limit_buckets SET count=1"};mutate(c);client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'rest-config-unmutated',
+      source:
+        'const {...c}={text:"UPDATE api_rate_limit_buckets SET count=1"};client.query(c)',
+      expected: 0
+    },
+    {
+      name: 'rest-config-direct-write',
+      source:
+        'const {...c}={text:"SELECT 1"};c.text="DELETE FROM patients";client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'rest-assigned-config-mutated',
+      source: 'let c;({...c}={text:"SELECT 1"});mutate(c);client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'rest-config-independent-copy',
+      source:
+        'const c={text:"UPDATE api_rate_limit_buckets SET count=1"};const {...copy}=c;mutate(copy);client.query(c)',
+      expected: 0
+    },
+    {
+      name: 'rest-distinct-allocation',
+      source:
+        'const c={text:"SELECT 1"};const {...a}=c;const {...b}=c;mutate(a);client.query(b)',
+      expected: 0
+    },
+    {
+      name: 'rest-source-mutated-before-copy',
+      source:
+        'const c={text:"SELECT 1"};mutate(c);const {...copy}=c;client.query(copy)',
+      expected: 1
+    },
+    {
+      name: 'array-rest-mutated',
+      source:
+        'const [,...tables]=[0,"api_rate_limit_buckets"];tables[0]="patients";for(const t of tables)client.query(`DELETE FROM ${t}`)',
+      expected: 1
+    },
+    {
+      name: 'array-rest-unmutated',
+      source:
+        'const [,...tables]=[0,"api_rate_limit_buckets"];for(const t of tables)client.query(`DELETE FROM ${t}`)',
+      expected: 0
+    },
+    {
+      name: 'slice-shallow-config-ref',
+      source:
+        'const c={text:"SELECT 1"};const a=[c];mutate(a.slice());client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'slice-shallow-config-ref-binding',
+      source:
+        'const c={text:"SELECT 1"};const a=[c];const [alias]=a.slice();mutate(alias);client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'slice-primitive-source-independent',
+      source:
+        'const tables=["api_rate_limit_buckets"];const copy=tables.slice();mutate(copy);for(const t of tables)client.query(`DELETE FROM ${t}`)',
+      expected: 0
+    },
+    {
+      name: 'slice-primitive-copy-mutated',
+      source:
+        'const tables=["api_rate_limit_buckets"];const copy=tables.slice();mutate(copy);for(const t of copy)client.query(`DELETE FROM ${t}`)',
+      expected: 1
+    },
+    {
+      name: 'slice-source-mutated-before-copy',
+      source:
+        'const tables=["api_rate_limit_buckets"];mutate(tables);const copy=tables.slice();for(const t of copy)client.query(`DELETE FROM ${t}`)',
+      expected: 1
+    },
+    {
+      name: 'slice-unmutated-copy',
+      source:
+        'const tables=["api_rate_limit_buckets"];const copy=tables.slice();for(const t of copy)client.query(`DELETE FROM ${t}`)',
+      expected: 0
+    },
+    {
+      name: 'slice-distinct-copies',
+      source:
+        'const tables=["api_rate_limit_buckets"];const a=tables.slice();const b=tables.slice();mutate(a);for(const t of b)client.query(`DELETE FROM ${t}`)',
+      expected: 0
+    },
+    {
+      name: 'slice-static-bounds',
+      source:
+        'const tables=["patients","api_rate_limit_buckets"];const copy=tables.slice(1);for(const t of copy)client.query(`DELETE FROM ${t}`)',
+      expected: 0
+    },
+    {
+      name: 'slice-override',
+      source:
+        'const tables=["api_rate_limit_buckets"];tables.slice=()=>tables;mutate(tables.slice());for(const t of tables)client.query(`DELETE FROM ${t}`)',
+      expected: 1
+    },
+    {
+      name: 'stored-bound-config',
+      source:
+        'const holder={};holder.q=client.query.bind(client,"DELETE FROM patients");const {q}=holder;q("SELECT 1")',
+      expected: 1
+    },
+    {
+      name: 'stored-bound-read',
+      source:
+        'const holder={};holder.q=client.query.bind(client,"SELECT 1");const {q}=holder;q("DELETE FROM patients")',
+      expected: 0
+    },
+    {
+      name: 'default-nested-bound',
+      source:
+        'let q;({q=client.query.bind(client,"DELETE FROM patients")}={});q("SELECT 1")',
+      expected: 1
+    }
+  ])('$name', ({ source, expected }) => {
+    expect(scan(quotaFile, source).exitCode).toBe(expected)
+  })
+})
+
+describe('v13 copy provenance and uncertain callable controls', () => {
+  it.each([
+    {
+      name: 'rest-mutated-in-hoisted-body',
+      source:
+        'const source={text:"SELECT 1"};change();const {...copy}=source;client.query(copy);function change(){source.text="DELETE FROM patients"}',
+      expected: 1
+    },
+    {
+      name: 'slice-mutated-in-hoisted-body',
+      source:
+        'const tables=["api_rate_limit_buckets"];change();const copy=tables.slice();for(const t of copy)client.query(`DELETE FROM ${t}`);function change(){tables[0]="patients"}',
+      expected: 1
+    },
+    {
+      name: 'rest-source-write-body-first',
+      source:
+        'function change(){source.text="DELETE FROM patients"};const source={text:"SELECT 1"};change();const {...copy}=source;client.query(copy)',
+      expected: 1
+    },
+    {
+      name: 'slice-source-write-body-first',
+      source:
+        'function change(){tables[0]="patients"};const tables=["api_rate_limit_buckets"];change();const copy=tables.slice();for(const t of copy)client.query(`DELETE FROM ${t}`)',
+      expected: 1
+    },
+    {
+      name: 'rest-alias-mutation',
+      source:
+        'const {...copy}={text:"SELECT 1"};const alias=copy;mutate(alias);client.query(copy)',
+      expected: 1
+    },
+    {
+      name: 'rest-shallow-cfg-ref',
+      source:
+        'const c={text:"SELECT 1"};const {...copy}={c};mutate(copy);client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'rest-primitive-copy-only',
+      source:
+        'const c={text:"SELECT 1"};const {...copy}={text:c.text};mutate(copy);client.query(c)',
+      expected: 0
+    },
+    {
+      name: 'slice-shallow-copy-unexposed',
+      source:
+        'const c={text:"SELECT 1"};const copy=[c].slice();client.query(c)',
+      expected: 0
+    },
+    {
+      name: 'slice-shallow-copy-read',
+      source:
+        'const c={text:"SELECT 1"};const copy=[c].slice();const alias=copy[0];client.query(alias)',
+      expected: 0
+    },
+    {
+      name: 'slice-copy-write-source-primitive',
+      source:
+        'const tables=["api_rate_limit_buckets"];const copy=tables.slice();copy[0]="patients";for(const t of tables)client.query(`DELETE FROM ${t}`)',
+      expected: 0
+    },
+    {
+      name: 'slice-copy-write-own-primitive',
+      source:
+        'const tables=["api_rate_limit_buckets"];const copy=tables.slice();copy[0]="patients";for(const t of copy)client.query(`DELETE FROM ${t}`)',
+      expected: 1
+    },
+    {
+      name: 'array-rest-assignment-mutated',
+      source:
+        'let tables;[,...tables]=[0,"api_rate_limit_buckets"];tables[0]="patients";for(const t of tables)client.query(`DELETE FROM ${t}`)',
+      expected: 1
+    },
+    {
+      name: 'stored-config-hoisted-body',
+      source:
+        'const c={text:"SELECT 1"};const holder={};store();const {x}=holder;mutate(x);client.query(c);function store(){holder.x=c}',
+      expected: 1
+    },
+    {
+      name: 'stored-config-pure-primitive-hoisted',
+      source:
+        'const c={text:"SELECT 1"};const holder={};store();const {x}=holder;consume(x);client.query(c);function store(){holder.x=c.text}',
+      expected: 0
+    },
+    {
+      name: 'bound-prefix-mutated-holder',
+      source:
+        'const holder={q:client.query.bind(client,"SELECT 1")};mutate(holder);holder.q("DELETE FROM patients")',
+      expected: 1
+    },
+    {
+      name: 'bound-prefix-mutated-array',
+      source:
+        'const calls=[client.query.bind(client,"SELECT 1")];mutate(calls);calls[0]("DELETE FROM patients")',
+      expected: 1
+    },
+    {
+      name: 'bound-prefix-untouched-holder',
+      source:
+        'const holder={q:client.query.bind(client,"SELECT 1")};holder.q("DELETE FROM patients")',
+      expected: 0
+    },
+    {
+      name: 'closure-default-nested-ref',
+      source:
+        'const c={text:"SELECT 1"};alter((out=c)=>({value:out}));client.query(c)',
+      expected: 1
+    },
+    {
+      name: 'closure-default-read-scalar',
+      source:
+        'const c={text:"SELECT 1"};consume((out=c)=>out.text);client.query(c)',
+      expected: 0
+    }
+  ])('$name', ({ source, expected }) => {
+    expect(scan(quotaFile, source).exitCode).toBe(expected)
+  })
+})
+
+describe('v13 copy spread source dependencies', () => {
+  it.each([
+    {
+      name: 'rest-spread-source-mutated',
+      source:
+        'const src={text:"SELECT 1"};mutate(src);const {...copy}={...src};client.query(copy)',
+      expected: 1
+    },
+    {
+      name: 'rest-spread-source-safe',
+      source:
+        'const src={text:"SELECT 1"};const {...copy}={...src};client.query(copy)',
+      expected: 0
+    },
+    {
+      name: 'slice-spread-source-mutated',
+      source:
+        'const tables=["api_rate_limit_buckets"];mutate(tables);const copy=[...tables].slice();for(const t of copy)client.query(`DELETE FROM ${t}`)',
+      expected: 1
+    },
+    {
+      name: 'slice-spread-source-safe',
+      source:
+        'const tables=["api_rate_limit_buckets"];const copy=[...tables].slice();for(const t of copy)client.query(`DELETE FROM ${t}`)',
+      expected: 0
+    }
+  ])('$name', ({ source, expected }) => {
+    expect(scan(quotaFile, source).exitCode).toBe(expected)
+  })
+})
