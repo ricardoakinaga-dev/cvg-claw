@@ -5335,3 +5335,12 @@ PASS`; suíte integral `289 PASS` arquivos/12 skipped e `2.256 PASS`
 - next_action: conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.
 - evidence: [passada2](04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-adjudication.json), [teardown](04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-teardown.json), [crítica](04_audit/evidence/AUD06/recovery-20261007/bypass-independent-adjudication/bypass-adjudication-20261008.json).
 - verification: verify/unit2868PASS+200SKIP por ausência de banco; coverage dedicada3068PASS e PostgreSQL369PASS sem skips. bypass/independent_critic/formal_closure FAIL; INV-002 FAIL. Pacote rejeitado preservado, principal histórico intacto. Novo binding obrigatório após scanner/docs/testes; nenhuma publicação ou aprovação real.
+
+# AUD06-13 — scanner lexical implementado; aceite pendente — 2026-10-08
+
+- current_engine: `AUDIT`; task `AUD06-13` `WAITING_HUMAN_APPROVAL` na fronteira de publicação; requalificação local autorizada; staging/produção `NO_GO`.
+- last_completed_action: preservar REJECT I1 com3P1/10PASS incorretos; reproduzir RED10FAIL/40PASS e implementar reparo lexical com parser TypeScript já instalado, aliases/comentários SQL e inventário por basename. GREEN82/82, scanner público59fontes PASS, lint/format/docs exit0; crítica focada e certificação nova pendentes.
+- next_action: conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.
+- evidence: [recibo](04_audit/evidence/AUD06/recovery-20261007/bypass-I1-final-focused-receipt.json), [rejeição](04_audit/evidence/AUD06/recovery-20261007/bypass-focused-reject-I1/q13-focused-review-reject.json).
+- verification: tentativas intermediárias/gerador inválido preservados e qualificados; nenhum GREEN substitui aceite independente. Fontes runtime e provas stack370 permanecem intactas; candidato anterior8a108f29 STALE para a nova revisão. Fonte/documentação devem ser religadas antes do ensaio.
+- limitations: resultado global FAIL/NO_GO; sem novo selo principal, CI, publicação, produto ou signoff. Auditoria0577 mantém nota74,27 vinculada ao snapshot380ccc52; piloto adiado e identidade em avaliação. P2 de classificação de skip requer reconciliação das identidades executadas, sem presumir cobertura por nome.

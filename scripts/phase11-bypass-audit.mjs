@@ -3,6 +3,7 @@ import { spawnSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import ts from 'typescript'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const scopedPrefixes = [
@@ -10,7 +11,7 @@ const scopedPrefixes = [
   'apps/worker/src',
   'packages/agent-core/src'
 ]
-const ignoredName = /(?:\.test\.|\.spec\.)/
+const ignoredName = /(?:\.test|\.spec)\.[cm]?[jt]sx?$/
 const forbidden = [
   { id: 'direct_fetch', pattern: /\bfetch\s*\(/g },
   { id: 'direct_evolution', pattern: /EvolutionAPI/g },
@@ -25,7 +26,7 @@ const forbidden = [
     id: 'direct_sql_write',
     // Require SET so prose and an UPSERT's DO UPDATE SET aren't table writes.
     pattern:
-      /\bUPDATE\s+((?:\$\{[^}]+\}|"(?:[^"]|"")*"|[^\s(;"])+)(?:\s+(?:AS\s+)?[A-Za-z_]\w*)?\s+SET\b/gi
+      /\bUPDATE\s+((?:\$\{[^}]+\}|"(?:[^"]|"")*"|[^\s(;"])+)(?:\s+(?:AS\s+)?(?:"(?:[^"]|"")*"|[A-Za-z_]\w*))?\s+SET\b/gi
   },
   {
     id: 'direct_sql_write',
@@ -49,8 +50,97 @@ const allowedSqlWriteInfrastructure = new Map([
 const quotaStore = 'apps/api/src/postgres-rate-limit.ts'
 const quotaTable = 'api_rate_limit_buckets'
 
-const stripComments = (source) =>
-  source.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/\/\/[^\n]*/g, ' ')
+// SQL comments are recognized only inside decoded host-language literals.
+// SQL quoted values/identifiers retain comment markers as ordinary text.
+function stripSqlComments(text) {
+  let result = ''
+  let quote = null
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index]
+    const next = text[index + 1]
+    if (quote) {
+      result += char
+      if (char === quote && next === quote) result += text[++index]
+      else if (char === '\\' && next) result += text[++index]
+      else if (char === quote) quote = null
+    } else if (char === "'" || char === '"') {
+      quote = char
+      result += char
+    } else if (char === '-' && next === '-') {
+      while (index < text.length && text[index] !== '\n') index += 1
+      result += '\n'
+    } else if (char === '/' && next === '*') {
+      let depth = 1
+      index += 2
+      result += ' '
+      while (index < text.length && depth > 0) {
+        if (text[index] === '/' && text[index + 1] === '*') {
+          depth += 1
+          index += 2
+        } else if (text[index] === '*' && text[index + 1] === '/') {
+          depth -= 1
+          index += 2
+        } else {
+          if (text[index] === '\n') result += '\n'
+          index += 1
+        }
+      }
+      index -= 1
+    } else result += char
+  }
+  return result
+}
+
+function maskSqlValues(text) {
+  let result = ''
+  let quoted = false
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index]
+    if (char === "'") {
+      if (quoted && text[index + 1] === "'") {
+        result += '  '
+        index += 1
+      } else {
+        quoted = !quoted
+        result += ' '
+      }
+    } else if (quoted && char === '\\' && text[index + 1]) {
+      result += '  '
+      index += 1
+    } else result += quoted && char !== '\n' ? ' ' : char
+  }
+  return result
+}
+
+// The repository's pinned TypeScript parser owns host syntax: comments are
+// trivia, while URLs, escapes, regexes and template expressions stay intact.
+function normalizeSource(file) {
+  const sqlLiterals = []
+  function normalizeLiteral(text) {
+    const sql = stripSqlComments(text)
+    if (/^\s*(?:WITH|SELECT|INSERT|UPDATE|DELETE)\s/i.test(sql)) {
+      const statement = maskSqlValues(sql)
+      sqlLiterals.push(statement)
+      return '`' + statement + '`'
+    }
+    return '`' + sql + '`'
+  }
+  function visit(node) {
+    if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) {
+      return normalizeLiteral(node.text)
+    }
+    if (ts.isTemplateExpression(node)) {
+      let literal = node.head.text
+      for (const span of node.templateSpans) {
+        literal += '${' + visit(span.expression) + '}' + span.literal.text
+      }
+      return normalizeLiteral(literal)
+    }
+    const children = node.getChildren(file)
+    return children.length ? children.map(visit).join(' ') : node.getText(file)
+  }
+  return { source: visit(file), sqlLiterals }
+}
 
 const allowedBoundary = (relativePath, findingId, sqlTarget) => {
   if (findingId === 'direct_fetch') return false
@@ -90,16 +180,24 @@ const files = [
     (listed.stdout ?? '')
       .split('\0')
       .filter(Boolean)
-      .filter((file) => !ignoredName.test(file))
+      .filter((file) => !ignoredName.test(path.basename(file)))
       .filter((file) => /\.(?:ts|tsx|js|mjs|cjs)$/.test(file))
   )
 ]
 
 const findings = listed.status === 0 ? [] : [{ id: 'source_inventory_failed' }]
 for (const relativePath of files) {
-  const source = stripComments(
-    fs.readFileSync(path.join(root, relativePath), 'utf8')
+  const parsed = ts.createSourceFile(
+    relativePath,
+    fs.readFileSync(path.join(root, relativePath), 'utf8'),
+    ts.ScriptTarget.Latest,
+    true
   )
+  if (parsed.parseDiagnostics.length > 0) {
+    findings.push({ id: 'source_parse_failed', path: relativePath })
+    continue
+  }
+  const { source, sqlLiterals } = normalizeSource(parsed)
   for (const rule of forbidden) {
     rule.pattern.lastIndex = 0
     let match
@@ -107,6 +205,23 @@ for (const relativePath of files) {
       if (allowedBoundary(relativePath, rule.id, match[1])) continue
       const line = source.slice(0, match.index).split('\n').length
       findings.push({ id: rule.id, path: relativePath, line })
+    }
+  }
+  // In SQL-shaped literals, a recognized write with unresolved grammar/target
+  // must reject too. This covers modifiers, parentheses and constructed targets
+  // without treating diagnostic prose as an ordinary UPDATE statement.
+  const writeIntent =
+    /\b(?:INSERT(?:\s+INTO)?|DELETE(?:\s+FROM)?|UPDATE(?!\s+SET\b))\b(?:\s+([^\s;]+))?/gi
+  for (const sql of sqlLiterals) {
+    for (const match of sql.matchAll(writeIntent)) {
+      const target = match[1]?.replace(/\(.*/, '')
+      if (!allowedBoundary(relativePath, 'direct_sql_write', target)) {
+        findings.push({
+          id: 'direct_sql_write',
+          path: relativePath,
+          grammar: 'write_intent'
+        })
+      }
     }
   }
 }

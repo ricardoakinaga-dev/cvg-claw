@@ -101,3 +101,12 @@ reparo de medição da quota pré-kernel: arquivo+tabela exatos, demais escritas
 e efeitos rejeitados, negativos e nova qualificação obrigatórios. SPEC/barra
 v6 congeladas antes de código. AUD06-13 permanece sem publicação/CI aceitos;
 11 adiado e14 sem evidência externa. Fontes runtime da stack intactas.
+
+### Q13 — reparo lexical após REJECT I1 — 2026-10-08
+
+Três P1 reproduzidos, RED10FAIL/40PASS e GREEN82/82. Scanner público PASS;
+crítica e requalificação do novo candidato pendentes. Rejeição, falso positivo
+e tentativa de gerador inválida preservados. Uso do parser TypeScript existente
+para reconhecer comentários/literais, SQL comments/aliases e basename de teste;
+nenhuma dependência nova, fonte runtime de stack ou fronteira de domínio muda.
+P2 de classificação de skips exige prova por identidade na revisão atual.

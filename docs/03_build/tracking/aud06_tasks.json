@@ -202,10 +202,11 @@
         "docs/04_audit/evidence/AUD06/recovery-20261007/current-candidate-certification-verifier-receipt.json",
         "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass1-receipt.json",
         "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-adjudication.json",
-        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-teardown.json"
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-teardown.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-final-focused-receipt.json"
       ],
       "executionDisposition": "LOCAL_CERTIFICATION_PREPARATION_AUTHORIZED_PUBLICATION_PENDING",
-      "rework": "Q13 scoped quota SQL measurement correction; pass2 NO_GO retained; local build and requalification admitted by SPEC addendum"
+      "rework": "Q13 lexical SQL comments/aliases and anchored test inventory after I1 REJECT; focused verification82/82 only; independent acceptance and current canonical qualification pending"
     },
     {
       "id": "AUD06-14",

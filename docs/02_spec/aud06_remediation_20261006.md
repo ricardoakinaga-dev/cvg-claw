@@ -158,3 +158,15 @@ ainda não rastreados na mesma fronteira e recusar falha de inventário Git.
 Critérios Q01–Q14 permanecem obrigatórios e inalterados; este é reparo de
 medição, não admissão de efeito N3. Congelar novo candidato e repetir
 qualificação após RED/GREEN e crítica, preservando todos os recibos NO_GO.
+
+### Rework independente do scanner Q13 — 2026-10-08
+
+Crítica focada I1 REJECT: três P1 de medição reproduzidos em22 sondagens,
+10 PASS incorretos. Completar o reparo já admitido: aliases SQL entre aspas,
+comentários SQL --, reconhecimento de comentários do código sem truncar URLs
+ou literais, e exclusão somente de nomes de arquivos test/spec ancorados.
+Fontes de produção em diretórios com .test./.spec. devem ser inventariadas,
+rastreadas ou novas. Provar os exemplos negativos independentes, além dos
+controles benignos e da exceção restrita. Não promover os48 testes anteriores
+a aceite; preservar REJECT e sentinel13arquivos intactos. Nenhuma fronteira
+de domínio, alvo Q01–Q14 ou gate externo muda. Novo congelamento/reteste.
