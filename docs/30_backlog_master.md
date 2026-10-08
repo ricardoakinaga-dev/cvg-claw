@@ -3390,3 +3390,21 @@ O aceite desta sprint é exclusivamente controlado: schema fictício de fixture,
 - evidence: [recibo builder](04_audit/evidence/AUD06/recovery-20261007/bypass-v15-builder/receipt-IMPLEMENTED.json), [crítica v14 rejeitada](04_audit/evidence/AUD06/recovery-20261007/bypass-v14-fresh-reject-I1/report.json), [SPEC](02_spec/aud06_remediation_20261006.md).
 - verification: scannere1d90f06/teste2d4f2a78; lint/ESLint/formato/sintaxe/docs0. Attempt1 939/939 e rawfalsePASS de prefixo em membro próprio de função preservados como intermediários; não são aceite final. Corrigida proveniência do hash antigo da SPEC na barra v15 a partir da barra v14 arquivada, bytes iniciais preservados como registro incorreto; critérios intactos. Novo freeze/crítica/canonical obrigatórios.
 - limitations: global FAIL/NO_GO; passada4 não iniciada; nenhum certificado principal/publicação/CI/piloto/signoff. Nota0577 74,27 permanece snapshot380ccc52; cópia ficará sem escritores durante revisão/execução.
+
+# AUD06-13 — v15 rejeitado; identidade de callable vinculado registrada — 2026-10-08
+
+- current_engine: `AUDIT -> BUILD -> AUDIT`; task `AUD06-13` `WAITING_HUMAN_APPROVAL` somente na fronteira de publicação; rework local autorizado; staging/produção `NO_GO`.
+- last_completed_action: preservar REJECT fresco I1 v15,1P1/1P2 em184 CLI,14falsePASS/14falseFAIL sem parsing inválido;60/60 controles SQL,28.107 entradas intactas inclusive atime. Registrar identidade própria de callable construído por bind e normalização estática de camadas intrínsecas antes de BUILD.
+- next_action: conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.
+- evidence: [crítica](04_audit/evidence/AUD06/recovery-20261007/bypass-v15-fresh-reject-I1/report.json), [SPEC](02_spec/aud06_remediation_20261006.md).
+- verification: GREEN945 e corpus59 não superam os contraexemplos; candidato7f2f21d2 rejeitado, passada4 não iniciada. Helper/runtime intactos; nenhuma escrita alvo/canonical durante crítica.584artefatos copiados com hashes, original TEMP preservado; shim apenas troca raiz de inventário, sem mudar funções AST/SQL.
+- limitations: global FAIL/NO_GO, sem certificado principal/publicação/CI/piloto/signoff; nota0577 74,27 permanece snapshot380ccc52. Provas anteriores permanecem preservadas.
+
+# AUD06-13 — identidade de callable vinculado integrada; crítica fresca pendente — 2026-10-08
+
+- current_engine: `AUDIT`; task `AUD06-13` `WAITING_HUMAN_APPROVAL` somente na fronteira de publicação; qualificação local autorizada; staging/produção `NO_GO`.
+- last_completed_action: builder separado concluiu identidade estável por sítio AST de callable vinculado e normalização compartilhada de camadas intrínsecas. RED204 válido36divergências/168matches antes de edição; GREEN1149/1149 em4arquivos sem skips,204/204CLI e corpus59 PASS. Cinco bindings conferidos pelo lead; helper/SPEC/barra e runtime preservados.
+- next_action: conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.
+- evidence: [recibo builder](04_audit/evidence/AUD06/recovery-20261007/bypass-v16-builder/receipt-IMPLEMENTED.json), [crítica v15 rejeitada](04_audit/evidence/AUD06/recovery-20261007/bypass-v15-fresh-reject-I1/report.json), [SPEC](02_spec/aud06_remediation_20261006.md).
+- verification: scanner52aa6254/teste2ce3cb2f; lint/ESLint/formato/sintaxe/docs0. Tentativa203/204 e diagnóstico de consumidor unused preservados/qualificados; controle de duas alocações independentes corrigido pelo alvo normalizado de mutação e ligação do consumidor de prefixo. Metadata/grants/fronteiras/forwarder idênticos. Novo freeze/crítica/canonical obrigatórios; implementação não é aceite.
+- limitations: global FAIL/NO_GO; passada4 não iniciada; nenhum certificado principal/publicação/CI/piloto/signoff. Nota0577 74,27 permanece snapshot380ccc52; cópia ficará sem escritores durante revisão/execução.

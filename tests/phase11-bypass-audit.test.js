@@ -2979,3 +2979,1382 @@ describe('v15 intrinsic origin and effective arguments', () => {
     expect(result.exitCode).toBe(expected)
   })
 })
+
+describe('v16 bound callable allocation and operation layers', () => {
+  it.each([
+    {
+      name: 'object-bind-fetch',
+      source: 'const f = { bind: fetch }; f.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'object-bind-pure',
+      source: 'const f = { bind: () => 1 }; f.bind("inert");',
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'stored-object-bind-fetch',
+      source:
+        'const f = {}; f.bind=fetch; f.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'stored-object-bind-pure',
+      source: 'const f = {}; f.bind=() => 1; f.bind("inert");',
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'function-bind-fetch',
+      source:
+        'function f() { return 1; } f.bind=fetch; f.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'function-bind-pure',
+      source: 'function f() { return 1; } f.bind=() => 1; f.bind("inert");',
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'arrow-bind-fetch',
+      source:
+        'const f = () => 1; f.bind=fetch; f.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'arrow-bind-pure',
+      source: 'const f = () => 1; f.bind=() => 1; f.bind("inert");',
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'array-bind-fetch',
+      source:
+        'const f = []; f.bind=fetch; f.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'array-bind-pure',
+      source: 'const f = []; f.bind=() => 1; f.bind("inert");',
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'rest-bind-fetch',
+      source:
+        'const f = { bind: fetch }; const { ...r }=f; r.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'spread-bind-fetch',
+      source:
+        'const f = { bind: fetch }; const r={...f}; r.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'arrayrest-bind-fetch',
+      source:
+        'const f={ bind:fetch }; const [ ...r ]=[f.bind]; r[0]("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'own-bind-read',
+      source: 'const f={ bind: db.query }; f.bind("SELECT 1");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-bind-read',
+      source: 'const f={ bind:db.query.bind(db,"SELECT 1") }; f.bind();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-bind-read',
+      source: 'const q=db.query.bind(db,"SELECT 1"); q();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'own-bind-domain',
+      source: 'const f={ bind: db.query }; f.bind("DELETE FROM appointments");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-bind-domain',
+      source:
+        'const f={ bind:db.query.bind(db,"DELETE FROM appointments") }; f.bind();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-bind-domain',
+      source: 'const q=db.query.bind(db,"DELETE FROM appointments"); q();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'own-bind-quota',
+      source:
+        'const f={ bind: db.query }; f.bind("UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-bind-quota',
+      source:
+        'const f={ bind:db.query.bind(db,"UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1") }; f.bind();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-bind-quota',
+      source:
+        'const q=db.query.bind(db,"UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1"); q();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'object-call-fetch',
+      source: 'const f = { call: fetch }; f.call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'object-call-pure',
+      source: 'const f = { call: () => 1 }; f.call("inert");',
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'stored-object-call-fetch',
+      source:
+        'const f = {}; f.call=fetch; f.call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'stored-object-call-pure',
+      source: 'const f = {}; f.call=() => 1; f.call("inert");',
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'function-call-fetch',
+      source:
+        'function f() { return 1; } f.call=fetch; f.call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'function-call-pure',
+      source: 'function f() { return 1; } f.call=() => 1; f.call("inert");',
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'arrow-call-fetch',
+      source:
+        'const f = () => 1; f.call=fetch; f.call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'arrow-call-pure',
+      source: 'const f = () => 1; f.call=() => 1; f.call("inert");',
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'array-call-fetch',
+      source:
+        'const f = []; f.call=fetch; f.call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'array-call-pure',
+      source: 'const f = []; f.call=() => 1; f.call("inert");',
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'rest-call-fetch',
+      source:
+        'const f = { call: fetch }; const { ...r }=f; r.call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'spread-call-fetch',
+      source:
+        'const f = { call: fetch }; const r={...f}; r.call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'arrayrest-call-fetch',
+      source:
+        'const f={ call:fetch }; const [ ...r ]=[f.call]; r[0]("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'own-call-read',
+      source: 'const f={ call: db.query }; f.call("SELECT 1");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-call-read',
+      source: 'const f={ call:db.query.bind(db,"SELECT 1") }; f.call();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-call-read',
+      source: 'db.query.call(db, "SELECT 1");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'own-call-domain',
+      source: 'const f={ call: db.query }; f.call("DELETE FROM appointments");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-call-domain',
+      source:
+        'const f={ call:db.query.bind(db,"DELETE FROM appointments") }; f.call();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-call-domain',
+      source: 'db.query.call(db, "DELETE FROM appointments");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'own-call-quota',
+      source:
+        'const f={ call: db.query }; f.call("UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-call-quota',
+      source:
+        'const f={ call:db.query.bind(db,"UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1") }; f.call();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-call-quota',
+      source:
+        'db.query.call(db, "UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'object-apply-fetch',
+      source:
+        'const f = { apply: fetch }; f.apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'object-apply-pure',
+      source: 'const f = { apply: () => 1 }; f.apply("inert");',
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'stored-object-apply-fetch',
+      source:
+        'const f = {}; f.apply=fetch; f.apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'stored-object-apply-pure',
+      source: 'const f = {}; f.apply=() => 1; f.apply("inert");',
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'function-apply-fetch',
+      source:
+        'function f() { return 1; } f.apply=fetch; f.apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'function-apply-pure',
+      source: 'function f() { return 1; } f.apply=() => 1; f.apply("inert");',
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'arrow-apply-fetch',
+      source:
+        'const f = () => 1; f.apply=fetch; f.apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'arrow-apply-pure',
+      source: 'const f = () => 1; f.apply=() => 1; f.apply("inert");',
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'array-apply-fetch',
+      source:
+        'const f = []; f.apply=fetch; f.apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'array-apply-pure',
+      source: 'const f = []; f.apply=() => 1; f.apply("inert");',
+      expected: 0,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'rest-apply-fetch',
+      source:
+        'const f = { apply: fetch }; const { ...r }=f; r.apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'spread-apply-fetch',
+      source:
+        'const f = { apply: fetch }; const r={...f}; r.apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'arrayrest-apply-fetch',
+      source:
+        'const f={ apply:fetch }; const [ ...r ]=[f.apply]; r[0]("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/probe.ts'
+    },
+    {
+      name: 'own-apply-read',
+      source: 'const f={ apply: db.query }; f.apply("SELECT 1");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-apply-read',
+      source: 'const f={ apply:db.query.bind(db,"SELECT 1") }; f.apply();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-apply-read',
+      source: 'db.query.apply(db, ["SELECT 1"]);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'own-apply-domain',
+      source:
+        'const f={ apply: db.query }; f.apply("DELETE FROM appointments");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-apply-domain',
+      source:
+        'const f={ apply:db.query.bind(db,"DELETE FROM appointments") }; f.apply();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-apply-domain',
+      source: 'db.query.apply(db, ["DELETE FROM appointments"]);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'own-apply-quota',
+      source:
+        'const f={ apply: db.query }; f.apply("UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-apply-quota',
+      source:
+        'const f={ apply:db.query.bind(db,"UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1") }; f.apply();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'native-apply-quota',
+      source:
+        'db.query.apply(db, ["UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1"]);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-direct-read',
+      source:
+        'const args=[db,"SELECT 1"]; const p=[...args]; const q=db.query.bind(...[...p]); q();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-call-read',
+      source:
+        'const args=[db,"SELECT 1"]; const p=[...args]; const q=db.query.bind(...[...p]); q.call(db);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-apply-read',
+      source:
+        'const args=[db,"SELECT 1"]; const p=[...args]; const q=db.query.bind(...[...p]); q.apply(db,[]);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-array-read',
+      source:
+        'const args=[db,"SELECT 1"]; const p=[...args]; const q=db.query.bind(...[...p]); const a=[q]; a[0]();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-rest-read',
+      source:
+        'const args=[db,"SELECT 1"]; const p=[...args]; const q=db.query.bind(...[...p]); const {...r}={q}; r.q();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-spread-read',
+      source:
+        'const args=[db,"SELECT 1"]; const p=[...args]; const q=db.query.bind(...[...p]); const r={...{q}}; r.q();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-literal-read',
+      source:
+        'const a=["SELECT 1"]; const [...r]=a; db.query.apply(db,["SELECT 1"]);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-copy-read',
+      source:
+        'const a=["SELECT 1"]; const [...r]=a; db.query.apply(db,[...a]);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-slice-read',
+      source:
+        'const a=["SELECT 1"]; const [...r]=a; db.query.apply(db,a.slice());',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-rest-read',
+      source: 'const a=["SELECT 1"]; const [...r]=a; db.query.apply(db,r);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-nested-read',
+      source:
+        'const a=["SELECT 1"]; const [...r]=a; db.query.apply(db,[...[...a]]);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-direct-domain',
+      source:
+        'const args=[db,"DELETE FROM appointments"]; const p=[...args]; const q=db.query.bind(...[...p]); q();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-call-domain',
+      source:
+        'const args=[db,"DELETE FROM appointments"]; const p=[...args]; const q=db.query.bind(...[...p]); q.call(db);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-apply-domain',
+      source:
+        'const args=[db,"DELETE FROM appointments"]; const p=[...args]; const q=db.query.bind(...[...p]); q.apply(db,[]);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-array-domain',
+      source:
+        'const args=[db,"DELETE FROM appointments"]; const p=[...args]; const q=db.query.bind(...[...p]); const a=[q]; a[0]();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-rest-domain',
+      source:
+        'const args=[db,"DELETE FROM appointments"]; const p=[...args]; const q=db.query.bind(...[...p]); const {...r}={q}; r.q();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-spread-domain',
+      source:
+        'const args=[db,"DELETE FROM appointments"]; const p=[...args]; const q=db.query.bind(...[...p]); const r={...{q}}; r.q();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-literal-domain',
+      source:
+        'const a=["DELETE FROM appointments"]; const [...r]=a; db.query.apply(db,["DELETE FROM appointments"]);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-copy-domain',
+      source:
+        'const a=["DELETE FROM appointments"]; const [...r]=a; db.query.apply(db,[...a]);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-slice-domain',
+      source:
+        'const a=["DELETE FROM appointments"]; const [...r]=a; db.query.apply(db,a.slice());',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-rest-domain',
+      source:
+        'const a=["DELETE FROM appointments"]; const [...r]=a; db.query.apply(db,r);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-nested-domain',
+      source:
+        'const a=["DELETE FROM appointments"]; const [...r]=a; db.query.apply(db,[...[...a]]);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-direct-quota',
+      source:
+        'const args=[db,"UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1"]; const p=[...args]; const q=db.query.bind(...[...p]); q();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-call-quota',
+      source:
+        'const args=[db,"UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1"]; const p=[...args]; const q=db.query.bind(...[...p]); q.call(db);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-apply-quota',
+      source:
+        'const args=[db,"UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1"]; const p=[...args]; const q=db.query.bind(...[...p]); q.apply(db,[]);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-array-quota',
+      source:
+        'const args=[db,"UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1"]; const p=[...args]; const q=db.query.bind(...[...p]); const a=[q]; a[0]();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-rest-quota',
+      source:
+        'const args=[db,"UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1"]; const p=[...args]; const q=db.query.bind(...[...p]); const {...r}={q}; r.q();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-spread-quota',
+      source:
+        'const args=[db,"UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1"]; const p=[...args]; const q=db.query.bind(...[...p]); const r={...{q}}; r.q();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-literal-quota',
+      source:
+        'const a=["UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1"]; const [...r]=a; db.query.apply(db,["UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1"]);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-copy-quota',
+      source:
+        'const a=["UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1"]; const [...r]=a; db.query.apply(db,[...a]);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-slice-quota',
+      source:
+        'const a=["UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1"]; const [...r]=a; db.query.apply(db,a.slice());',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-rest-quota',
+      source:
+        'const a=["UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1"]; const [...r]=a; db.query.apply(db,r);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'apply-nested-quota',
+      source:
+        'const a=["UPDATE api_rate_limit_buckets SET count = count + 1 WHERE key = $1"]; const [...r]=a; db.query.apply(db,[...[...a]]);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'fetch-bind-inert',
+      source: 'const f=fetch.bind(null,"https://synthetic.invalid");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'query-bind-inert',
+      source: 'const q=db.query.bind(db,"DELETE FROM appointments");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'query-bind-call-inert',
+      source:
+        'const q=db.query.bind.call(db.query,db,"DELETE FROM appointments");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'fetch-bind-call-inert',
+      source:
+        'const q=fetch.bind.call(fetch,null,"https://synthetic.invalid");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'query-bind-apply-inert',
+      source:
+        'const q=db.query.bind.apply(db.query,[db,"DELETE FROM appointments"]);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'query-call-call-read',
+      source: 'db.query.call.call(db.query,db,"SELECT 1");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'query-call-call-domain',
+      source: 'db.query.call.call(db.query,db,"DELETE FROM appointments");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'query-call-apply-read',
+      source: 'db.query.call.apply(db.query,[db,"SELECT 1"]);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'unresolved-apply',
+      source: 'db.query.apply(db, input);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'mutated-apply',
+      source: 'const a=["SELECT 1"]; a[0]=input; db.query.apply(db,a);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'unknown-prefix',
+      source: 'const p=[db,...input]; const q=db.query.bind(...p); q();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'config-apply',
+      source: 'const a=[{text:"SELECT 1"}]; db.query.apply(db,a);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'config-bound',
+      source:
+        'const a=[db,{text:"SELECT 1"}]; const q=db.query.bind(...a); q();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'mutated-config-apply',
+      source:
+        'const c={text:"SELECT 1"}; const a=[c]; expose(a); db.query.apply(db,a);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'primitive-copy-apply',
+      source:
+        'const a=["SELECT 1"]; const b=[...a]; expose(b); db.query.apply(db,a);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'query-alias-call',
+      source: 'const c=db.query.call; c.call(db.query,db,"SELECT 1");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'function-own-bind-prefix',
+      source:
+        'function f(){return 1} f.bind=db.query.bind(db,"DELETE FROM appointments"); f.bind();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'own-query-call-sql-first',
+      source:
+        'const h={call:db.query}; h.call("SELECT 1","DELETE FROM appointments");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'own-query-apply-sql-first',
+      source:
+        'const h={apply:db.query}; h.apply("DELETE FROM appointments",["SELECT 1"]);',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'function-stored-call-pure',
+      source: 'const f=()=>1; f.call=()=>2; const h={f}; h.f.call();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'function-stored-bind-http',
+      source:
+        'const f=()=>1; f.bind=fetch; const h={f}; const {...r}=h; r.f.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'array-own-bind-http',
+      source:
+        'const a=[]; a.bind=fetch; const h={a}; h.a.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'query-tag-domain',
+      source: 'db.query`DELETE FROM appointments`;',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'template-http',
+      source: 'db.query`SELECT ${fetch("https://synthetic.invalid")}`;',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'inert-strings',
+      source: 'const s="fetch.bind() DELETE FROM appointments";',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-fetch-bind-direct',
+      source:
+        'const f=fetch.bind(null); f.bind=fetch;  f.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-fetch-bind-holder',
+      source:
+        'const f=fetch.bind(null); f.bind=fetch; const h={f}; h.f.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-fetch-bind-array',
+      source:
+        'const f=fetch.bind(null); f.bind=fetch; const a=[f]; a[0].bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-fetch-bind-spread',
+      source:
+        'const f=fetch.bind(null); f.bind=fetch; const h={...{f}}; h.f.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-bind-direct',
+      source:
+        'const f=db.query.bind(db); f.bind=fetch;  f.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-bind-holder',
+      source:
+        'const f=db.query.bind(db); f.bind=fetch; const h={f}; h.f.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-bind-array',
+      source:
+        'const f=db.query.bind(db); f.bind=fetch; const a=[f]; a[0].bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-bind-spread',
+      source:
+        'const f=db.query.bind(db); f.bind=fetch; const h={...{f}}; h.f.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-bind-direct',
+      source:
+        'const f=(()=>1).bind(null); f.bind=fetch;  f.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-bind-holder',
+      source:
+        'const f=(()=>1).bind(null); f.bind=fetch; const h={f}; h.f.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-bind-array',
+      source:
+        'const f=(()=>1).bind(null); f.bind=fetch; const a=[f]; a[0].bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-bind-spread',
+      source:
+        'const f=(()=>1).bind(null); f.bind=fetch; const h={...{f}}; h.f.bind("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-bind-sql-direct',
+      source:
+        'const f=db.query.bind(db); f.bind=db.query; f.bind("DELETE FROM appointments", "SELECT 1");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-bind-positive-direct',
+      source: 'const f=fetch.bind(null); f.bind=()=>1; f.bind("inert");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-bind-sql-rest',
+      source:
+        'const f=db.query.bind(db); f.bind=db.query; const {...h}={f};h.f.bind("DELETE FROM appointments", "SELECT 1");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-bind-positive-rest',
+      source:
+        'const f=fetch.bind(null); f.bind=()=>1; const {...h}={f};h.f.bind("inert");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-bind-sql-array',
+      source:
+        'const f=db.query.bind(db); f.bind=db.query; const [g]=[f];g.bind("DELETE FROM appointments", "SELECT 1");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-bind-positive-array',
+      source:
+        'const f=fetch.bind(null); f.bind=()=>1; const [g]=[f];g.bind("inert");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-fetch-call-direct',
+      source:
+        'const f=fetch.bind(null); f.call=fetch;  f.call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-fetch-call-holder',
+      source:
+        'const f=fetch.bind(null); f.call=fetch; const h={f}; h.f.call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-fetch-call-array',
+      source:
+        'const f=fetch.bind(null); f.call=fetch; const a=[f]; a[0].call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-fetch-call-spread',
+      source:
+        'const f=fetch.bind(null); f.call=fetch; const h={...{f}}; h.f.call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-call-direct',
+      source:
+        'const f=db.query.bind(db); f.call=fetch;  f.call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-call-holder',
+      source:
+        'const f=db.query.bind(db); f.call=fetch; const h={f}; h.f.call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-call-array',
+      source:
+        'const f=db.query.bind(db); f.call=fetch; const a=[f]; a[0].call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-call-spread',
+      source:
+        'const f=db.query.bind(db); f.call=fetch; const h={...{f}}; h.f.call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-call-direct',
+      source:
+        'const f=(()=>1).bind(null); f.call=fetch;  f.call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-call-holder',
+      source:
+        'const f=(()=>1).bind(null); f.call=fetch; const h={f}; h.f.call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-call-array',
+      source:
+        'const f=(()=>1).bind(null); f.call=fetch; const a=[f]; a[0].call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-call-spread',
+      source:
+        'const f=(()=>1).bind(null); f.call=fetch; const h={...{f}}; h.f.call("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-call-sql-direct',
+      source:
+        'const f=db.query.bind(db); f.call=db.query; f.call("DELETE FROM appointments", "SELECT 1");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-call-positive-direct',
+      source: 'const f=fetch.bind(null); f.call=()=>1; f.call("inert");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-call-sql-rest',
+      source:
+        'const f=db.query.bind(db); f.call=db.query; const {...h}={f};h.f.call("DELETE FROM appointments", "SELECT 1");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-call-positive-rest',
+      source:
+        'const f=fetch.bind(null); f.call=()=>1; const {...h}={f};h.f.call("inert");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-call-sql-array',
+      source:
+        'const f=db.query.bind(db); f.call=db.query; const [g]=[f];g.call("DELETE FROM appointments", "SELECT 1");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-call-positive-array',
+      source:
+        'const f=fetch.bind(null); f.call=()=>1; const [g]=[f];g.call("inert");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-fetch-apply-direct',
+      source:
+        'const f=fetch.bind(null); f.apply=fetch;  f.apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-fetch-apply-holder',
+      source:
+        'const f=fetch.bind(null); f.apply=fetch; const h={f}; h.f.apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-fetch-apply-array',
+      source:
+        'const f=fetch.bind(null); f.apply=fetch; const a=[f]; a[0].apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-fetch-apply-spread',
+      source:
+        'const f=fetch.bind(null); f.apply=fetch; const h={...{f}}; h.f.apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-apply-direct',
+      source:
+        'const f=db.query.bind(db); f.apply=fetch;  f.apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-apply-holder',
+      source:
+        'const f=db.query.bind(db); f.apply=fetch; const h={f}; h.f.apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-apply-array',
+      source:
+        'const f=db.query.bind(db); f.apply=fetch; const a=[f]; a[0].apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-apply-spread',
+      source:
+        'const f=db.query.bind(db); f.apply=fetch; const h={...{f}}; h.f.apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-apply-direct',
+      source:
+        'const f=(()=>1).bind(null); f.apply=fetch;  f.apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-apply-holder',
+      source:
+        'const f=(()=>1).bind(null); f.apply=fetch; const h={f}; h.f.apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-apply-array',
+      source:
+        'const f=(()=>1).bind(null); f.apply=fetch; const a=[f]; a[0].apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-apply-spread',
+      source:
+        'const f=(()=>1).bind(null); f.apply=fetch; const h={...{f}}; h.f.apply("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-apply-sql-direct',
+      source:
+        'const f=db.query.bind(db); f.apply=db.query; f.apply("DELETE FROM appointments", "SELECT 1");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-apply-positive-direct',
+      source: 'const f=fetch.bind(null); f.apply=()=>1; f.apply("inert");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-apply-sql-rest',
+      source:
+        'const f=db.query.bind(db); f.apply=db.query; const {...h}={f};h.f.apply("DELETE FROM appointments", "SELECT 1");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-apply-positive-rest',
+      source:
+        'const f=fetch.bind(null); f.apply=()=>1; const {...h}={f};h.f.apply("inert");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-query-apply-sql-array',
+      source:
+        'const f=db.query.bind(db); f.apply=db.query; const [g]=[f];g.apply("DELETE FROM appointments", "SELECT 1");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-pure-apply-positive-array',
+      source:
+        'const f=fetch.bind(null); f.apply=()=>1; const [g]=[f];g.apply("inert");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'intrinsic-alias-bind-fetch-inert',
+      source:
+        'const b=fetch.bind; const f=b.call(fetch,null,"https://synthetic.invalid");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'intrinsic-alias-bind-query-inert',
+      source:
+        'const b=db.query.bind; const f=b.call(db.query,db,"DELETE FROM appointments");',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-twice-inert',
+      source: 'const f=fetch.bind(null).bind(null);',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-twice-invoked',
+      source: 'fetch.bind(null).bind(null)("https://synthetic.invalid");',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-query-twice-read',
+      source: 'db.query.bind(db).bind(db,"SELECT 1")();',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-query-twice-domain',
+      source: 'db.query.bind(db).bind(db,"DELETE FROM appointments")();',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'allocation-original-independent',
+      source: 'const f=fetch.bind(null);f.call=()=>1;fetch.call(null,"url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'allocation-bound-independent',
+      source:
+        'const a=fetch.bind(null);const b=fetch.bind(null);a.call=()=>1;b.call(null,"url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'allocation-pure-independent',
+      source:
+        'const a=(()=>1).bind(null);const b=(()=>1).bind(null);a.call=fetch;b.call(null)',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'allocation-alias-shared',
+      source: 'const a=fetch.bind(null);const b=a;b.call=()=>1;a.call("inert")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'allocation-default-shared',
+      source:
+        'const a=fetch.bind(null);const {f=a}={};f.call=()=>1;a.call("inert")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'allocation-rest-shared',
+      source:
+        'const a=fetch.bind(null);const [...r]=[a];r[0].bind=fetch;a.bind("url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'layer-bind-call-invoke',
+      source: 'const f=fetch.bind.call(fetch,null,"url");f()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'layer-bind-apply-invoke',
+      source: 'const f=fetch.bind.apply(fetch,[null,"url"]);f()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'alias-bind-invoke',
+      source: 'const b=fetch.bind;const f=b.call(fetch,null,"url");f()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'layer-bind-query-domain',
+      source:
+        'const q=db.query.bind.call(db.query,db,"DELETE FROM appointments");q()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'layer-bind-query-read',
+      source: 'const q=db.query.bind.apply(db.query,[db,"SELECT 1"]);q()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'alias-call-domain',
+      source:
+        'const c=db.query.call;c.call(db.query,db,"DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'layer-call-apply-domain',
+      source: 'db.query.call.apply(db.query,[db,"DELETE FROM appointments"])',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'layer-call-call-quota',
+      source:
+        'db.query.call.call(db.query,db,"UPDATE api_rate_limit_buckets SET count=1")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'layer-apply-call-read',
+      source: 'db.query.apply.call(db.query,db,["SELECT 1"])',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'layer-apply-call-domain',
+      source: 'db.query.apply.call(db.query,db,["DELETE FROM appointments"])',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'layer-apply-incomplete',
+      source: 'db.query.call.apply(db.query,[db,...unknown])',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-prefix-domain',
+      source:
+        'const f=fetch.bind(null);f.call=db.query.bind(db,"DELETE FROM appointments");f.call("SELECT 1")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-prefix-quota',
+      source:
+        'const f=fetch.bind(null);f.call=db.query.bind(db,"UPDATE api_rate_limit_buckets SET count=1");f.call("SELECT 1")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-own-mutated-config',
+      source:
+        'const f=fetch.bind(null);f.call=db.query;const q={text:"SELECT 1"};mutate(q);f.call(q)',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    }
+  ])('$name', ({ source, expected, path: fixturePath }) => {
+    const result = scan(fixturePath, source)
+    expect(result.report.scannedFiles).toBe(1)
+    expect(
+      result.report.findings.some(({ id }) =>
+        ['source_parse_failed', 'source_inventory_failed'].includes(id)
+      )
+    ).toBe(false)
+    expect(result.exitCode).toBe(expected)
+  })
+})

@@ -95,6 +95,9 @@ for (const relativePath of files) {
   const assignedContainerValues = new Map()
   const assignedProperties = new Map()
   const mutatedObjects = new Set()
+  const boundAllocations = new Map()
+  const boundCallables = new Map()
+  const projectingCalls = new Set()
   const escapedObjects = new Set()
   const unknownAssignedProperties = new Set()
   const incompleteCopies = new Set()
@@ -555,6 +558,31 @@ for (const relativePath of files) {
       const copy = arrayCopy(node, source, values.slice(...bounds))
       return forSql && !sqlObjectSafe(copy) ? [] : [copy]
     }
+    if (ts.isCallExpression(node) && !projectingCalls.has(node)) {
+      projectingCalls.add(node)
+      try {
+        const invocation = normalizedCall(node)
+        if (invocation.kind === 'bind') {
+          if (!boundAllocations.has(node))
+            boundAllocations.set(
+              node,
+              ts.factory.createArrowFunction(
+                undefined,
+                undefined,
+                [],
+                undefined,
+                undefined,
+                ts.factory.createNumericLiteral(0)
+              )
+            )
+          const origin = boundAllocations.get(node)
+          boundCallables.set(origin, invocation)
+          return [origin]
+        }
+      } finally {
+        projectingCalls.delete(node)
+      }
+    }
     if (
       forSql &&
       (ts.isObjectLiteralExpression(node) ||
@@ -676,6 +704,10 @@ for (const relativePath of files) {
     node = unwrap(node)
     if (!node || seen.has(node)) return null
     if (node === unknownValue) return 'unresolved_static_callable'
+    if (boundCallables.has(node)) {
+      seen.add(node)
+      return callee(boundCallables.get(node).target, seen)
+    }
     const projected = projectValues(node, new Set(seen))
     seen.add(node)
     if (projected.length && !projected.includes(node)) {
@@ -861,11 +893,6 @@ for (const relativePath of files) {
         mutationOrigin(node.expression, seen)
       )
     }
-    if (
-      ts.isCallExpression(node) &&
-      intrinsicOperation(node.expression, seen) === 'bind'
-    )
-      return mutationOrigin(unwrap(node.expression).expression, seen)
     if (ts.isCallExpression(node)) {
       const projected = projectValues(node, new Set())
       if (projected.length === 1 && projected[0] !== node)
@@ -1002,6 +1029,8 @@ for (const relativePath of files) {
     ) {
       found.add(node)
       for (const value of assignedContainerValues.get(node) ?? [])
+        reachableOrigins(value, seen, found)
+      for (const value of boundCallables.get(node)?.prefix ?? [])
         reachableOrigins(value, seen, found)
     }
     if (
@@ -1182,6 +1211,14 @@ for (const relativePath of files) {
     node = unwrap(node)
     if (!node || seen.has(node)) return null
     if (uncertainSelection(node)) return null
+    if (boundCallables.has(node)) {
+      seen.add(node)
+      const bound = boundCallables.get(node),
+        prior = boundArguments(bound.target, seen)
+      return prior && bound.prefix && prior.length + bound.prefix.length <= 64
+        ? [...prior, ...bound.prefix]
+        : null
+    }
     const projected = projectValues(node, new Set(seen))
     seen.add(node)
     if (projected.length && !projected.includes(node)) {
@@ -1273,23 +1310,25 @@ for (const relativePath of files) {
       )
     )
       return false
+    if (intrinsicOperation(base, new Set(seen))) return true
     const effect = callee(base, new Set(seen))
     return (
       effects.has(effect) || effect === 'query' || Boolean(callableValue(base))
     )
   }
   function intrinsicOperation(expression, seen = new Set()) {
-    const target = unwrap(expression),
-      name = member(target)
+    const target = unwrap(expression)
+    if (!target || seen.has(target) || seen.size >= 64) return null
+    const projected = projectValues(target, new Set(seen))
+    seen.add(target)
+    if (projected.length && !projected.includes(target))
+      return projected.length === 1
+        ? intrinsicOperation(projected[0], seen)
+        : null
+    const name = member(target)
     return target && nativeFunctionMember(target.expression, name, seen)
       ? name
       : null
-  }
-  function bindConstruction(node) {
-    return (
-      ts.isCallExpression(node) &&
-      intrinsicOperation(node.expression) === 'bind'
-    )
   }
   function expandedArguments(args) {
     const values = []
@@ -1307,28 +1346,76 @@ for (const relativePath of files) {
     }
     return values
   }
-  function invocationArguments(node) {
-    let target = unwrap(node.expression),
-      args = expandedArguments(node.arguments)
+  // Known Function operations are generic callables: their invocation receiver,
+  // including one supplied through call/apply, determines the actual target.
+  // No user factory is evaluated. Every normalization step consumes the same
+  // complete static projection and stays within the existing bound of 64.
+  function normalizeInvocation(target, receiver, args, depth = 0) {
+    target = unwrap(target)
+    if (!target || depth >= 64)
+      return { kind: 'invoke', target: unknownValue, args: null }
+    if (uncertainSelection(target)) args = null
+    const projected = projectValues(target)
+    if (projected.length === 1 && projected[0] !== target)
+      return normalizeInvocation(projected[0], receiver, args, depth + 1)
+    if (projected.length > 1) return { kind: 'invoke', target, args: null }
+    if (boundCallables.has(target)) {
+      const bound = boundCallables.get(target)
+      const combined =
+        boundArguments(target) &&
+        bound.prefix &&
+        args &&
+        bound.prefix.length + args.length <= 64
+          ? [...bound.prefix, ...args]
+          : null
+      return normalizeInvocation(
+        bound.target,
+        bound.receiver,
+        combined,
+        depth + 1
+      )
+    }
     const operation = intrinsicOperation(target)
-    if (operation === 'call') {
-      args = args?.slice(1) ?? null
-      target = unwrap(target.expression)
-    } else if (operation === 'apply') {
+    if (operation === 'bind')
+      return {
+        kind: 'bind',
+        target: receiver ?? unknownValue,
+        receiver: args?.[0] ?? absentValue,
+        prefix: args?.slice(1) ?? null
+      }
+    if (operation === 'call')
+      return normalizeInvocation(
+        receiver,
+        args?.[0],
+        args?.slice(1) ?? null,
+        depth + 1
+      )
+    if (operation === 'apply') {
       const array = objectNode(args?.[1], new Set(), true)
-      args =
-        array &&
-        ts.isArrayLiteralExpression(array) &&
-        !mutatedObjects.has(array)
+      const values =
+        array && ts.isArrayLiteralExpression(array)
           ? arrayValues(array, new Set(), true)
           : null
-      target = unwrap(target.expression)
+      return normalizeInvocation(receiver, args?.[0], values, depth + 1)
     }
-    const prefix = boundArguments(target)
-    if (prefix === null) return null
-    return args && prefix.length + args.length <= 64
-      ? [...prefix, ...args]
-      : null
+    return { kind: 'invoke', target, args }
+  }
+  function normalizedCall(node) {
+    const target = unwrap(node.expression)
+    const receiver =
+      ts.isPropertyAccessExpression(target) ||
+      ts.isElementAccessExpression(target)
+        ? target.expression
+        : absentValue
+    return normalizeInvocation(
+      target,
+      receiver,
+      expandedArguments(node.arguments)
+    )
+  }
+  function invocationArguments(node) {
+    const invocation = normalizedCall(node)
+    return invocation.kind === 'invoke' ? invocation.args : null
   }
   function invocationSqlArgument(node) {
     return ts.isCallExpression(node)
@@ -1604,7 +1691,10 @@ for (const relativePath of files) {
         ts.isTaggedTemplateExpression(node) ? node.tag : node.expression
       ),
       name = member(expr)
-    const effect = callee(expr)
+    const invocation = ts.isCallExpression(node) ? normalizedCall(node) : null
+    const effect = callee(
+      invocation?.kind === 'invoke' ? invocation.target : expr
+    )
     const receiver =
       ts.isPropertyAccessExpression(expr) || ts.isElementAccessExpression(expr)
         ? expr.expression
@@ -1616,7 +1706,7 @@ for (const relativePath of files) {
         ts.isElementAccessExpression(expr))
         ? propertyValue(expr.expression, name)
         : null
-    if (bindConstruction(node)) continue
+    if (invocation?.kind === 'bind') continue
     const nativeRead =
       receiverObject &&
       ts.isArrayLiteralExpression(receiverObject) &&
@@ -1628,7 +1718,9 @@ for (const relativePath of files) {
       !effects.has(effect) &&
       effect !== 'query' &&
       !pureLocalCallable(localMember) &&
-      !pureLocalCallable(callableValue(expr))
+      !pureLocalCallable(
+        callableValue(invocation?.kind === 'invoke' ? invocation.target : expr)
+      )
     )
       for (const origin of reachableOrigins(receiver)) {
         mutatedObjects.add(origin)
@@ -1642,7 +1734,7 @@ for (const relativePath of files) {
         ? node.template.templateSpans.map((span) => span.expression)
         : []
       : effect === 'query' && ts.isCallExpression(node)
-        ? (invocationArguments(node) ?? [...node.arguments])
+        ? (invocation.args ?? [...node.arguments])
         : [...(node.arguments ?? [])]
     for (const [index, arg] of args.entries()) {
       if (effect === 'query' && index === 0) continue
@@ -1794,9 +1886,12 @@ for (const relativePath of files) {
       const expression = unwrap(
         ts.isCallExpression(node) ? node.expression : node.tag
       )
-      const name = callee(expression)
+      const invocation = ts.isCallExpression(node) ? normalizedCall(node) : null
+      const name = callee(
+        invocation?.kind === 'invoke' ? invocation.target : expression
+      )
       // Only the intrinsic operation constructs a function without invoking it.
-      const construction = bindConstruction(node)
+      const construction = invocation?.kind === 'bind'
       if (effects.has(name) && !construction) finding(effects.get(name), node)
       if (name === 'unresolved_static_callable') finding(name, node)
       if (name === 'query' && !construction) {
