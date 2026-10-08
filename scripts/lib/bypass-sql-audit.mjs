@@ -392,6 +392,155 @@ function isReadLock(tokens, index, end) {
   return reader.i === end
 }
 
+// Classify executable statement positions independently of the write-token
+// scan. An unknown class is never inferred to be read-only. Quota/replay grants
+// apply only to the separately validated INSERT/UPDATE/DELETE path below.
+function auditStatementClasses(tokens, findings) {
+  const unresolved = (reason, start) =>
+    findings.push({
+      id: 'sql_lexical_unresolved',
+      reason,
+      offset: tokens[start].offset
+    })
+  const refuse = (start, reason) =>
+    findings.push({
+      id: 'direct_sql_write',
+      reason,
+      offset: tokens[start].offset
+    })
+
+  function nestedQueries(start, end) {
+    for (let i = start; i < end; i += 1) {
+      const token = tokens[i]
+      if (token.kind !== 'symbol' || token.value !== '(') continue
+      if (token.pair === undefined || token.pair >= end) continue
+      if (isWord(tokens[i + 1], 'SELECT') || isWord(tokens[i + 1], 'WITH')) {
+        statement(i + 1, token.pair, true)
+        i = token.pair
+      }
+    }
+  }
+
+  function withStatement(start, end) {
+    const reader = new Reader(tokens, start + 1, end)
+    reader.take('RECURSIVE')
+    do {
+      if (!reader.identifier()) return false
+      if (reader.take('(') && (!reader.identifiers() || !reader.take(')')))
+        return false
+      if (!reader.take('AS')) return false
+      if (reader.take('NOT')) {
+        if (!reader.take('MATERIALIZED')) return false
+      } else reader.take('MATERIALIZED')
+      const open = reader.i
+      if (!reader.take('(')) return false
+      const close = tokens[open].pair
+      if (close === undefined || close >= end || close === open + 1)
+        return false
+      statement(open + 1, close, true)
+      reader.i = close + 1
+    } while (reader.take(','))
+    if (reader.i >= end) return false
+    statement(reader.i, end, true)
+    return true
+  }
+
+  function statement(start, end, queryOnly = false) {
+    if (start >= end) return
+    const token = tokens[start]
+    // A parenthesized query has the same class as its enclosed statement.
+    if (
+      token.kind === 'symbol' &&
+      token.value === '(' &&
+      token.pair === end - 1
+    ) {
+      statement(start + 1, end - 1, true)
+      return
+    }
+    // Semicolons inside a query/CTE cannot define an admitted command batch.
+    // Quoted bodies/values have already been reduced to single inert tokens.
+    if (
+      tokens
+        .slice(start, end)
+        .some((t) => t.kind === 'symbol' && t.value === ';')
+    )
+      unresolved('Unexpected statement separator inside SQL query', start)
+    if (isWord(token, 'WITH')) {
+      if (!withStatement(start, end))
+        unresolved('Unrecognized or incomplete WITH statement grammar', start)
+      return
+    }
+    if (isWord(token, 'SELECT')) {
+      if (start + 1 === end) unresolved('Incomplete SELECT statement', start)
+      // INTO at query depth creates a table. A quoted identifier, qualified
+      // field, alias or nested expression is not this clause. Other command
+      // words in SELECT expressions/column names remain ordinary identifiers.
+      for (let i = start + 1; i < end; i += 1) {
+        if (
+          tokens[i].depth === token.depth &&
+          isWord(tokens[i], 'INTO') &&
+          tokens[i - 1]?.value !== '.' &&
+          !isWord(tokens[i - 1], 'AS')
+        ) {
+          refuse(
+            start,
+            'SELECT INTO is outside the authorized SQL statement classes'
+          )
+          break
+        }
+      }
+      nestedQueries(start + 1, end)
+      return
+    }
+    if (token.kind === 'word' && writes.has(token.value)) {
+      nestedQueries(start + 1, end)
+      return
+    }
+    if (queryOnly) {
+      refuse(start, `Unsupported executable SQL query class: ${token.value}`)
+      return
+    }
+    if (
+      token.kind === 'word' &&
+      ['BEGIN', 'COMMIT', 'ROLLBACK'].includes(token.value)
+    ) {
+      const reader = new Reader(tokens, start + 1, end)
+      if (!reader.take('WORK')) reader.take('TRANSACTION')
+      if (reader.i !== end)
+        unresolved(`Unrecognized ${token.value} transaction grammar`, start)
+      return
+    }
+    if (isWord(token, 'SET')) {
+      // Preserve only the two current transaction-local timeout controls.
+      // Session settings, role/search_path changes and unknown SET forms do
+      // not receive a quota or legacy replay-store exception.
+      const reader = new Reader(tokens, start + 1, end)
+      if (
+        reader.take('LOCAL') &&
+        (reader.take('LOCK_TIMEOUT') || reader.take('STATEMENT_TIMEOUT')) &&
+        reader.take('=') &&
+        tokens[reader.i]?.kind === 'value' &&
+        reader.i + 1 === end
+      )
+        return
+    }
+    refuse(start, `Unsupported executable SQL statement class: ${token.value}`)
+  }
+
+  let start = 0
+  for (let i = 0; i <= tokens.length; i += 1) {
+    if (
+      i === tokens.length ||
+      (tokens[i].kind === 'symbol' &&
+        tokens[i].value === ';' &&
+        tokens[i].depth === 0)
+    ) {
+      statement(start, i)
+      start = i + 1
+    }
+  }
+}
+
 /** Findings use UTF-16 string offsets, matching JS/TypeScript source offsets. */
 export function auditSqlWrites(
   text,
@@ -402,6 +551,7 @@ export function auditSqlWrites(
   const { tokens, findings } = lex(text)
   const suppressed = new Set()
   const lexicalUnresolved = findings.length > 0
+  auditStatementClasses(tokens, findings)
   for (let i = 0; i < tokens.length; i += 1) {
     const token = tokens[i]
     if (token.kind !== 'word' || !writes.has(token.value) || suppressed.has(i))

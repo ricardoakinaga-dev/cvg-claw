@@ -5,6 +5,31 @@ import ts from 'typescript'
 import { auditSqlWrites } from '../scripts/lib/bypass-sql-audit.mjs'
 
 const quota = { allowQuota: true }
+const unsupportedCommands = [
+  'TRUNCATE patient_records',
+  'truncate /* nested /* comment */ here */ TABLE api_rate_limit_buckets',
+  'DROP TABLE patient_records',
+  "COPY patient_records FROM '/synthetic.csv'",
+  'COPY api_rate_limit_buckets FROM STDIN',
+  'SELECT 1 INTO patient_records',
+  'SELECT 1 INTO TEMP TABLE api_rate_limit_buckets',
+  'CREATE TABLE patient_records AS SELECT 1',
+  'CREATE TEMP TABLE api_rate_limit_buckets AS SELECT 1',
+  'DO $$BEGIN DELETE FROM patient_records; END$$',
+  'DO LANGUAGE plpgsql $body$BEGIN NULL; END$body$',
+  "DO 'BEGIN NULL; END'",
+  'CALL purge_records()',
+  'MERGE INTO patient_records USING source ON TRUE WHEN MATCHED THEN DO NOTHING',
+  'VACUUM patient_records',
+  'GRANT ALL ON patient_records TO someone',
+  'UNKNOWN_COMMAND patient_records',
+  '"SELECT" 1',
+  "'SELECT' 1",
+  '$$SELECT 1$$',
+  'SET search_path = public',
+  "SET LOCAL role = 'owner'",
+  'EXPLAIN ANALYZE DELETE FROM patient_records'
+]
 const deny = [
   ['domain INSERT', 'INSERT INTO patient_records VALUES ($1)'],
   ['domain quoted alias UPDATE', 'UPDATE billing_items AS "b" SET amount=$1'],
@@ -354,6 +379,165 @@ function literalWrites(path) {
 }
 
 describe('bounded SQL write audit', () => {
+  describe.each([
+    ['no exception', {}],
+    ['quota exception', quota],
+    ['legacy replay exception', { allowSecurityStore: true }],
+    ['both exceptions', { ...quota, allowSecurityStore: true }]
+  ])('statement classes with %s', (_name, options) => {
+    it.each(unsupportedCommands)('refuses unsupported executable %s', (sql) => {
+      expect(auditSqlWrites(sql, options)).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: 'direct_sql_write', offset: 0 })
+        ])
+      )
+    })
+
+    it.each([
+      'SELECT truncate, drop, copy, create, do, call, unknown_command FROM diagnostics',
+      'SELECT diagnostics.truncate, diagnostics.drop, diagnostics.copy FROM diagnostics',
+      'SELECT 1 AS truncate, 2 AS drop, 3 AS copy, 4 AS do, 5 AS call',
+      'SELECT (truncate), coalesce(drop, copy) FROM diagnostics',
+      'SELECT "INTO", "DO", "CALL", "DROP TABLE patient_records" FROM diagnostics',
+      "SELECT 'DO $$BEGIN DELETE FROM patient_records; END$$'",
+      'SELECT $$BEGIN DELETE FROM patient_records; END$$',
+      'SELECT $body$DROP TABLE patient_records; CALL purge_records()$body$',
+      '/* TRUNCATE patient_records */ SELECT 1 -- DO $$DROP TABLE patient_records$$',
+      'SELECT (SELECT $$DROP TABLE patient_records$$) AS "INTO"',
+      'WITH "DO" AS (SELECT 1 AS truncate) SELECT truncate FROM "DO"',
+      'WITH RECURSIVE q(n) AS (SELECT 1 UNION SELECT n+1 FROM q WHERE n<2) SELECT * FROM q',
+      'WITH q AS NOT MATERIALIZED (WITH r AS MATERIALIZED (SELECT 1) SELECT * FROM r) SELECT * FROM q',
+      'SELECT * FROM (WITH q AS (SELECT 1) SELECT * FROM q) AS nested',
+      'SELECT * FROM diagnostics FOR UPDATE',
+      'SELECT * FROM diagnostics FOR NO KEY UPDATE OF diagnostics SKIP LOCKED',
+      'SELECT * FROM diagnostics FOR KEY SHARE',
+      'BEGIN; SELECT current_user, current_schema(); COMMIT',
+      'BEGIN TRANSACTION; SELECT 1; ROLLBACK WORK',
+      'BEGIN WORK; COMMIT TRANSACTION; ROLLBACK',
+      "SET LOCAL lock_timeout = '1000ms'; SET LOCAL statement_timeout = '2000ms'",
+      "SELECT has_table_privilege(current_user, $1, 'SELECT'), $2::text[]"
+    ])('preserves inert/query/transaction context %s', (sql) => {
+      expect(auditSqlWrites(sql, options)).toEqual([])
+    })
+
+    it.each([
+      'WITH q AS (TRUNCATE patient_records) SELECT * FROM q',
+      'WITH q AS (DO $$BEGIN NULL; END$$) SELECT * FROM q',
+      'WITH q AS (WITH r AS (CALL purge_records()) SELECT * FROM r) SELECT * FROM q',
+      'WITH q AS (SELECT 1 INTO patient_records) SELECT * FROM q',
+      'WITH q AS (SELECT 1) DROP TABLE patient_records',
+      'WITH q AS (SELECT 1) UNKNOWN_COMMAND patient_records',
+      'WITH q AS (SELECT 1), r AS (UNKNOWN_COMMAND) SELECT * FROM q',
+      'SELECT * FROM (WITH q AS (SELECT 1) SELECT 1 INTO patient_records) AS nested',
+      'SELECT (SELECT 1 INTO patient_records)',
+      '(SELECT 1 INTO patient_records)',
+      'WITH q AS () SELECT 1',
+      'WITH q SELECT 1',
+      'WITH q AS (SELECT 1)',
+      'WITH q AS (SELECT 1; TRUNCATE patient_records) SELECT * FROM q',
+      'WITH q AS (BEGIN) SELECT * FROM q',
+      'WITH q AS (SELECT 1) COMMIT',
+      "WITH q AS (SET LOCAL lock_timeout = '1000ms') SELECT * FROM q",
+      'SELECT (SELECT 1; CALL purge_records())',
+      'SELECT',
+      'BEGIN DROP TABLE patient_records',
+      'COMMIT AND CHAIN; DO $$BEGIN NULL; END$$',
+      "SET LOCAL lock_timeout = '1000ms' DROP TABLE patient_records"
+    ])('refuses nested or uncertain statement grammar %s', (sql) => {
+      expect(auditSqlWrites(sql, options).length).toBeGreaterThan(0)
+    })
+  })
+
+  it.each(unsupportedCommands)('quota does not admit a mixed %s', (command) => {
+    const prefix = 'INSERT INTO api_rate_limit_buckets VALUES ($1); '
+    const sql = prefix + command
+    expect(auditSqlWrites(sql, quota)).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: 'direct_sql_write',
+          offset: prefix.length
+        })
+      ])
+    )
+    expect(auditSqlWrites(command + '; ' + prefix, quota)).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: 'direct_sql_write', offset: 0 })
+      ])
+    )
+  })
+
+  it('does not expand quota inside nested CTEs', () => {
+    const allowed =
+      'WITH q AS (WITH r AS (INSERT INTO api_rate_limit_buckets VALUES ($1) RETURNING bucket_key) SELECT * FROM r) SELECT * FROM q'
+    expect(auditSqlWrites(allowed, quota)).toEqual([])
+    const mixed = allowed.replace(
+      'SELECT * FROM r',
+      'SELECT * INTO patient_records FROM r'
+    )
+    expect(auditSqlWrites(mixed, quota)).toEqual([
+      expect.objectContaining({
+        id: 'direct_sql_write',
+        offset: mixed.indexOf('SELECT * INTO')
+      })
+    ])
+  })
+
+  it('retains class offsets after inert tokens and independent mixed commands', () => {
+    const sql =
+      '/* DO $$DROP$$ */ ; SELECT $$TRUNCATE$$; -- COPY FROM\n CALL purge_records(); DROP TABLE patient_records'
+    expect(auditSqlWrites(sql, quota)).toEqual([
+      expect.objectContaining({
+        id: 'direct_sql_write',
+        offset: sql.indexOf('CALL')
+      }),
+      expect.objectContaining({
+        id: 'direct_sql_write',
+        offset: sql.indexOf('DROP TABLE')
+      })
+    ])
+  })
+
+  it('preserves literal production query classes read-only', () => {
+    const paths = [
+      'apps/api/src/postgres-rate-limit.ts',
+      'apps/api/src/operator-replay-store.ts',
+      'apps/api/src/webhook-security.ts',
+      'apps/api/src/server/postgres-role-checks.ts'
+    ]
+    let count = 0
+    const classes = new Set()
+    for (const path of paths) {
+      const parsed = ts.createSourceFile(
+        path,
+        readFileSync(path, 'utf8'),
+        ts.ScriptTarget.Latest,
+        true
+      )
+      function visit(node) {
+        if (
+          (ts.isStringLiteral(node) ||
+            ts.isNoSubstitutionTemplateLiteral(node)) &&
+          /^\s*(SELECT|WITH|BEGIN|COMMIT|ROLLBACK|SET)\b/i.test(node.text)
+        ) {
+          expect(auditSqlWrites(node.text)).toEqual([])
+          classes.add(node.text.trim().split(/\s/)[0].toUpperCase())
+          count += 1
+        }
+        ts.forEachChild(node, visit)
+      }
+      visit(parsed)
+    }
+    expect(count).toBeGreaterThan(20)
+    expect([...classes].sort()).toEqual([
+      'BEGIN',
+      'COMMIT',
+      'ROLLBACK',
+      'SELECT',
+      'SET',
+      'WITH'
+    ])
+  })
+
   it.each([
     'SELECT table_name FROM information_schema.tables WHERE table_name = ANY($1::text[])',
     'SELECT has_table_privilege(current_user, tablename, ANY($1::text[]))',

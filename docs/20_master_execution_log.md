@@ -8298,3 +8298,21 @@ commit, push ou substituição do certificado principal.
 - evidence: [integração](04_audit/evidence/AUD06/recovery-20261007/bypass-v9-integrated-focused-receipt.json), [helper](04_audit/evidence/AUD06/recovery-20261007/sql-structural-builder/arrays-IMPLEMENTED.json), [rejeição](04_audit/evidence/AUD06/recovery-20261007/bypass-v8-fresh-reject-I1/focused-review-reject.json).
 - verification: primeira integração248PASS mas scannerFAIL preservada, sem aceite; array casts e readiness const corrigidos com análise de todas as variantes. Encaminhador exato preexistente não concede exceção de tabela. Fonte de runtime da stack continua intacta; candidato anteriorc3847fbb STALE para a nova revisão.
 - limitations: global FAIL/NO_GO; nenhum selo principal, CI, piloto ou gate real novo. Nota0577 74,27 permanece snapshot380ccc52. Recibos excluídos do candidato registram progresso da qualificação; sua ausência/falha jamais concede PASS. Depois do congelamento, nenhuma edição de fonte/masters será feita durante a execução.
+
+# AUD06-13 — crítica v9 rejeitada; reparo lexical registrado — 2026-10-08
+
+- current_engine: `AUDIT -> BUILD -> AUDIT`; task `AUD06-13` `WAITING_HUMAN_APPROVAL` somente na fronteira de publicação; rework local autorizado; staging/produção `NO_GO`.
+- last_completed_action: preservar crítico fresco I1 v9 REJECT6P1/1P2,127 sondagens/14replays,25.133 arquivos intactos. Registrar reparo de identidade lexical, aliases/mutações, composição recursiva e comandos SQL antes de código; passada4 ainda não iniciada.
+- next_action: conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.
+- evidence: [crítica](04_audit/evidence/AUD06/recovery-20261007/bypass-v9-fresh-reject-I1/report.json), [candidato rejeitado](04_audit/evidence/AUD06/recovery-20261007/local-certification-v9-frozen-candidate.json), [SPEC](02_spec/aud06_remediation_20261006.md).
+- verification: scanner59fontes e273testes PASS não superam controles independentes rejeitados. Candidato ed573464 STALE para novo rework; nenhum selo aceito. Stack370fonte intacta, sem execução/código de runtime novo.
+- limitations: global FAIL/NO_GO; piloto adiado, identidade em avaliação, CI e signoff reais pendentes; nota0577 74,27 permanece snapshot380ccc52. Nenhuma fonte/master da cópia congelada alterada durante a crítica; original do crítico preservado.
+
+# AUD06-13 — reparo por símbolos integrado; nova crítica pendente — 2026-10-08
+
+- current_engine: `AUDIT`; task `AUD06-13` `WAITING_HUMAN_APPROVAL` somente na fronteira de publicação; qualificação local autorizada; staging/produção `NO_GO`.
+- last_completed_action: integrar resolução lexical por símbolos TypeScript, composição SQL recursiva, ordem efetiva de propriedades, aliases/mutações e classes SQL executáveis. REDhost25FAIL/128PASS, REDhelper180FAIL/224PASS, GREEN632/632 em4arquivos, scanner59fontes PASS e lint0. Preservar falhas intermediárias; nova crítica/qualificação pendentes.
+- next_action: conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.
+- evidence: [recibo integrado](04_audit/evidence/AUD06/recovery-20261007/bypass-v10-integrated-focused-receipt.json), [helper frozen](04_audit/evidence/AUD06/recovery-20261007/sql-command-builder/IMPLEMENTED.json), [crítica v9 rejeitada](04_audit/evidence/AUD06/recovery-20261007/bypass-v9-fresh-reject-I1/report.json).
+- verification: consumidores do forwarder existente analisados; callbacks reais de readiness preservados sem efeito de domínio. Helper429/429 e hashes conferidos após integração. A falha docs por JSON ainda em escrita permanece registrada; repetição após término do writer exit0. Candidato ed573464 anterior STALE; passada4 não iniciada.
+- limitations: global FAIL/NO_GO; nenhum selo principal, CI, piloto ou signoff novo. Nota0577 74,27 permanece snapshot380ccc52; runtime da stack370fontes intacto. Após congelamento, fonte/masters não serão editados durante revisão/execução; progresso ficará nos recibos excluídos do candidato.

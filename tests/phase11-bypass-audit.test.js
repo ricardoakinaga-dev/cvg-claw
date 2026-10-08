@@ -730,3 +730,438 @@ describe('fresh I1 v8 structural reproductions', () => {
     ).toBe(false)
   })
 })
+
+describe('fresh I1 v9 lexical identity and composition reproductions', () => {
+  it.each([
+    {
+      name: 'inert_host_literals',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const a="fetch(; sendMessage(; axios("; const r=/fetch(/; // fetch("x")',
+      expected: 0
+    },
+    {
+      name: 'sql_shadow_param',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const sql="SELECT 1"; function run(sql:string){ client.query(sql) }; run("DELETE FROM patient_records")',
+      expected: 1
+    },
+    {
+      name: 'sql_shadow_catch',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const sql="SELECT 1"; try { throw "DELETE FROM patient_records" } catch(sql) { client.query(sql) }',
+      expected: 1
+    },
+    {
+      name: 'sql_destructure_shadow',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const sql="SELECT 1"; function run({sql}: {sql:string}){ client.query(sql) }; run({sql:"DELETE FROM patient_records"})',
+      expected: 1
+    },
+    {
+      name: 'sql_config_duplicate',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'client.query({text:"SELECT 1", text:"DELETE FROM patient_records"})',
+      expected: 1
+    },
+    {
+      name: 'sql_config_spread_later',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const unsafe={text:"DELETE FROM patient_records"}; client.query({text:"SELECT 1", ...unsafe})',
+      expected: 1
+    },
+    {
+      name: 'sql_config_static_computed',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'client.query({text:"SELECT 1", ["text"]:"DELETE FROM patient_records"})',
+      expected: 1
+    },
+    {
+      name: 'sql_config_alias_mutation',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const cfg={text:"SELECT 1"}; const alias=cfg; alias.text="DELETE FROM patient_records"; client.query(cfg)',
+      expected: 1
+    },
+    {
+      name: 'sql_config_assign',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const cfg={text:"SELECT 1"}; Object.assign(cfg,{text:"DELETE FROM patient_records"}); client.query(cfg)',
+      expected: 1
+    },
+    {
+      name: 'finite_loop_direct_mutation',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const tables=["api_rate_limit_buckets"]; tables.push("billing_items"); for(const table of tables){client.query(`DELETE FROM ${table}`)}',
+      expected: 1
+    },
+    {
+      name: 'finite_loop_alias_mutation',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const tables=["api_rate_limit_buckets"]; const alias=tables; alias.push("billing_items"); for(const table of tables){client.query(`DELETE FROM ${table}`)}',
+      expected: 1
+    },
+    {
+      name: 'finite_loop_computed_mutation',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const tables=["api_rate_limit_buckets"]; tables["push"]("billing_items"); for(const table of tables){client.query(`DELETE FROM ${table}`)}',
+      expected: 1
+    },
+    {
+      name: 'finite_loop_assign_mutation',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const tables=["api_rate_limit_buckets"]; Object.assign(tables,{0:"billing_items"}); for(const table of tables){client.query(`DELETE FROM ${table}`)}',
+      expected: 1
+    },
+    {
+      name: 'finite_loop_shadow',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const tables=["api_rate_limit_buckets"]; function run(tables:string[]){for(const table of tables){client.query(`DELETE FROM ${table}`)}}; run(["billing_items"])',
+      expected: 1
+    },
+    {
+      name: 'static_object_alias_effect',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'const effects={f:fetch}; effects.f("https://example.invalid")',
+      expected: 1
+    },
+    {
+      name: 'destructure_global_effect',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'const {fetch:f}=globalThis; f("https://example.invalid")',
+      expected: 1
+    },
+    {
+      name: 'import_renamed_effect',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'import {fetch as external} from "undici"; external("https://example.invalid")',
+      expected: 1
+    },
+    {
+      name: 'query_destructure',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'const {query:q}=client; q("DELETE FROM patient_records")',
+      expected: 1
+    },
+    {
+      name: 'query_wrapper_known',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const wrapper={q:client.query}; wrapper.q("DELETE FROM patient_records")',
+      expected: 1
+    },
+    {
+      name: 'literal_method_shadow',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'const sendMessage=()=>42; sendMessage()',
+      expected: 0
+    },
+    {
+      name: 'literal_query_shadow',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'function query(x:string){ return x }; query("DELETE FROM patient_records")',
+      expected: 0
+    },
+    {
+      name: 'shadow_param_no_outer_binding',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'function run(sql:string){ client.query(sql) }; run("DELETE FROM patient_records")',
+      expected: 1
+    },
+    {
+      name: 'config_spread_before_good',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'client.query({...unsafe,text:"SELECT 1"})',
+      expected: 0
+    },
+    {
+      name: 'config_unknown_spread_after',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'client.query({text:"SELECT 1",...unsafe})',
+      expected: 1
+    },
+    {
+      name: 'config_getter_overrides',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'client.query({text:"SELECT 1",get text(){return "DELETE FROM patient_records"}})',
+      expected: 1
+    },
+    {
+      name: 'finite_loop_alias_benign',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const tables=["api_rate_limit_buckets"];const alias=tables;for(const table of tables){client.query(`DELETE FROM ${table}`)}',
+      expected: 0
+    },
+    {
+      name: 'finite_loop_indirect_splice',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const tables=["api_rate_limit_buckets"];const alias=tables;alias.splice(0,1,"billing_items");for(const table of tables){client.query(`DELETE FROM ${table}`)}',
+      expected: 1
+    },
+    {
+      name: 'host_import_unaliased',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'import {fetch} from "undici";fetch("https://example.invalid")',
+      expected: 1
+    },
+    {
+      name: 'host_import_axios_renamed',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'import http from "axios";http.get("https://example.invalid")',
+      expected: 1
+    },
+    {
+      name: 'host_static_member_alias',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'const external=globalThis.fetch;external("https://example.invalid")',
+      expected: 1
+    },
+    {
+      name: 'nested_static_template_concat',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'client.query("SELECT \'" + `${"x\'; DELETE FROM patient_records; --"}` + "\'")',
+      expected: 1
+    },
+    {
+      name: 'nested_static_template_concat_control',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'client.query("SELECT \'" + "x\'; DELETE FROM patient_records; --" + "\'")',
+      expected: 1
+    },
+    {
+      name: 'nested_static_template_in_config',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        "client.query({text:`SELECT '${\"x'; DELETE FROM patient_records; --\"}'`})",
+      expected: 1
+    },
+    {
+      name: 'nested_static_template_top_level',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        "client.query(`SELECT '${\"x'; DELETE FROM patient_records; --\"}'`)",
+      expected: 1
+    }
+  ])('$name', ({ file, source, expected }) => {
+    const result = scan(file, source)
+    expect(
+      result.report.findings.some((f) => f.id === 'source_parse_failed')
+    ).toBe(false)
+    expect(result.exitCode).toBe(expected)
+  })
+})
+
+describe('fresh I1 v9 SQL command class public controls', () => {
+  it.each([
+    {
+      name: 'quota_insert',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'client.query("INSERT INTO api_rate_limit_buckets VALUES ($1)")',
+      expected: 0
+    },
+    {
+      name: 'domain_delete',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'client.query("DELETE FROM patient_records")',
+      expected: 1
+    },
+    {
+      name: 'sql_truncate',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'client.query("TRUNCATE patient_records")',
+      expected: 1
+    },
+    {
+      name: 'sql_drop',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'client.query("DROP TABLE patient_records")',
+      expected: 1
+    },
+    {
+      name: 'sql_copy',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'client.query("COPY patient_records FROM STDIN")',
+      expected: 1
+    },
+    {
+      name: 'sql_create_as',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'client.query("CREATE TABLE copied_records AS SELECT * FROM patient_records")',
+      expected: 1
+    },
+    {
+      name: 'sql_select_into',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'client.query("SELECT * INTO copied_records FROM patient_records")',
+      expected: 1
+    },
+    {
+      name: 'sql_do',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source: 'client.query("DO $$BEGIN DELETE FROM patient_records; END$$")',
+      expected: 1
+    },
+    {
+      name: 'outside_quota_25',
+      file: 'apps/worker/src/probe.ts',
+      source:
+        'client.query("TRUNCATE TABLE patient_records RESTART IDENTITY CASCADE")',
+      expected: 1
+    },
+    {
+      name: 'quota_mixed_26',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'client.query("INSERT INTO api_rate_limit_buckets VALUES (1); TRUNCATE TABLE patient_records RESTART IDENTITY CASCADE")',
+      expected: 1
+    },
+    {
+      name: 'outside_quota_31',
+      file: 'apps/worker/src/probe.ts',
+      source: 'client.query("DO $$BEGIN DELETE FROM patient_records; END$$")',
+      expected: 1
+    },
+    {
+      name: 'quota_mixed_32',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'client.query("INSERT INTO api_rate_limit_buckets VALUES (1); DO $$BEGIN DELETE FROM patient_records; END$$")',
+      expected: 1
+    },
+    {
+      name: 'dollar_block_inert',
+      file: 'apps/api/src/postgres-rate-limit.ts',
+      source:
+        'client.query("SELECT $$BEGIN DELETE FROM patient_records; END$$")',
+      expected: 0
+    }
+  ])('$name', ({ file, source, expected }) => {
+    const result = scan(file, source)
+    expect(result.exitCode).toBe(expected)
+  })
+})
+
+describe('binding identity and conservative mutation controls', () => {
+  it.each([
+    {
+      name: 'pure-object-method',
+      source: 'const local={sendMessage:()=>42};local.sendMessage()',
+      expected: 0
+    },
+    {
+      name: 'read-shorthand',
+      source: 'const text="SELECT 1";client.query({text})',
+      expected: 0
+    },
+    {
+      name: 'numeric-static',
+      source:
+        'const n=2; client.query(`INSERT INTO api_rate_limit_buckets VALUES (${n})`)',
+      expected: 0
+    },
+    {
+      name: 'destructured-array-mutation',
+      source:
+        'const tables=["api_rate_limit_buckets"];const holder={tables};const {tables:alias}=holder;alias.push("billing_items");for(const table of tables){client.query(`DELETE FROM ${table}`)}',
+      expected: 1
+    },
+    {
+      name: 'bound-array-mutator',
+      source:
+        'const tables=["api_rate_limit_buckets"];const change=tables["push"].bind(tables);change("billing_items");for(const table of tables){client.query(`DELETE FROM ${table}`)}',
+      expected: 1
+    },
+    {
+      name: 'config-assignment-escape',
+      source:
+        'const config={text:"SELECT 1"};Object.assign(config,{text:"DELETE FROM billing_items"});client.query(config)',
+      expected: 1
+    },
+    {
+      name: 'config-unmodeled-escape',
+      source:
+        'const config={text:"SELECT 1"};mutate(config);client.query(config)',
+      expected: 1
+    },
+    {
+      name: 'mutable-callee-assignment',
+      source:
+        'let request=()=>42;request=fetch;request("https://example.invalid")',
+      expected: 1
+    },
+    {
+      name: 'scoped-local-pure',
+      source: 'const query=(x)=>x;query("DELETE FROM billing_items")',
+      expected: 0
+    },
+    {
+      name: 'nested-spread-effective',
+      source:
+        'const unsafe={text:"DELETE FROM billing_items"};const known={...unsafe,text:"SELECT 1"};client.query({...known})',
+      expected: 0
+    },
+    {
+      name: 'computed-static-effect',
+      source: 'globalThis["fe"+"tch"]("https://example.invalid")',
+      expected: 1
+    }
+  ])('$name', ({ source, expected }) => {
+    expect(scan(quotaFile, source).exitCode).toBe(expected)
+  })
+})
+
+describe('consumers of the existing transparent SQL forwarder', () => {
+  it.each([
+    ['DELETE FROM billing_items', 1],
+    ['SELECT 1', 0]
+  ])('inspects forwarded SQL %s', (sql, expected) => {
+    const source =
+      'const adapter={query:(text,values)=>client.query(text,values)};adapter.query(' +
+      JSON.stringify(sql) +
+      ',[])'
+    expect(
+      scan('apps/api/src/server/bootstrap-persistence.ts', source).exitCode
+    ).toBe(expected)
+  })
+})
+
+describe('literal module aliases and lexical local require', () => {
+  it.each([
+    ['const run=require("node-fetch");run("https://example.invalid")', 1],
+    ['const {fetch:run}=require("undici");run("https://example.invalid")', 1],
+    ['const run=require("axios");run.get("https://example.invalid")', 1],
+    [
+      'const {fetch:run}=await import("undici");run("https://example.invalid")',
+      1
+    ],
+    [
+      'function require(x){return ()=>42};const run=require("node-fetch");run()',
+      0
+    ]
+  ])('keeps static module call provenance %s', (source, expected) => {
+    expect(scan(quotaFile, source).exitCode).toBe(expected)
+  })
+})

@@ -223,3 +223,32 @@ nas opções; nenhuma tabela ou variante recebe dispensa de análise. Lista
 mutada, tabela desconhecida ou mistura com escrita de domínio rejeita.
 Arrays/casts SQL comuns precisam ser reconhecidos pelo lexer sem esconder
 comandos subsequentes; repetir scanner sobre as59fontes reais após integração.
+
+### Rework de identidade lexical e comandos SQL Q13 — 2026-10-08
+
+Crítico fresco v9 REJECT,6P1/1P2,127 sondagens e14replays; sentinel
+25.133 arquivos intactos. Corrigir resolução por identidade lexical no local
+de uso: parâmetros, catch, destructuring e imports não herdam constantes
+homônimas externas. Usar símbolos do parser TypeScript e declinações
+conservadoras, sem dependência nova ou execução de fixture. Propriedades SQL
+obedecem ordem efetiva, inclusive spreads/nomes computados; override desconhecido
+ou getter rejeita. Templates, concatenação e config usam um único caminho
+recursivo de variantes para preservar toda composição estática. Const não
+significa objeto imutável: aliases, mutação computada/indireta e escape para
+chamada não modelada invalidam inferência de array/config. Alias benigno
+sem mutação continua analisável. Imports, destructuring e membros de objetos
+estáticos preservam efeitos conhecidos; funções locais puras homônimas não
+são classificadas por nome apenas. Corpo local com efeito real continua
+inspecionado. Manter forwarder existente estritamente limitado.
+
+SQL executável fora da gramática admitida deve rejeitar, incluindo TRUNCATE,
+DROP, COPY FROM, SELECT INTO, CREATE AS, DO e comandos procedurais. Valores
+dollar-quoted de SELECT permanecem inertes; DO não recebe dispensa por seu
+corpo quoted. Transações e consultas diagnósticas preexistentes devem ser
+discriminadas de escritas. Não ampliar grant de quota/replay ou permitir
+comando desconhecido por ausência de token INSERT/UPDATE/DELETE.
+Lead possui scanner e testes públicos; builder SQL possui somente helper
+e seu teste. RED/GREEN para todos os casos discriminantes, scanner59fontes,
+crítica fresca e novo binding obrigatórios. Candidato ed573464 anterior STALE;
+passada4 preparada mas não iniciada. Q01–Q14, escopo sintético, gates humanos
+e autoridade de publicação permanecem inalterados.
