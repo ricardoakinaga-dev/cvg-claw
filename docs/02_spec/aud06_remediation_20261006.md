@@ -343,3 +343,11 @@ modificado e positivos de cópias distintas. RED/GREEN, corpus59, freeze e
 crítica fresca obrigatórios. Helper/runtime intactos; passada4 não iniciada;
 candidato06dab37e rejeitado. Q01–Q14, piloto adiado e autoridade de publicação
 permanecem inalterados.
+
+## Rework de origem bind e argumentos efetivos Q13 — 2026-10-08
+
+A crítica fresca I1 da fonte v14 reproduziu 1P1/2P2 em149 sondagens,13falsePASS/7falseFAIL;28.094 entradas permanecem intactas inclusive atime. `bind` como membro próprio contendo `fetch` ou `db.query` é invocação conhecida, inclusive por armazenamento/rest/spread e prefixo SQL vinculado; o nome do membro não prova construção intrínseca de Function.bind. Métodos `call`/`apply` devem conservar a mesma distinção de origem e argumentos efetivos. A construção nativa de bind sem invocação continua inerte; membros próprios puros continuam positivos.
+
+O reparo registrado de AUD06-13 deve compartilhar a classificação de construção/invocação entre detecção de efeitos e análise de escape/mutação. Para `query.apply`, o array de argumentos efetivo não deve ser marcado como configuração SQL mutável somente pela posição bruta; leitura ou escrita na quota autorizada passam, escrita de domínio e desconhecido continuam recusados. Prefixos bind com spreads de arrays estáticos completos usam a projeção materializada existente e limites conservadores, preservando cópias primitivas e referências rasas. Não conceder fronteira por grafia de membro, ampliar tabela de quota ou alterar o forwarder legado.
+
+Antes de BUILD, registrar este rework e preservar crítica/raw. Exigir RED válido com binding da fonte rejeitada, GREEN dos quatro arquivos sem skips, controles positivos/negativos discriminantes, corpus59 e lint/formato/sintaxe/docs0, fonte frozen e nova crítica independente antes da passada4. Helper SQL e fontes de runtime continuam frozen. Q01–Q14 e autoridade de publicação não mudam; piloto11 adiado, N3DENY, gates reais14 pendentes e produçãoNO_GO.

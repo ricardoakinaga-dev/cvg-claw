@@ -3372,3 +3372,21 @@ O aceite desta sprint é exclusivamente controlado: schema fictício de fixture,
 - evidence: [recibo builder](04_audit/evidence/AUD06/recovery-20261007/bypass-v14-builder/receipt-IMPLEMENTED.json), [crítica v13 rejeitada](04_audit/evidence/AUD06/recovery-20261007/bypass-v13-fresh-reject-I1/report.raw.txt), [SPEC](02_spec/aud06_remediation_20261006.md).
 - verification: scanner3ff92b6c/teste90af5c3d; lint/ESLint/formato/sintaxe/docs0. Falhas intermediárias852PASS/3FAIL e corpus não aprovado preservados; RED363skips de filtro não entram no GREEN sem skips. Novo freeze/crítica/canonical obrigatórios; implementação não é aceite independente.
 - limitations: global FAIL/NO_GO; passada4 não iniciada; nenhum certificado principal/publicação/CI/piloto/signoff. Nota0577 74,27 permanece snapshot380ccc52; cópia ficará sem escritores durante revisão/execução.
+
+# AUD06-13 — v14 rejeitado; origem bind/argumentos efetivos registrados — 2026-10-08
+
+- current_engine: `AUDIT -> BUILD -> AUDIT`; task `AUD06-13` `WAITING_HUMAN_APPROVAL` somente na fronteira de publicação; rework local autorizado; staging/produção `NO_GO`.
+- last_completed_action: preservar REJECT fresco I1 v14,1P1/2P2 em149 sondagens,13falsePASS/7falseFAIL sem harness inválido;28.094 entradas intactas inclusive atime. Registrar origem intrínseca de bind versus membro próprio e argumentos efetivos apply/spread antes de BUILD.
+- next_action: conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.
+- evidence: [crítica](04_audit/evidence/AUD06/recovery-20261007/bypass-v14-fresh-reject-I1/report.json), [SPEC](02_spec/aud06_remediation_20261006.md).
+- verification: GREEN855 e corpus59 não superam os contraexemplos; candidato884b8f30 rejeitado, passada4 não iniciada. Helper/runtime intactos; nenhuma escrita alvo/canonical durante crítica.476artefatos copiados com hashes, original TEMP preservado.
+- limitations: global FAIL/NO_GO, sem certificado principal/publicação/CI/piloto/signoff; nota0577 74,27 permanece snapshot380ccc52. Provas anteriores permanecem preservadas.
+
+# AUD06-13 — origem bind/argumentos efetivos integrados; crítica fresca pendente — 2026-10-08
+
+- current_engine: `AUDIT`; task `AUD06-13` `WAITING_HUMAN_APPROVAL` somente na fronteira de publicação; qualificação local autorizada; staging/produção `NO_GO`.
+- last_completed_action: builder separado concluiu classificação compartilhada de origem bind/call/apply e argumentos efetivos/prefixos. RED84 válido27divergências/57matches antes de edição; GREEN945/945 em4arquivos sem skips,90/90CLI e corpus59 PASS. Cinco bindings conferidos pelo lead; helper/SPEC/barra e runtime preservados.
+- next_action: conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.
+- evidence: [recibo builder](04_audit/evidence/AUD06/recovery-20261007/bypass-v15-builder/receipt-IMPLEMENTED.json), [crítica v14 rejeitada](04_audit/evidence/AUD06/recovery-20261007/bypass-v14-fresh-reject-I1/report.json), [SPEC](02_spec/aud06_remediation_20261006.md).
+- verification: scannere1d90f06/teste2d4f2a78; lint/ESLint/formato/sintaxe/docs0. Attempt1 939/939 e rawfalsePASS de prefixo em membro próprio de função preservados como intermediários; não são aceite final. Corrigida proveniência do hash antigo da SPEC na barra v15 a partir da barra v14 arquivada, bytes iniciais preservados como registro incorreto; critérios intactos. Novo freeze/crítica/canonical obrigatórios.
+- limitations: global FAIL/NO_GO; passada4 não iniciada; nenhum certificado principal/publicação/CI/piloto/signoff. Nota0577 74,27 permanece snapshot380ccc52; cópia ficará sem escritores durante revisão/execução.

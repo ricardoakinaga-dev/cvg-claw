@@ -573,6 +573,16 @@ for (const relativePath of files) {
   ) {
     if (key === null) return []
     const values = []
+    // Function own invocation members use the same stored-value projection as
+    // literal holders. This also retains a bound prefix for every consumer.
+    if (!forSql && ['bind', 'call', 'apply'].includes(key)) {
+      for (const owner of receiverOrigins(input, new Set(seen))) {
+        if (!ts.isFunctionLike(owner)) continue
+        values.push(...(assignedProperties.get(owner)?.get(key) ?? []))
+        if (unknownAssignedProperties.has(owner) || escapedObjects.has(owner))
+          values.push(unknownValue)
+      }
+    }
     for (const owner of projectValues(
       input,
       new Set(seen),
@@ -746,7 +756,10 @@ for (const relativePath of files) {
           ? module
           : null
     }
-    if (ts.isCallExpression(node) && member(node.expression) === 'bind')
+    if (
+      ts.isCallExpression(node) &&
+      intrinsicOperation(node.expression, seen) === 'bind'
+    )
       return callee(unwrap(node.expression).expression, seen)
     if (
       ts.isPropertyAccessExpression(node) ||
@@ -757,7 +770,7 @@ for (const relativePath of files) {
   }
   function memberEffect(base, name, seen) {
     if (!base || name === null) return null
-    if (['call', 'apply', 'bind'].includes(name))
+    if (nativeFunctionMember(base, name, seen))
       return callee(base, new Set(seen))
     const baseEffect = callee(base, new Set(seen))
     if (['axios', 'got', 'undici'].includes(baseEffect)) return baseEffect
@@ -848,7 +861,10 @@ for (const relativePath of files) {
         mutationOrigin(node.expression, seen)
       )
     }
-    if (ts.isCallExpression(node) && member(node.expression) === 'bind')
+    if (
+      ts.isCallExpression(node) &&
+      intrinsicOperation(node.expression, seen) === 'bind'
+    )
       return mutationOrigin(unwrap(node.expression).expression, seen)
     if (ts.isCallExpression(node)) {
       const projected = projectValues(node, new Set())
@@ -1187,24 +1203,16 @@ for (const relativePath of files) {
       const value = bindingInitializer(node)
       return value ? boundArguments(value, seen) : []
     }
-    if (ts.isCallExpression(node) && member(node.expression) === 'bind') {
+    if (
+      ts.isCallExpression(node) &&
+      intrinsicOperation(node.expression, seen) === 'bind'
+    ) {
       const prior = boundArguments(unwrap(node.expression).expression, seen)
       if (prior === null) return null
-      const prefix = []
-      for (const arg of node.arguments.slice(1)) {
-        if (ts.isSpreadElement(arg)) {
-          const array = objectNode(arg.expression, new Set(), true)
-          if (
-            !array ||
-            !ts.isArrayLiteralExpression(array) ||
-            mutatedObjects.has(array) ||
-            array.elements.some(ts.isSpreadElement)
-          )
-            return null
-          prefix.push(...array.elements)
-        } else prefix.push(arg)
-      }
-      return [...prior, ...prefix]
+      const args = expandedArguments(node.arguments)
+      return args && prior.length + Math.max(0, args.length - 1) <= 64
+        ? [...prior, ...args.slice(1)]
+        : null
     }
     return []
   }
@@ -1241,30 +1249,91 @@ for (const relativePath of files) {
           escapedObjects.has(origin)
         ) || uncertainSelection(node.expression, seen)
       )
-    if (ts.isCallExpression(node) && member(node.expression) === 'bind')
+    if (
+      ts.isCallExpression(node) &&
+      intrinsicOperation(node.expression, seen) === 'bind'
+    )
       return uncertainSelection(unwrap(node.expression).expression, seen)
     return false
   }
-  function invocationSqlArgument(node) {
-    if (!ts.isCallExpression(node)) return node.template
+  // Member spelling alone does not establish Function.prototype ownership.
+  // The same origin decision governs effect detection, prefix selection and
+  // escape analysis; literal/stored overrides remain ordinary invocations.
+  function nativeFunctionMember(base, name, seen = new Set()) {
+    if (!['call', 'apply', 'bind'].includes(name)) return false
+    const owners = [...receiverOrigins(base)]
+    if (
+      owners.some(
+        (owner) =>
+          ts.isObjectLiteralExpression(owner) ||
+          ts.isArrayLiteralExpression(owner) ||
+          assignedProperties.get(owner)?.has(name) ||
+          unknownAssignedProperties.has(owner) ||
+          escapedObjects.has(owner)
+      )
+    )
+      return false
+    const effect = callee(base, new Set(seen))
+    return (
+      effects.has(effect) || effect === 'query' || Boolean(callableValue(base))
+    )
+  }
+  function intrinsicOperation(expression, seen = new Set()) {
+    const target = unwrap(expression),
+      name = member(target)
+    return target && nativeFunctionMember(target.expression, name, seen)
+      ? name
+      : null
+  }
+  function bindConstruction(node) {
+    return (
+      ts.isCallExpression(node) &&
+      intrinsicOperation(node.expression) === 'bind'
+    )
+  }
+  function expandedArguments(args) {
+    const values = []
+    for (const arg of args) {
+      if (ts.isSpreadElement(arg)) {
+        const array = objectNode(arg.expression, new Set(), true)
+        const items =
+          array && ts.isArrayLiteralExpression(array)
+            ? arrayValues(array, new Set(), true)
+            : null
+        if (!items) return null
+        values.push(...items)
+      } else values.push(arg)
+      if (values.length > 64) return null
+    }
+    return values
+  }
+  function invocationArguments(node) {
     let target = unwrap(node.expression),
-      args = [...node.arguments]
-    if (member(target) === 'call') {
-      args = args.slice(1)
+      args = expandedArguments(node.arguments)
+    const operation = intrinsicOperation(target)
+    if (operation === 'call') {
+      args = args?.slice(1) ?? null
       target = unwrap(target.expression)
-    } else if (member(target) === 'apply') {
-      const array = objectNode(args[1], new Set(), true)
+    } else if (operation === 'apply') {
+      const array = objectNode(args?.[1], new Set(), true)
       args =
         array &&
         ts.isArrayLiteralExpression(array) &&
         !mutatedObjects.has(array)
-          ? [...array.elements]
+          ? arrayValues(array, new Set(), true)
           : null
       target = unwrap(target.expression)
     }
     const prefix = boundArguments(target)
     if (prefix === null) return null
-    return prefix.length ? prefix[0] : args?.[0]
+    return args && prefix.length + args.length <= 64
+      ? [...prefix, ...args]
+      : null
+  }
+  function invocationSqlArgument(node) {
+    return ts.isCallExpression(node)
+      ? invocationArguments(node)?.[0]
+      : node.template
   }
   const readMethods = new Set([
     'join',
@@ -1547,13 +1616,7 @@ for (const relativePath of files) {
         ts.isElementAccessExpression(expr))
         ? propertyValue(expr.expression, name)
         : null
-    const bindConstruction =
-      ts.isCallExpression(node) &&
-      name === 'bind' &&
-      (effects.has(effect) ||
-        effect === 'query' ||
-        Boolean(callableValue(receiver)))
-    if (bindConstruction) continue
+    if (bindConstruction(node)) continue
     const nativeRead =
       receiverObject &&
       ts.isArrayLiteralExpression(receiverObject) &&
@@ -1578,7 +1641,9 @@ for (const relativePath of files) {
       ? ts.isTemplateExpression(node.template)
         ? node.template.templateSpans.map((span) => span.expression)
         : []
-      : [...(node.arguments ?? [])]
+      : effect === 'query' && ts.isCallExpression(node)
+        ? (invocationArguments(node) ?? [...node.arguments])
+        : [...(node.arguments ?? [])]
     for (const [index, arg] of args.entries()) {
       if (effect === 'query' && index === 0) continue
       for (const origin of reachableOrigins(arg)) {
@@ -1730,11 +1795,11 @@ for (const relativePath of files) {
         ts.isCallExpression(node) ? node.expression : node.tag
       )
       const name = callee(expression)
-      // bind constructs a function; its later invocation is resolved above.
-      if (effects.has(name) && member(expression) !== 'bind')
-        finding(effects.get(name), node)
+      // Only the intrinsic operation constructs a function without invoking it.
+      const construction = bindConstruction(node)
+      if (effects.has(name) && !construction) finding(effects.get(name), node)
       if (name === 'unresolved_static_callable') finding(name, node)
-      if (name === 'query' && member(expression) !== 'bind') {
+      if (name === 'query' && !construction) {
         const argument = invocationSqlArgument(node)
         const variants = sqlVariants(argument)
         if (variants === null) {

@@ -2459,3 +2459,523 @@ describe('v14 stored member materialization and spread copies', () => {
     expect(scan(quotaFile, source).exitCode).toBe(expected)
   })
 })
+
+describe('v15 intrinsic origin and effective arguments', () => {
+  it.each([
+    {
+      name: 'stored_fetch_bind',
+      source:
+        "const box={};box.bind=fetch;box.bind('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'literal_fetch_bind',
+      source: "const box={bind:fetch};box.bind('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'literal_pure_bind',
+      source: 'const box={bind:()=>1};box.bind();',
+      expected: 0
+    },
+    {
+      name: 'stored_query_bind',
+      source:
+        "const box={};box.bind=db.query;box.bind('UPDATE patient_records SET diagnosis=1');",
+      expected: 1
+    },
+    {
+      name: 'literal_query_bind',
+      source:
+        "const box={bind:db.query};box.bind('UPDATE patient_records SET diagnosis=1');",
+      expected: 1
+    },
+    {
+      name: 'stored_fetch_call',
+      source:
+        "const box={};box.call=fetch;box.call('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'literal_fetch_call',
+      source: "const box={call:fetch};box.call('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'literal_pure_call',
+      source: 'const box={call:()=>1};box.call();',
+      expected: 0
+    },
+    {
+      name: 'stored_query_call',
+      source:
+        "const box={};box.call=db.query;box.call('UPDATE patient_records SET diagnosis=1');",
+      expected: 1
+    },
+    {
+      name: 'literal_query_call',
+      source:
+        "const box={call:db.query};box.call('UPDATE patient_records SET diagnosis=1');",
+      expected: 1
+    },
+    {
+      name: 'stored_fetch_apply',
+      source:
+        "const box={};box.apply=fetch;box.apply('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'literal_fetch_apply',
+      source: "const box={apply:fetch};box.apply('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'literal_pure_apply',
+      source: 'const box={apply:()=>1};box.apply();',
+      expected: 0
+    },
+    {
+      name: 'stored_query_apply',
+      source:
+        "const box={};box.apply=db.query;box.apply('UPDATE patient_records SET diagnosis=1');",
+      expected: 1
+    },
+    {
+      name: 'literal_query_apply',
+      source:
+        "const box={apply:db.query};box.apply('UPDATE patient_records SET diagnosis=1');",
+      expected: 1
+    },
+    {
+      name: 'alias_array_binding',
+      source:
+        "const box=[];box[0]=fetch;const [f]=box;f('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'pure_array_binding',
+      source: 'const box=[];box[0]=(()=>1);const [f]=box;f();',
+      expected: 0
+    },
+    {
+      name: 'bound_array_binding_bad',
+      source:
+        'const box=[];box[0]=db.query.bind(db,"UPDATE patient_records SET diagnosis=1");const [q]=box;q(\'SELECT 1\');',
+      expected: 1
+    },
+    {
+      name: 'bound_array_binding_quota',
+      source:
+        'const box=[];box[0]=db.query.bind(db,"UPDATE api_rate_limit_buckets SET count=1");const [q]=box;q(\'SELECT 1\');',
+      expected: 0
+    },
+    {
+      name: 'bound_nested_binding_bad',
+      source:
+        'const box={};box.value=[db.query.bind(db,"UPDATE patient_records SET diagnosis=1")];const {value:[q]}=box;q(\'SELECT 1\');',
+      expected: 1
+    },
+    {
+      name: 'bound_nested_binding_quota',
+      source:
+        'const box={};box.value=[db.query.bind(db,"UPDATE api_rate_limit_buckets SET count=1")];const {value:[q]}=box;q(\'SELECT 1\');',
+      expected: 0
+    },
+    {
+      name: 'bound_bind_named_member_bad',
+      source:
+        'const box={bind:db.query.bind(db,"UPDATE patient_records SET diagnosis=1")};box.bind(\'SELECT 1\');',
+      expected: 1
+    },
+    {
+      name: 'bound_bind_named_member_quota',
+      source:
+        'const box={bind:db.query.bind(db,"UPDATE api_rate_limit_buckets SET count=1")};box.bind(\'SELECT 1\');',
+      expected: 0
+    },
+    {
+      name: 'bound_rest_bind_named_bad',
+      source:
+        'const box={};box.bind=db.query.bind(db,"UPDATE patient_records SET diagnosis=1");const {...rest}=box;rest.bind(\'SELECT 1\');',
+      expected: 1
+    },
+    {
+      name: 'bound_rest_bind_named_quota',
+      source:
+        'const box={};box.bind=db.query.bind(db,"UPDATE api_rate_limit_buckets SET count=1");const {...rest}=box;rest.bind(\'SELECT 1\');',
+      expected: 0
+    },
+    {
+      name: 'inert_bind',
+      source:
+        "const q=db.query.bind(db,'UPDATE patient_records SET diagnosis=1');",
+      expected: 0
+    },
+    {
+      name: 'invoke_call_bad',
+      source:
+        "const q=db.query.bind(db,'UPDATE patient_records SET diagnosis=1');q.call(db,'SELECT 1');",
+      expected: 1
+    },
+    {
+      name: 'invoke_call_quota',
+      source:
+        "const q=db.query.bind(db,'UPDATE api_rate_limit_buckets SET count=1');q.call(db,'SELECT 1');",
+      expected: 0
+    },
+    {
+      name: 'invoke_apply_bad',
+      source:
+        "const args=['UPDATE patient_records SET diagnosis=1'];db.query.apply(db,[...args]);",
+      expected: 1
+    },
+    {
+      name: 'invoke_apply_quota',
+      source:
+        "const args=['UPDATE api_rate_limit_buckets SET count=1'];db.query.apply(db,[...args]);",
+      expected: 0
+    },
+    {
+      name: 'invoke_bind_bad',
+      source:
+        "const args=['UPDATE patient_records SET diagnosis=1'];const q=db.query.bind(db,...[...args]);q();",
+      expected: 1
+    },
+    {
+      name: 'invoke_bind_quota',
+      source:
+        "const args=['UPDATE api_rate_limit_buckets SET count=1'];const q=db.query.bind(db,...[...args]);q();",
+      expected: 0
+    },
+    {
+      name: 'apply_rest_bad',
+      source:
+        'const original=["UPDATE patient_records SET diagnosis=1"];const [...args]=original;db.query.apply(db,args);',
+      expected: 1
+    },
+    {
+      name: 'apply_slice_bad',
+      source:
+        'const original=["UPDATE patient_records SET diagnosis=1"];const args=original.slice();db.query.apply(db,args);',
+      expected: 1
+    },
+    {
+      name: 'apply_spread_bad',
+      source:
+        'const original=["UPDATE patient_records SET diagnosis=1"];const args=[...original];db.query.apply(db,args);',
+      expected: 1
+    },
+    {
+      name: 'apply_rest_quota',
+      source:
+        'const original=["UPDATE api_rate_limit_buckets SET count=1"];const [...args]=original;db.query.apply(db,args);',
+      expected: 0
+    },
+    {
+      name: 'apply_slice_quota',
+      source:
+        'const original=["UPDATE api_rate_limit_buckets SET count=1"];const args=original.slice();db.query.apply(db,args);',
+      expected: 0
+    },
+    {
+      name: 'apply_spread_quota',
+      source:
+        'const original=["UPDATE api_rate_limit_buckets SET count=1"];const args=[...original];db.query.apply(db,args);',
+      expected: 0
+    },
+    {
+      name: 'bind_computed_fetch',
+      source:
+        "const box={['bind']:fetch};box['bind']('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'bind_optional_fetch',
+      source: "const box={bind:fetch};box.bind?.('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'bind_rest_fetch',
+      source:
+        "const box={};box.bind=fetch;const {...copy}=box;copy.bind('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'bind_spread_fetch',
+      source:
+        "const box={bind:fetch};const copy={...box};copy.bind('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'bind_array_property',
+      source:
+        "const box=[];box.bind=fetch;box.bind('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'bind_nested_fetch',
+      source:
+        "const box={nested:{bind:fetch}};box.nested.bind('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'bind_tagged_fetch',
+      source: 'const box={bind:fetch};box.bind`https://invalid.example`;',
+      expected: 1
+    },
+    {
+      name: 'bind_extracted_fetch',
+      source:
+        "const box={bind:fetch};const send=box.bind;send('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'bind_destructured_fetch',
+      source:
+        "const box={bind:fetch};const {bind:send}=box;send('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'bind_computed_pure',
+      source: "const box={['bind']:()=>1};box['bind']();",
+      expected: 0
+    },
+    {
+      name: 'bind_optional_pure',
+      source: 'const box={bind:()=>1};box.bind?.();',
+      expected: 0
+    },
+    {
+      name: 'bind_rest_pure',
+      source: 'const box={};box.bind=()=>1;const {...copy}=box;copy.bind();',
+      expected: 0
+    },
+    {
+      name: 'bind_spread_pure',
+      source: 'const box={bind:()=>1};const copy={...box};copy.bind();',
+      expected: 0
+    },
+    {
+      name: 'bind_array_pure',
+      source: 'const box=[];box.bind=()=>1;box.bind();',
+      expected: 0
+    },
+    {
+      name: 'bind_nested_pure',
+      source: 'const box={nested:{bind:()=>1}};box.nested.bind();',
+      expected: 0
+    },
+    {
+      name: 'bind_tagged_pure',
+      source: 'const box={bind:()=>1};box.bind`pure`;',
+      expected: 0
+    },
+    {
+      name: 'native_fetch_bind_inert',
+      source: "const f=fetch.bind(null,'https://invalid.example');",
+      expected: 0
+    },
+    {
+      name: 'native_fetch_bind_invoked',
+      source: "const f=fetch.bind(null,'https://invalid.example');f();",
+      expected: 1
+    },
+    {
+      name: 'native_query_bind_inert',
+      source:
+        "const f=db.query.bind(db,'UPDATE patient_records SET diagnosis=1');",
+      expected: 0
+    },
+    {
+      name: 'native_query_bind_quota',
+      source:
+        "const f=db.query.bind(db,'UPDATE api_rate_limit_buckets SET count=1');f();",
+      expected: 0
+    },
+    {
+      name: 'native_query_apply_read',
+      source: "db.query.apply(db,['SELECT 1']);",
+      expected: 0
+    },
+    {
+      name: 'native_query_apply_array_alias',
+      source: "const args=['SELECT 1'];db.query.apply(db,args);",
+      expected: 0
+    },
+    {
+      name: 'native_query_apply_bad',
+      source: "db.query.apply(db,['UPDATE patient_records SET diagnosis=1']);",
+      expected: 1
+    },
+    {
+      name: 'native_query_call_read',
+      source: "db.query.call(db,'SELECT 1');",
+      expected: 0
+    },
+    {
+      name: 'native_query_call_quota',
+      source: "db.query.call(db,'UPDATE api_rate_limit_buckets SET count=1');",
+      expected: 0
+    },
+    {
+      name: 'native_query_bind_spread_simple',
+      source: "const args=['SELECT 1'];const q=db.query.bind(db,...args);q();",
+      expected: 0
+    },
+    {
+      name: 'native_query_bind_literal_simple',
+      source: "const q=db.query.bind(db,...['SELECT 1']);q();",
+      expected: 0
+    },
+    {
+      name: 'unknown_default_callable',
+      source:
+        "const box={};box.f=unknown;const {f=fetch}=box;f('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'stored_undefined_default_callable',
+      source:
+        "const box={};box.f=undefined;const {f=fetch}=box;f('https://invalid.example');",
+      expected: 1
+    },
+    {
+      name: 'own-call-read',
+      source: 'const b={call:db.query};b.call("SELECT 1")',
+      expected: 0
+    },
+    {
+      name: 'own-apply-read',
+      source: 'const b={apply:db.query};b.apply("SELECT 1")',
+      expected: 0
+    },
+    {
+      name: 'own-bind-read',
+      source: 'const b={bind:db.query};b.bind("SELECT 1")',
+      expected: 0
+    },
+    {
+      name: 'own-call-quota',
+      source:
+        'const b={call:db.query};b.call("UPDATE api_rate_limit_buckets SET count=1")',
+      expected: 0
+    },
+    {
+      name: 'own-apply-quota',
+      source:
+        'const b={apply:db.query};b.apply("UPDATE api_rate_limit_buckets SET count=1")',
+      expected: 0
+    },
+    {
+      name: 'pure-bind-inert',
+      source: 'const f=()=>1;f.bind(null)',
+      expected: 0
+    },
+    {
+      name: 'apply-mutated-args',
+      source: 'const a=["SELECT 1"];mutate(a);db.query.apply(db,a)',
+      expected: 1
+    },
+    {
+      name: 'apply-config-ref',
+      source:
+        'const q={text:"SELECT 1"};const a=[q];db.query.apply(db,a);client.query(q)',
+      expected: 0
+    },
+    {
+      name: 'apply-mutated-config-ref',
+      source: 'const q={text:"SELECT 1"};mutate(q);db.query.apply(db,[q])',
+      expected: 1
+    },
+    {
+      name: 'apply-extra-ref-escape',
+      source:
+        'const q={text:"SELECT 1"};db.query.apply(db,["SELECT 1",q]);client.query(q)',
+      expected: 1
+    },
+    {
+      name: 'nested-bind-spread-domain',
+      source:
+        'const a=["UPDATE patient_records SET diagnosis=1"];const q=db.query.bind(db,...[...[...a]]);q()',
+      expected: 1
+    },
+    {
+      name: 'nested-bind-spread-mutated',
+      source:
+        'const a=["SELECT 1"];mutate(a);const q=db.query.bind(db,...[...a]);q()',
+      expected: 1
+    },
+    {
+      name: 'nested-bind-spread-incomplete',
+      source:
+        'const a=["SELECT 1",...unknown];const q=db.query.bind(db,...[...a]);q()',
+      expected: 1
+    },
+    {
+      name: 'function-own-bind-effect',
+      source: 'const f=()=>1;f.bind=fetch;f.bind("https://invalid.example")',
+      expected: 1
+    },
+    {
+      name: 'function-own-bind-pure',
+      source: 'const f=()=>1;f.bind=()=>1;f.bind()',
+      expected: 0
+    },
+    {
+      name: 'function-own-call-read',
+      source: 'const f=()=>1;f.call=db.query;f.call("SELECT 1")',
+      expected: 0
+    },
+    {
+      name: 'function-own-apply-domain',
+      source:
+        'const f=()=>1;f.apply=db.query;f.apply("UPDATE patient_records SET diagnosis=1")',
+      expected: 1
+    },
+    {
+      name: 'function-own-bind-prefix-domain',
+      source:
+        'const f=()=>1;f.bind=db.query.bind(db,"UPDATE patient_records SET diagnosis=1");f.bind("SELECT 1")',
+      expected: 1
+    },
+    {
+      name: 'function-own-bind-prefix-quota',
+      source:
+        'const f=()=>1;f.bind=db.query.bind(db,"UPDATE api_rate_limit_buckets SET count=1");f.bind("SELECT 1")',
+      expected: 0
+    },
+    {
+      name: 'function-own-call-prefix-domain',
+      source:
+        'const f=()=>1;f.call=db.query.bind(db,"UPDATE patient_records SET diagnosis=1");f.call("SELECT 1")',
+      expected: 1
+    },
+    {
+      name: 'function-own-call-prefix-quota',
+      source:
+        'const f=()=>1;f.call=db.query.bind(db,"UPDATE api_rate_limit_buckets SET count=1");f.call("SELECT 1")',
+      expected: 0
+    },
+    {
+      name: 'function-own-apply-prefix-domain',
+      source:
+        'const f=()=>1;f.apply=db.query.bind(db,"UPDATE patient_records SET diagnosis=1");f.apply("SELECT 1")',
+      expected: 1
+    },
+    {
+      name: 'function-own-apply-prefix-quota',
+      source:
+        'const f=()=>1;f.apply=db.query.bind(db,"UPDATE api_rate_limit_buckets SET count=1");f.apply("SELECT 1")',
+      expected: 0
+    }
+  ])('$name', ({ source, expected }) => {
+    const result = scan(quotaFile, source)
+    expect(result.report.scannedFiles).toBe(1)
+    expect(
+      result.report.findings.some(({ id }) =>
+        ['source_parse_failed', 'source_inventory_failed'].includes(id)
+      )
+    ).toBe(false)
+    expect(result.exitCode).toBe(expected)
+  })
+})
