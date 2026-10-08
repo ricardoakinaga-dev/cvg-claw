@@ -95,6 +95,8 @@ for (const relativePath of files) {
   const assignedContainerValues = new Map()
   const assignedProperties = new Map()
   const mutatedObjects = new Set()
+  const externalAllocations = new Map()
+  const externalCallables = new Map()
   const boundAllocations = new Map()
   const boundCallables = new Map()
   const projectingCalls = new Set()
@@ -488,7 +490,7 @@ for (const relativePath of files) {
               )
             )
           ]
-        : [node]
+        : [(!forSql && externalOrigin(node)) || node]
     }
     if (
       ts.isPropertyAccessExpression(node) ||
@@ -705,10 +707,62 @@ for (const relativePath of files) {
     if (module === 'node-fetch') return 'fetch'
     return null
   }
+  // Known external callables have an identity independent of each reference
+  // and of each bind allocation. Lexical declarations never share a global
+  // identity. Recognized imports reference the same module/export object,
+  // even when their lexical binding declarations differ.
+  function externalOrigin(node) {
+    if (!ts.isIdentifier(node)) return null
+    const decl = declaration(node)
+    const imported =
+      decl &&
+      (ts.isImportSpecifier(decl) ||
+        ts.isImportClause(decl) ||
+        ts.isNamespaceImport(decl))
+    const lexical = symbol(node)?.declarations?.some(
+      (candidate) => !ts.isIdentifier(candidate)
+    )
+    const effect = imported
+      ? importEffect(decl)
+      : !lexical && (effects.has(node.text) || node.text === 'query')
+        ? node.text
+        : null
+    if (!effect) return null
+    let key = JSON.stringify(['global', node.text])
+    if (imported) {
+      let source = decl
+      while (source && !ts.isImportDeclaration(source)) source = source.parent
+      const module = source?.moduleSpecifier?.text
+      const exported = ts.isImportSpecifier(decl)
+        ? (decl.propertyName ?? decl.name).text
+        : ts.isImportClause(decl)
+          ? 'default'
+          : '*'
+      // No opaque module resolution or new export recognition is performed.
+      key =
+        typeof module === 'string'
+          ? JSON.stringify(['import', module, exported])
+          : decl
+    }
+    if (!externalAllocations.has(key)) {
+      const origin = ts.factory.createArrowFunction(
+        undefined,
+        undefined,
+        [],
+        undefined,
+        undefined,
+        ts.factory.createNumericLiteral(0)
+      )
+      externalAllocations.set(key, origin)
+      externalCallables.set(origin, effect)
+    }
+    return externalAllocations.get(key)
+  }
   function callee(node, seen = new Set()) {
     node = unwrap(node)
     if (!node || seen.has(node)) return null
     if (node === unknownValue) return 'unresolved_static_callable'
+    if (externalCallables.has(node)) return externalCallables.get(node)
     if (boundCallables.has(node)) {
       seen.add(node)
       return callee(boundCallables.get(node).target, seen)

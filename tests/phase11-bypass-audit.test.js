@@ -5427,3 +5427,658 @@ describe('v17 known callable own member origins', () => {
     expect(result.exitCode).toBe(expected)
   })
 })
+
+describe('v18 known external callable identity', () => {
+  it.each([
+    {
+      name: 'critic-direct-fetch',
+      source: "fetch('https://synthetic.invalid')",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-inert-text',
+      source:
+        'const s = "fetch(\'https://synthetic.invalid\'); DELETE FROM appointments"',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-direct-quota',
+      source:
+        'db.query("INSERT INTO api_rate_limit_buckets (namespace) VALUES ($1)")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-bound-quota',
+      source:
+        'const f=db.query.bind(db,"INSERT INTO api_rate_limit_buckets (namespace) VALUES ($1)"); f()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-own-custom-quota',
+      source:
+        'function f(){return 0}; f.custom=db.query.bind(db,"INSERT INTO api_rate_limit_buckets (namespace) VALUES ($1)"); const h=[{f}]; const g=h[0].f.custom; g()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-bound-own-quota',
+      source:
+        'function f(){return 0}; const b=f.bind(null); b.custom=db.query.bind(db,"INSERT INTO api_rate_limit_buckets (namespace) VALUES ($1)"); const {custom}=b; custom()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-apply-quota',
+      source:
+        'const a=["INSERT INTO api_rate_limit_buckets (namespace) VALUES ($1)"]; db.query.apply(db,a)',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-layer-quota',
+      source:
+        'const c=db.query.call; c.apply(db.query,[db,"INSERT INTO api_rate_limit_buckets (namespace) VALUES ($1)"])',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-direct-domain',
+      source: 'db.query("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-bound-domain',
+      source: 'const f=db.query.bind(db,"DELETE FROM appointments"); f()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-own-custom-domain',
+      source:
+        'function f(){return 0}; f.custom=db.query.bind(db,"DELETE FROM appointments"); const h=[{f}]; const g=h[0].f.custom; g()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-bound-own-domain',
+      source:
+        'function f(){return 0}; const b=f.bind(null); b.custom=db.query.bind(db,"DELETE FROM appointments"); const {custom}=b; custom()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-apply-domain',
+      source: 'const a=["DELETE FROM appointments"]; db.query.apply(db,a)',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-layer-domain',
+      source:
+        'const c=db.query.call; c.apply(db.query,[db,"DELETE FROM appointments"])',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-direct-read',
+      source: 'db.query("SELECT 1")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-bound-read',
+      source: 'const f=db.query.bind(db,"SELECT 1"); f()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-own-custom-read',
+      source:
+        'function f(){return 0}; f.custom=db.query.bind(db,"SELECT 1"); const h=[{f}]; const g=h[0].f.custom; g()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-bound-own-read',
+      source:
+        'function f(){return 0}; const b=f.bind(null); b.custom=db.query.bind(db,"SELECT 1"); const {custom}=b; custom()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-apply-read',
+      source: 'const a=["SELECT 1"]; db.query.apply(db,a)',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-layer-read',
+      source: 'const c=db.query.call; c.apply(db.query,[db,"SELECT 1"])',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-native-bind-inert',
+      source: "const a=fetch.bind(null,'https://synthetic.invalid')",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-bind-alias-inert',
+      source:
+        "const op=fetch.bind; const a=op.call(fetch,null,'https://synthetic.invalid')",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-own-fetch',
+      source:
+        "function f(){return 0}; f.custom=fetch; const a=f; a.custom('https://synthetic.invalid')",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-own-pure-send',
+      source:
+        'function f(){return 0}; f.sendMessage=()=>0; const a={f}; a.f.sendMessage()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-bound-pure-send',
+      source:
+        'const f=(()=>0).bind(null); f.sendMessage=()=>0; const [g]=[f]; g.sendMessage()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-distinct-bind-pure',
+      source:
+        'function f(){return 0}; const a=f.bind(null),b=f.bind(null); a.custom=fetch; b.custom=()=>0; b.custom()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-function-spread-fetch',
+      source:
+        "function f(){return 0}; f.custom=fetch; const c={...f}; c.custom('https://synthetic.invalid')",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-global-function-own-query',
+      source: 'fetch.custom=db.query; fetch.custom("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-global-function-own-pure',
+      source: 'fetch.custom=()=>0; fetch.custom()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-own-rest-fetch',
+      source:
+        "const o={}; o.custom=fetch; const {unused,...r}=o; const {custom}=r; custom('https://synthetic.invalid')",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-own-default-fetch',
+      source:
+        "const o={custom:fetch}; const {custom=()=>0}=o; custom('https://synthetic.invalid')",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-own-default-pure',
+      source: 'const o={custom:()=>0}; const {custom=fetch}=o; custom()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-assignment-default-fetch',
+      source:
+        "let custom; ({custom=fetch}={}); custom('https://synthetic.invalid')",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-array-spread-query',
+      source:
+        'const a=[]; a[0]=db.query.bind(db,"DELETE FROM appointments"); const b=[...a]; const [f]=b; f()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-array-slice-query',
+      source:
+        'const a=[db.query.bind(db,"DELETE FROM appointments")]; const b=a.slice(); const [f]=b; f()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-primitive-copy',
+      source:
+        "const a=['api_rate_limit_buckets']; const b=[...a]; external(b); db.query(`DELETE FROM ${a[0]}`)",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-object-copy-alias',
+      source:
+        "const a=[{text:'SELECT 1'}]; const b=[...a]; external(b); db.query(a[0])",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-mixed-quota',
+      source:
+        'db.query("INSERT INTO api_rate_limit_buckets (namespace) VALUES ($1); DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-cte-domain',
+      source:
+        "db.query('WITH gone AS (DELETE FROM appointments RETURNING id) SELECT * FROM gone')",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-unknown-target',
+      source: 'db.query(`DELETE FROM ${table}`)',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-quota-outside',
+      source:
+        'db.query("INSERT INTO api_rate_limit_buckets (namespace) VALUES ($1)")',
+      expected: 1,
+      path: 'apps/api/src/other.ts'
+    },
+    {
+      name: 'critic-prod-test-dir',
+      source: "fetch('https://synthetic.invalid')",
+      expected: 1,
+      path: 'apps/api/src/x.test.dir/prod.ts'
+    },
+    {
+      name: 'critic-interpolation-fetch',
+      source: "db.query(`SELECT '${fetch('https://synthetic.invalid')}'`)",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-template-pure',
+      source: "const n='api_rate_limit_buckets'; db.query(`DELETE FROM ${n}`)",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-own-bind-fetch',
+      source:
+        "function f(){return 0}; f.bind=fetch; f.bind('https://synthetic.invalid')",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-own-call-quota',
+      source:
+        'function f(){return 0}; f.call=db.query; f.call("INSERT INTO api_rate_limit_buckets (namespace) VALUES ($1)")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-own-apply-domain',
+      source:
+        'const b=(()=>0).bind(null); b.apply=db.query; b.apply("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-native-bind-call-quota',
+      source:
+        'const op=db.query.bind; const f=op.call(db.query,db,"INSERT INTO api_rate_limit_buckets (namespace) VALUES ($1)"); f()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-native-bind-apply-domain',
+      source:
+        'const op=db.query.bind; const f=op.apply(db.query,[db,"DELETE FROM appointments"]); f()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-pure-member-on-fetch-send',
+      source: 'fetch.sendMessage=()=>0; fetch.sendMessage()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'critic-stored-axios-pure',
+      source: 'function f(){return 0}; f.axios=()=>0; f.axios()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'confirm-confirm-global-domain',
+      source: "fetch.custom=db.query; fetch.custom('DELETE FROM appointments')",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'confirm-confirm-local-domain',
+      source:
+        "function f(){return 0}; f.custom=db.query; f.custom('DELETE FROM appointments')",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'confirm-confirm-import-domain',
+      source:
+        "import f from 'node-fetch'; f.custom=db.query; f.custom('DELETE FROM appointments')",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'confirm-confirm-alias-domain',
+      source:
+        "const f=fetch; f.custom=db.query; f.custom('DELETE FROM appointments')",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'confirm-confirm-global-inert',
+      source: 'fetch.custom=db.query',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'confirm-confirm-global-pure',
+      source: 'fetch.sendMessage=()=>0; fetch.sendMessage()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'confirm-confirm-local-pure',
+      source: 'function f(){return 0}; f.sendMessage=()=>0; f.sendMessage()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'confirm-confirm-global-read',
+      source: "fetch.custom=db.query; fetch.custom('SELECT 1')",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-holder-domain',
+      source:
+        'fetch.custom=db.query;const h={f:fetch};const {custom}=h.f;custom("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-holder-read',
+      source:
+        'fetch.custom=db.query;const h={f:fetch};const {custom}=h.f;custom("SELECT 1")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-array-domain',
+      source:
+        'fetch.custom=db.query;const [...a]=[fetch];const [f]=a;f.custom("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-array-pure',
+      source:
+        'fetch.sendMessage=()=>0;const [...a]=[fetch];const [f]=a;f.sendMessage()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-prefix-domain',
+      source:
+        'fetch.custom=db.query.bind(db,"DELETE FROM appointments");const h={...{f:fetch}};h.f.custom("SELECT 1")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-prefix-quota',
+      source:
+        'fetch.custom=db.query.bind(db,"INSERT INTO api_rate_limit_buckets (namespace) VALUES ($1)");const h={...{f:fetch}};h.f.custom()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-prefix-mixed',
+      source:
+        'fetch.custom=db.query.bind(db,"SELECT 1;DELETE FROM appointments");const {f=fetch}={};f.custom()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-default-pure',
+      source: 'fetch.sendMessage=()=>0;const {f=fetch}={};f.sendMessage()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-present-default',
+      source:
+        'fetch.custom=db.query;const {custom=()=>0}=fetch;custom("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-present-pure-default',
+      source: 'fetch.custom=()=>0;const {custom=fetch}=fetch;custom()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-unknown-default',
+      source:
+        'fetch[key]=db.query;const {custom=()=>0}=fetch;custom("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-query-config-read',
+      source:
+        'fetch.custom=db.query;const q={text:"SELECT 1"};fetch.custom(q);client.query(q)',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-query-config-mutated',
+      source:
+        'fetch.custom=db.query;const q={text:"SELECT 1"};expose(q);fetch.custom(q)',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-pure-config-conservative',
+      source:
+        'fetch.custom=x=>x;const q={text:"SELECT 1"};fetch.custom(q);client.query(q)',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-unknown-config',
+      source:
+        'fetch.custom=unknown;const q={text:"SELECT 1"};fetch.custom(q);client.query(q)',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'import-alias-domain',
+      source:
+        'import external from "node-fetch";const f=external;f.custom=db.query;const {custom}=external;custom("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'import-alias-pure',
+      source:
+        'import external from "node-fetch";const f=external;f.sendMessage=()=>0;external.sendMessage()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'import-symbols-independent',
+      source:
+        'import a from "node-fetch";import b from "node-fetch";a.custom=db.query;b.custom=()=>0;b.custom("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'import-symbols-own-domain',
+      source:
+        'import a from "node-fetch";import b from "node-fetch";a.custom=db.query;b.custom=()=>0;a.custom("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'lexical-shadow-independent',
+      source:
+        'fetch.custom=db.query;function scope(){const fetch=()=>0;fetch.custom=()=>0;fetch.custom("DELETE FROM appointments")}',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'lexical-shadow-own-domain',
+      source:
+        'fetch.custom=()=>0;function scope(){const fetch=()=>0;fetch.custom=db.query;fetch.custom("DELETE FROM appointments")}',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-external-independent',
+      source:
+        'fetch.custom=db.query;const f=fetch.bind(null);f.custom=()=>0;f.custom("DELETE FROM appointments")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'bound-external-own-domain',
+      source:
+        'fetch.custom=()=>0;const f=fetch.bind(null);f.custom=db.query;f.custom("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-direct-effect',
+      source: 'fetch.sendMessage=()=>0;fetch("url")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-native-inert',
+      source: 'fetch.custom=db.query;const f=fetch.bind(null,"url")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-native-invoke',
+      source: 'fetch.custom=()=>0;const f=fetch.bind(null,"url");f()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-uninvoked-prefix',
+      source: 'fetch.custom=db.query.bind(db,"DELETE FROM appointments")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-native-layer-inert',
+      source:
+        'fetch.sendMessage=()=>0;const op=fetch.bind;op.apply(fetch,[null,"url"])',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-native-layer-invoke',
+      source:
+        'fetch.sendMessage=()=>0;const op=fetch.bind;const f=op.apply(fetch,[null,"url"]);f()',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'recognized-module-own-pure',
+      source: 'import f from "axios";f.sendMessage=()=>0;f.sendMessage()',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'recognized-module-own-domain',
+      source:
+        'import f from "axios";f.custom=db.query;f.custom("DELETE FROM appointments")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-own-bind-query',
+      source:
+        'fetch.bind=db.query;fetch.bind("DELETE FROM appointments","SELECT 1")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-own-call-pure',
+      source: 'fetch.call=()=>0;fetch.call("url")',
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'external-own-apply-query',
+      source:
+        'fetch.apply=db.query;fetch.apply("DELETE FROM appointments","SELECT 1")',
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'same-export-domain',
+      source:
+        "import a from 'node-fetch'; import b from 'node-fetch'; a.custom=db.query; b.custom('DELETE FROM appointments');",
+      expected: 1,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'same-export-read',
+      source:
+        "import a from 'node-fetch'; import b from 'node-fetch'; a.custom=db.query; b.custom('SELECT 1');",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    },
+    {
+      name: 'same-export-pure',
+      source:
+        "import a from 'node-fetch'; import b from 'node-fetch'; a.sendMessage=()=>0; b.sendMessage();",
+      expected: 0,
+      path: 'apps/api/src/postgres-rate-limit.ts'
+    }
+  ])('$name', ({ source, expected, path: fixturePath }) => {
+    const result = scan(fixturePath, source)
+    expect(result.report.scannedFiles).toBe(1)
+    expect(
+      result.report.findings.some(({ id }) =>
+        ['source_parse_failed', 'source_inventory_failed'].includes(id)
+      )
+    ).toBe(false)
+    expect(result.exitCode).toBe(expected)
+  })
+})
