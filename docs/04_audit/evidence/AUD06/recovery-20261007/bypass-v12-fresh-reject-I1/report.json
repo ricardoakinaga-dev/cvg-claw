@@ -1,0 +1,474 @@
+{
+  "decision": "REJECT",
+  "scope": "Independent I1 read-only Q13 scanner/helper review, bounded by SPEC v12; no whole-project or release acceptance",
+  "independence": "I1 fresh conversation, same model family; no inherited builder context or builder/test result used as evidence; required operational docs read only as instructions/state",
+  "target": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+  "evidence_root": "/tmp/cvg-q13-i1-znzc69uN",
+  "binding": {
+    "candidateId": "017c464a322e022e711d94be32903c5882f1a232ce7e942ee6e8605102f6e6c3",
+    "behaviorTree": "5fc8aece49bcde994b4d2ed19dc25fc17e2d96432725ac1992a80209a097bfd1",
+    "fileCount": 1256,
+    "method": "Exact extracted pure certification scope/hash functions; file hashes from O_NOATIME sentinel; fresh git inventory without fsmonitor, no caches.",
+    "head": "9cb99dc022ab1c687197bb256cc66624c5de8e6a",
+    "expected": {
+      "head": "9cb99dc022ab1c687197bb256cc66624c5de8e6a",
+      "candidateId": "017c464a322e022e711d94be32903c5882f1a232ce7e942ee6e8605102f6e6c3",
+      "behaviorTree": "5fc8aece49bcde994b4d2ed19dc25fc17e2d96432725ac1992a80209a097bfd1",
+      "fileCount": 1256
+    },
+    "matches": true,
+    "direct_hashes": {
+      "scripts/phase11-bypass-audit.mjs": "f9fc1c5ec4afa61b39df8e6f2ff2ea61b53c1dc7d8fbcf66f3e72d3834e2d105",
+      "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+      "docs/02_spec/aud06_remediation_20261006.md": "f0da3fe92ea2c54445f3ba8e70b78d7b16d9d193b6cdf5f296ea62ffd91f4a87",
+      "docs/04_audit/evidence/AUD06/quality-bar.json": "7424a1abbc5909e390bd39e4aa453fb92cf87c8cc71de1e1c21604aceaeb93c2",
+      "scripts/lib/certification-rules.mjs": "bdc6f0dec4efaf6ee3e4466f9b1a43132c0b17f039960232c0ab683d083d172e",
+      "scripts/lib/phase11-rules.mjs": "72edc702df064773a705dcbcafe5f11686c74e21388ce64c52a7cb42894e8e85"
+    },
+    "bar_version": "AUD06-v12-structural-selection-reference-exposure-audit",
+    "spec_source_matches": true
+  },
+  "sentinel": {
+    "material_differences": [],
+    "atime_differences": [],
+    "entries": 28068
+  },
+  "started_at": 1791443162.2981308,
+  "finished_at": 1791443859.017551,
+  "node": "v22.23.2",
+  "executed_scanner_cli_probes": 184,
+  "synthetic_regular_cases": 182,
+  "inventory_parse_negative_cases": 2,
+  "findings": [
+    {
+      "id": "I1-Q13-01",
+      "severity": "P1",
+      "title": "Default de destructuring de objeto em atribuição perde callable conhecido",
+      "confidence": "high",
+      "criterion": "Q13 bounded scanner correction",
+      "path": "scripts/phase11-bypass-audit.mjs",
+      "line": 978,
+      "spec_lines": [
+        304,
+        305,
+        306
+      ],
+      "primary": "F1-default-empty",
+      "fixture": "/tmp/cvg-q13-i1-znzc69uN/fixtures/F1-default-empty/apps/api/src/postgres-rate-limit.ts",
+      "fixture_line": 1,
+      "code": "let f; ({f=fetch}={}); f(\"https://synthetic.invalid\");\n",
+      "cli_exit": 0,
+      "cli_status": "PASS",
+      "cli_findings": [],
+      "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F1-default-empty.json",
+      "semantic_argument": "A propriedade f ausente aplica o default fetch; a chamada seguinte invoca o fetch global. q=client.query também aplica um SQL UPDATE appointments real. São atribuições estáticas com propriedade omitida/undefined, não inferência geral de funções.",
+      "static_cause": "assignedPairs usa somente prop.name para ShorthandPropertyAssignment e descarta objectAssignmentInitializer. A callable não chega a assignedValues.",
+      "paired_controls": [
+        {
+          "name": "F1-default-undefined",
+          "expected_exit": 1,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F1-default-undefined.json",
+          "code": "let f; ({f=fetch}={f:undefined}); f(\"https://synthetic.invalid\");\n"
+        },
+        {
+          "name": "F1-default-query",
+          "expected_exit": 1,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F1-default-query.json",
+          "code": "let q; ({q=client.query}={}); q(\"UPDATE appointments SET status = 1\");\n"
+        },
+        {
+          "name": "F1-default-benign",
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F1-default-benign.json",
+          "code": "let f; ({f=()=>1}={}); f();\n"
+        },
+        {
+          "name": "F1-present-benign",
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F1-present-benign.json",
+          "code": "let f; ({f=fetch}={f:()=>1}); f();\n"
+        },
+        {
+          "name": "F1-array-assignment",
+          "expected_exit": 1,
+          "actual_exit": 1,
+          "status": "FAIL",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F1-array-assignment.json",
+          "code": "let f; [f=fetch]=[];f(\"https://synthetic.invalid\");\n"
+        },
+        {
+          "name": "F1-worker-default",
+          "expected_exit": 1,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F1-worker-default.json",
+          "code": "let f;({f=fetch}={});f(\"https://synthetic.invalid\");\n"
+        }
+      ]
+    },
+    {
+      "id": "I1-Q13-02",
+      "severity": "P1",
+      "title": "Seleção de membro/índice preserva query, mas perde SQL prefixado por bind",
+      "confidence": "high",
+      "criterion": "Q13 bounded scanner correction",
+      "path": "scripts/phase11-bypass-audit.mjs",
+      "line": 873,
+      "spec_lines": [
+        266,
+        267,
+        291,
+        292
+      ],
+      "primary": "F2-property-domain-prefix",
+      "fixture": "/tmp/cvg-q13-i1-znzc69uN/fixtures/F2-property-domain-prefix/apps/api/src/postgres-rate-limit.ts",
+      "fixture_line": 1,
+      "code": "const holder={q:client.query.bind(client,\"UPDATE appointments SET status = 1\")};holder.q(\"UPDATE api_rate_limit_buckets SET count = 1\");\n",
+      "cli_exit": 0,
+      "cli_status": "PASS",
+      "cli_findings": [],
+      "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F2-property-domain-prefix.json",
+      "semantic_argument": "Function.bind prefixa UPDATE appointments como primeiro argumento definitivo. holder.q(quotaSQL) envia a escrita de domínio como text e quotaSQL como argumento posterior. holder.q(\"SELECT 1\") e holder.q.call(null,\"SELECT 1\") também executam o prefixo de domínio. Não depende de avaliar SQL dinâmico.",
+      "static_cause": "callee resolve propriedade/índice e reconhece query; boundArguments resolve identificador e bind, mas não propriedade/índice. invocationSqlArgument então inspeciona apenas o argumento posterior da chamada.",
+      "paired_controls": [
+        {
+          "name": "F2-array-domain-prefix",
+          "expected_exit": 1,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F2-array-domain-prefix.json",
+          "code": "const holder=[client.query.bind(client,\"UPDATE appointments SET status = 1\")];holder[0](\"UPDATE api_rate_limit_buckets SET count = 1\");\n"
+        },
+        {
+          "name": "F2-property-read-arg",
+          "expected_exit": 1,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F2-property-read-arg.json",
+          "code": "const holder={q:client.query.bind(client,\"UPDATE appointments SET status = 1\")};holder.q(\"SELECT 1\");\n"
+        },
+        {
+          "name": "F2-property-allowed-prefix",
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F2-property-allowed-prefix.json",
+          "code": "const holder={q:client.query.bind(client,\"UPDATE api_rate_limit_buckets SET count = 1\")};holder.q(\"SELECT 1\");\n"
+        },
+        {
+          "name": "F2-unbound-domain",
+          "expected_exit": 1,
+          "actual_exit": 1,
+          "status": "FAIL",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F2-unbound-domain.json",
+          "code": "const holder={q:client.query};holder.q(\"UPDATE appointments SET status = 1\");\n"
+        },
+        {
+          "name": "F2-direct-bound",
+          "expected_exit": 1,
+          "actual_exit": 1,
+          "status": "FAIL",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F2-direct-bound.json",
+          "code": "const q=client.query.bind(client,\"UPDATE appointments SET status = 1\");q(\"UPDATE api_rate_limit_buckets SET count = 1\");\n"
+        },
+        {
+          "name": "F2-bound-inert",
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F2-bound-inert.json",
+          "code": "const holder={q:client.query.bind(client,\"UPDATE appointments SET status = 1\")};\n"
+        },
+        {
+          "name": "F2-member-call",
+          "expected_exit": 1,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F2-member-call.json",
+          "code": "const o={q:client.query.bind(client,\"UPDATE appointments SET status = 1\")};o.q.call(null,\"SELECT 1\");\n"
+        }
+      ]
+    },
+    {
+      "id": "I1-Q13-03",
+      "severity": "P1",
+      "title": "Origem de config armazenada não atravessa destructuring posterior",
+      "confidence": "high",
+      "criterion": "Q13 bounded scanner correction",
+      "path": "scripts/phase11-bypass-audit.mjs",
+      "line": 212,
+      "spec_lines": [
+        260,
+        261,
+        291,
+        292,
+        293,
+        294,
+        295
+      ],
+      "primary": "F3-stored-destruct-alias",
+      "fixture": "/tmp/cvg-q13-i1-znzc69uN/fixtures/F3-stored-destruct-alias/apps/api/src/postgres-rate-limit.ts",
+      "fixture_line": 1,
+      "code": "function overwrite(x){x.text=\"UPDATE appointments SET status = 1\";} const c={text:\"UPDATE api_rate_limit_buckets SET count = 1\"}; const holder={};holder.x=c;const {x}=holder;overwrite(x);client.query(c);\n",
+      "cli_exit": 0,
+      "cli_status": "PASS",
+      "cli_findings": [],
+      "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F3-stored-destruct-alias.json",
+      "semantic_argument": "holder.x=c armazena a referência à config. const {x}=holder seleciona a mesma referência; overwrite(x) altera c.text para UPDATE appointments antes de client.query(c). O corpo mutante local está no fixture, sem executar o fixture. O valor primitivo armazenado no controle não permite alterar c.",
+      "static_cause": "bindingSource/propertyValue só seleciona propriedades da inicialização literal. As assignedProperties conhecidas de holder são consultadas em receiverOrigins, mas não neste caminho de seleção/destructuring. A chamada com x perde a origem c e não invalida seu SQL.",
+      "paired_controls": [
+        {
+          "name": "F3-assigned-destruct",
+          "expected_exit": 1,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F3-assigned-destruct.json",
+          "code": "function overwrite(x){x.text=\"UPDATE appointments SET status = 1\";}const c={text:\"UPDATE api_rate_limit_buckets SET count = 1\"};const holder={};holder.x=c;let x;({x}=holder);overwrite(x);client.query(c);\n"
+        },
+        {
+          "name": "F3-stored-direct-alias",
+          "expected_exit": 1,
+          "actual_exit": 1,
+          "status": "FAIL",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F3-stored-direct-alias.json",
+          "code": "function overwrite(x){x.text=\"UPDATE appointments SET status = 1\";} const c={text:\"UPDATE api_rate_limit_buckets SET count = 1\"};const holder={};holder.x=c;overwrite(holder.x);client.query(c);\n"
+        },
+        {
+          "name": "F3-literal-destruct-alias",
+          "expected_exit": 1,
+          "actual_exit": 1,
+          "status": "FAIL",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F3-literal-destruct-alias.json",
+          "code": "function overwrite(x){x.text=\"UPDATE appointments SET status = 1\";} const c={text:\"UPDATE api_rate_limit_buckets SET count = 1\"};const holder={x:c};const {x}=holder;overwrite(x);client.query(c);\n"
+        },
+        {
+          "name": "F3-stored-primitive",
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F3-stored-primitive.json",
+          "code": "function consume(x){return x;} const c={text:\"UPDATE api_rate_limit_buckets SET count = 1\"};const holder={};holder.x=c.text;const {x}=holder;consume(x);client.query(c);\n"
+        },
+        {
+          "name": "F3-unexposed-store",
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F3-unexposed-store.json",
+          "code": "const c={text:\"UPDATE api_rate_limit_buckets SET count = 1\"};const holder={};holder.x=c;client.query(c);\n"
+        }
+      ]
+    },
+    {
+      "id": "I1-Q13-04",
+      "severity": "P1",
+      "title": "Closure retorna config via default literal sem invalidar referência exposta",
+      "confidence": "high",
+      "criterion": "Q13 bounded scanner correction",
+      "path": "scripts/phase11-bypass-audit.mjs",
+      "line": 674,
+      "spec_lines": [
+        260,
+        280,
+        294,
+        295
+      ],
+      "primary": "F4-closure-default",
+      "fixture": "/tmp/cvg-q13-i1-znzc69uN/fixtures/F4-closure-default/apps/api/src/postgres-rate-limit.ts",
+      "fixture_line": 1,
+      "code": "function alter(f){f().text=\"UPDATE appointments SET status = 1\";}const c={text:\"UPDATE api_rate_limit_buckets SET count = 1\"};alter((out=c)=>out);client.query(c);\n",
+      "cli_exit": 0,
+      "cli_status": "PASS",
+      "cli_findings": [],
+      "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F4-closure-default.json",
+      "semantic_argument": "alter chama a closure sem argumentos; out recebe c por default e a closure retorna a mesma config. f().text=UPDATE appointments muda c antes da query. O controle () => c é rejeitado e o default de c.text, um escalar, permanece benigno. Só há default direto e retorno, sem resolver funções arbitrárias.",
+      "static_cause": "reachableOrigins percorre o retorno de closure, mas para um identificador com declaração Parameter não percorre seu default. Assim a referência c exposta pelo retorno não é invalidada.",
+      "paired_controls": [
+        {
+          "name": "F4-closure-explicit",
+          "expected_exit": 1,
+          "actual_exit": 1,
+          "status": "FAIL",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F4-closure-explicit.json",
+          "code": "function alter(f){f().text=\"UPDATE appointments SET status = 1\";}const c={text:\"UPDATE api_rate_limit_buckets SET count = 1\"};alter(()=>c);client.query(c);\n"
+        },
+        {
+          "name": "F4-closure-primitive",
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F4-closure-primitive.json",
+          "code": "function read(f){return f();}const c={text:\"UPDATE api_rate_limit_buckets SET count = 1\"};read((out=c.text)=>out);client.query(c);\n"
+        }
+      ]
+    },
+    {
+      "id": "I1-Q13-05",
+      "severity": "P1",
+      "title": "Mutação de alias selecionado por array destructuring deixa lista SQL inferível",
+      "confidence": "high",
+      "criterion": "Q13 bounded scanner correction",
+      "path": "scripts/phase11-bypass-audit.mjs",
+      "line": 539,
+      "spec_lines": [
+        291,
+        292,
+        293,
+        308
+      ],
+      "primary": "F5-array-selected-mutation",
+      "fixture": "/tmp/cvg-q13-i1-znzc69uN/fixtures/F5-array-selected-mutation/apps/api/src/postgres-rate-limit.ts",
+      "fixture_line": 1,
+      "code": "const tables=[\"api_rate_limit_buckets\"];const [a]=[tables];a[0]=\"appointments\";for(const t of tables){client.query(`UPDATE ${t} SET count=1`);}\n",
+      "cli_exit": 0,
+      "cli_status": "PASS",
+      "cli_findings": [],
+      "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F5-array-selected-mutation.json",
+      "semantic_argument": "const [a]=[tables] seleciona a própria lista tables; a[0]=\"appointments\" muda seu único identificador antes do for-of. O SQL real resultante é UPDATE appointments SET count=1. A análise conserva api_rate_limit_buckets e concede a exceção. Os controles direta, por objeto, por índice e assignment array rejeitam a mutação equivalente.",
+      "static_cause": "mutationOrigin trata BindingElement de array pelo container de origem; depois de marcar [tables] mutado, receiverOrigins/bindingSource não recupera o objeto tables selecionado. finiteLoopValues ainda usa a lista original não invalidada.",
+      "paired_controls": [
+        {
+          "name": "F5-object-selected-mutation",
+          "expected_exit": 1,
+          "actual_exit": 1,
+          "status": "FAIL",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F5-object-selected-mutation.json",
+          "code": "const tables=[\"api_rate_limit_buckets\"];const {a}={a:tables};a[0]=\"appointments\";for(const t of tables){client.query(`UPDATE ${t} SET count=1`);}\n"
+        },
+        {
+          "name": "F5-direct-alias-mutation",
+          "expected_exit": 1,
+          "actual_exit": 1,
+          "status": "FAIL",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F5-direct-alias-mutation.json",
+          "code": "const tables=[\"api_rate_limit_buckets\"];const a=tables;a[0]=\"appointments\";for(const t of tables){client.query(`UPDATE ${t} SET count=1`);}\n"
+        },
+        {
+          "name": "F5-element-selected-mutation",
+          "expected_exit": 1,
+          "actual_exit": 1,
+          "status": "FAIL",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F5-element-selected-mutation.json",
+          "code": "const tables=[\"api_rate_limit_buckets\"];const container=[tables];const a=container[0];a[0]=\"appointments\";for(const t of tables){client.query(`UPDATE ${t} SET count=1`);}\n"
+        },
+        {
+          "name": "F5-assignment-selected-mutation",
+          "expected_exit": 1,
+          "actual_exit": 1,
+          "status": "FAIL",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F5-assignment-selected-mutation.json",
+          "code": "const tables=[\"api_rate_limit_buckets\"];let a;[a]=[tables];a[0]=\"appointments\";for(const t of tables){client.query(`UPDATE ${t} SET count=1`);}\n"
+        },
+        {
+          "name": "F5-array-selected-unmutated",
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-F5-array-selected-unmutated.json",
+          "code": "const tables=[\"api_rate_limit_buckets\"];const [a]=[tables];for(const t of tables){client.query(`UPDATE ${t} SET count=1`);}\n"
+        }
+      ]
+    },
+    {
+      "id": "I1-Q13-06",
+      "severity": "P2",
+      "title": "Escape de cópia slice de lista primitiva invalida indevidamente o original",
+      "confidence": "high",
+      "criterion": "Q13 bounded scanner correction",
+      "path": "scripts/phase11-bypass-audit.mjs",
+      "line": 667,
+      "spec_lines": [
+        297,
+        298,
+        309,
+        310
+      ],
+      "primary": "P2-native-slice-copy",
+      "fixture": "/tmp/cvg-q13-i1-znzc69uN/fixtures/P2-native-slice-copy/apps/api/src/postgres-rate-limit.ts",
+      "fixture_line": 1,
+      "code": "const tables=[\"api_rate_limit_buckets\"];function mutate(a){a[0]=\"appointments\";} mutate(tables.slice());for(const t of tables){client.query(`UPDATE ${t} SET count=1`);}\n",
+      "cli_exit": 1,
+      "cli_status": "FAIL",
+      "cli_findings": [
+        {
+          "id": "direct_sql_write",
+          "path": "apps/api/src/postgres-rate-limit.ts",
+          "line": 1,
+          "reason": "unresolved_query_expression"
+        }
+      ],
+      "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-P2-native-slice-copy.json",
+      "semantic_argument": "tables.slice() é uma cópia nativa de lista literal de strings. mutate muda só a cópia; o for-of original continua UPDATE api_rate_limit_buckets. CLI devolve FAIL/1. A cópia literal equivalente passa e a exposição do original falha corretamente. Nenhum override de slice está presente.",
+      "static_cause": "reachableOrigins não distingue o resultado copiado de slice do receptor original, embora slice esteja no conjunto de leitores nativos. A passagem da cópia para mutate marca a lista original como escapada.",
+      "paired_controls": [
+        {
+          "name": "P2-literal-primitive-copy",
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-P2-literal-primitive-copy.json",
+          "code": "const tables=[\"api_rate_limit_buckets\"];function mutate(a){a[0]=\"appointments\";} mutate([tables[0]]);for(const t of tables){client.query(`UPDATE ${t} SET count=1`);}\n"
+        },
+        {
+          "name": "P2-original-ref-mutation",
+          "expected_exit": 1,
+          "actual_exit": 1,
+          "status": "FAIL",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-P2-original-ref-mutation.json",
+          "code": "const tables=[\"api_rate_limit_buckets\"];function mutate(a){a[0]=\"appointments\";} mutate(tables);for(const t of tables){client.query(`UPDATE ${t} SET count=1`);}\n"
+        },
+        {
+          "name": "list-join-read",
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-list-join-read.json",
+          "code": "const tables=[\"api_rate_limit_buckets\"];consume(tables.join(\",\"));for(const t of tables){client.query(`UPDATE ${t} SET count=1`);}\n"
+        },
+        {
+          "name": "list-copy-primitive",
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "status": "PASS",
+          "raw": "/tmp/cvg-q13-i1-znzc69uN/raw-list-copy-primitive.json",
+          "code": "const tables=[\"api_rate_limit_buckets\"];consume([tables[0]]);for(const t of tables){client.query(`UPDATE ${t} SET count=1`);}\n"
+        }
+      ]
+    }
+  ],
+  "not_findings": [
+    "Exploratory conditional/comma callees returned PASS but are not promoted to P1; declared inference does not explicitly model these forms.",
+    "Unquoted UPDATE identifiers in read expressions returned conservative FAIL; no PostgreSQL grammar/runtime proof collected, no finding assigned.",
+    "Known SELECT function effects remain outside this bounded SQL grammar audit. No universal JS/PG proof is demanded.",
+    "Other exploratory conservative rejects retained raw, not converted to release-blocking gaps."
+  ],
+  "constraints": {
+    "target_writes": false,
+    "fixture_execution": false,
+    "target_test_framework_or_cache_execution": false,
+    "certification_runner_execution": false,
+    "network_db_docker_install": false,
+    "dependency_symlinks_or_hardlinks": false,
+    "target_sentinel_excludes": [
+      ".git"
+    ],
+    "node_copied_scanner_only": true,
+    "pure_binding": "Extracted exact pure hash/scope functions on fresh O_NOATIME inventory, no framework/dependency runner imported."
+  },
+  "limits": [
+    "Only synthetic static fixtures were scanned; no real code runtime, DB, HTTP or message effect executed. Concrete semantics below are source reasoning, not observed clinical effects.",
+    "SQL helper inspected and exercised via current copied CLI; no independently proved SQL-helper P1 in this limited sample. This is not PostgreSQL-complete validation.",
+    "No target scanner execution, builder tests, framework tests, coverage, target caches or full certification run.",
+    "No remote CI validation, publication, global acceptance or project state edits. Pilot remains deferred and global NO_GO.",
+    "Target regular bytes/link targets/mode/mtime/ctime/inode/nlink and separate atime all unchanged across 28,068 entries; sole sentinel exclusion .git."
+  ],
+  "next_action": "Lead may remediate bounded scanner origin/default/bind/reference handling under registered task, freeze a new candidate and obtain a fresh independent CLI review. This report performs no editing or acceptance."
+}

@@ -1,0 +1,30 @@
+{
+  "runnerHash": "8857c3243cc1fb1cabda14cf9ba32bb1a29c30cb0e7c46268af96bc442e73329",
+  "testsHash": "714cb1b107f605d76b64e82e9808c52676d4d76799466c137ca2d8416fd298b7",
+  "containersAbsent": [
+    {
+      "id": "030fb64b3ea8f27f49e42105e47c7a84a152ed82b41dbedf348ca56e4488d91b",
+      "inspectAfterExit": 1,
+      "stderr": "error: no such object: 030fb64b3ea8f27f49e42105e47c7a84a152ed82b41dbedf348ca56e4488d91b\n"
+    },
+    {
+      "id": "11d34d451f8e1d2b5dd5c9431f3bf5a81987ae18dae4a6ef6af215cb12f67a3f",
+      "inspectAfterExit": 1,
+      "stderr": "error: no such object: 11d34d451f8e1d2b5dd5c9431f3bf5a81987ae18dae4a6ef6af215cb12f67a3f\n"
+    },
+    {
+      "id": "6843845fde2e91cfc863e09ced50ee8c3434db706c6b629c67399b9477aceaee",
+      "inspectAfterExit": 1,
+      "stderr": "error: no such object: 6843845fde2e91cfc863e09ced50ee8c3434db706c6b629c67399b9477aceaee\n"
+    },
+    {
+      "id": "adab873ac1f12ef99858253ea64696da91ecb538866477a1b98013a4e9fa199c",
+      "inspectAfterExit": 1,
+      "stderr": "error: no such object: adab873ac1f12ef99858253ea64696da91ecb538866477a1b98013a4e9fa199c\n"
+    }
+  ],
+  "tempHarnessAbsent": true,
+  "testResult": "43PASS",
+  "realDockerCases": "0/37 preserved, ownanonymousvolumes absent, foreignvolume preserved and separately removed bylead",
+  "qualification": "Runner boundary only, not certification"
+}

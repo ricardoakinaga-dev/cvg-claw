@@ -1,0 +1,782 @@
+[
+  {
+    "path": "certification/phase11/gates.json",
+    "sha256": "9935112c901432a345735b3b780b63a88d4612b79ae65b5a9470e28c2f26b90b",
+    "size": 11578,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/invariants.json",
+    "sha256": "05a14f55099782016c802108639038c923706b1bb2b0b36a7086960e3f4203b3",
+    "size": 14155,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/evidence-graph.json",
+    "sha256": "c0a77880aed6be2de2511c65ce05ede27695ea99b7e7c452d5347b04b277d633",
+    "size": 174121,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/release-manifest.json",
+    "sha256": "a42c9cd314ffadad72c5fabb9b4b3dcd3a58e6addd778e5eced0fd9eb52e39be",
+    "size": 2578,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/findings.json",
+    "sha256": "c1930d4f8f3b27b88b1cf52eae94ecc6974055bd9c35ac6aae7d98e5dd006e3e",
+    "size": 8908,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/negative-validation.json",
+    "sha256": "f7872b71b00e430c03f92553a4d57b241434d7ee8f7cf703ff4c1f18d48f8a12",
+    "size": 1091,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/eval-report.json",
+    "sha256": "770ba7130e997a1b3e59e0c495dabab142a24a2bbb4731421b1ec3d34a7040ee",
+    "size": 5075,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/chaos-report.json",
+    "sha256": "6bc9896bf551d7c776b3653faffd0f637936bf4ad4aece3946c41a8e7faa07f1",
+    "size": 11480,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/load-report.json",
+    "sha256": "cdef791379f057ad8887e5f505eca9741e221640eb69a6c2934347e993c66335",
+    "size": 970,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/recovery-report.json",
+    "sha256": "0e7571f637f04d1f5c09c7bd95ae3ecd5490f216f360d37ff33ce20f61c8f798",
+    "size": 646,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/postgres-report.json",
+    "sha256": "e30e9d916e10135f9a1079316ee5606f63b9877fc566a61d16421ff701c10b9a",
+    "size": 610,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/integration-report.json",
+    "sha256": "597b92220ce7e3ddc5a7c55b614f5983663af24d968a7d76047fa4f897337711",
+    "size": 1859,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/integrations/status.json",
+    "sha256": "597b92220ce7e3ddc5a7c55b614f5983663af24d968a7d76047fa4f897337711",
+    "size": 1859,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/prompt-integrity.json",
+    "sha256": "7cf9fa5ad9d822b46a15f9f3ff6dbd3c9106c4420f9895a0cf7fc0873dfe7dfa",
+    "size": 2119,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/supply-report.json",
+    "sha256": "69ed287de59ec02ac93bdf846a9c4b8dd1d85708b428cdcbc277cef67fbabf03",
+    "size": 759,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/preflight-report.json",
+    "sha256": "58e0da552fa01e41a01372b3f8da131a8274cd5df4c02017cd03151dcc3fc05b",
+    "size": 9118,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/redteam-report.json",
+    "sha256": "ea14123a65d977ee5c8eabf939f70faeda1424a96f1753fe5f1c10d3ee76c3b4",
+    "size": 630,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/trace-report.json",
+    "sha256": "dbd45f3d3d718c4b55df2fc7cc902a2fd6fa4d1368fc749da9703290873db03d",
+    "size": 609,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/adversarial-report.json",
+    "sha256": "71609e78128ba1f2037705cee98d706f0948a37da45cbb1327f995207004b0dc",
+    "size": 2278,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/critic-report.json",
+    "sha256": "8e534c67446682632ac5d17b93118ddb42d043de33a3542bef0a5798da39ca60",
+    "size": 18471,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/mutation-raw-report.json",
+    "sha256": "2c24eb164b4004919c49f9baa98aca3314e0f286173380af49b8de828c71b8e6",
+    "size": 18093,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/mutation-report.json",
+    "sha256": "8307f480d5d217d7ff2d19c2c5f933b76215192b1cd6ed2d8a9a0a58056538e0",
+    "size": 19698,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "docs/11_phase11/prompt-master/20260916-triple-aaa/source/pasted-text-1.txt",
+    "sha256": "ba522e3f9daf37af0a4c754f85eaeb2b78e8376d3bfca6405ac7e414d00f7a70",
+    "size": 13800,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/11_phase11/prompt-master/20260916-triple-aaa/source/pasted-text-2.txt",
+    "sha256": "98e1a22274dee5d206797917b3d8c6b25a7beed6e1651d96e9a54fa3fe1a5371",
+    "size": 13710,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/11_phase11/prompt-master/20260916-triple-aaa/source/pasted-text-3.txt",
+    "sha256": "af86835e3773c21268d397be55df1abbab0d8b02b660a2fb546f896ae649a3db",
+    "size": 14046,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/11_phase11/prompt-master/20260916-triple-aaa/source/pasted-text-4.txt",
+    "sha256": "d15c7ad503e8faacf793298867d450672c5aae23b2e194923aeaec7bec8cda0e",
+    "size": 13332,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/11_phase11/prompt-master/20260916-triple-aaa/source/pasted-text-5.txt",
+    "sha256": "47ad18efd05aa5802d0cda4a4160bded5db02c8860e07a2bdfaca394f98e95c9",
+    "size": 14914,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/11_phase11/prompt-master/20260916-triple-aaa/source/pasted-text-6.txt",
+    "sha256": "e12e76dcb447278d3a03fde39df877722265a39f0a2c82fa9b1928f023571cc9",
+    "size": 14600,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/11_phase11/prompt-master/20260916-triple-aaa/README.md",
+    "sha256": "287f8b54b31dd0bdb743c32e7442abeab18a786cb23e2325ce22f2cfeabd488d",
+    "size": 1445,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
+    "sha256": "1d477beef8340674c009032168fa7d0c4b99b9af8697af0472903ebb2b9735a6",
+    "size": 4436,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/phase11/PHASE11_INDEPENDENT_CRITIC.md",
+    "sha256": "8382ea5545293175dd26a072c9757ccecdd46aac96cde5b56af09ab79841c34a",
+    "size": 2574,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/01_prd/phase11_2_state_of_art_triple_aaa_20260916.md",
+    "sha256": "e0c24ff1b9f9c218512dc03ee6c404bfec116519dd0b10bef2a660fa3fc1c93f",
+    "size": 1669,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/02_spec/phase11_2_state_of_art_triple_aaa_20260916.md",
+    "sha256": "c8dc14dcbc524fcab18aa3386ae1135cb663ed7a23a6364bc3f048668e467007",
+    "size": 4138,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/phase11/PHASE11_2_DELTA_AUDIT.md",
+    "sha256": "3f8ef43107d2373fcee02caab7c04f328bb32f3df6137180d4e99a5551a7b7b1",
+    "size": 5137,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/phase11/PHASE11_FORMAL_CLOSURE.md",
+    "sha256": "7779269a1ba7b9a4f80845b07563e35fbcc2fdaa59a5d0407b016ffc1e1f51cf",
+    "size": 1392,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/phase11/PHASE11_ORCHESTRATOR_PROOF.md",
+    "sha256": "bd5c7cbffd9be86d40cd93f808dcb85621f40d4a2fbe885cecb520e8b7cd8f33",
+    "size": 1164,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/phase11/PHASE11_SECURITY_REVIEW.md",
+    "sha256": "57cafa88ffc458aba2cd8af31e6b1cc80ea2068c19a4dc5c87ae87497095dee8",
+    "size": 995,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/phase11/PHASE11_ADVERSARIAL_REPORT.md",
+    "sha256": "e7295341183f7770ae2208a332aaaf65f8c7dd6e56360993131add3350046d9f",
+    "size": 1055,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/phase11/PHASE11_RECOVERY_REPORT.md",
+    "sha256": "6855169f65366f15ca729805c070af2801a5db1ab9dbcaced5ce8a9148bb0530",
+    "size": 1144,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/phase11/PHASE11_CHAOS_REPORT.md",
+    "sha256": "342b4b2b478e1f9a43391de8a627984ab828a256ddf6e66030e2f0fd4187e4e2",
+    "size": 737,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/phase11/PHASE11_LOAD_REPORT.md",
+    "sha256": "2b0b09a3a35c9ac0815a6742b569942222cf74af093a74262ac1198c8e8df2e6",
+    "size": 623,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "docs/phase11/PHASE11_INTEGRATION_REPORT.md",
+    "sha256": "ad58e4c8072e43ef304ce18364757ed0a72f7eead280434276825e43229a9fdb",
+    "size": 869,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "owncopy-source",
+    "verified": true
+  },
+  {
+    "path": "certification/external-gates.json",
+    "sha256": "ccaecccf62b52cb02ce278ec84dd15cf3a0f13ca2d691f7ca20f9b86fed60ca9",
+    "size": 361,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/historical/phase10/README.md",
+    "sha256": "ca471492c562d1edd105090ae7e9ef6285ba0fe2e54c5844eb820f2b79bc8edb",
+    "size": 427,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/sbom.cyclonedx.json",
+    "sha256": "a1f7112448103f77edcee7f468d2479f0318d42abe8cb3430123e63e822cfde4",
+    "size": 254543,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/license-report.json",
+    "sha256": "693b188f22e0680cfb8193cef307fe38a85fb563c3c7d35434e80877da3550fb",
+    "size": 258,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/unit-report.json",
+    "sha256": "e125ebf683d3cb3632a7bf57b7a55a9c63cf9773044d4394d835a0724487f5d5",
+    "size": 1551018,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/postgres-report.json",
+    "sha256": "b8a42891de9c6102ce57050ad92e2288e0c5a7bfe2af07259f6eddc415fcbf6f",
+    "size": 137002,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/adversarial_proof.log",
+    "sha256": "97ea7e87daecaefdfd3c0f8bf079966c9802a0413a9b5c65a32086e00e10dd6b",
+    "size": 2079,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/build.log",
+    "sha256": "1728b1628cfbd64588eb37bb697b1afc11111bf6d71fd598b38213e2fd81c89f",
+    "size": 1018,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/bypass_audit.log",
+    "sha256": "51296adc2d20259d166a1803b17ae4f8d1d1e666c504917fe190b3de210a6128",
+    "size": 1851,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/certification_redteam.log",
+    "sha256": "d192157f33db5d144b538cf8adb60680f6b16f1414a93fd8525a7d562770ce25",
+    "size": 2122,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/certification_self_test.log",
+    "sha256": "d5f423be0016be2fbbdbd9b485b6c3b221bec12990eca5a4c12be36ef70b2bf3",
+    "size": 1215,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/chaos.log",
+    "sha256": "757fdb6bb11afeecb9ab3bbb9331018ede55a612b90fe6a333c99daa068a4b18",
+    "size": 718,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/clone_verify.log",
+    "sha256": "7bd93cee7bf2050640bcabfd6c7d7c1364791e4b792257c7f32a10f88a210a67",
+    "size": 729,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/coverage.log",
+    "sha256": "f9f1f6de393400df907a573fa8dac08cf14de7918e0fa6ba8e509a208445e27d",
+    "size": 218807,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/e2e.log",
+    "sha256": "d66eafd6d783eee241148d707d0621452348a32ffd66dc197634791ae373ce21",
+    "size": 12646,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/evals.log",
+    "sha256": "6c18427d2a7e753cd0009de505b9f8f2319a24f2a110d46fda6295311ca1f984",
+    "size": 1763,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/evidence_reports.log",
+    "sha256": "b0fc8566186407f6cd40ef2f6452c08ee9b288102b7e1f0a5c4b9c3e02677cb5",
+    "size": 2588,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/format.log",
+    "sha256": "d976f0796f7ce635b0a93c976c3d66b10319508cb746f4c3b54c17ddbfe64d61",
+    "size": 523,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/governance_redteam.log",
+    "sha256": "523a92d8975f99b24805fe65b77eeb7fc450b58c5ae659dec09978d1b4578c3d",
+    "size": 1754,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/independent_critic.log",
+    "sha256": "09ac8c4bf701b720eebfde3be6c0cefad7219f70dd58f43e5254ad09396b41d1",
+    "size": 1874,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/lint.log",
+    "sha256": "45699f5573c0de9a489a706b495e15e1677e53d4ca18a6efbfe461d0eeb41967",
+    "size": 428,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/load.log",
+    "sha256": "3d793acc0eb487d4aa3965be637ae4262b88573a832438f66242ab541039bb42",
+    "size": 815,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/mutation_sentinel.log",
+    "sha256": "d3039411a0829881bc0b93ec83df447336476df628c12832228a621e5d62c38b",
+    "size": 2748,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/outbox_replay.log",
+    "sha256": "dd1ddbfd69fb55dbfe75b493974c97342ae6f3579e604ec7bfbac718bbd675b9",
+    "size": 1415,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/phase10_historical_verification.log",
+    "sha256": "8d4826e40145497478615d080c055be1c5e3380a6faf57b9d7fbc603605dbf13",
+    "size": 943,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/postgres.log",
+    "sha256": "d4948002569386996c9a9c128f3a681ca75e7273e1f7f68f450d329aa9b5521e",
+    "size": 23857,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/production_preflight.log",
+    "sha256": "1a806e31447fd8c66a0be69392e44715752ad47371bc58cd341490dcec683966",
+    "size": 8609,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/recovery.log",
+    "sha256": "15bdbd2fd79005a64025addee5b92124fe846e628f18f7585bfa7ae7494e6a48",
+    "size": 6307,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/security.log",
+    "sha256": "2c6381b9baf17f912cc7afa0d950b978e317d2d18f12af22fd01986caac31a77",
+    "size": 496,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/supply_chain.log",
+    "sha256": "d790f42fb06615c28fc10b086b76db74cc9492cc0717d8148eb9bd302be52b2f",
+    "size": 819,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/tenant_redteam.log",
+    "sha256": "4ac63161ce88ee6c534a82dee307521e430f66b9d83e45988c024f1565c91700",
+    "size": 1435,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/trace_lineage.log",
+    "sha256": "3ff9957e2836f4e54050530f6cfcd825be84361997c3549f483e23c4954ee455",
+    "size": 1378,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/typecheck.log",
+    "sha256": "181882102491d0ed0b86707bdf5b3592ee6c23cbc97b9a6d030330bb138e3aae",
+    "size": 475,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/unit.log",
+    "sha256": "59de52b7015bb2d4bc62c1136296fbe523e01ed3d3d14c223de9a3e7138533bb",
+    "size": 181842,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/verify.log",
+    "sha256": "f0073e89207e1806d271a87c26ffbb50ac7023c7a2d955792c7a42a1f4409dad",
+    "size": 387036,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  },
+  {
+    "path": "certification/phase11/logs/worker_startup.log",
+    "sha256": "616a24b803c36eb7af43f2bc05fb080aa13a311b6091e6dcb52b3322efcf4917",
+    "size": 701,
+    "producer": "scripts/phase11-certify.mjs",
+    "timestamp": "2026-10-08T16:01:02.041Z",
+    "candidateCommit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "resolvedOrigin": "snapshot",
+    "verified": true
+  }
+]

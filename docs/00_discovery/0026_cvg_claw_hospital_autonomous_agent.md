@@ -124,3 +124,17 @@ Respondidas na v2: setor piloto (faturamento), sistema de gestão (`cvg-his-v4`)
 ## Próximo passo
 
 Responder às perguntas abertas, validar F01–F04 com o faturamento e registrar a validação em `0090_discovery_validation.md`. Só então abrir o PRD do piloto de faturamento. Mudanças no `cvg-his-v4` (emissão do token) seguem o processo daquele repositório.
+
+## Direcionamento posterior do usuário — retomada AUD06
+
+O usuário pediu “pula essa etapa” ao receber a solicitação de hospital/unidades,
+participantes, responsáveis e métricas. Essas definições ficam adiadas, sem
+respostas presumidas e sem aceite do piloto. A manutenção técnica AUD06 continua.
+Também confirmou “Manter prioridade e avaliar esse desenho de identidade”: F01
+e F03 continuam prioritários; o desenho de token do operador emitido pelo HIS
+e credencial restrita de serviço permanece em avaliação. A resposta não autoriza
+escrita financeira, promoção de autonomia, emissão institucional de token ou
+BUILD do novo produto.
+
+[Recibo da decisão](../04_audit/evidence/AUD06/recovery-20261007/user-pilot-steering.json).
+A Discovery segue DRAFT até a retomada e validação dos requisitos pendentes.

@@ -1,0 +1,46 @@
+{
+  "ownCommandsActuallyExecuted": [
+    "Contrato SHA256+O_NOATIME como primeiroFS",
+    "Whole-tree BEFORE com stat/statx todos tempos disponíveis/birthtime,bytesSHA,links;guardsmetadata imediatamente antes/depois cada contentread",
+    "Cópia física exclusiva e byte/inode/link verification, inclusiveGit1984entries1711regularfiles semalternates",
+    "Reconstrução1256/candidateId/behaviorTreeHash/sha256-candidate-v1 usando helpers reais owncopy;recomputationafter igual",
+    "Git owncopy HEAD/index/tree e SHA1+SHA2563523blobs em batch;reconciliação tracked4105/excluded2849/ignoredgenerated",
+    "Node real /home/ricardo/.nvm/versions/node/v22.23.2/bin/node --version: v22.23.2",
+    "Utilityprojeção SHAefc3bf579fa0c4462a0d352eb7644215a922805917955a53950f4360e87b355e verificado;python3utility VERIFIEDOWNCOPY exit0",
+    "ControlesPython de integridade158snapshot/78manifest/422proof/370runtime/220stdoutstderr hashes110commands/255SHA256SUMS",
+    "Reconciliação independente200skips file+fullName únicos com exatamente1dedicatedpassed e seleçãooriginal test:postgres",
+    "Ligação de30logs a35gates:certificationId/candidate/commit/tree/gate/exit/duration,5internal separados",
+    "Comparação whole-tree AFTER após ownjobsclosed;28651entries/705687876bytes idênticos;ZERO TARGET permanente iniciado"
+  ],
+  "manualSourceRawInspection": [
+    "Projeção normativa Q01/Q07 apenas; links tratados comoidentificadores; nenhuma leitura full0348/0349/matrix/masters",
+    "Policy/runtime public effect path,N3 catalog,approval/executor spies,real API bootstrap/request-context/query/client contracts",
+    "Wrapper success/failure/timeout/signal source+current raw43cases+birth/teardownIDfacts",
+    "Retention approval selectedcontrolfields+window/transactionclock/UNCERTAIN+warningCI sources/current12+13rawcases",
+    "Public scanner CLI actual inventory/hostAST/SQLlexer/finiteoriginaliasquota grammar+current1041/429rawcorpusPASS",
+    "Pinned manifests/CI/lock/Dockerfile and actualinstall/audit/build/e2e/snapshot preservation",
+    "Actualstack quota/storagefault/TLS/start/migrations/telemetry/restore/durableworker/ownedcleanup rawoutput equivalence with370currentbindings",
+    "Current independent_critic validator log/schema/source inspected; authentic earlier input only opaquehash and mechanical identity/binding/fingerprint parsed; no earlier semanticverdict imported"
+  ],
+  "probesAndReruns": {
+    "testsOrExpensiveGatesRerun": 0,
+    "targetTests": 0,
+    "corpusAttempts": 0,
+    "CLIAdversarialProbeCases": 0,
+    "pairedConfirmationCases": 0,
+    "SQLProbeCases": 0,
+    "fixtureExecutions": 0,
+    "networkDBDockerInstalls": 0,
+    "descendantAgents": 0
+  },
+  "beforeAfterClosure": "job-closure-before-after.json + AFTERsession97230completedexit0",
+  "finitePlanSHA256": "27f4973f5dd3a7d5ae44b1c0f4fe6175cdf28fec16b4450bf552a934751c905b",
+  "temporaryScripts": [
+    "guard_copy.py",
+    "reconstruct.mjs",
+    "verify_raw.py",
+    "final_controls.py",
+    "finalize.py"
+  ],
+  "finalization": "Atomic sibling companion files produced in stagingdirectory, directory rename publishes whole companion; no TARGET reads"
+}

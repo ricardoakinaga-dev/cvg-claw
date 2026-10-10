@@ -1,0 +1,49 @@
+{
+  "readiness": {
+    "schemaVersion": 1,
+    "kind": "cvg-worker-readiness",
+    "status": "ready",
+    "pid": 1,
+    "updatedAt": "2026-10-08T01:20:22.690Z",
+    "workerId": "cvg-aud06-stack-1791422392227-f517287933-worker",
+    "adapter": "postgres-controlled",
+    "durable": true,
+    "externalEffects": false
+  },
+  "pending": {
+    "rows": [
+      {
+        "id": "outbox_030405a7-5728-40f8-9a29-eec1b002b2a9",
+        "idempotency_key": "aud06-stack-after",
+        "status": "pending",
+        "attempts": 0,
+        "effects": 0
+      },
+      {
+        "id": "outbox_76ed5f13-6e29-46f8-9935-2c4a1e924fc2",
+        "idempotency_key": "aud06-stack-before",
+        "status": "processed",
+        "attempts": 1,
+        "effects": 1
+      }
+    ]
+  },
+  "completed": {
+    "rows": [
+      {
+        "id": "outbox_030405a7-5728-40f8-9a29-eec1b002b2a9",
+        "idempotency_key": "aud06-stack-after",
+        "status": "processed",
+        "attempts": 1,
+        "effects": 1
+      },
+      {
+        "id": "outbox_76ed5f13-6e29-46f8-9935-2c4a1e924fc2",
+        "idempotency_key": "aud06-stack-before",
+        "status": "processed",
+        "attempts": 1,
+        "effects": 1
+      }
+    ]
+  }
+}

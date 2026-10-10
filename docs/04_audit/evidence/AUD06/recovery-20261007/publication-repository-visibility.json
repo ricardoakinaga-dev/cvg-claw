@@ -1,0 +1,33 @@
+{
+  "at": "2026-10-08T23:42:27.644411+00:00",
+  "source": "Actual authenticated read-only GitHub REST via gh; no mutation",
+  "publicDestination": {
+    "allow_merge_commit": true,
+    "allow_rebase_merge": true,
+    "allow_squash_merge": true,
+    "full_name": "ricardoakinaga-dev/cvg-claw",
+    "private": false,
+    "visibility": "public"
+  },
+  "privateSource": {
+    "full_name": "ricardoakinaga-dev/cvg-his-v4",
+    "private": true,
+    "visibility": "private"
+  },
+  "commands": [
+    [
+      "gh",
+      "api",
+      "repos/ricardoakinaga-dev/cvg-claw",
+      "--jq",
+      "{full_name,visibility,private,allow_merge_commit,allow_squash_merge,allow_rebase_merge}"
+    ],
+    [
+      "gh",
+      "api",
+      "repos/ricardoakinaga-dev/cvg-his-v4",
+      "--jq",
+      "{full_name,visibility,private}"
+    ]
+  ]
+}

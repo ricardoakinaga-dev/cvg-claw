@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-08T02:45:28.533409+00:00",
+  "kind": "Q05-local-rework-acceptance",
+  "scope": "Controlled synthetic runner boundary only",
+  "status": "ACCEPT_LOCAL",
+  "critic": "01a1195d-94aa-7822-b693-3f89691b065c",
+  "report": "runner-volume-independent-critic/report.json",
+  "independence": "I1",
+  "runnerSha256": "8857c3243cc1fb1cabda14cf9ba32bb1a29c30cb0e7c46268af96bc442e73329",
+  "testSha256": "714cb1b107f605d76b64e82e9808c52676d4d76799466c137ca2d8416fd298b7",
+  "minorDisposition": {
+    "Q05-C1": "Lead captured new actual bind PRE/POST marker hashes; independently source-safe priorAPPROVE remains",
+    "Q05-C2": "Outer-exit API observations explicitly transcribed, not raw receipts; future certification fullgates will capture automatically"
+  },
+  "notNewCertification": true,
+  "notGlobalApproval": true
+}

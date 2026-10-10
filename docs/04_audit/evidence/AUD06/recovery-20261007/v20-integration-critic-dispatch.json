@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-08T14:16:12.074817+00:00",
+  "agentId": "01a11bde-3329-7250-9251-0d0b59dc6aff",
+  "nickname": "Lagrange",
+  "fork_context": false,
+  "independence": "I1 sharedFS contract, not OS enforcement",
+  "role": "Fresh whole-artifact integration critic, NOT_FINAL_GAUNTLET",
+  "sealedContract": "/tmp/aud06-v20-integration-critic-contract.json",
+  "sealedContractSha256": "1a673a5a28f9e7624a9b59e12c45fce154b3f702850bd60a10a97c9251ab2fe3",
+  "target": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+  "parentZeroTargetUntilClosed": true,
+  "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0"
+}

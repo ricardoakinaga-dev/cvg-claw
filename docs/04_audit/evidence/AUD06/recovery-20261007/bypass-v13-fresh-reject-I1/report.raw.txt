@@ -1,0 +1,110 @@
+REJECT — crítica independente I1, limitada ao scanner Q13, bar v13.
+
+Alvo somente leitura: `/tmp/cvg-aud06-certification-aottnvx0/repo`. Não sou FinalCritic global. Piloto 11 adiado, publicação/CI pendentes e global NO_GO permanecem. Nenhum aceite, edição, reseal ou atualização de estado no alvo.
+
+Binding próprio confirmado por hashes frescos, sem execução de módulos de certificação nem uso de cache de candidato:
+
+- HEAD: `1cecc361860b86ec061897d6e835140197cd5b69`.
+- candidate: `06dab37e82c38ad4a242301b186d48f865a1e6916117d2ff2db22e0146d4e5e1`; 1.256 arquivos.
+- behaviorTree: `1d0576562c58d84ac80f1099364861db5a229bd172fc77347ada9a00558bfa96`.
+- SPEC SHA256: `0f0d0fc22d08ddbe89aac18eecc82d3d38864200af75863874f1dadb771ea53a`.
+- bar SHA256: `b8f7a3f845c2ccfb49f26545ed123d9426ac7b76b0262f9a72ca9c08940468c0`, versão `AUD06-v13-shared-origin-projection-audit`.
+- CLI SHA256: `f8080d782e9fab17dbcd27c587fced177e22e3ce13cfe63960c72c6100e7f861`.
+- helper SQL SHA256: `d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b`.
+
+[Binding completo](independent-binding.json), [fontes/SPEC/bar antes e depois](source-binding-final.json), [isolamento das cópias](copy-isolation.json).
+
+155 execuções do CLI: 137 sondagens novas, 17 replays discriminantes e 1 controle de falha de inventário Git. Houve 14 PASS incorretos distintos nas sondagens iniciais e 5 confirmações por replay. Um controle inicial `inert-host` tinha erro de escape no próprio harness: foi descartado e corrigido em `inert-host-fixed`, que passou. Portanto, 154 execuções têm fixture/controle válido. Os achados abaixo usam apenas provas válidas reexecutadas.
+
+Somente o CLI copiado foi executado, com Node `v22.23.2`, TypeScript copiado por bytes e helper copiado; nenhum fixture foi importado ou executado. Git foi inicializado apenas na fixture TEMP. Não houve install, symlink/hardlink, framework/teste/canonical, DB/Docker, rede ou publicação. Os corpos dos mutadores abaixo são texto estático: a consequência JavaScript é demonstrada pela identidade das referências e pela atribuição literal, sem executar a fixture. Não foram consultados relatos ou testes de builders/critics anteriores como prova.
+
+**I1-Q13-01 — P1 — object rest perde propriedades armazenadas, referências e callable/default.**
+
+Local: `scripts/phase11-bypass-audit.mjs:169`, especialmente 176–197; consumidores em 232–250 e 1167–1244. `objectRest` percorre somente propriedades do literal original e não projeta propriedades registradas em `assignedProperties`. O container sintético pode ficar vazio apesar de conter, em JavaScript, o valor já armazenado. Isso permite inferir SQL de referência concretamente exposta à mutação e aplicar default puro a um callable definido.
+
+Contrato: SPEC linhas 291–309 e 317–326: seleção/destructuring transportam origens armazenadas; valor definido preserva origem; exposição de container invalida referências alcançáveis; cópia rasa mantém referências internas. Nenhuma análise universal ou computação dinâmica é necessária nestes exemplos.
+
+Prova mínima, fixture `apps/api/src/postgres-rate-limit.ts`:
+
+```ts
+const q={text:"SELECT 1"};
+const box={}; box.x=q; const {...copy}=box;
+function rewrite(b){b.x.text="DELETE FROM appointments";}
+rewrite(copy);
+client.query(q);
+```
+
+`copy.x === q`: a atribuição muda exatamente o argumento de `client.query`. CLI atual retorna **exit 0, PASS, findings []**, inclusive no replay. O scanner deveria recusar a inferência, pois `q` escapou; a escrita resultante é de agendamento e não é quota.
+
+Par benigno: trocar `box.x=q` por `box.x=q.text` e alterar somente propriedades primitivas da cópia mantém `q.text="SELECT 1"`: **exit 0, PASS**. Controle com `box={x:q}` recusa corretamente: **exit 1, unresolved_query_expression**. A diferença é o armazenamento, não o efeito ou o caminho.
+
+Outra prova direta da mesma falha:
+
+```ts
+const b={}; b.f=fetch; const {...c}=b;
+const {f=()=>1}=c;
+f("x");
+```
+
+`f` é `fetch`, porque a propriedade está definida; o default não se aplica. CLI **exit 0, PASS**. Par `b.f=()=>1`: **exit 0, PASS**. Variante com `b={f:fetch}`: **exit 1, direct_fetch**. Também houve PASS com a função query bindada a `DELETE FROM appointments` armazenada antes de rest/default.
+
+Raw: [mutação SQL/replay](raw/replays/replay-proof-rest-object.json), [par benigno](raw/replays/replay-benign-rest-object.json), [callable/default/replay](raw/replays/replay-proof-stored-default-object.json), [par callable puro](raw/replays/replay-benign-stored-default-object.json). Confiança alta para comportamento CLI e semântica delimitada.
+
+**I1-Q13-02 — P1 — array binding/rest usa elementos sintáticos e descarta elementos armazenados.**
+
+Local: `scripts/phase11-bypass-audit.mjs:213`, especialmente 216–229 e `arrayValues` em 260–276. Ao contrário da seleção por membro, a seleção pelo binding lê `array.elements`; não incorpora o valor de um índice literal registrado em `assignedProperties`. Falha mesmo sem rest, sem default e sem função mutadora.
+
+Contrato: SPEC 291–298, 304–309 e 319–326: projeção compartilhada de índices/destructuring, origens callable e referências armazenadas.
+
+Prova mínima:
+
+```ts
+const a=[];
+a[0]=fetch;
+const [f]=a;
+f("x");
+```
+
+A semântica contém chamada direta ao `fetch` conhecido. CLI **exit 0, PASS, findings []**, confirmado por replay. Par `a[0]=()=>1`: **exit 0, PASS**. Controle `const a=[fetch]; const [f]=a; f("x")`: **exit 1, direct_fetch**. As três formas são estáticas, com índice literal, dentro da fronteira contratada.
+
+Prova de referência SQL pela variante rest:
+
+```ts
+const q={text:"SELECT 1"};
+const box=[]; box[0]=q; const [...copy]=box;
+function rewrite(b){b[0].text="DELETE FROM appointments";}
+rewrite(copy);
+client.query(q);
+```
+
+CLI **exit 0, PASS**; `copy[0] === q` e o SQL foi concretamente alterado no texto da fixture. Par com `box[0]=q.text`, alterando apenas elemento primitivo da cópia: **exit 0, PASS**. Controle `box=[q]`: **exit 1, unresolved_query_expression**. Defaults e funções query bindadas em arrays armazenados também reproduzem a falha; são manifestações adicionais, não severidades independentes.
+
+Raw: [callable armazenado/replay](raw/replays/replay-assignment-1.json), [controle literal](raw/replays/paired-array-direct.json), [par puro](raw/replays/paired-array-pure-stored.json), [referência SQL/replay](raw/replays/replay-proof-rest-array.json), [par primitivo](raw/replays/replay-benign-rest-array.json). Confiança alta.
+
+**I1-Q13-03 — P2 — spreads de cópias primitivas contaminam o original.**
+
+Local: `scripts/phase11-bypass-audit.mjs:785`, especialmente 880–887 e travessia de elementos de array logo abaixo. `reachableOrigins` segue a expressão de spread como se o objeto original fosse referência contida na cópia. A cópia rasa de valores primitivos é uma alocação distinta.
+
+Contrato: SPEC 297–298 e 323–326: cópias primitivas distintas não expõem o original.
+
+```ts
+const a=["appointments"];
+const b=[...a];
+function change(xs){xs[0]="DELETE FROM appointments";}
+change(b);
+for(const t of a){client.query(`SELECT 1 FROM ${t}`);}
+```
+
+A consulta continua `SELECT 1 FROM appointments`. CLI **exit 1, FAIL, unresolved_query_expression**. Par equivalente `const [...b]=a` passa **exit 0**. Também `{...q}` com `q={text:"SELECT 1"}` e mutação somente de `b.text` recusa a consulta ao original; `{...b}=q` passa. O bloqueio indevido pode impedir qualificação de fontes benignas; não é bypass de domínio.
+
+Raw: [spread de array](raw/replays/replay-proof-primitive-spread.json), [rest equivalente](raw/replays/replay-proof-primitive-rest.json), [spread de objeto](raw/replays/replay-proof-object-spread.json), [rest equivalente](raw/replays/replay-proof-object-rest.json).
+
+Os controles também observaram recusa de DELETE/CTE/multi-statement, TRUNCATE/DROP/COPY/SELECT INTO/CREATE AS/DO; preservação de SQL dollar-quoted/E-string e strings host inertes; detecção de interpolação host com fetch; quota fora do arquivo; inventário de fonte nova em diretório `.test.`; alias node-fetch/default/namespace; bind inerte versus invocação; forwarder exato versus defaults/rest/corpo alterado; closures/defaults/getters; cópias slice primitivas versus objetos. A falha de inventário Git produziu exit 1/source_inventory_failed. Não encontrei P1 novo no helper SQL nesta amostra.
+
+Limites: amostra sintética limitada; não executei corpus59, canonical, testes do projeto, runtime hospitalar ou CI remoto. Não afirmo cobertura completa de JavaScript/PostgreSQL ou de efeitos construídos. SELECT com funções de efeitos definidos externamente, inferência geral interprocedural, protótipos/reflection e semântica arbitrária não foram transformados em P1. Rejeição conservadora de alvo quota entre aspas e falso positivo path-insensitive em `||=` não fundamentam os achados. O raw mantém expectativas exploratórias originais e esta disposição; falha sintática do harness não é bug do produto. O veredito não certifica Q13 remoto/global nem outros Q.
+
+Sentinel: [antes](before.json), [checkpoint inicial](checkpoint.json), [checkpoint ~5min53s](checkpoint5.json), [depois](after.json), [diff final](sentinel-diff.json). Janela de 477,76 segundos. Todas as 28.081 entradas idênticas: 25.215 arquivos regulares, 2.823 diretórios, 43 symlinks. Excluído somente `.git`; node_modules, .gauntlet e evidências incluídos. SHA256/bytes, conteúdo de links, mode, mtime, ctime, inode, nlink, tamanho, ownership e árvore intactos. Atime foi comparado separadamente e está intacto; zero fallback O_NOATIME para arquivos/diretórios. Nenhuma restauração de timestamps ou escrita no alvo. A garantia é de comparação pré/pós/checkpoints, sem alegação de monitoramento contínuo contra escritor externo; o usuário declarou ausência de escritores.
+
+Procedimentos/raw: `harness.py`, `cases1.py`–`cases4.py`, `replays.py`, `raw/*/*.json` (command/cwd/exit/stdout/stderr/source), `.ts` sintéticos correspondentes, logs de batches/replays, `git-init.json`, `inventory-failure.json`, `raw-inspections.jsonl`, `copy_inputs.py`, `bind.py`, `binding-final-command.json`, `sentinel.py`, `finalize.py`. Todos residem neste TEMP externo.
+
+Próxima ação recomendada: rework BUILD limitado das duas projeções e da distinção de cópia primitiva, com os pares acima como regressão; novo freeze/binding e crítica independente antes de qualificação. Esta recomendação não executa correção nem concede aprovação global/publicação/piloto.

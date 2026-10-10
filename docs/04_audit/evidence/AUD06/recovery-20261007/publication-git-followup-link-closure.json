@@ -1,0 +1,19 @@
+{
+  "linkedArtifacts": [
+    "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v20-focused-acceptance.json",
+    "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass4-adjudication-v20.json",
+    "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass4-process.json",
+    "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-process.json",
+    "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-resources.json",
+    "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-teardown.json",
+    "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-accept-I1/report.json",
+    "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-acceptance.json",
+    "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-critic-dispatch.json",
+    "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-invalid-I1/report.json",
+    "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-invalid-I1/transport-manifest.json"
+  ],
+  "bytesAdded": 97604,
+  "knownPrivateExcerptCheck": "PASS_BOUNDED",
+  "initialDocsCheckFailurePreserved": true,
+  "sourceCopiesAdded": false
+}

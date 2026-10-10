@@ -1,0 +1,10 @@
+{
+  "bytes": 705687876,
+  "guardFailures": 0,
+  "inodeIndependent": true,
+  "regularNlink1": true,
+  "rootGit": "opaque independent physical copy; no alternates semantics yet",
+  "targetReachableLinks": false,
+  "time_ns": 1791475807159640445,
+  "verifiedEntries": 28651
+}

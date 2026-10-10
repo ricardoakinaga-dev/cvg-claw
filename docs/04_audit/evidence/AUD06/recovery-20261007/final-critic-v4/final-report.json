@@ -1,0 +1,2001 @@
+{
+  "schemaVersion": 1,
+  "role": "AUD06 v4 fresh final independent critic",
+  "mode": "read-only",
+  "independence": "I1 fresh non-inherited role, distinct from prior reviewers/builders as assigned; no descendants",
+  "scope": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+  "ownOutputRoot": "/tmp/cvg-aud06-final-critic-fxkbsI",
+  "generatedAt": "2026-10-08T02:18:51.784504+00:00",
+  "frozenBar": {
+    "version": "AUD06-v4-state-consistency",
+    "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/quality-bar.json",
+    "sha256": "4e6e41cf41b4faf41c07ef49cd06a713f7b74b67fde0da5e6c7c5ca6fdf99d2f",
+    "requiredCount": 14,
+    "specSha256": "ebdc464d71b9ed5ee2c8f628f81483b1be91dd752a86b2a86da05c80e1569dd2"
+  },
+  "candidate": {
+    "algorithm": "aaa-candidate-v1 collectCandidateFiles/computeCandidateId",
+    "id": "380ccc525d3c8313463bf8a845f634fb34757d8c85682b6ee7601a59a4a4495d",
+    "files": 1252,
+    "sourcePre": "/tmp/cvg-aud06-final-critic-fxkbsI/source-pre.json",
+    "finalWindowPre": "/tmp/cvg-aud06-final-critic-fxkbsI/source-final-pre.json",
+    "sourcePost": "/tmp/cvg-aud06-final-critic-fxkbsI/source-post.json",
+    "allThreeIdentical": true
+  },
+  "integrity": {
+    "sourceClean": true,
+    "wholeCopyClean": true,
+    "wholeCopyAlgorithm": "sha256-v1",
+    "wholeCopyScope": "artifact",
+    "wholeCopyDigestPre": "25e1279495b5dee8919f75f55d3787d19079704db0f37d4cf373a49f1e9d5c8c",
+    "wholeCopyDigestPost": "25e1279495b5dee8919f75f55d3787d19079704db0f37d4cf373a49f1e9d5c8c",
+    "pre": "/tmp/cvg-aud06-final-critic-fxkbsI/pre-gauntlet.json",
+    "post": "/tmp/cvg-aud06-final-critic-fxkbsI/post-gauntlet.json",
+    "writersStoppedNotification": {
+      "notificationReceived": true,
+      "userText": "COPY FROZEN NOW after writers stopped and distinct v4Gauntlet initialized; no further clone writes by lead until final report.",
+      "leadDigestDeclared": "25e1279495b5dee8919f75f55d3787d19079704db0f37d4cf373a49f1e9d5c8c",
+      "independentPreDigestMatchesLead": true,
+      "extension": "User authorized bounded final read to30min after20min envelope; no new implementation."
+    },
+    "ownEarlierWriteIncident": false,
+    "ownWriteBoundary": "New own /tmp directory only; no target/original writes, npm/Vitest/Vite/tsx/framework executions, installation or cache generation, symlinks/hardlinks, DB/container/network calls. Parent preparation and validation writes occurred before final static window. Original reads restricted to specifically authorized raw receipt/log/manifest/browser evidence paths.",
+    "finalVerification": {
+      "exitCode": 0,
+      "commandReceipt": "/tmp/cvg-aud06-final-critic-fxkbsI/whole-verify.command.json",
+      "raw": "/tmp/cvg-aud06-final-critic-fxkbsI/whole-verify.stdout.log"
+    },
+    "wholeCopyFileCount": 24147
+  },
+  "criteria": [
+    {
+      "id": "Q01",
+      "required": true,
+      "status": "PASS",
+      "reason": "PRD0034, SPEC and 0348/0349 cover all F01-F08 and all14 tasks; external dependencies are explicit and retained."
+    },
+    {
+      "id": "Q02",
+      "required": true,
+      "status": "PASS",
+      "reason": "Lock pins source-map-js1.2.2; repeatable install raw log and empty audit exist; current verify9 build and audit exit0."
+    },
+    {
+      "id": "Q03",
+      "required": true,
+      "status": "PASS",
+      "reason": "Frozen exhaustive autonomy catalog blocks five N3 capabilities before grants/documents. Raw red/green and38 focused/518 regression tests sourcebound37entries; role/profile policy loops cover3000 evaluations and125 fresh runtime combinations, stored approvals/executorzero covered."
+    },
+    {
+      "id": "Q04",
+      "required": true,
+      "status": "PASS",
+      "reason": "browser-v4 exit0/JUnit75 tests0fail/error/skip with exact1252candidate binding;30baselines matchHEAD and retained before/after; pinned browser container and tolerances unchanged."
+    },
+    {
+      "id": "Q05",
+      "required": true,
+      "status": "PASS",
+      "reason": "Canonical script preserves dockerwait workload exits and separate startup/cleanup budgets, immutable owned IDs and traps. Current sourcebound41 raw tests plus actual0/37 receipts and absent ownedresources. Older shell22 receipt stale and not used as current gate."
+    },
+    {
+      "id": "Q06",
+      "required": true,
+      "status": "PASS",
+      "reason": "Exact local synthetic renewal source matches constants, inclusiveexpiry and warning30days in maintenance sentinel;39unit/13PG raw focused tests sourcebound retention code unchanged; current dedicated PostgreSQL final9 exit0."
+    },
+    {
+      "id": "Q07",
+      "required": true,
+      "status": "PASS",
+      "reason": "14 independent positive/negative tempfixtures validated closed program/matrix/backlog paths and every noncurrent row; target checker valid underNode22. AUD20matrix hash unchangedHEAD; current verify9 docs gate exit0. Available144 protected historical digests match;13 obsolete ignored generated paths absentcopy are not proof of original deletion."
+    },
+    {
+      "id": "Q08",
+      "required": true,
+      "status": "PASS",
+      "reason": "Current health registry cohe­sive explicit injected probes/metrics, hooks retain ordering; Nodebuiltin static TStransform independently confirms client runtimeequivalence and1543->1015lines. Historical arch server binding stale; current stack370 matches and current verify9 includes passing public HTTP/client regressions."
+    },
+    {
+      "id": "Q09",
+      "required": true,
+      "status": "PASS",
+      "reason": "Current sourcebound370entry synthetic stack,110 raw commands hashed,31 migrations twice, TLS/headers,6nonroot/readOnlyboundedcontainers, loopbackwebports/internalDBnet and emptyteardown sets. Production preflight intentionallyexit1. Independent helper foreign/headers negatives rejected."
+    },
+    {
+      "id": "Q10",
+      "required": true,
+      "status": "PASS",
+      "reason": "Recomputed302 requests:300HTTP200/2HTTP429 and151 eachreplica;4storagefault503 generic responses, restored44tables41rows identical,9collectorJSONL exports directlyreparsed with preservedprefixes. Admission2sdeadline late release code inspected; current dedicated PostgreSQL final9 includes saturation gate PASS. No realRPO/RTOqualification."
+    },
+    {
+      "id": "Q11",
+      "required": true,
+      "status": "BLOCKED",
+      "reason": "Pilot definitions explicitly deferred and identity remains evaluationonly. Approved pilot contracts/endtoend authorized externalintegration absent; do not synthesizeapproval or re-request deferreddefinitions."
+    },
+    {
+      "id": "Q12",
+      "required": true,
+      "status": "PASS",
+      "reason": "Current verify9, dedicated PostgreSQL final9 and browser-v4 receipts passed, independently re-bound to exact candidate. Fresh I1 technical critique found no additional material local implementation gap. Clean final static whole-copy PRE/POST sentinel after lead stopped writers. This satisfies local integrated regression/critique only; Q11/Q13/Q14 remain separate unsatisfied gates."
+    },
+    {
+      "id": "Q13",
+      "required": true,
+      "status": "STALE",
+      "reason": "Current certificationpointer/manifest bind72fa77fc… not380ccc52…; actual remoteVerify/Security logs for currentcandidate not provided. Localverify andbrowserchecks do not satisfycertification/remoteCI."
+    },
+    {
+      "id": "Q14",
+      "required": true,
+      "status": "BLOCKED",
+      "reason": "Required realprovider/channel/IdP/approvedinstitutionalRAG/RPO-RTO/pilot/rollback/humansignoff evidence absent and externalqualification unauthorized; localfixtures are not realapproval."
+    }
+  ],
+  "findings": [
+    {
+      "id": "FINAL-01",
+      "priority": "critical",
+      "criteria": [
+        "Q11",
+        "Q14"
+      ],
+      "confidence": "high",
+      "finding": "Required authorized pilot contracts and eight actual external/human gates are missing. Deferral is not approval.",
+      "action": "Keep unmet gates and NO_GO; resume external qualification only when user authorizes it, without re-requesting deferred pilot definitions now."
+    },
+    {
+      "id": "FINAL-02",
+      "priority": "high",
+      "criteria": [
+        "Q13"
+      ],
+      "confidence": "high",
+      "finding": "Current certificate references candidate72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267. No actual current-candidate remote Verify/Security evidence supplied.",
+      "action": "Obtain certificate/verifier and actual authorized CI metadata/logs bound to same integrated candidate/commit; local regression and clean-source hashes do not substitute."
+    }
+  ],
+  "provenanceNotes": [
+    "verify8 exit1 stopped at docs because excluded untracked historical evidence folder was absent in clone; retained failure, not accepted. Lead preparation repair added exact excluded historical folder without source change. verify9 separately supersedes regression evidence.",
+    "Historical architecture binding for server.ts is stale; five other entries match. Current stack370 manifest matches current source, independent builtin Node static client transformation matches runtime output, and current verify9 supplies regression proof.",
+    "Older retention-runner script/test hashes are stale and not used as current Q05 evidence; runner-round2 current script/test hashes match.",
+    "144 available protected history hashes match;13 obsolete ignored generated legacy paths absent from isolated clone. These paths are untracked in HEAD. No original filesystem inspected to infer deletion; canonical current/historical namespaces exist.",
+    "Legacy source receipt treeHash fields encode computeCandidateId, not behaviorTreeHash. Independent equality uses aaa-candidate-v1 and full file records; no cross-algorithm comparison was used. Current coverage global and critical module counts recomputed in independent-coverage-counts.json.",
+    "No prior critic report, builder handoff or .gauntlet history was used as grading input. Required SPEC/backlog contain embedded historical references; their reported conclusions were not adopted.",
+    "Synthetic backup payloads were not semantically read or used as real RPO/RTO proof. Required whole-copy helper necessarily fingerprints all target files; targeted checksum verification skipped backup payload."
+  ],
+  "checksNotExecutedByCritic": [
+    "npm ci/audit/build/verify",
+    "Vitest/coverage/PostgreSQL suites",
+    "Playwright browsers",
+    "Docker/DB/TLS requests",
+    "certification verifier/remote CI",
+    "real external integration or approval"
+  ],
+  "checksObservedFromRaw": {
+    "verify9": {
+      "receipt": {
+        "command": [
+          "npm",
+          "run",
+          "verify"
+        ],
+        "cwd": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+        "startedAt": "2026-10-08T01:58:55.669297+00:00",
+        "endedAt": "2026-10-08T02:14:08.252454+00:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "environment": "Node22.23.2; explicit owned synthetic PostgreSQL; source manifest verify-9-source-before.json"
+      },
+      "summaries": [
+        "Test Files  332 passed (332)",
+        "Tests  3066 passed (3066)",
+        "Test Files  332 passed (332)",
+        "Tests  3066 passed (3066)"
+      ],
+      "tail": "   100 |     100 |     100 |                   \n  ...able-slots.ts |     100 |      100 |     100 |     100 |                   \n  ...l-registry.ts |     100 |      100 |     100 |     100 |                   \n  link-patient.ts  |     100 |      100 |     100 |     100 |                   \n  ...ey-handoff.ts |     100 |      100 |     100 |     100 |                   \n  ...r-by-phone.ts |     100 |      100 |     100 |     100 |                   \n  ...ch-patient.ts |     100 |      100 |     100 |     100 |                   \n .../workflows/src |       0 |        0 |       0 |       0 |                   \n  index.ts         |       0 |        0 |       0 |       0 |                   \n ...ws/src/handoff |     100 |      100 |     100 |     100 |                   \n  ...ff-summary.ts |     100 |      100 |     100 |     100 |                   \n .../institutional |     100 |      100 |     100 |     100 |                   \n  ...n-workflow.ts |     100 |      100 |     100 |     100 |                   \n ...ows/src/intent |     100 |      100 |     100 |     100 |                   \n  ...t-workflow.ts |     100 |      100 |     100 |     100 |                   \n ...s/src/journeys |   94.73 |    67.85 |     100 |   94.73 |                   \n  ...y-workflow.ts |   94.73 |    67.85 |     100 |   94.73 | 82                \n .../owner-patient |     100 |      100 |     100 |     100 |                   \n  ...t-workflow.ts |     100 |      100 |     100 |     100 |                   \n ...src/scheduling |     100 |      100 |     100 |     100 |                   \n  ...t-workflow.ts |     100 |      100 |     100 |     100 |                   \n ...ows/src/triage |     100 |      100 |     100 |     100 |                   \n  ...e-workflow.ts |     100 |      100 |     100 |     100 |                   \n-------------------|---------|----------|---------|---------|-------------------\n\n> cvg-claw@1.0.0 audit:security\n> npm audit --audit-level=high\n\nfound 0 vulnerabilities\n",
+      "foundVulnerabilitiesZero": true
+    },
+    "postgresFinal9": {
+      "receipt": {
+        "command": [
+          "npm",
+          "run",
+          "test:postgres"
+        ],
+        "cwd": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+        "startedAt": "2026-10-08T02:14:08.252715+00:00",
+        "endedAt": "2026-10-08T02:15:27.069141+00:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "environment": "Node22.23.2; explicit owned synthetic PostgreSQL; source manifest verify-9-source-before.json"
+      },
+      "summaries": [
+        "Test Files  32 passed (32)",
+        "Tests  369 passed (369)"
+      ],
+      "tail": "ce/src/__tests__/tenant-isolation.test.ts (14 tests) 1144ms\n     ✓ enforces cross-tenant isolation with a non-BYPASSRLS role and resets pooled context  839ms\n ✓ apps/worker/src/__tests__/postgres-role-preflight.test.ts (13 tests) 1102ms\n ✓ apps/worker/src/__tests__/postgres-outbox-bridge.integration.test.ts (2 tests) 1062ms\n     ✓ consumes the event written by the API through a separate worker pool  1060ms\n ✓ packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts (19 tests) 951ms\n ✓ packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts (8 tests) 925ms\n ✓ packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts (12 tests) 899ms\n ✓ packages/persistence/src/__tests__/orchestrator-postgres.test.ts (5 tests) 841ms\n ✓ packages/persistence/src/__tests__/effect-journal-postgres.test.ts (10 tests) 853ms\n ✓ packages/persistence/src/__tests__/attendance-approval-postgres.test.ts (1 test) 772ms\n     ✓ forces two connections past the same pending read and rolls back failed audit  771ms\n ✓ packages/persistence/src/__tests__/session-version-pinning-postgres.test.ts (2 tests) 760ms\n     ✓ binds sessions atomically under the tenant-aware migration and never replaces the pin  756ms\n ✓ packages/persistence/src/__tests__/journey-task-atomicity.test.ts (8 tests) 776ms\n ✓ packages/persistence/src/__tests__/postgres-migration-smoke.test.ts (9 tests) 760ms\n     ✓ applies the migration and persists runtime evidence in an isolated PostgreSQL schema  741ms\n ✓ apps/api/src/__tests__/webhook-security.test.ts (17 tests) 257ms\n ✓ apps/api/src/__tests__/operator-replay-guard.test.ts (5 tests) 227ms\n ✓ packages/chaos/src/__tests__/chaos-postgres.test.ts (2 tests) 59ms\n ✓ packages/persistence/src/__tests__/audit-evidence-checkpoint-postgres.test.ts (2 tests) 17ms\n\n Test Files  32 passed (32)\n      Tests  369 passed (369)\n   Start at  23:14:08\n   Duration  78.33s (transform 1.24s, setup 0ms, import 6.67s, tests 51.15s, environment 17.20s)\n\n"
+    },
+    "browserV4": {
+      "cases": 75,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "name": "accessibility.spec.ts",
+          "tests": "16",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "audit-evidence-checkpoint.spec.ts",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "http-security.spec.ts",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "platform-control-center.spec.ts",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "session-version-pinning.spec.ts",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "visual-shell.spec.ts",
+          "tests": "5",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "accessibility.spec.ts",
+          "tests": "16",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "audit-evidence-checkpoint.spec.ts",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "http-security.spec.ts",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "platform-control-center.spec.ts",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "session-version-pinning.spec.ts",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "visual-shell.spec.ts",
+          "tests": "5",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "accessibility.spec.ts",
+          "tests": "16",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "audit-evidence-checkpoint.spec.ts",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "http-security.spec.ts",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "platform-control-center.spec.ts",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "session-version-pinning.spec.ts",
+          "tests": "1",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "visual-shell.spec.ts",
+          "tests": "5",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        }
+      ]
+    },
+    "sourceHashChecks": "/tmp/cvg-aud06-final-critic-fxkbsI/evidence-hash-check.json",
+    "stackSemanticCounts": "/tmp/cvg-aud06-final-critic-fxkbsI/raw-semantic-check.json",
+    "telemetryRaw": "/tmp/cvg-aud06-final-critic-fxkbsI/telemetry-raw-results.json",
+    "historyChecks": "/tmp/cvg-aud06-final-critic-fxkbsI/history-hash-preservation.json",
+    "independentCoverageRecomputation": "/tmp/cvg-aud06-final-critic-fxkbsI/independent-coverage-counts.json"
+  },
+  "ownCommands": [
+    {
+      "command": [
+        "node",
+        "--input-type=module",
+        "-"
+      ],
+      "exitCode": 0,
+      "evidence": "source-pre.json",
+      "procedure": "import collectCandidateFiles/computeCandidateId; read target; write own source-pre.json",
+      "observedResult": "380ccc525d3c8313463bf8a845f634fb34757d8c85682b6ee7601a59a4a4495d / 1252"
+    },
+    {
+      "command": [
+        "node",
+        "/tmp/cvg-aud06-final-critic-fxkbsI/q07-probe.mjs"
+      ],
+      "exitCode": 1,
+      "evidence": "q07-probe.log",
+      "observedResult": "Node24.20.0 rejected by Node pin; fixtures themselves reached target assertion"
+    },
+    {
+      "command": [
+        "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+        "/tmp/cvg-aud06-final-critic-fxkbsI/q07-probe.mjs"
+      ],
+      "exitCode": 0,
+      "evidence": "q07-probe-node22.log",
+      "observedResult": "14 independent good/bad fixtures and target state valid"
+    },
+    {
+      "command": [
+        "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+        "/tmp/cvg-aud06-final-critic-fxkbsI/q08-static.mjs"
+      ],
+      "exitCode": 1,
+      "evidence": "q08-static.log",
+      "procedureVersion": "strip-only initial",
+      "observedResult": "builtin strip rejected TypeScript parameter property; harness error, not product failure"
+    },
+    {
+      "command": [
+        "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+        "/tmp/cvg-aud06-final-critic-fxkbsI/q08-static.mjs"
+      ],
+      "exitCode": 0,
+      "evidence": "q08-static-results.json",
+      "procedureVersion": "transform final",
+      "observedResult": "static JS equivalent; 1543 to 1015 lines"
+    },
+    {
+      "command": [
+        "python3",
+        "/tmp/cvg-aud06-final-critic-fxkbsI/evidence-check.py"
+      ],
+      "exitCode": 0,
+      "evidence": "evidence-check.log",
+      "observedResult": "current stack370/policy37 match; old arch server binding stale"
+    },
+    {
+      "command": [
+        "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+        "/tmp/cvg-aud06-final-critic-fxkbsI/stack-static-probe.mjs"
+      ],
+      "exitCode": 0,
+      "evidence": "stack-static-results.json",
+      "observedResult": "15 good/bad pure helper checks; no main/runtime/container execution"
+    },
+    {
+      "command": [
+        "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+        "/tmp/cvg-aud06-final-critic-fxkbsI/telemetry-raw-probe.mjs"
+      ],
+      "exitCode": 0,
+      "evidence": "telemetry-raw-results.json",
+      "observedResult": "nine JSONL exports validated; preserved prefixes; three shutdown summaries recomputed"
+    },
+    {
+      "command": [
+        "python3",
+        "/tmp/cvg-aud06-final-critic-fxkbsI/current-gates-check.py"
+      ],
+      "cwd": "/tmp/cvg-aud06-final-critic-fxkbsI",
+      "startedAt": "2026-10-08T02:15:36.700440+00:00",
+      "endedAt": "2026-10-08T02:15:36.733788+00:00",
+      "exitCode": 0,
+      "durationSeconds": 0.033342727008857764,
+      "stdout": "/tmp/cvg-aud06-final-critic-fxkbsI/current-gates.stdout.log",
+      "stderr": "/tmp/cvg-aud06-final-critic-fxkbsI/current-gates.stderr.log",
+      "stdoutSha256": "96332b7b077315a4644b94bc479d0d8d10deec8770f97004c31329fe6d59ee25",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "python3",
+        "/tmp/cvg-aud06-final-critic-fxkbsI/evidence-check.py"
+      ],
+      "cwd": "/tmp/cvg-aud06-final-critic-fxkbsI",
+      "startedAt": "2026-10-08T02:17:43.891946+00:00",
+      "endedAt": "2026-10-08T02:17:43.961755+00:00",
+      "exitCode": 0,
+      "durationSeconds": 0.06979804900765885,
+      "stdout": "/tmp/cvg-aud06-final-critic-fxkbsI/final-evidence-hashes.stdout.log",
+      "stderr": "/tmp/cvg-aud06-final-critic-fxkbsI/final-evidence-hashes.stderr.log",
+      "stdoutSha256": "f7bfbcb3e4dd16e0bfb2a79dfe1e66e8dc2669e88b7a4b550ec5af2a7ecfa111",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "env",
+        "NODE_DISABLE_COMPILE_CACHE=1",
+        "GIT_OPTIONAL_LOCKS=0",
+        "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+        "/tmp/cvg-aud06-final-critic-fxkbsI/source-capture.mjs",
+        "final-pre"
+      ],
+      "cwd": "/tmp/cvg-aud06-final-critic-fxkbsI",
+      "startedAt": "2026-10-08T02:17:12.243059+00:00",
+      "endedAt": "2026-10-08T02:17:12.407769+00:00",
+      "exitCode": 0,
+      "durationSeconds": 0.16470881500572432,
+      "stdout": "/tmp/cvg-aud06-final-critic-fxkbsI/source-final-pre.stdout.log",
+      "stderr": "/tmp/cvg-aud06-final-critic-fxkbsI/source-final-pre.stderr.log",
+      "stdoutSha256": "2ba46fc8916074aeeb037ed67a981dbebf853b4637f4a964063ed4de5e8b6264",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "env",
+        "NODE_DISABLE_COMPILE_CACHE=1",
+        "GIT_OPTIONAL_LOCKS=0",
+        "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+        "/tmp/cvg-aud06-final-critic-fxkbsI/source-capture.mjs",
+        "post"
+      ],
+      "cwd": "/tmp/cvg-aud06-final-critic-fxkbsI",
+      "startedAt": "2026-10-08T02:18:10.338938+00:00",
+      "endedAt": "2026-10-08T02:18:10.507316+00:00",
+      "exitCode": 0,
+      "durationSeconds": 0.1683820430043852,
+      "stdout": "/tmp/cvg-aud06-final-critic-fxkbsI/source-post.stdout.log",
+      "stderr": "/tmp/cvg-aud06-final-critic-fxkbsI/source-post.stderr.log",
+      "stdoutSha256": "2ba46fc8916074aeeb037ed67a981dbebf853b4637f4a964063ed4de5e8b6264",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "env",
+        "GIT_OPTIONAL_LOCKS=0",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "python3",
+        "/home/ricardo/.codex/skills/gauntlet-loop/scripts/gauntlet_state.py",
+        "fingerprint",
+        "--repo",
+        "/tmp/cvg-aud06-certification-aottnvx0/repo",
+        "--output",
+        "/tmp/cvg-aud06-final-critic-fxkbsI/post-gauntlet.json"
+      ],
+      "cwd": "/tmp/cvg-aud06-final-critic-fxkbsI",
+      "startedAt": "2026-10-08T02:18:10.566818+00:00",
+      "endedAt": "2026-10-08T02:18:13.058175+00:00",
+      "exitCode": 0,
+      "durationSeconds": 2.4913554069935344,
+      "stdout": "/tmp/cvg-aud06-final-critic-fxkbsI/whole-post.stdout.log",
+      "stderr": "/tmp/cvg-aud06-final-critic-fxkbsI/whole-post.stderr.log",
+      "stdoutSha256": "054e2a1081329e8a5a6bcf63fd1633e4ee8ddceaa23f0036406311bce5f62dbc",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "env",
+        "GIT_OPTIONAL_LOCKS=0",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "python3",
+        "/home/ricardo/.codex/skills/gauntlet-loop/scripts/gauntlet_state.py",
+        "fingerprint",
+        "--repo",
+        "/tmp/cvg-aud06-certification-aottnvx0/repo",
+        "--output",
+        "/tmp/cvg-aud06-final-critic-fxkbsI/pre-gauntlet.json"
+      ],
+      "cwd": "/tmp/cvg-aud06-final-critic-fxkbsI",
+      "startedAt": "2026-10-08T02:17:09.741261+00:00",
+      "endedAt": "2026-10-08T02:17:12.187181+00:00",
+      "exitCode": 0,
+      "durationSeconds": 2.4459175700030755,
+      "stdout": "/tmp/cvg-aud06-final-critic-fxkbsI/whole-pre.stdout.log",
+      "stderr": "/tmp/cvg-aud06-final-critic-fxkbsI/whole-pre.stderr.log",
+      "stdoutSha256": "aadd6ff88760a02d9069d3495f4c8251d84196dd704c97ff92aa7930d6a897da",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "python3",
+        "/tmp/cvg-aud06-final-critic-fxkbsI/finalize-report.py"
+      ],
+      "cwd": "/tmp/cvg-aud06-final-critic-fxkbsI",
+      "startedAt": "2026-10-08T02:18:51.694362+00:00",
+      "endedAt": "2026-10-08T02:18:51.800041+00:00",
+      "exitCode": 0,
+      "durationSeconds": 0.10567824699683115,
+      "stdout": "/tmp/cvg-aud06-final-critic-fxkbsI/finalize-report.stdout.log",
+      "stderr": "/tmp/cvg-aud06-final-critic-fxkbsI/finalize-report.stderr.log",
+      "stdoutSha256": "eb92ab6be563b6f2aa4091f71133b0230256ccc28c0025b1f85d2ffb310142a9",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "env",
+        "GIT_OPTIONAL_LOCKS=0",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "python3",
+        "/home/ricardo/.codex/skills/gauntlet-loop/scripts/gauntlet_state.py",
+        "verify-fingerprint",
+        "--repo",
+        "/tmp/cvg-aud06-certification-aottnvx0/repo",
+        "--snapshot",
+        "/tmp/cvg-aud06-final-critic-fxkbsI/pre-gauntlet.json"
+      ],
+      "cwd": "/tmp/cvg-aud06-final-critic-fxkbsI",
+      "startedAt": "2026-10-08T02:19:21.657117+00:00",
+      "endedAt": "2026-10-08T02:19:24.023676+00:00",
+      "exitCode": 0,
+      "durationSeconds": 2.366555218002759,
+      "stdout": "/tmp/cvg-aud06-final-critic-fxkbsI/whole-verify.stdout.log",
+      "stderr": "/tmp/cvg-aud06-final-critic-fxkbsI/whole-verify.stderr.log",
+      "stdoutSha256": "766caef0b6fa5b1a38a382f576939f5206c5a3352e0f72ce4a868583fc963cd4",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "rawArtifacts": [
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/source-manifest.json",
+      "sha256": "db34a2651bbd55169585e57f3a8ed198bf35bb1b653f784dfb374724cdb02816",
+      "size": 54423
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/001-docker-version.stdout.log",
+      "sha256": "39061b8b325e1e481df6b4d827c1400aba170bcd496f30b7530e20d6109ba615",
+      "size": 9
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/001-docker-version.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/002-compose-version.stdout.log",
+      "sha256": "2458cb4487685de8f41edcb1b0fdcd1f2685a25f13d9ca72e9767661ebc35af1",
+      "size": 51
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/002-compose-version.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/003-openssl-version.stdout.log",
+      "sha256": "54668ea977da3703d07ac46186e7c727c114a5243657f46b69a83c69ec005f34",
+      "size": 65
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/003-openssl-version.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/004-create-network.stdout.log",
+      "sha256": "421b7192a95caca09399b2e97edc5bc91ed8c8aa9d47450ede384c4c863ca025",
+      "size": 65
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/004-create-network.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/005-network-isolation.stdout.log",
+      "sha256": "07228cc1880f86cb06506623be53e5fffbf8f3328ad73e67ec1f4d0b98868da0",
+      "size": 1222
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/005-network-isolation.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/006-create-edge-network.stdout.log",
+      "sha256": "07b55250c82b80e551599b3929a2f65f070d2700fa4550c5fe19a0be18944b66",
+      "size": 65
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/006-create-edge-network.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/007-edge-network-isolation.stdout.log",
+      "sha256": "ad193eb4439dbcf9f79b3aacc0356eba541a3145c8ef8d95020d0b2a9cef11e5",
+      "size": 1311
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/007-edge-network-isolation.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/008-volume-must-not-exist.stdout.log",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "size": 3
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/008-volume-must-not-exist.stderr.log",
+      "sha256": "5be5fbb2f17e110fea23aeb3ae4afef9ec4996557f5f8a3e8a742ff78fd328c3",
+      "size": 97
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/009-create-volume.stdout.log",
+      "sha256": "3c028a0c47880e491d5d6336451743173c9ea4a5bf418bfc404420e0c4a83521",
+      "size": 49
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/009-create-volume.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/010-volume-must-not-exist.stdout.log",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "size": 3
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/010-volume-must-not-exist.stderr.log",
+      "sha256": "723d3d9df2a4f548e1ab78a33ee2e27fb262abe6794232ee546808f0593207be",
+      "size": 102
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/011-create-volume.stdout.log",
+      "sha256": "1e68869d720822f451f37aade115cd84d8fc9078012ea92531fd6a3be1b5d4a5",
+      "size": 54
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/011-create-volume.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/012-compose-config.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/012-compose-config.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/013-ephemeral-certificate.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/013-ephemeral-certificate.stderr.log",
+      "sha256": "9c82eef0df2b79f25022e9ea84c979a409745afaf63bd90dbbfd3b1d9235c216",
+      "size": 1145
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/014-certificate-inspection.stdout.log",
+      "sha256": "dd43aad7a3873d9c2afafa851e16d1d9368ebf45a1d311977428ae0cd3d0b45f",
+      "size": 273
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/014-certificate-inspection.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/015-build-runtime.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/015-build-runtime.stderr.log",
+      "sha256": "e6394ab499f9066d365392feb589d5794e92db29adc0976c07856adccc89965d",
+      "size": 3664
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/016-image-id-runtime.stdout.log",
+      "sha256": "d9e0239d9af421785dfe6e9f93450324f80cb93b42bd4b5431dbf8dbbfa3cccd",
+      "size": 74
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/016-image-id-runtime.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/017-build-web.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/017-build-web.stderr.log",
+      "sha256": "1e80bf5bdccd8669a20c9b7ec5573ed739e985da41105547bbe70a841046b6ee",
+      "size": 2822
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/018-image-id-web.stdout.log",
+      "sha256": "3349ada78d0807a721a16ba30658afb1a00b99213b8b2ea5be9c4794cff0baa4",
+      "size": 74
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/018-image-id-web.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/019-start-databases.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/019-start-databases.stderr.log",
+      "sha256": "dda77cf83a434d8581c417548f9a3e9055ac7f37264f53ca1bfe458176452554",
+      "size": 820
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/020-migration-1.stdout.log",
+      "sha256": "294134876c5281a5dcf420e76434f649e50a1ffe143469c02f6b623e09cad4f6",
+      "size": 5126
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/020-migration-1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/021-migration-2.stdout.log",
+      "sha256": "294134876c5281a5dcf420e76434f649e50a1ffe143469c02f6b623e09cad4f6",
+      "size": 5126
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/021-migration-2.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/022-db-seed.stdout.log",
+      "sha256": "3c9552b8d113faf499b6c227113a67e678b1c5e5eedcfccc3b371363a8c914a4",
+      "size": 755
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/022-db-seed.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/023-start-applications.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/023-start-applications.stderr.log",
+      "sha256": "fe68fea9e84c0249ee30239f4596f0b15fe70d32ae18934787be1065e625e51e",
+      "size": 1610
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/024-security-db.stdout.log",
+      "sha256": "6c099dfc0c0b9782e85f7a82eac1f67b78cbd90d3b72525a383a1c228e31b2fb",
+      "size": 2353
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/024-security-db.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/025-security-db-restore.stdout.log",
+      "sha256": "aef139ea30352c242ecf469bc5a39aca02f74c626b0da8b48cf67acface4ccef",
+      "size": 2401
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/025-security-db-restore.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/026-security-api-a.stdout.log",
+      "sha256": "39bcdbdcee03e58342fd3144b81b5744f1954b0e18fe793e2498492776b5cc23",
+      "size": 1385
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/026-security-api-a.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/027-security-api-b.stdout.log",
+      "sha256": "818d5df74ee8c7c20b7a7e0042e4c9a7c29123c7c3842243c226caa4604822f6",
+      "size": 1385
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/027-security-api-b.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/028-security-worker.stdout.log",
+      "sha256": "3e9ce98da76a331dff1e68c5cccbb533539fcd59f15198c7a29907f576bf1bce",
+      "size": 1390
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/028-security-worker.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/029-security-web.stdout.log",
+      "sha256": "651fd53c46353fabb5e4885cbdccfd1b7b08714bd47114d5631c81a1789bd5a5",
+      "size": 2279
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/029-security-web.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/030-worker-readiness.stdout.log",
+      "sha256": "6559bfd6cd50695f3bf0e84839ef8b1bc966794ff079f12220edbee6d1086865",
+      "size": 246
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/030-worker-readiness.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/031-db-queue.stdout.log",
+      "sha256": "d8a637408a4e1aebf65eb631d92114f7e0aab8ca5679541239ef54909ecf8d48",
+      "size": 149
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/031-db-queue.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/032-worker-graceful-stop.stdout.log",
+      "sha256": "aa85f9cff53538c718e47c7853af159f2d29df24e45d1a9d35f1e2139c79b54f",
+      "size": 103
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/032-worker-graceful-stop.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/033-db-seed.stdout.log",
+      "sha256": "34ee45454076ddb874f1094d6c543c9a54800b64398f0cf0a58cca32f5dd9674",
+      "size": 753
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/033-db-seed.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/034-db-queue.stdout.log",
+      "sha256": "e1993d9ddd0f96d1b87eb0713f133c810a96b30fa9047b8179a46ff82c281e34",
+      "size": 284
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/034-db-queue.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/035-worker-restart.stdout.log",
+      "sha256": "02ca1c4ae3fc941f3f00bdd9e37600bdd7843da0f8e0b7d1f565fee2c09dcd61",
+      "size": 48
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/035-worker-restart.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/036-db-queue.stdout.log",
+      "sha256": "e1993d9ddd0f96d1b87eb0713f133c810a96b30fa9047b8179a46ff82c281e34",
+      "size": 284
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/036-db-queue.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/037-db-queue.stdout.log",
+      "sha256": "2b45b9342cfb5f2223b595f8339853f3a492ae79783a3003341e47566f7802bb",
+      "size": 286
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/037-db-queue.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/038-db-quota-reset.stdout.log",
+      "sha256": "99eed0d3cb53aeec117c6f6056c54e5e06a4e844c7be0d5ad974959b22718975",
+      "size": 20
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/038-db-quota-reset.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/039-db-quota.stdout.log",
+      "sha256": "59a886e3cd307374026604f21df260c351c8cc79b11859d045a31fe43552ff4c",
+      "size": 341
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/039-db-quota.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/040-db-quota-reset.stdout.log",
+      "sha256": "99eed0d3cb53aeec117c6f6056c54e5e06a4e844c7be0d5ad974959b22718975",
+      "size": 20
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/040-db-quota-reset.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/041-db-quota-deny.stdout.log",
+      "sha256": "c3acc2387a1a0598ef05ba3ff702b1360dcdf0017a988fc1eafddc9a3891c6a5",
+      "size": 27
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/041-db-quota-deny.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/042-db-quota-allow.stdout.log",
+      "sha256": "98ad4dd2d589d1d76afd79b40f942226b76c254e82ad0f394966274b78163abd",
+      "size": 26
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/042-db-quota-allow.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/043-production-preflight-api.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/043-production-preflight-api.stderr.log",
+      "sha256": "b800aa86ea9cb234debe3a2cf3c2de243501ccd3f3ed01adabdcdb75dbe81de5",
+      "size": 484
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/044-production-preflight-worker.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/044-production-preflight-worker.stderr.log",
+      "sha256": "005c5c8f766ee4cdbab7769a18a422f3feefa49142e8970a32613ee2ece93b00",
+      "size": 510
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/045-telemetry-shutdown-api-a.stdout.log",
+      "sha256": "f6c1a7aa73cd6c5c70d56a9e72f096051db8ac550ad7d7cb9a17c324bbf7c6d6",
+      "size": 103
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/045-telemetry-shutdown-api-a.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/046-telemetry-wait-api-a.stdout.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "size": 2
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/046-telemetry-wait-api-a.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/047-telemetry-shutdown-api-b.stdout.log",
+      "sha256": "ebca6f2065f829ae2bf80691d0208c6a1a248b8ab7cac12542d52897f5ce72ff",
+      "size": 103
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/047-telemetry-shutdown-api-b.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/048-telemetry-wait-api-b.stdout.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "size": 2
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/048-telemetry-wait-api-b.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/049-quiesce-writers.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/049-quiesce-writers.stderr.log",
+      "sha256": "0af42ffe96ec2de53ae5c26f690aa4ad4df27b389fc7f3d375a1f3a106d2a033",
+      "size": 538
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/050-telemetry-stopped-api-a.stdout.log",
+      "sha256": "47002f95632ad43db6a4546369d0a44bc214f7d35516b26b0c70a6b07d961ceb",
+      "size": 31
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/050-telemetry-stopped-api-a.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/051-telemetry-process-api-a.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/051-telemetry-process-api-a.stderr.log",
+      "sha256": "07a10ddce1a06b759f282536ee8b78fc715e35b22b3a4af13538de8eadd7fdeb",
+      "size": 626
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/052-telemetry-stopped-api-b.stdout.log",
+      "sha256": "47002f95632ad43db6a4546369d0a44bc214f7d35516b26b0c70a6b07d961ceb",
+      "size": 31
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/052-telemetry-stopped-api-b.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/053-telemetry-process-api-b.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/053-telemetry-process-api-b.stderr.log",
+      "sha256": "4797f866dcafa41a863b3034e04079f538cd90c43af73cd2c7fd3acff6037cb8",
+      "size": 626
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/054-telemetry-stopped-worker.stdout.log",
+      "sha256": "47002f95632ad43db6a4546369d0a44bc214f7d35516b26b0c70a6b07d961ceb",
+      "size": 31
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/054-telemetry-stopped-worker.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/055-telemetry-process-worker.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/055-telemetry-process-worker.stderr.log",
+      "sha256": "a024a4865fd1800ebffb328637ff5247fbfa904f0f1369bc4c9a7ac0a6267e7c",
+      "size": 132
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/056-db-fingerprint.stdout.log",
+      "sha256": "58a8c7499194859def547d18c053e617551ca8fa66967c1c869ee23ea823166d",
+      "size": 120034
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/056-db-fingerprint.stderr.log",
+      "sha256": "ca57e176b4c3c92fc4ce428d2c8af1eedddf7c4401936c0b1b1c8414c406b105",
+      "size": 57153
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/057-postgres-backup.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/058-postgres-restore.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/058-postgres-restore.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/059-db-fingerprint-restore.stdout.log",
+      "sha256": "58a8c7499194859def547d18c053e617551ca8fa66967c1c869ee23ea823166d",
+      "size": 120034
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/059-db-fingerprint-restore.stderr.log",
+      "sha256": "98904372994fb4532e0555045574efc8c1f6233ba5fc6198d3790862fd5ca0ef",
+      "size": 57151
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/060-db-fingerprint.stdout.log",
+      "sha256": "58a8c7499194859def547d18c053e617551ca8fa66967c1c869ee23ea823166d",
+      "size": 120034
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/060-db-fingerprint.stderr.log",
+      "sha256": "ca57e176b4c3c92fc4ce428d2c8af1eedddf7c4401936c0b1b1c8414c406b105",
+      "size": 57153
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/061-owned-containers.stdout.log",
+      "sha256": "1d4c1e18612f4eea661a9d31985934b675bfc35195a46c380ef53d66ec6b3c73",
+      "size": 104
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/061-owned-containers.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/062-cleanup-ownership.stdout.log",
+      "sha256": "23a9615d1e023162ff1452fd9819d0a3441516b8be423700c9ffa3e107846f73",
+      "size": 145
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/062-cleanup-ownership.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/063-stop-cvg-aud06-stack-1791422392227-f517287933-production-worker.stdout.log",
+      "sha256": "d2162210a18b21df85a68708c3ccebdf61338284d76dde5e3340fae54c579c6b",
+      "size": 68
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/063-stop-cvg-aud06-stack-1791422392227-f517287933-production-worker.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/064-logs-cvg-aud06-stack-1791422392227-f517287933-production-worker.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/064-logs-cvg-aud06-stack-1791422392227-f517287933-production-worker.stderr.log",
+      "sha256": "005c5c8f766ee4cdbab7769a18a422f3feefa49142e8970a32613ee2ece93b00",
+      "size": 510
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/065-remove-cvg-aud06-stack-1791422392227-f517287933-production-worker.stdout.log",
+      "sha256": "761615b5b1f42acbe3a1bf70b2d04fb623c3fd617dcc82d0aa9a0607840c7c98",
+      "size": 13
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/065-remove-cvg-aud06-stack-1791422392227-f517287933-production-worker.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/066-cleanup-ownership.stdout.log",
+      "sha256": "f9e2e23e9041e9f5032828def6d04bcf916183af2b9ab9f4021236822216a62b",
+      "size": 142
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/066-cleanup-ownership.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/067-stop-cvg-aud06-stack-1791422392227-f517287933-production-api.stdout.log",
+      "sha256": "71f6117a2e23f43f9d706fe07d424ea0b6c80323d0a531826086a057e4bad770",
+      "size": 68
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/067-stop-cvg-aud06-stack-1791422392227-f517287933-production-api.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/068-logs-cvg-aud06-stack-1791422392227-f517287933-production-api.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/068-logs-cvg-aud06-stack-1791422392227-f517287933-production-api.stderr.log",
+      "sha256": "b800aa86ea9cb234debe3a2cf3c2de243501ccd3f3ed01adabdcdb75dbe81de5",
+      "size": 484
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/069-remove-cvg-aud06-stack-1791422392227-f517287933-production-api.stdout.log",
+      "sha256": "a961c29c51bc70d51fc00c44884876274eeb76a0e02e5f94e4c0e9b838fadd92",
+      "size": 13
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/069-remove-cvg-aud06-stack-1791422392227-f517287933-production-api.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/070-cleanup-ownership.stdout.log",
+      "sha256": "f864d8dda878af80d29846bee2feb68f05001c43f04aa49eb605881316d1361c",
+      "size": 882
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/070-cleanup-ownership.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/071-stop-cvg-aud06-stack-1791422392227-f517287933-api-b.stdout.log",
+      "sha256": "765ac5c51e49f8a32c66a729297e014f69931b88900eb8625777a8f660ad5539",
+      "size": 68
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/071-stop-cvg-aud06-stack-1791422392227-f517287933-api-b.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/072-logs-cvg-aud06-stack-1791422392227-f517287933-api-b.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/072-logs-cvg-aud06-stack-1791422392227-f517287933-api-b.stderr.log",
+      "sha256": "4797f866dcafa41a863b3034e04079f538cd90c43af73cd2c7fd3acff6037cb8",
+      "size": 626
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/073-remove-cvg-aud06-stack-1791422392227-f517287933-api-b.stdout.log",
+      "sha256": "64cd9362ae59b73da0850f7df54311983afa542fb009e21a38594385158d5352",
+      "size": 13
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/073-remove-cvg-aud06-stack-1791422392227-f517287933-api-b.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/074-cleanup-ownership.stdout.log",
+      "sha256": "db39e35faff22667ea3ef1173a925d52ee741c136ce21786b9d7ce1290d492c3",
+      "size": 882
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/074-cleanup-ownership.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/075-stop-cvg-aud06-stack-1791422392227-f517287933-api-a.stdout.log",
+      "sha256": "fa83f28d8fec7b20822949da54f60965899ffc39e3a5812d5636c8d59b6350b3",
+      "size": 68
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/075-stop-cvg-aud06-stack-1791422392227-f517287933-api-a.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/076-logs-cvg-aud06-stack-1791422392227-f517287933-api-a.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/076-logs-cvg-aud06-stack-1791422392227-f517287933-api-a.stderr.log",
+      "sha256": "07a10ddce1a06b759f282536ee8b78fc715e35b22b3a4af13538de8eadd7fdeb",
+      "size": 626
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/077-remove-cvg-aud06-stack-1791422392227-f517287933-api-a.stdout.log",
+      "sha256": "52e7798b5c8ec87939f34c68eecd61c2bb9ce2c76d2f4e738e432d5c708de11c",
+      "size": 13
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/077-remove-cvg-aud06-stack-1791422392227-f517287933-api-a.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/078-cleanup-ownership.stdout.log",
+      "sha256": "7c9d16947ecb6cf1a5c3f45d3530052195d558c2800da5c505162fbeee9b06bf",
+      "size": 884
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/078-cleanup-ownership.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/079-stop-cvg-aud06-stack-1791422392227-f517287933-worker.stdout.log",
+      "sha256": "b33c0119be05f00ce7aabdcacf0ede828a6395879c131ab1b7357483941cc042",
+      "size": 68
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/079-stop-cvg-aud06-stack-1791422392227-f517287933-worker.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/080-logs-cvg-aud06-stack-1791422392227-f517287933-worker.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/080-logs-cvg-aud06-stack-1791422392227-f517287933-worker.stderr.log",
+      "sha256": "a024a4865fd1800ebffb328637ff5247fbfa904f0f1369bc4c9a7ac0a6267e7c",
+      "size": 132
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/081-remove-cvg-aud06-stack-1791422392227-f517287933-worker.stdout.log",
+      "sha256": "d3f3ca1fd2a5e2aa3863be3e9f4455808f1c96a3f6dc127ae158664f73aaff7e",
+      "size": 13
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/081-remove-cvg-aud06-stack-1791422392227-f517287933-worker.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/082-cleanup-ownership.stdout.log",
+      "sha256": "7a78851b998db193c65b6e3a100322f688cacc53dcc1dd2ec1bce92d04c8ac9d",
+      "size": 1403
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/082-cleanup-ownership.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/083-stop-cvg-aud06-stack-1791422392227-f517287933-web.stdout.log",
+      "sha256": "4fd205d0a09eb91bd8aa371a5083357f5462eba7a1a860db3fe15adf3b18f86b",
+      "size": 68
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/083-stop-cvg-aud06-stack-1791422392227-f517287933-web.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/084-logs-cvg-aud06-stack-1791422392227-f517287933-web.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/084-logs-cvg-aud06-stack-1791422392227-f517287933-web.stderr.log",
+      "sha256": "5d51ce2743895ab7fdefb826cecc9215a3651dc9a8b666a3b3c4c5817815ec40",
+      "size": 2615
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/085-remove-cvg-aud06-stack-1791422392227-f517287933-web.stdout.log",
+      "sha256": "23c05f2e1c7efa35d6034b1eceb29cfca0c1a8a04ae26fc6dfe2a33dca3d144f",
+      "size": 13
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/085-remove-cvg-aud06-stack-1791422392227-f517287933-web.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/086-cleanup-ownership.stdout.log",
+      "sha256": "67a138db3f3d840a0cf2d2694f417304bc3ce49c581215685ba77a18160efadf",
+      "size": 876
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/086-cleanup-ownership.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/087-stop-cvg-aud06-stack-1791422392227-f517287933-db.stdout.log",
+      "sha256": "74472b575da77555efbb1ea654a4dd5acdf7d307010e757d61da5533c37f64f1",
+      "size": 68
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/087-stop-cvg-aud06-stack-1791422392227-f517287933-db.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/088-logs-cvg-aud06-stack-1791422392227-f517287933-db.stdout.log",
+      "sha256": "6c990de80ce738273f2c47068ec1ae6c76b63576ae9f08f7a75e7f56aecfb9b2",
+      "size": 2441
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/088-logs-cvg-aud06-stack-1791422392227-f517287933-db.stderr.log",
+      "sha256": "76ed6a23095cc3c19cd1a3635105e31dac4447ebf54f62bab14a5ad903ab72e2",
+      "size": 2558
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/089-remove-cvg-aud06-stack-1791422392227-f517287933-db.stdout.log",
+      "sha256": "51d543cbb4d391104d5040a6e019dcbb3b6267bbd4cc108ffe4adac2ac412eb3",
+      "size": 13
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/089-remove-cvg-aud06-stack-1791422392227-f517287933-db.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/090-cleanup-ownership.stdout.log",
+      "sha256": "001690f038bd7217de5a5a08774ff926cf0933b57eb88d24aa4f6c0ea327bae3",
+      "size": 892
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/090-cleanup-ownership.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/091-stop-cvg-aud06-stack-1791422392227-f517287933-db-restore.stdout.log",
+      "sha256": "473fdfcad0e84331e1ccae0f735e1e2b6ca9ca4312409e86f80f97a38b57d55d",
+      "size": 68
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/091-stop-cvg-aud06-stack-1791422392227-f517287933-db-restore.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/092-logs-cvg-aud06-stack-1791422392227-f517287933-db-restore.stdout.log",
+      "sha256": "c2480c14d3006cd355b933e41f8a51060ead18eec1b78f6b09fcd8723e6e4ef3",
+      "size": 2427
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/092-logs-cvg-aud06-stack-1791422392227-f517287933-db-restore.stderr.log",
+      "sha256": "25cc8f6e2d356e7da164b0d633311fe364396ffef57db5ccea4c4631d7ef378f",
+      "size": 1650
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/093-remove-cvg-aud06-stack-1791422392227-f517287933-db-restore.stdout.log",
+      "sha256": "8971234d6984ee6d5f574c65fe3dec36a6ad0f333a7e3cdbbf2e4b76126549ca",
+      "size": 13
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/093-remove-cvg-aud06-stack-1791422392227-f517287933-db-restore.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/094-owned-networks.stdout.log",
+      "sha256": "fa3de857e6349c3c301844efb0a9d7768e0b5e04ff549c977075741853edb160",
+      "size": 26
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/094-owned-networks.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/095-inspect-owned-network.stdout.log",
+      "sha256": "ad193eb4439dbcf9f79b3aacc0356eba541a3145c8ef8d95020d0b2a9cef11e5",
+      "size": 1311
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/095-inspect-owned-network.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/096-remove-network.stdout.log",
+      "sha256": "7799368682cf558d9d0d8cbd26ed3692373f7641204eb5ff5e946be41270edb0",
+      "size": 54
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/096-remove-network.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/097-inspect-owned-network.stdout.log",
+      "sha256": "07228cc1880f86cb06506623be53e5fffbf8f3328ad73e67ec1f4d0b98868da0",
+      "size": 1222
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/097-inspect-owned-network.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/098-remove-network.stdout.log",
+      "sha256": "54399c05d5f7453e69b5436fa3737f79f72fa0271293a093a5a80768ee65de8a",
+      "size": 49
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/098-remove-network.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/099-owned-volumes.stdout.log",
+      "sha256": "9ad1900bbd1d2427ae8d6670cf80e0797a7d731985b1faa966037eaf4462c768",
+      "size": 103
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/099-owned-volumes.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/100-inspect-owned-volume.stdout.log",
+      "sha256": "1a96d0fcebd8f088e07303642531e2e4707c9e0a362f9792022897f2a2757a18",
+      "size": 422
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/100-inspect-owned-volume.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/101-remove-volume.stdout.log",
+      "sha256": "3c028a0c47880e491d5d6336451743173c9ea4a5bf418bfc404420e0c4a83521",
+      "size": 49
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/101-remove-volume.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/102-inspect-owned-volume.stdout.log",
+      "sha256": "6e8a33017f948d225900b5c796b5ea48cb760066426df46c158476c4220f53ff",
+      "size": 432
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/102-inspect-owned-volume.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/103-remove-volume.stdout.log",
+      "sha256": "1e68869d720822f451f37aade115cd84d8fc9078012ea92531fd6a3be1b5d4a5",
+      "size": 54
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/103-remove-volume.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/104-image-ownership.stdout.log",
+      "sha256": "ce58cc6b009fd13f2e1e95193e7afa4365258d9ed69cf1f59014bd92f0615db4",
+      "size": 65
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/104-image-ownership.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/105-remove-image-tag.stdout.log",
+      "sha256": "beb8060b08147a3701f8fc855557dc7226d8820959fcd4e2582257824df18d75",
+      "size": 150
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/105-remove-image-tag.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/106-image-ownership.stdout.log",
+      "sha256": "a5a0800b5b5e6eb4fac2b055a52f65287efdcb55cc29558e4d947af06b68fe82",
+      "size": 590
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/106-image-ownership.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/107-remove-image-tag.stdout.log",
+      "sha256": "3a6cb247340bbebd40e7c134f7e1c9a7521750447e44dd28a666e9aed66077cf",
+      "size": 146
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/107-remove-image-tag.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/108-remaining-containers.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/108-remaining-containers.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/109-remaining-networks.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/109-remaining-networks.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/110-remaining-volumes.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/110-remaining-volumes.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/commands.jsonl",
+      "sha256": "f66721e3432111a5cd8ad97c6f3fa65cd0225a391e7a24564367116e4d2c4724",
+      "size": 69388
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/policy/verification-receipt.json",
+      "sha256": "accce037f0b5dcf492f0797992c62386341f362425d8da0d420334f976e3628c",
+      "size": 19149
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/policy/typecheck.log",
+      "sha256": "9e46f9c96bf73479ddb2820f0efa0929aaf9b973baba762c7c60c0e55f51bf55",
+      "size": 549
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/policy/lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/policy/format-check.log",
+      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+      "size": 66
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/policy/probe-green.log",
+      "sha256": "598d400ff8682eafc6ea24c871d9a71afc04d51a4afdcab51d34512e2903b358",
+      "size": 1792
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/policy/diff-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/policy/baseline-probe.log",
+      "sha256": "d4790d23890aba2b823a8d3d3acc948629889ff138a82e51003517ed5078d8c1",
+      "size": 673
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/policy/baseline-probe-red.log",
+      "sha256": "6220551d6a7f42232f22063b2c1aee7fcde5ad1f8dbc70ac32007c098c9024fb",
+      "size": 1822
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/policy/focused-red.log",
+      "sha256": "543e80aca0045401967615b64d1beb6e94232bafd0df07aea56ae84089026e7d",
+      "size": 19153
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/policy/focused-green.log",
+      "sha256": "d34aadf02f760086db3bd1f72292b89f0f992fa9ab419c7d979be3f8abff2fc0",
+      "size": 211
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/policy/policy-runtime-regression.log",
+      "sha256": "9f6cff727a9b38fd6bf40ea74f44857d7aac247ddc2c3a0a4189606ff0840c35",
+      "size": 217
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/policy/typecheck-scoped.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/architecture/final-source-binding.json",
+      "sha256": "cc0eca8052914b517d8a68ef1334a10e68eee389d4f3005da4a79fcf1c9e8d9f",
+      "size": 1267
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/policy/SHA256SUMS",
+      "sha256": "c539b1a1cf4db6ac5055fffd27cff9dba6fbe14b0539a12620f26ba2eb6d275d",
+      "size": 8911
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/telemetry/SHA256SUMS",
+      "sha256": "4b39e0f2e126408bb20c56d7f5bfb97c3d8191f4254a56ab6c5112af91d76a8c",
+      "size": 6384
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/SHA256SUMS",
+      "sha256": "062219acee4e3130e7bc59e55720e09596a90b01d5019b708fc042990c9f1809",
+      "size": 26639
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/quality-bar.json",
+      "sha256": "4e6e41cf41b4faf41c07ef49cd06a713f7b74b67fde0da5e6c7c5ca6fdf99d2f",
+      "size": 15609
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/supply/after-audit.json",
+      "sha256": "2c843f4e833b7092cb5d8109f7f588cf84acc43d750e94d83284a9309857b474",
+      "size": 366
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/supply/install.log",
+      "sha256": "112005a4aafa8df831d89cba5d007ed84d0025ed1dba8fd2bad66c8d3935c162",
+      "size": 143
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/architecture/client-extraction.json",
+      "sha256": "6bfe09acad340fd85d581bf7d7aa46cfbfe2c79a783e5cf2dc15f8570a5558bd",
+      "size": 2857
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/architecture/client-tests.log",
+      "sha256": "37ff3ceb49efb8331fac8faa8b9ec8f046bcfec561918017cf0c43c00850eaa1",
+      "size": 422
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/recovery-20261007/runner-real-success-receipt.json",
+      "sha256": "80b632821cc8ecf8613f943bc4976e0f581779dae4428339068ae8f398b51bbd",
+      "size": 269
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/recovery-20261007/runner-real-exit37-receipt.json",
+      "sha256": "eae8ee799feda373cc6e75937528267a8740962b3ae93da30ccfc9a6f14f3868",
+      "size": 412
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/recovery-20261007/runner-real-resource-verification-v2.json",
+      "sha256": "a16c9bbe50777f4726b23e4e39392d1d4379a03337ead1634acea7b1cdc15ef8",
+      "size": 1273
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/recovery-20261007/runner-real-success.log",
+      "sha256": "30a66c5d37ff2d02dc62df0cb2393940a49cb6359df8d3d7022a52b6e34ba28d",
+      "size": 1422
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/recovery-20261007/runner-real-exit37.log",
+      "sha256": "55cab2c8f8d6ec962d1bb1ea7f094e28ec9109eaf4afb52de55d792c7953bc55",
+      "size": 1351
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/retention-runner/retention-report.json",
+      "sha256": "cabc092fac94eacff717b649f45f6400d3a66fd59eb67b891747c6180e8f8e52",
+      "size": 13688
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/retention-runner/postgres-report.json",
+      "sha256": "9f6f318937c32323e4eb4cab726b0b1fbc98e374d7b900902d48fe2eea1480c4",
+      "size": 5190
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/retention-runner/shell-report.json",
+      "sha256": "92285f4a48ef9b4bab9ccc735c6714d54c0e9819f7a48f567d5bf44381bd3c38",
+      "size": 7801
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/retention-runner/shell-final.log",
+      "sha256": "5873977f3873210bc736d6a57c8b7e86a664ef1d1050bc3cb9ee8cbcb52350f2",
+      "size": 3492
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/summary.json",
+      "sha256": "ebf415325611cfcb808ce4d1b4e33273078b50fef6ed4af18728c89ded491a34",
+      "size": 4768
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/https-api-health.json",
+      "sha256": "57908810c3ff03c7c6ff88498b4d1d1b79beed7698d1367a1756ef198da8ecd0",
+      "size": 2405
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/quota-storage-failure.json",
+      "sha256": "a6be747e84cdae8b9219dc2f97d8171c0e617b070066fcc24493374ac34e3d3e",
+      "size": 10951
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/telemetry-periodic.json",
+      "sha256": "75ceb1755b6099cf732a1f3e427098ec1021413118c88bd08e8fbb5de701a261",
+      "size": 2038
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/api-metrics-export.json",
+      "sha256": "4f3305472644645cb57551a75715a0e824153a6728cd8fe0150149cfac3bb55e",
+      "size": 3324
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/02_spec/aud06_remediation_20261006.md",
+      "sha256": "ebdc464d71b9ed5ee2c8f628f81483b1be91dd752a86b2a86da05c80e1569dd2",
+      "size": 8854
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/01_prd/0034_aud06_remediation.md",
+      "sha256": "b480b4a1826f3340819557f75d02d5077b40c8373622e524e127f83de80d4dfa",
+      "size": 2478
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/verify-8-receipt.json",
+      "sha256": "c8a3204f968d31c8414179d50c5dba975e292e9270f12cd64be6a3f3b0a4a2a0",
+      "size": 365
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/verify-8.log",
+      "sha256": "3b3911ad9a3f3ac23847303ee9ec814bb8915f071049a85b8920fbb294ce6ec9",
+      "size": 5059
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/verify-9-receipt.json",
+      "sha256": "c246ac4e1a234aa73c0fcb4f34743207ba3a6c78bcb43d211509f4c5acd1f4d3"
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/verify-9.log",
+      "sha256": "9e6daf300ca09c2b5d795256a06d6b51a171590deaef249eda65fb1236a01df3"
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/postgres-v4-final9-receipt.json",
+      "sha256": "6435dade9d02f6257262d4e0633ec324a5e1f6830d25945292e4661644243e43"
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/postgres-v4-final9.log",
+      "sha256": "866395ff43f55652353213cbb1dc862663021ae11cf98371f0e5323bdd7a4ba5"
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/verify-9-source-before.json",
+      "sha256": "1c04f6b87f462377601f7ebd7441cc59425a76a538b872aaee42e85e0781dc49"
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/browser-v4/command-receipt.json",
+      "sha256": "c590fa41dc455ab799218f9c7ecdc1a4305d9f0eff00828f4dfb6cb863ba6cc5"
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/browser-v4/source-before.json",
+      "sha256": "1c04f6b87f462377601f7ebd7441cc59425a76a538b872aaee42e85e0781dc49",
+      "bytes": 257701
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/browser-v4/source-after.json",
+      "sha256": "bd1558cb5c583b1b65f1a48d98982da54b2175b7037538123856f03b07429d09"
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/browser-v4/browser-junit.xml",
+      "sha256": "518bf600a6d35a813c12d92c96557d0eb817075608887d79941de6ee98397409",
+      "bytes": 27198
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/browser-v4/browser.log",
+      "sha256": "02efcc4c834d4f2c711e2677aabfacfb0756da1eab57a3db52158a776b5fad41",
+      "bytes": 13044
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/browser-v4/resource-after.json",
+      "sha256": "2f425f228ec085169734cf0f10f30d021556811f6dcff1beebf9801b6e588ddc",
+      "bytes": 236
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/browser-v4/snapshots-before.sha256",
+      "sha256": "531ef3c82a1ab46b7536c5020a8fe98f04d0186a2ed965f5f448a63b554b6471",
+      "bytes": 4485
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/browser-v4/snapshots-after.sha256",
+      "sha256": "531ef3c82a1ab46b7536c5020a8fe98f04d0186a2ed965f5f448a63b554b6471",
+      "bytes": 4485
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/certification/current.json",
+      "sha256": "821918628e19e714e688ce40928c9a02560aa099aea5ec0ec38b0a4a0098a6a0",
+      "size": 943
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/certification/phase11/manifest.json",
+      "sha256": "859aa0b8999dd822777bd90f4437f22330d22bdb5ddce83b1c7d82f1947154dc",
+      "size": 27712
+    },
+    {
+      "path": "/tmp/cvg-aud06-certification-aottnvx0/repo/docs/04_audit/evidence/CLAW-W1/CLAW-W1-07-tombstone-policy-renewal-decision-20261005.json",
+      "sha256": "ddc816bd01c3881bc0cbdeeef05bf9cc5d1b572cd823f9a564cfe7c75857b705",
+      "size": 1461
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/verify-9-source-binding-correction.json",
+      "sha256": "a153f5cf256471c04d22fd9060a13d2abd46669551f239ca323f086d0d2f9c3c"
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/coverage-v4-summary.json",
+      "sha256": "863ead96ac672aecb2fc50b0ff2bf69e7188956aca086b6ac5c49050b8425df4"
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/coverage-v4-adjudication-v2.json",
+      "sha256": "662ac8ffc448072ce9e7bd5704bdb527511d0ed72656393c5181be8eb92f3252"
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/postgres-v4-teardown-v2.json",
+      "sha256": "540ccf2681650b6df37ea63ff77cec1e19b0a6b08f94d66ccf8ef75a7ee13d4c"
+    },
+    {
+      "path": "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/v4-final-frozen-tree.json",
+      "sha256": "ed8727538ea4b8ca579e5c9be07746f0fc016fac3cc07a009e63dd9a502c576f"
+    }
+  ],
+  "overallVerdict": "FAIL",
+  "localTechnicalVerdict": "PASS",
+  "satisfiedRequired": 11,
+  "unsatisfiedRequired": [
+    "Q11",
+    "Q13",
+    "Q14"
+  ],
+  "release": "NO_GO; no staging/production, real financial/clinical/final-record write or autonomy promotion authorization",
+  "completedAt": "2026-10-08T02:19:57.426526+00:00",
+  "budget": {
+    "initialMinutes": 20,
+    "checkpointBeforeLimit": true,
+    "userAuthorizedFinalReadEnvelopeMinutes": 30,
+    "elapsedMinutesApprox": 22.5
+  }
+}

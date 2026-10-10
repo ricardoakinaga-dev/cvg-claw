@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+    "scripts/docs-check.mjs"
+  ],
+  "startedAt": "2026-10-08T23:43:16.434724+00:00",
+  "endedAt": "2026-10-08T23:43:20.826959+00:00",
+  "exitCode": 0,
+  "logSHA256": "9cfc3ad9f3fc5b5db8b1e74ccc955fe0ea59e8afe793ffc78609de3eb0b376df",
+  "scope": "MAIN after comment review, corrected next action, report/body and source-capture local Git exclusion"
+}

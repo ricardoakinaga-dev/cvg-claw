@@ -1,0 +1,256 @@
+{
+  "schemaVersion": 1,
+  "kind": "AUD06-Q13-focused-independent-critic",
+  "verdict": "REJECT",
+  "role": "fresh independent focused critic, not builder/lead/FINAL_GAUNTLET",
+  "authority": "Read-only target; own new TEMP output only; no descendants",
+  "target": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+  "ownTemp": "/tmp/aud06-q13-independent-0s85_2rx",
+  "identity": {
+    "head": "926227856a3928ba060ec9cc66ed80b181e0d403",
+    "candidateId": "ee218936e19e7c1e9f8a12ab80db3004e2d41b07ed10762cfd83ddcd65963a16",
+    "treeHash": "550aabbe736191924a2cae1b111ee84ab1797949fecb40e930058e2c3241904a",
+    "files": 1256,
+    "source": "Actual candidate rules, safe O_NOATIME bytes, tracked flag from Git inventory; not executing certifier"
+  },
+  "identity_supplied_all_verified": true,
+  "source_hashes": {
+    "scripts/phase11-bypass-audit.mjs": "6ffb7b4834fc9da79bb918a36d6e54bcc6cde240840f6cb0b4bf5a4b747594c1",
+    "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+    "tests/phase11-bypass-audit.test.js": "43671c035d1e0009946bcd0c7a370c514ecb8943dfd41055b6046a203fd055f2",
+    "docs/02_spec/aud06_remediation_20261006.md": "f4e1d35992f7b24150cc238381db41b7745d5d4bdb3933ac61620719d22f5e72",
+    "docs/04_audit/evidence/AUD06/quality-bar.json": "a711acc66e7f809aa87508e6df421fe7932e951326361d52d1d1bcae2c40d378",
+    "node_modules/typescript/lib/typescript.js": "569177652966bd528c319171c7dd22860dbf72bde116cbc4f644f1d02bb12e39"
+  },
+  "source_tests_qualification": "Tests file hash independently verified via full sentinel bytes; tests not semantically read or executed. No builder receipts, earlier reports or gauntlet history were consulted. Required runtime/log/backlog were copied/hash-read only, not used for conclusions. Normative SPEC/bar contain their own historical text, not used as evidence.",
+  "execution": {
+    "node": "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+    "nodeVersion": "v22.23.2",
+    "typescript": "6.0.3",
+    "scanner_helper_byte_identical": true,
+    "shim_used": false,
+    "shim_diff": "empty",
+    "concurrency_max": 1,
+    "depth": 1,
+    "fixture_TS_execution": false,
+    "network_DB_Docker_install": false,
+    "target_writes": false,
+    "raw": "raw/*.json carries command, cwd, environment, stdout/stderr, exit/timeout; first corpus timeout has explicit capture limitation",
+    "git_inventories": "Each root retains its own .git plus recorded actual ls-files inventory; synthetic tracked/untracked controls and actual corpus tracking retained."
+  },
+  "counts": {
+    "initial_synthetic_CLI": 54,
+    "minimal_confirmatory_CLI": 8,
+    "synthetic_CLI_total": 62,
+    "all_scanner_CLI_attempts": 64,
+    "complete_scanner_CLI_reports": 63,
+    "syntactically_valid": 61,
+    "deliberately_invalid_parse_control": 1,
+    "raw_expectation_mismatches": 7,
+    "contracted_false_PASS_instances": 4,
+    "contracted_false_FAIL_instances": 2,
+    "unadjudicated_exploratory_false_FAIL": 1,
+    "grouped_findings": {
+      "P0": 0,
+      "P1": 1,
+      "P2": 1
+    },
+    "sql_controls": 40,
+    "sql_control_mismatches": 0,
+    "corpus_attempts": 2,
+    "parse_diagnostics_final_files": 121
+  },
+  "findings": [
+    {
+      "id": "Q13-F01",
+      "priority": "P1",
+      "title": "Known global/imported callable own member store disappears, hiding domain SQL invocation",
+      "minimal_reproducer": "fetch.custom=db.query; fetch.custom('DELETE FROM appointments')",
+      "path": "apps/api/src/postgres-rate-limit.ts",
+      "expected": "FAIL direct_sql_write; target appointments outside quota grant",
+      "actual": {
+        "status": "PASS",
+        "exit": 0,
+        "findings": []
+      },
+      "confirmed_cases": [
+        "global-function-own-query",
+        "confirm-global-domain",
+        "confirm-import-domain",
+        "confirm-alias-domain"
+      ],
+      "paired_controls": [
+        "confirm-local-domain",
+        "confirm-global-read",
+        "confirm-global-inert",
+        "direct-domain",
+        "direct-quota"
+      ],
+      "root_cause": "callee recognizes global fetch and importEffect recognizes node-fetch, but receiverOrigins returns no origin for undeclared globals or ImportClause (1113-1176). Own stores are only inserted for receiverOrigins owners (1608-1613), so no assignedProperties entry exists. selectedValues only projects known FunctionLike owners (590 onward); memberEffect then uses spelling fallback (809-868) and custom resolves to null. The final call is never sent to SQL audit. This is a bounded literal property/alias case, without factories/reflection/prototype manipulation.",
+      "source_lines": [
+        590,
+        697,
+        809,
+        1113,
+        1608
+      ],
+      "contract": "SPEC final known-callable own literal members addendum; no name-only exception, actual assigned origin/prefix must be transported."
+    },
+    {
+      "id": "Q13-F02",
+      "priority": "P2",
+      "title": "Pure literal override on known global callable is rejected by effect spelling",
+      "minimal_reproducer": "fetch.sendMessage=()=>0; fetch.sendMessage()",
+      "path": "apps/api/src/postgres-rate-limit.ts",
+      "expected": "PASS; pure assigned own callable invoked",
+      "actual": {
+        "status": "FAIL",
+        "exit": 1,
+        "findings": [
+          {
+            "id": "direct_channel_send",
+            "path": "apps/api/src/postgres-rate-limit.ts",
+            "line": 1
+          }
+        ]
+      },
+      "confirmed_cases": [
+        "pure-member-on-fetch-send",
+        "confirm-global-pure"
+      ],
+      "paired_controls": [
+        "confirm-local-pure",
+        "own-pure-send",
+        "bound-pure-send",
+        "direct-fetch"
+      ],
+      "root_cause": "Same missing receiver origin/own property store as F01. memberEffect cannot see the override and falls through to effects.has(name), classifying sendMessage by spelling. Literal own pure value must prevail under the bounded contract.",
+      "source_lines": [
+        590,
+        809,
+        1113,
+        1608
+      ],
+      "contract": "SPEC final known callable own members: known own value prevails over effect spelling; pure sendMessage override is positive control."
+    }
+  ],
+  "unadjudicated_case": {
+    "id": "function-spread-pure",
+    "qualification": "Syntactically valid exploratory positive rejected as unresolved_static_callable; known function object spread materialization boundary not further adjudicated after material conclusion. Preserved in full counts/raw, not raised as an extra blocker or counted among contracted false FAILs."
+  },
+  "invalid_case": {
+    "id": "parse-invalid",
+    "qualification": "Deliberately invalid const = 0, TS1134 x2, scanner source_parse_failed as expected; no semantic verdict inferred."
+  },
+  "sql_controls": {
+    "status": "PASS",
+    "count": 40,
+    "scope": "Finite independent helper controls: quota INSERT/UPDATE/DELETE/UPSERT exact grammar, comments/value masking/array cast, outside grants, mixed and CTE domain writes, unknown targets/grammar/commands, read locks and legacy replay store. Not a general SQL safety proof."
+  },
+  "production_corpus": {
+    "files": 59,
+    "attempts": 2,
+    "first": {
+      "timeout_seconds": 60,
+      "normal_exit": null,
+      "raw_qualification": "First harness did not save TimeoutExpired pipe fields. Exception exposed in tool output. Reconstructed command/timeout record labeled; no empty-pipe capture claimed."
+    },
+    "second": {
+      "timeout_seconds": 180,
+      "normal_exit": 0,
+      "timed_out": false,
+      "duration_seconds": 138.14560587500455,
+      "report": {
+        "schemaVersion": 1,
+        "kind": "phase11-bypass-audit",
+        "status": "PASS",
+        "scannedFiles": 59,
+        "findings": [],
+        "forwardingQueries": [
+          {
+            "path": "apps/api/src/server/bootstrap-persistence.ts",
+            "line": 295,
+            "kind": "existing-transparent-parameter-forwarder",
+            "sqlTargetExemption": false
+          }
+        ],
+        "allowedEffectBoundaries": [
+          "packages/channel-gateway/src/adapters/",
+          "packages/model-gateway/src/providers/",
+          "packages/adapters/src/fake/"
+        ],
+        "allowedSqlWriteInfrastructure": [
+          {
+            "file": "apps/api/src/webhook-security.ts",
+            "rationale": "webhook signature replay store (pre-kernel security boundary)"
+          },
+          {
+            "file": "apps/api/src/operator-replay-store.ts",
+            "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+          },
+          {
+            "file": "apps/api/src/postgres-rate-limit.ts",
+            "table": "api_rate_limit_buckets",
+            "rationale": "bounded pre-authentication quota; exact static target and supported write grammar only"
+          }
+        ],
+        "note": "Host calls are inspected as ASTs independently of SQL. Inert strings are data. SQL query text uses a separate lexer; quota requires validated static target/grammar. The existing exact pure parameter forwarder is disclosed without granting a SQL target exemption. Constructed effects are not universally decided; fresh artifact review remains required."
+      }
+    },
+    "qualification": "Copied actual scoped production source, preserving tracked flags. PASS, if produced, is only a corpus sample; a timeout is incomplete evidence."
+  },
+  "legacy_forwarder": {
+    "path": "apps/api/src/server/bootstrap-persistence.ts",
+    "line": 295,
+    "exact_source": "query: (text, values) => client.query(text, values),",
+    "recognition": "Exact existing direct two-parameter arrow recognized by scanner transparentForwarder; no modifiers/default/rest/optional parameters; exact client.query property call and identical arguments. It bypasses unresolved-expression rejection solely for this forwarding call, not SQL target checks of consumers.",
+    "sqlTargetExemption": false,
+    "source_sha256": "4d50c204e0fce45817ff35d3f14f725411920bbe1314168f65250e90a6878f34",
+    "corpus_disclosure": [
+      {
+        "path": "apps/api/src/server/bootstrap-persistence.ts",
+        "line": 295,
+        "kind": "existing-transparent-parameter-forwarder",
+        "sqlTargetExemption": false
+      }
+    ]
+  },
+  "sentinel": {
+    "before": "sentinel-before.json",
+    "after": "sentinel-after.json",
+    "diff": "sentinel-diff.json",
+    "entries": 28133,
+    "regular_files": 25255,
+    "symlinks": 43,
+    "excluded_only_root_git": true,
+    "difference_count": 0,
+    "status": "UNCHANGED_OBSERVED",
+    "protocol_qualification": "Full target state unchanged observed. Strict every-open O_NOATIME/alltimes requirement cannot be asserted because built-in Git traversal was not interposed and pre-read birthtime unavailable.",
+    "compared": [
+      "sha256 byte content",
+      "size",
+      "mode",
+      "uid",
+      "gid",
+      "device",
+      "inode",
+      "nlink",
+      "atime_ns",
+      "mtime_ns",
+      "ctime_ns",
+      "symlink target"
+    ],
+    "noatime": "All direct critic regular-file opens and directory inventory snapshots use O_NOATIME|O_NOFOLLOW. Symlinks read with O_PATH|O_NOFOLLOW|O_NOATIME + readlinkat, before/after metadata unchanged. Git inventory built-in worktree traversal was NOT syscall-interposed; cannot claim every Git directory open had O_NOATIME. Full pre/post observed atime unchanged nevertheless.",
+    "alltimes_qualification": "All POSIX stat times recorded. st_birthtime_ns unavailable on this Python/Linux stat interface; initial birthtime field null, no independently captured pre-read birthtime claim. Inode/device unchanged.",
+    "enforcement": "I1 shared FS, parent-controlled exclusive no-reader/no-writer window; not OS-enforced read-only. No metadata restoration performed.",
+    "target_reads_closed_after_post": true
+  },
+  "external_status": {
+    "global_and_production": "NO_GO",
+    "Q11": "DEFERRED_BY_USER",
+    "Q13_remote": "UNSATISFIED_PUBLICATION_PENDING",
+    "Q14": "PENDING",
+    "finalGauntlet": false
+  },
+  "stop_rule": "Expansion ended at first material paired conclusion; only eight already-authored confirmatory pairs, finite SQL/corpus/identity/sentinel/report closed. No fixes attempted."
+}

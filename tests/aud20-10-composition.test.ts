@@ -7,7 +7,7 @@ import {
   writeFileSync
 } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { join, parse } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import type { TenantId } from '@cvg/platform'
 import type { DurableOutboxAdapter } from '@cvg/persistence'
@@ -158,19 +158,17 @@ describe('AUD20-10 controlled collector factory', () => {
         })
       ).toThrow(/traversal segments/)
 
-      const outsideRoot = mkdtempSync(join(process.cwd(), 'aud20-10-outside-'))
-      try {
-        expect(() =>
-          createControlledLocalCollector({
-            profile: PROFILE,
-            mode: 'local_file',
-            root: outsideRoot,
-            role: 'api'
-          })
-        ).toThrow(/temporary directory/)
-      } finally {
-        rmSync(outsideRoot, { recursive: true, force: true })
-      }
+      // The checkout itself may be under tmpdir (isolated CI/worktrees).
+      // The filesystem root is never a strict child of the temporary root;
+      // this factory validates the path before any export can write a file.
+      expect(() =>
+        createControlledLocalCollector({
+          profile: PROFILE,
+          mode: 'local_file',
+          root: parse(tmpdir()).root,
+          role: 'api'
+        })
+      ).toThrow(/temporary directory/)
 
       const symlinkTarget = join(root, 'real-root')
       mkdirSync(symlinkTarget)

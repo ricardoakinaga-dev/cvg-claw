@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "kind": "cvg-current-operational-state",
-  "program": "AUD20-REM-v2",
-  "currentTask": "AUD20-10",
-  "currentStatus": "READY_FOR_NEXT_STEP",
-  "nextAction": "obter o parecer do crítico independente no opencode para o candidato congelado da Onda 1 (pedido em `docs/04_audit/evidence/CLAW-W1/`); rodar a passada 2 no contêiner de paridade, commitar o selo com recibo só em `docs/04_audit/evidence/` e fazer push (CLAW-W1-06); decidir a renovação da política de tombstone antes de 2026-12-31 (CLAW-W1-07); responder às 6 perguntas abertas da Discovery 0026 (CLAW-W2-01).",
+  "program": "AUD06",
+  "currentTask": "AUD06-13",
+  "currentStatus": "WAITING_HUMAN_APPROVAL",
+  "nextAction": "conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.",
   "releaseBoundary": {
     "staging": "NO_GO",
     "production": "NO_GO"
@@ -19,8 +19,8 @@
     "currentIndex": "docs/CURRENT.md",
     "runtimeState": "docs/99_runtime_state.md",
     "executionLog": "docs/20_master_execution_log.md",
-    "backlog": "docs/30_backlog_master.md",
-    "taskMatrix": "docs/03_build/tracking/aud20_v2_findings_matrix.json"
+    "backlog": "docs/03_build/0349_aud06_backlog.md",
+    "taskMatrix": "docs/03_build/tracking/aud06_tasks.json"
   },
   "certification": {
     "currentPointer": "certification/current.json",

@@ -1,20 +1,28 @@
 $ node scripts/phase11-bypass-audit.mjs
-# certificationId=phase11-72fa77fcda6fad8c-muv8q8tu
-# candidateId=72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267
-# commit=dfe2c1dd992a96a55dd41f5c516352a82f587cbf
-# treeHash=d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569
+# certificationId=phase11-f15cece0c6784845-muznvvts
+# candidateId=f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0
+# commit=7c1fdfc488664c365b4df6423d1b81c60e27ac22
+# treeHash=4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283
 # gate=bypass_audit
 # profile=CONTROLLED_LOCAL
 # databaseConfigured=false
 # realEffects=disabled
-# exitCode=0 durationMs=40
+# exitCode=0 durationMs=229569
 
 {
   "schemaVersion": 1,
   "kind": "phase11-bypass-audit",
   "status": "PASS",
-  "scannedFiles": 58,
+  "scannedFiles": 59,
   "findings": [],
+  "forwardingQueries": [
+    {
+      "path": "apps/api/src/server/bootstrap-persistence.ts",
+      "line": 295,
+      "kind": "existing-transparent-parameter-forwarder",
+      "sqlTargetExemption": false
+    }
+  ],
   "allowedEffectBoundaries": [
     "packages/channel-gateway/src/adapters/",
     "packages/model-gateway/src/providers/",
@@ -28,9 +36,14 @@ $ node scripts/phase11-bypass-audit.mjs
     {
       "file": "apps/api/src/operator-replay-store.ts",
       "rationale": "distributed operator token replay claims (pre-kernel security boundary)"
+    },
+    {
+      "file": "apps/api/src/postgres-rate-limit.ts",
+      "table": "api_rate_limit_buckets",
+      "rationale": "bounded pre-authentication quota; exact static target and supported write grammar only"
     }
   ],
-  "note": "Application and worker entrypoints must route through the governed kernel; adapter implementations are the only outbound boundary. Comments are stripped before scanning so prose cannot create findings, and only the two named pre-kernel security stores may own direct SQL writes."
+  "note": "Host calls are inspected as ASTs independently of SQL. Inert strings are data. SQL query text uses a separate lexer; quota requires validated static target/grammar. The existing exact pure parameter forwarder is disclosed without granting a SQL target exemption. Constructed effects are not universally decided; fresh artifact review remains required."
 }
 
 

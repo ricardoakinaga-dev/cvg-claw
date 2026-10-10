@@ -1,0 +1,493 @@
+{
+  "schema_version": 1,
+  "version": "AUD06-v20-known-intrinsic-member-identity-audit",
+  "frozen_at": "2026-10-06T22:43:19.170069+00:00",
+  "goal": "Criar roadmap e backlog e implementar integralmente o plano de melhoria F01-F08 da auditoria 0576, respeitando todos os gates.",
+  "sources": [
+    {
+      "type": "REPO",
+      "location": "docs/02_spec/aud06_remediation_20261006.md",
+      "version": "20-Q13-known-intrinsic-member-identity-rework",
+      "snapshot_sha256": "d846fce11c9dc7c3b4281a68e2602040cfab59dbf04d1ec6771e114d499527a1",
+      "license_notes": "User-owned internal repository"
+    }
+  ],
+  "criteria": [
+    {
+      "id": "Q01",
+      "source_type": "REPO",
+      "source": "docs/02_spec/aud06_remediation_20261006.md",
+      "dimension": "Q01",
+      "target": "Complete roadmap and backlog for F01-F08",
+      "evidence_method": "Inspect 0348/0349 and trace every finding and gate",
+      "required": true,
+      "priority": "high",
+      "baseline": {
+        "status": "NOT_RUN",
+        "actual": "Current implementation/approval still requires item-level evidence"
+      },
+      "conditions": "Synthetic local work only until explicit external authority; no scope reduction.",
+      "version": "AUD06-v11-transitive-origin-invocation-audit",
+      "snapshot_sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "license_notes": "User-owned internal repository",
+      "validity_notes": "A local fixture never proves real operational approval; stale/missing evidence is not PASS."
+    },
+    {
+      "id": "Q02",
+      "source_type": "REPO",
+      "source": "docs/02_spec/aud06_remediation_20261006.md",
+      "dimension": "Q02",
+      "target": "No high/critical dependency advisory with repeatable installation",
+      "evidence_method": "npm ci --ignore-scripts; npm audit; build",
+      "required": true,
+      "priority": "high",
+      "baseline": {
+        "status": "NOT_RUN",
+        "actual": "Current implementation/approval still requires item-level evidence"
+      },
+      "conditions": "Synthetic local work only until explicit external authority; no scope reduction.",
+      "version": "AUD06-v11-transitive-origin-invocation-audit",
+      "snapshot_sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "license_notes": "User-owned internal repository",
+      "validity_notes": "A local fixture never proves real operational approval; stale/missing evidence is not PASS."
+    },
+    {
+      "id": "Q03",
+      "source_type": "REPO",
+      "source": "docs/02_spec/aud06_remediation_20261006.md",
+      "dimension": "Q03",
+      "target": "N3 always DENY with zero executor invocation",
+      "evidence_method": "Policy matrix and runtime negative tests",
+      "required": true,
+      "priority": "critical",
+      "baseline": {
+        "status": "NOT_RUN",
+        "actual": "Current implementation/approval still requires item-level evidence"
+      },
+      "conditions": "Synthetic local work only until explicit external authority; no scope reduction.",
+      "version": "AUD06-v11-transitive-origin-invocation-audit",
+      "snapshot_sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "license_notes": "User-owned internal repository",
+      "validity_notes": "A local fixture never proves real operational approval; stale/missing evidence is not PASS."
+    },
+    {
+      "id": "Q04",
+      "source_type": "REPO",
+      "source": "docs/02_spec/aud06_remediation_20261006.md",
+      "dimension": "Q04",
+      "target": "All 75 Browser E2E tests pass with preserved snapshots/tolerances",
+      "evidence_method": "Playwright pinned container, screenshots and browser report",
+      "required": true,
+      "priority": "high",
+      "baseline": {
+        "status": "NOT_RUN",
+        "actual": "Current implementation/approval still requires item-level evidence"
+      },
+      "conditions": "Synthetic local work only until explicit external authority; no scope reduction.",
+      "version": "AUD06-v11-transitive-origin-invocation-audit",
+      "snapshot_sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "license_notes": "User-owned internal repository",
+      "validity_notes": "A local fixture never proves real operational approval; stale/missing evidence is not PASS."
+    },
+    {
+      "id": "Q05",
+      "source_type": "REPO",
+      "source": "docs/02_spec/aud06_remediation_20261006.md",
+      "dimension": "Q05",
+      "target": "Certification wrapper preserves status and cleans only owned resources",
+      "evidence_method": "Success/failure/timeout/signal shell tests",
+      "required": true,
+      "priority": "high",
+      "baseline": {
+        "status": "NOT_RUN",
+        "actual": "Current implementation/approval still requires item-level evidence"
+      },
+      "conditions": "Synthetic local work only until explicit external authority; no scope reduction.",
+      "version": "AUD06-v11-transitive-origin-invocation-audit",
+      "snapshot_sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "license_notes": "User-owned internal repository",
+      "validity_notes": "A local fixture never proves real operational approval; stale/missing evidence is not PASS."
+    },
+    {
+      "id": "Q06",
+      "source_type": "REPO",
+      "source": "docs/02_spec/aud06_remediation_20261006.md",
+      "dimension": "Q06",
+      "target": "Approved retention renewal and boundary/early warning enforced",
+      "evidence_method": "Focused retention tests plus disposable PostgreSQL",
+      "required": true,
+      "priority": "high",
+      "baseline": {
+        "status": "NOT_RUN",
+        "actual": "Current implementation/approval still requires item-level evidence"
+      },
+      "conditions": "Synthetic local work only until explicit external authority; no scope reduction.",
+      "version": "AUD06-v11-transitive-origin-invocation-audit",
+      "snapshot_sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "license_notes": "User-owned internal repository",
+      "validity_notes": "A local fixture never proves real operational approval; stale/missing evidence is not PASS."
+    },
+    {
+      "id": "Q07",
+      "source_type": "REPO",
+      "source": "docs/02_spec/aud06_remediation_20261006.md",
+      "dimension": "Q07",
+      "target": "Current state and backlog agree and preserve historical evidence",
+      "evidence_method": "docs:check and state-routing negatives",
+      "required": true,
+      "priority": "high",
+      "baseline": {
+        "status": "NOT_RUN",
+        "actual": "Current implementation/approval still requires item-level evidence"
+      },
+      "conditions": "Synthetic local work only until explicit external authority; no scope reduction.",
+      "version": "AUD06-v11-transitive-origin-invocation-audit",
+      "snapshot_sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "license_notes": "User-owned internal repository",
+      "validity_notes": "A local fixture never proves real operational approval; stale/missing evidence is not PASS."
+    },
+    {
+      "id": "Q08",
+      "source_type": "REPO",
+      "source": "docs/02_spec/aud06_remediation_20261006.md",
+      "dimension": "Q08",
+      "target": "Measured cohesive extraction with public behavior preserved",
+      "evidence_method": "Architecture gate and HTTP/client regressions",
+      "required": true,
+      "priority": "medium",
+      "baseline": {
+        "status": "NOT_RUN",
+        "actual": "Current implementation/approval still requires item-level evidence"
+      },
+      "conditions": "Synthetic local work only until explicit external authority; no scope reduction.",
+      "version": "AUD06-v11-transitive-origin-invocation-audit",
+      "snapshot_sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "license_notes": "User-owned internal repository",
+      "validity_notes": "A local fixture never proves real operational approval; stale/missing evidence is not PASS."
+    },
+    {
+      "id": "Q09",
+      "source_type": "REPO",
+      "source": "docs/02_spec/aud06_remediation_20261006.md",
+      "dimension": "Q09",
+      "target": "Isolated synthetic stack starts and tears down with migration and TLS/headers",
+      "evidence_method": "Docker compose smoke and isolation inspection",
+      "required": true,
+      "priority": "high",
+      "baseline": {
+        "status": "NOT_RUN",
+        "actual": "Current implementation/approval still requires item-level evidence"
+      },
+      "conditions": "Synthetic local work only until explicit external authority; no scope reduction.",
+      "version": "AUD06-v11-transitive-origin-invocation-audit",
+      "snapshot_sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "license_notes": "User-owned internal repository",
+      "validity_notes": "A local fixture never proves real operational approval; stale/missing evidence is not PASS."
+    },
+    {
+      "id": "Q10",
+      "source_type": "REPO",
+      "source": "docs/02_spec/aud06_remediation_20261006.md",
+      "dimension": "Q10",
+      "target": "Shared rate limiting, telemetry export and restore integrity demonstrated",
+      "evidence_method": "Concurrent instances, storage fault, collector and restore drill",
+      "required": true,
+      "priority": "high",
+      "baseline": {
+        "status": "NOT_RUN",
+        "actual": "Current implementation/approval still requires item-level evidence"
+      },
+      "conditions": "Synthetic local work only until explicit external authority; no scope reduction.",
+      "version": "AUD06-v11-transitive-origin-invocation-audit",
+      "snapshot_sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "license_notes": "User-owned internal repository",
+      "validity_notes": "A local fixture never proves real operational approval; stale/missing evidence is not PASS."
+    },
+    {
+      "id": "Q11",
+      "source_type": "REPO",
+      "source": "docs/02_spec/aud06_remediation_20261006.md",
+      "dimension": "Q11",
+      "target": "Pilot contracts approved and integrations qualified",
+      "evidence_method": "Discovery decisions and end-to-end authorized integration",
+      "required": true,
+      "priority": "critical",
+      "baseline": {
+        "status": "NOT_RUN",
+        "actual": "Current implementation/approval still requires item-level evidence"
+      },
+      "conditions": "Synthetic local work only until explicit external authority; no scope reduction.",
+      "version": "AUD06-v11-transitive-origin-invocation-audit",
+      "snapshot_sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "license_notes": "User-owned internal repository",
+      "validity_notes": "A local fixture never proves real operational approval; stale/missing evidence is not PASS."
+    },
+    {
+      "id": "Q12",
+      "source_type": "REPO",
+      "source": "docs/02_spec/aud06_remediation_20261006.md",
+      "dimension": "Q12",
+      "target": "Integrated regression and fresh independent critique pass",
+      "evidence_method": "Full gates and read-only critic with pre/post sentinel",
+      "required": true,
+      "priority": "high",
+      "baseline": {
+        "status": "NOT_RUN",
+        "actual": "Current implementation/approval still requires item-level evidence"
+      },
+      "conditions": "Synthetic local work only until explicit external authority; no scope reduction.",
+      "version": "AUD06-v11-transitive-origin-invocation-audit",
+      "snapshot_sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "license_notes": "User-owned internal repository",
+      "validity_notes": "A local fixture never proves real operational approval; stale/missing evidence is not PASS."
+    },
+    {
+      "id": "Q13",
+      "source_type": "REPO",
+      "source": "docs/02_spec/aud06_remediation_20261006.md",
+      "dimension": "Q13",
+      "target": "Certified candidate and remote Verify/Security correspond",
+      "evidence_method": "Current verifier and actual CI metadata/logs bound to commit",
+      "required": true,
+      "priority": "high",
+      "baseline": {
+        "status": "NOT_RUN",
+        "actual": "Current implementation/approval still requires item-level evidence"
+      },
+      "conditions": "Synthetic local work only until explicit external authority; no scope reduction.",
+      "version": "AUD06-v11-transitive-origin-invocation-audit",
+      "snapshot_sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "license_notes": "User-owned internal repository",
+      "validity_notes": "A local fixture never proves real operational approval; stale/missing evidence is not PASS."
+    },
+    {
+      "id": "Q14",
+      "source_type": "REPO",
+      "source": "docs/02_spec/aud06_remediation_20261006.md",
+      "dimension": "Q14",
+      "target": "Eight external and human gates qualified without synthesized approval",
+      "evidence_method": "Inspect each actual external approval/evidence in authorized environment",
+      "required": true,
+      "priority": "critical",
+      "baseline": {
+        "status": "NOT_RUN",
+        "actual": "Current implementation/approval still requires item-level evidence"
+      },
+      "conditions": "Synthetic local work only until explicit external authority; no scope reduction.",
+      "version": "AUD06-v11-transitive-origin-invocation-audit",
+      "snapshot_sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "license_notes": "User-owned internal repository",
+      "validity_notes": "A local fixture never proves real operational approval; stale/missing evidence is not PASS."
+    }
+  ],
+  "revision_log": [
+    {
+      "at": "2026-10-06T23:34:47.598583+00:00",
+      "kind": "provenance-reconciliation",
+      "previous_manifest": "quality-bar-v1-frozen.json",
+      "old_spec_sha256": "1b7aa57d26e201a10690240a510f69b28e399e4519004679c5b22de94e211fad",
+      "new_spec_sha256": "bd8961b11fbdc07571ef56641ed9fc9a06a637af3be5932c5a2189dde9a6ed66",
+      "reason": "SPEC received bounded implementation addenda for state routing, rate limiting, health/client extraction and explicit synthetic telemetry after the original reference was hashed. Q01-Q14 targets, priorities and required flags are unchanged. Original SPEC bytes were not retained; its old hash is historical, not current evidence. No new human hash approval is claimed.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T01:19:47.683006+00:00",
+      "kind": "bounded-corrective-addendum",
+      "previous_manifest": "quality-bar-v2-frozen.json",
+      "old_spec_sha256": "bd8961b11fbdc07571ef56641ed9fc9a06a637af3be5932c5a2189dde9a6ed66",
+      "new_spec_sha256": "5a1be65557b2abcda1afb808953e4a5b6c375e2351a4dc78b9e0a1f1d27243ea",
+      "reason": "Independent executable I1 findings F-I1-01/02 require bounded corrective BUILD and F-I1-03 current stack evidence; Q01-Q14 targets/priorities/required unchanged. Pilot deferral is execution disposition, not a PASS or bar reduction. No new human hash approval inferred.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T01:53:58.684913+00:00",
+      "kind": "bounded-Q07-corrective-addendum",
+      "previous_manifest": "quality-bar-v3-frozen.json",
+      "old_spec_sha256": "5a1be65557b2abcda1afb808953e4a5b6c375e2351a4dc78b9e0a1f1d27243ea",
+      "new_spec_sha256": "ebdc464d71b9ed5ee2c8f628f81483b1be91dd752a86b2a86da05c80e1569dd2",
+      "reason": "All AUD06 backlog rows must match canonical matrix; final critic integrity incident requires new isolated fresh review. Targets, priorities and required flags unchanged; no new human product approval.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T02:31:22.577225+00:00",
+      "kind": "bounded-Q05-corrective-addendum",
+      "previous_manifest": "quality-bar-v4-frozen.json",
+      "old_spec_sha256": "ebdc464d71b9ed5ee2c8f628f81483b1be91dd752a86b2a86da05c80e1569dd2",
+      "new_spec_sha256": "2a705aed577478d385c95807977ddd0f05d9d0179f8c9cb8e1d1310520cdb9e0",
+      "reason": "Actual Docker anonymous volume cleanup defect reproduced; exact own ID removal includes anonymous volume only. Targets/priorities/required unchanged; no human or publication approval inferred.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T03:50:44.961868+00:00",
+      "kind": "bounded-Q13-measurement-correction",
+      "previous_manifest": "quality-bar-v5-frozen.json",
+      "old_spec_sha256": "2a705aed577478d385c95807977ddd0f05d9d0179f8c9cb8e1d1310520cdb9e0",
+      "new_spec_sha256": "8a2f7089f8cf2f27c950d3251456fe31df0a75c13c3d6358f633d133b18ec6b8",
+      "reason": "Independent static adjudication confirms quota metadata boundary already admitted by AUD06-10; require exact file/table exception and stronger SQL write detection plus tracked/untracked inventory. No target/priority/required relaxation; no domain or publication authority inferred.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T04:00:42.278399+00:00",
+      "kind": "bounded-Q13-independent-rework",
+      "previous_manifest": "quality-bar-v6-frozen.json",
+      "old_spec_sha256": "8a2f7089f8cf2f27c950d3251456fe31df0a75c13c3d6358f633d133b18ec6b8",
+      "new_spec_sha256": "97a78deacca2b095d692f4328434e1cfe94363c541564dc921ac54e017581a54",
+      "reason": "Three reproduced scanner P1 gaps require lexical comment preservation, quoted aliases and anchored test-file inventory. Targets/priorities/required unchanged; do not accept previous green tests.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T04:18:48.386280+00:00",
+      "kind": "bounded-Q13-template-lexical-rework",
+      "previous_manifest": "quality-bar-v7-frozen.json",
+      "old_spec_sha256": "97a78deacca2b095d692f4328434e1cfe94363c541564dc921ac54e017581a54",
+      "new_spec_sha256": "4fe972d8be9cffb4390a8cae050395d6c1a55ad60a8a1b811c5316f4a5cabe55",
+      "reason": "Independent four false passes require separating executable template expressions from SQL masking and ordinary/E-string lexical modes; targets/priorities/required unchanged. Interrupted run is not acceptance.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T04:39:31.622617+00:00",
+      "kind": "bounded-Q13-structural-rework",
+      "previous_manifest": "quality-bar-v8-frozen.json",
+      "old_spec_sha256": "4fe972d8be9cffb4390a8cae050395d6c1a55ad60a8a1b811c5316f4a5cabe55",
+      "new_spec_sha256": "5654c996cb0028d587dbf3936f61e5b7c333e0074863eee79cd1dabff3bae891",
+      "reason": "Fresh I1 proves dollar-quote, actual-call AST and unresolved UPDATE gaps plus inert-value false positives. Structural measurement correction, no criteria/priority/required relaxation or domain authority.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T05:00:01.706341+00:00",
+      "kind": "bounded-Q13-static-inference-contract",
+      "old_spec_sha256": "5654c996cb0028d587dbf3936f61e5b7c333e0074863eee79cd1dabff3bae891",
+      "new_spec_sha256": "64c42572f27f18c3576623b307c902d8eccefedf65dd634e1ab61265a03b743b",
+      "reason": "Exact preexisting pure parameter forwarder disclosed without SQL grant; known constant closed-list readiness variants and normal array syntax supported. No required target relaxation.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T05:23:57.575799+00:00",
+      "kind": "corrective-I1-rework",
+      "previous_manifest": "quality-bar-v9-frozen.json",
+      "old_version": "AUD06-v9-structured-AST-SQL-audit",
+      "new_spec_sha256": "c7f8f7574145506449d5885c16d56157c1468fe24362b20e83ddde9451a6379a",
+      "reason": "Fresh immutable I1 demonstrated 6P1/1P2; lexical symbol identity, recursive composition, object/mutation provenance and unsupported SQL command refusal. No required quality target or authorization reduced.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T06:01:53.770699+00:00",
+      "kind": "corrective-I1-rework",
+      "previous_manifest": "quality-bar-v10-frozen.json",
+      "old_version": "AUD06-v10-lexical-identity-SQL-command-audit",
+      "new_spec_sha256": "05a303581bb8bec2c5eed241c790c41a1739c78701a8cf822dcdd6ae318e770d",
+      "reason": "Fresh immutable I1 found transitive escape/destructuring mutation/native method/default namespace/bind/exact-forwarder defects. Correct measurement without changing Q01-Q14 or domain authority.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T06:33:42.565551+00:00",
+      "kind": "bounded-v11-inference-clarification",
+      "old_spec_sha256": "05a303581bb8bec2c5eed241c790c41a1739c78701a8cf822dcdd6ae318e770d",
+      "new_spec_sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "reason": "Exposed reference versus primitive value and query config versus scalar coercion clarified with paired controls. No Q01-Q14 requirement or authority change.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T06:44:34.903036+00:00",
+      "kind": "corrective-I1-rework",
+      "previous_manifest": "quality-bar-v11-frozen.json",
+      "old_spec_sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "new_spec_sha256": "9e2be5e597e56f51005148a54d0c9163dfadc9425d165d467d098538eeaa707f",
+      "reason": "Fresh independent concrete counterexamples require shared array/destructuring selection and stored/getter reference exposure, with paired primitive-read controls. No Q01-Q14 or authorization change.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T07:02:04.178987+00:00",
+      "kind": "bounded-v12-selection-clarification",
+      "old_spec_sha256": "9e2be5e597e56f51005148a54d0c9163dfadc9425d165d467d098538eeaa707f",
+      "new_spec_sha256": "f0da3fe92ea2c54445f3ba8e70b78d7b16d9d193b6cdf5f296ea62ffd91f4a87",
+      "reason": "Static rest/default and receiver identity versus transitive escape clarified under registered structural rework; paired concrete controls, no criteria or authority relaxation.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T07:21:24.711620+00:00",
+      "kind": "corrective-I1-rework",
+      "previous_manifest": "quality-bar-v12-frozen.json",
+      "old_spec_sha256": "f0da3fe92ea2c54445f3ba8e70b78d7b16d9d193b6cdf5f296ea62ffd91f4a87",
+      "new_spec_sha256": "0f0d0fc22d08ddbe89aac18eecc82d3d38864200af75863874f1dadb771ea53a",
+      "reason": "Five bounded false passes and one primitive-copy false rejection require shared projection and stable copy identity; no criteria or authority reduced.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T07:58:45.135430+00:00",
+      "kind": "corrective-I1-rework",
+      "previous_manifest": "quality-bar-v13-frozen.json",
+      "old_spec_sha256": "0f0d0fc22d08ddbe89aac18eecc82d3d38864200af75863874f1dadb771ea53a",
+      "new_spec_sha256": "0763583ae8ce7f8133e61d768407ebd555600cf037071b345b363c1916cf85b5",
+      "reason": "Fresh bounded stored-object/array projection false passes and primitive spread false rejection. Unknown selection is not absence; no criteria/authority relaxed.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T08:38:21.069530+00:00",
+      "kind": "corrective-I1-rework",
+      "previous_manifest": "quality-bar-v14-frozen.json",
+      "old_spec_sha256": "0763583ae8ce7f8133e61d768407ebd555600cf037071b345b363c1916cf85b5",
+      "new_spec_sha256": "fcf44f618fe6aec06c0d101fd7b0574f83f547fec6bf31ea84c8330f81c8753e",
+      "reason": "Fresh concrete own bind member false passes and apply/nested-spread false rejections require origin/effective argument sharing; no criteria or authority reduced.",
+      "criteria_changed": false,
+      "provenance_correction": "Initial shallow-copy registration recorded the new SPEC hash in old_spec_sha256; preserved initial bytes in recovery-20261007/quality-bar-v15-provenance-initial-invalid.json and corrected from immutable quality-bar-v14-frozen.json. Criteria and current SPEC binding unchanged."
+    },
+    {
+      "at": "2026-10-08T09:08:40.458441+00:00",
+      "kind": "corrective-I1-rework",
+      "previous_manifest": "quality-bar-v15-frozen.json",
+      "old_spec_sha256": "fcf44f618fe6aec06c0d101fd7b0574f83f547fec6bf31ea84c8330f81c8753e",
+      "new_spec_sha256": "1a81ba9aafbc4c4b31867a16076882d66583989e2e6b0b66945db3b2349c895f",
+      "reason": "Fresh concrete bound-callable own member false passes and known intrinsic construction/layer false rejections require stable receiver allocation and shared effective invocation normalization; no criteria/authority reduced.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T09:39:10.708171+00:00",
+      "kind": "evidence-driven-rework",
+      "previous_manifest": "quality-bar-v16-frozen.json",
+      "previous_manifest_sha256": "dcf0e104be03da4b09e1e42706fae477fa06a6c1f687444777430144f8111816",
+      "old_spec_sha256": "1a81ba9aafbc4c4b31867a16076882d66583989e2e6b0b66945db3b2349c895f",
+      "new_spec_sha256": "f4e1d35992f7b24150cc238381db41b7745d5d4bdb3933ac61620719d22f5e72",
+      "reason": "Fresh focused v16 REJECT1P1/1P2: known generic own members lost; pure effect-name override rejected. Shared projection repair; criteria and authority unchanged."
+    },
+    {
+      "at": "2026-10-08T10:22:55.689746+00:00",
+      "kind": "evidence-driven-rework",
+      "previous_manifest": "quality-bar-v17-frozen.json",
+      "previous_manifest_sha256": "a711acc66e7f809aa87508e6df421fe7932e951326361d52d1d1bcae2c40d378",
+      "old_spec_sha256": "f4e1d35992f7b24150cc238381db41b7745d5d4bdb3933ac61620719d22f5e72",
+      "new_spec_sha256": "2fe004434eed9e2ace2b31b2c2b762beb1ec5b3e34248ca3149998d0c742fb25",
+      "reason": "Fresh focused v17 REJECT1P1/1P2: known global/imported callable own properties lose identity; pure override false rejection. Stable shared identity repair; original criteria and authority unchanged."
+    },
+    {
+      "at": "2026-10-08T10:39:27.897628+00:00",
+      "kind": "evidence-driven-same-root-rework",
+      "previous_manifest": "quality-bar-v18-frozen.json",
+      "previous_manifest_sha256": "21ec78d84ca0e9e8294f067d5c63322e726f43e9eb4ccf18ca5a8473eee6e6ed",
+      "old_spec_sha256": "2fe004434eed9e2ace2b31b2c2b762beb1ec5b3e34248ca3149998d0c742fb25",
+      "new_spec_sha256": "e2e03eeb06584284bcdc5abebdac4cbb3d33eaf32635e57659ad1c27721a9178",
+      "reason": "Lead I0 three finite CLI pairs concretely expose separate declaration identity for same known module/export; share export identity without widening semantic scope. Original criteria unchanged.",
+      "qualificationCorrection": "Before any v18b BUILD: exit143 belongs to owned verifier session, not an uncompleted corpus gate; initial misattribution source/bar bytes preserved in recovery."
+    },
+    {
+      "at": "2026-10-08T11:32:48.847478+00:00",
+      "kind": "evidence-driven-rework",
+      "previous_manifest": "quality-bar-v18b-frozen.json",
+      "previous_manifest_sha256": "a9307aeabb1d58ea3126e8b1e27c1b88dc8194b4963687bd481de2bada2fc6ae",
+      "old_spec_sha256": "e2e03eeb06584284bcdc5abebdac4cbb3d33eaf32635e57659ad1c27721a9178",
+      "new_spec_sha256": "682f81c749c93d0e8b8937679e2967ab0dab4096abe8e57abd41f7546d376d10",
+      "reason": "Fresh blind focused material REJECT: known distinct HTTP callable member identity collapses onto owner and transfers own pure override. Preserve identity in shared projection; no criterion/authority reduction.",
+      "criteria_changed": false
+    },
+    {
+      "at": "2026-10-08T12:14:18.708869+00:00",
+      "kind": "evidence-driven-rework",
+      "previous_manifest": "quality-bar-v19-frozen.json",
+      "previous_manifest_sha256": "02b9ddee4352306d46a0ce71e1641e4ae2ceb247d0c0fb2ef8140cdb1447034a",
+      "old_spec_sha256": "682f81c749c93d0e8b8937679e2967ab0dab4096abe8e57abd41f7546d376d10",
+      "new_spec_sha256": "d846fce11c9dc7c3b4281a68e2602040cfab59dbf04d1ec6771e114d499527a1",
+      "reason": "Fresh focused material P1: supported selected intrinsic callable drops known own stored sendMessage origin. Preserve shared known selection identity and intrinsic normalization; no criterion or authority reduction. Qualified absence expectation remains conservative/unadjudicated.",
+      "criteria_changed": false
+    }
+  ]
+}

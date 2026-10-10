@@ -1,0 +1,37 @@
+{
+  "at": "2026-10-08T05:06:17.034365+00:00",
+  "status": "IMPLEMENTED_INTEGRATED_FOCUSED_ONLY",
+  "red": {
+    "exitCode": 1,
+    "failed": 25,
+    "passed": 76,
+    "log": "bypass-v8-fresh-red.log"
+  },
+  "firstIntegration": {
+    "exitCode": 0,
+    "passed": 248,
+    "publicScannerExitCode": 1,
+    "qualification": "INTERMEDIATE_NOT_ACCEPTED",
+    "publicReport": "bypass-v9-public-integration-1.json"
+  },
+  "green": {
+    "exitCode": 0,
+    "files": 4,
+    "passed": 273,
+    "log": "bypass-v9-green-integration-2.log"
+  },
+  "publicScanner": {
+    "exitCode": 0,
+    "scannedFiles": 59,
+    "report": "bypass-v9-public-final-precritic.json"
+  },
+  "sources": {
+    "scripts/phase11-bypass-audit.mjs": "8316f495375ba9724f599423eaaed516227f39ad004c9f11790aba35cdda3af1",
+    "scripts/lib/bypass-sql-audit.mjs": "6e44a70609e8b0be6787feaa265fc8879a83a11330337c3cc9531f5391ef5b78",
+    "tests/phase11-bypass-audit.test.js": "76a4ba64881de53d2afb2166b4d87539794ea9d6b0845d0c6ba4731cfe0afbc5",
+    "tests/bypass-sql-audit.test.js": "443df68de81ea2955a715c1ef271237a1b81e6916c910b3f50b2943ee66267e4"
+  },
+  "sourceRuntimeStack": "UNCHANGED",
+  "independentAcceptance": "PENDING",
+  "exitProvenance": "Lead observed actual tool exits; builder raw receipts preserved separately, no fabricated outer raw receipt"
+}

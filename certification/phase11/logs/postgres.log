@@ -1,142 +1,146 @@
 $ npm run test:postgres -- --reporter=default --reporter=json --outputFile=certification/phase11/logs/postgres-report.json
-# certificationId=phase11-72fa77fcda6fad8c-muv8q8tu
-# candidateId=72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267
-# commit=dfe2c1dd992a96a55dd41f5c516352a82f587cbf
-# treeHash=d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569
+# certificationId=phase11-f15cece0c6784845-muznvvts
+# candidateId=f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0
+# commit=7c1fdfc488664c365b4df6423d1b81c60e27ac22
+# treeHash=4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283
 # gate=postgres
 # profile=CONTROLLED_LOCAL
 # databaseConfigured=true
 # realEffects=disabled
-# exitCode=0 durationMs=87371
+# exitCode=0 durationMs=84743
 
 
 > cvg-claw@1.0.0 test:postgres
-> vitest run --testTimeout=60000 --no-file-parallelism packages/persistence/src/__tests__/postgres-migration-smoke.test.ts packages/persistence/src/__tests__/orchestrator-postgres.test.ts packages/persistence/src/__tests__/tenant-isolation.test.ts packages/persistence/src/__tests__/platform-postgres-smoke.test.ts packages/persistence/src/__tests__/platform-approval-postgres.test.ts packages/persistence/src/__tests__/audit-evidence-checkpoint-postgres.test.ts packages/persistence/src/__tests__/session-version-pinning-postgres.test.ts packages/persistence/src/__tests__/outbox-durability.test.ts packages/persistence/src/__tests__/effect-journal-postgres.test.ts packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts apps/api/src/__tests__/postgres-persistence-mode.test.ts apps/api/src/__tests__/webhook-security.test.ts apps/api/src/__tests__/journeys-api-postgres.test.ts apps/worker/src/__tests__/postgres-outbox-bridge.integration.test.ts packages/chaos/src/__tests__/chaos-postgres.test.ts packages/persistence/src/__tests__/journeys-postgres.test.ts apps/worker/src/__tests__/continuous-worker-postgres.integration.test.ts apps/worker/src/__tests__/postgres-role-preflight.test.ts packages/persistence/src/__tests__/attendance-approval-postgres.test.ts packages/persistence/src/__tests__/journey-task-atomicity.test.ts packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts apps/worker/src/__tests__/kernel-composition-postgres.integration.test.ts apps/worker/src/__tests__/kernel-durable-orchestrator-postgres.test.ts packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts packages/persistence/src/__tests__/retention-postgres.test.ts apps/api/src/__tests__/operator-replay-store.test.ts apps/api/src/__tests__/operator-replay-guard.test.ts apps/worker/src/__tests__/continuous-worker-entrypoint.integration.test.ts packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts --reporter=default --reporter=json --outputFile=certification/phase11/logs/postgres-report.json
+> vitest run --testTimeout=60000 --no-file-parallelism packages/persistence/src/__tests__/postgres-migration-smoke.test.ts packages/persistence/src/__tests__/orchestrator-postgres.test.ts packages/persistence/src/__tests__/tenant-isolation.test.ts packages/persistence/src/__tests__/platform-postgres-smoke.test.ts packages/persistence/src/__tests__/platform-approval-postgres.test.ts packages/persistence/src/__tests__/audit-evidence-checkpoint-postgres.test.ts packages/persistence/src/__tests__/session-version-pinning-postgres.test.ts packages/persistence/src/__tests__/outbox-durability.test.ts packages/persistence/src/__tests__/effect-journal-postgres.test.ts packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts apps/api/src/__tests__/postgres-persistence-mode.test.ts apps/api/src/__tests__/webhook-security.test.ts apps/api/src/__tests__/journeys-api-postgres.test.ts apps/worker/src/__tests__/postgres-outbox-bridge.integration.test.ts packages/chaos/src/__tests__/chaos-postgres.test.ts packages/persistence/src/__tests__/journeys-postgres.test.ts apps/worker/src/__tests__/continuous-worker-postgres.integration.test.ts apps/worker/src/__tests__/postgres-role-preflight.test.ts packages/persistence/src/__tests__/attendance-approval-postgres.test.ts packages/persistence/src/__tests__/journey-task-atomicity.test.ts packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts apps/worker/src/__tests__/kernel-composition-postgres.integration.test.ts apps/worker/src/__tests__/kernel-durable-orchestrator-postgres.test.ts packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts packages/persistence/src/__tests__/retention-postgres.test.ts apps/api/src/__tests__/operator-replay-store.test.ts apps/api/src/__tests__/operator-replay-guard.test.ts apps/worker/src/__tests__/continuous-worker-entrypoint.integration.test.ts packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts apps/api/src/__tests__/postgres-rate-limit.test.ts apps/api/src/__tests__/shared-rate-boundary.test.ts --reporter=default --reporter=json --outputFile=certification/phase11/logs/postgres-report.json
 
 
-[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/home/ricardo/cvg-claw[39m
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/tmp/cvg-aud06-certification-aottnvx0/repo[39m
 
- [32m✓[39m packages/persistence/src/__tests__/outbox-durability.test.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 6736[2mms[22m[39m
-     [33m[2m✓[22m[39m backfills a legacy processed row while RLS is already forced [33m 501[2mms[22m[39m
-     [33m[2m✓[22m[39m fences a stale claim when a worker id is reused after takeover [33m 963[2mms[22m[39m
-     [33m[2m✓[22m[39m keeps the effect journal when the ack loses its lease after the effect ran [33m 980[2mms[22m[39m
-     [33m[2m✓[22m[39m keeps the committed effect journal across a lease takeover race [33m 982[2mms[22m[39m
-     [33m[2m✓[22m[39m fences an ack when the lease expires before the final compare-and-swap [33m 887[2mms[22m[39m
-     [33m[2m✓[22m[39m redacts legacy rows without making routable pending work disappear [33m 512[2mms[22m[39m
-     [33m[2m✓[22m[39m claims once across two connections, journals at-least-once ack, retries and requeues in-place [33m 985[2mms[22m[39m
-     [33m[2m✓[22m[39m commits inbound message and durable intent together [33m 921[2mms[22m[39m
- [32m✓[39m apps/api/src/__tests__/postgres-persistence-mode.test.ts [2m([22m[2m25 tests[22m[2m)[22m[33m 5691[2mms[22m[39m
-     [33m[2m✓[22m[39m commits and rolls back the tenant-scoped runtime finalizer atomically [33m 1038[2mms[22m[39m
-     [33m[2m✓[22m[39m validates tenant-scoped startup with separate migration and runtime roles [33m 1483[2mms[22m[39m
-     [33m[2m✓[22m[39m runs inbound, timeline, task, approval and audit endpoints against PostgreSQL when configured [33m 1017[2mms[22m[39m
-     [33m[2m✓[22m[39m keeps PostgreSQL inbound idempotency isolated by tenant [33m 961[2mms[22m[39m
-     [33m[2m✓[22m[39m keeps human takeover and session continuation fail-closed on PostgreSQL [33m 989[2mms[22m[39m
- [32m✓[39m packages/persistence/src/__tests__/platform-postgres-smoke.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 4796[2mms[22m[39m
-     [33m[2m✓[22m[39m persists an immutable published version and a tenant-scoped trace [33m 967[2mms[22m[39m
-     [33m[2m✓[22m[39m persists versioned suites and redacted A/B run metadata under tenant RLS [33m 950[2mms[22m[39m
-     [33m[2m✓[22m[39m persists tenant-scoped plugin metadata with immutable identity and guarded status [33m 1026[2mms[22m[39m
-     [33m[2m✓[22m[39m persists tenant-scoped knowledge source metadata without content or lifecycle bypass [33m 910[2mms[22m[39m
-     [33m[2m✓[22m[39m persists a validated release-candidate evidence ledger without mutating the version [33m 941[2mms[22m[39m
- [32m✓[39m apps/worker/src/__tests__/continuous-worker-entrypoint.integration.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 3796[2mms[22m[39m
-     [33m[2m✓[22m[39m consumes events around a restart and drains on a real SIGTERM without loss or duplication [33m 2268[2mms[22m[39m
-     [33m[2m✓[22m[39m runs the role preflight before the first claim and leaves the queue untouched on rejection [33m 1525[2mms[22m[39m
- [32m✓[39m apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts [2m([22m[2m79 tests[22m[2m)[22m[33m 3621[2mms[22m[39m
-     [33m[2m✓[22m[39m resolves an expired waiting approval and skips pending ones [33m 303[2mms[22m[39m
-{"event":"worker.started","level":"info","timestamp":"2026-10-05T13:11:13.155Z","workerId":"worker-pg-continuous-192-a","concurrency":2,"pollIntervalMs":5,"idleMaxBackoffMs":5000,"errorBackoffMs":500,"errorMaxBackoffMs":30000,"leaseMs":1000,"heartbeatIntervalMs":333,"drainMs":5000,"backlogProbe":true,"sweeps":false,"externalEffects":false,"durable":true}
-{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-05T13:11:13.156Z","workerId":"worker-pg-continuous-192-a","reason":"start","claimed":0,"processed":0,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":0,"released":0,"lag":null,"inFlight":0}
-{"event":"worker.metric","name":"worker_outbox_lag","value":0,"attributes":{"operation":"outbox"},"timestamp":"2026-10-05T13:11:13.191Z"}
-{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-05T13:11:13.191Z","workerId":"worker-pg-continuous-192-a","backoffMs":5,"lag":0}
-{"event":"worker.metric","name":"worker_outbox_processed_total","value":1,"attributes":{"status":"processed"},"timestamp":"2026-10-05T13:11:13.193Z"}
-{"event":"worker.outbox.processed","level":"info","timestamp":"2026-10-05T13:11:13.194Z","eventId":"outbox_50c4291e-c497-49c3-b454-7883c71fb478","workerId":"worker-pg-continuous-192-a","status":"processed","attempt":1,"leaseLost":false,"operation":"outbox"}
-{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-05T13:11:13.200Z","workerId":"worker-pg-continuous-192-a","backoffMs":10,"lag":0}
-{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-05T13:11:13.210Z","workerId":"worker-pg-continuous-192-a","reason":"stop","claimed":1,"processed":1,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":2,"released":0,"lag":0,"inFlight":0}
-{"event":"worker.stopped","level":"info","timestamp":"2026-10-05T13:11:13.210Z","workerId":"worker-pg-continuous-192-a","drained":true,"released":0,"releaseFailed":0,"processed":1,"failed":0,"deadLettered":0,"lag":0}
-{"event":"worker.started","level":"info","timestamp":"2026-10-05T13:11:13.218Z","workerId":"worker-pg-continuous-192-b","concurrency":2,"pollIntervalMs":5,"idleMaxBackoffMs":5000,"errorBackoffMs":500,"errorMaxBackoffMs":30000,"leaseMs":1000,"heartbeatIntervalMs":333,"drainMs":5000,"backlogProbe":true,"sweeps":false,"externalEffects":false,"durable":true}
-{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-05T13:11:13.218Z","workerId":"worker-pg-continuous-192-b","reason":"start","claimed":0,"processed":0,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":0,"released":0,"lag":null,"inFlight":0}
-{"event":"worker.metric","name":"worker_outbox_dead_lettered_total","value":1,"attributes":{"status":"dead_letter"},"timestamp":"2026-10-05T13:11:13.245Z"}
-{"event":"worker.outbox.dead_letter","level":"info","timestamp":"2026-10-05T13:11:13.245Z","eventId":"outbox_8c3bccd3-6b68-4db1-b14d-3c8a2fa5b7eb","workerId":"worker-pg-continuous-192-b","status":"dead_letter","attempt":1,"leaseLost":false,"error":"[redacted-outbox-error]","operation":"outbox"}
-{"event":"worker.metric","name":"worker_outbox_lag","value":0,"attributes":{"operation":"outbox"},"timestamp":"2026-10-05T13:11:13.254Z"}
-{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-05T13:11:13.254Z","workerId":"worker-pg-continuous-192-b","backoffMs":5,"lag":0}
-{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-05T13:11:13.262Z","workerId":"worker-pg-continuous-192-b","backoffMs":10,"lag":0}
-{"event":"worker.metric","name":"worker_outbox_processed_total","value":1,"attributes":{"status":"processed"},"timestamp":"2026-10-05T13:11:13.262Z"}
-{"event":"worker.outbox.processed","level":"info","timestamp":"2026-10-05T13:11:13.262Z","eventId":"outbox_f34f3b5a-91c4-4668-9c44-bfe4ee11d9a6","workerId":"worker-pg-continuous-192-b","status":"processed","attempt":1,"leaseLost":false,"operation":"outbox"}
-{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-05T13:11:13.274Z","workerId":"worker-pg-continuous-192-b","backoffMs":20,"lag":0}
-{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-05T13:11:13.274Z","workerId":"worker-pg-continuous-192-b","reason":"stop","claimed":2,"processed":1,"failed":0,"deadLettered":1,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":3,"released":0,"lag":0,"inFlight":0}
-{"event":"worker.stopped","level":"info","timestamp":"2026-10-05T13:11:13.274Z","workerId":"worker-pg-continuous-192-b","drained":true,"released":0,"releaseFailed":0,"processed":1,"failed":0,"deadLettered":1,"lag":0}
-{"event":"worker.started","level":"info","timestamp":"2026-10-05T13:11:14.415Z","workerId":"worker-pg-continuous-192-d","concurrency":2,"pollIntervalMs":5,"idleMaxBackoffMs":5000,"errorBackoffMs":500,"errorMaxBackoffMs":30000,"leaseMs":1000,"heartbeatIntervalMs":333,"drainMs":5000,"backlogProbe":true,"sweeps":false,"externalEffects":false,"durable":true}
-{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-05T13:11:14.415Z","workerId":"worker-pg-continuous-192-d","reason":"start","claimed":0,"processed":0,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":0,"released":0,"lag":null,"inFlight":0}
-{"event":"worker.metric","name":"worker_outbox_processed_total","value":1,"attributes":{"status":"processed"},"timestamp":"2026-10-05T13:11:14.445Z"}
-{"event":"worker.outbox.processed","level":"info","timestamp":"2026-10-05T13:11:14.445Z","eventId":"outbox_fdb1dfd8-4a44-42fe-8bd9-c2f438c2deb2","workerId":"worker-pg-continuous-192-d","status":"processed","attempt":1,"leaseLost":false,"operation":"outbox"}
-{"event":"worker.metric","name":"worker_outbox_lag","value":0,"attributes":{"operation":"outbox"},"timestamp":"2026-10-05T13:11:14.451Z"}
-{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-05T13:11:14.451Z","workerId":"worker-pg-continuous-192-d","backoffMs":5,"lag":0}
-{"event":"worker.metric","name":"worker_outbox_processed_total","value":1,"attributes":{"status":"processed"},"timestamp":"2026-10-05T13:11:14.458Z"}
-{"event":"worker.outbox.processed","level":"info","timestamp":"2026-10-05T13:11:14.458Z","eventId":"outbox_2927cd6a-ec84-4773-9c90-47df6d7981f6","workerId":"worker-pg-continuous-192-d","status":"processed","attempt":1,"leaseLost":false,"operation":"outbox"}
-{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-05T13:11:14.458Z","workerId":"worker-pg-continuous-192-d","backoffMs":10,"lag":0}
-{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-05T13:11:14.465Z","workerId":"worker-pg-continuous-192-d","reason":"stop","claimed":2,"processed":2,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":2,"released":0,"lag":0,"inFlight":0}
-{"event":"worker.stopped","level":"info","timestamp":"2026-10-05T13:11:14.465Z","workerId":"worker-pg-continuous-192-d","drained":true,"released":0,"releaseFailed":0,"processed":2,"failed":0,"deadLettered":0,"lag":0}
-{"event":"worker.started","level":"info","timestamp":"2026-10-05T13:11:14.469Z","workerId":"worker-pg-continuous-192-e","concurrency":1,"pollIntervalMs":5,"idleMaxBackoffMs":5000,"errorBackoffMs":500,"errorMaxBackoffMs":30000,"leaseMs":1000,"heartbeatIntervalMs":333,"drainMs":5000,"backlogProbe":true,"sweeps":false,"externalEffects":false,"durable":true}
-{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-05T13:11:14.470Z","workerId":"worker-pg-continuous-192-e","reason":"start","claimed":0,"processed":0,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":0,"released":0,"lag":null,"inFlight":0}
-{"event":"worker.metric","name":"worker_outbox_lag","value":0,"attributes":{"operation":"outbox"},"timestamp":"2026-10-05T13:11:14.495Z"}
-{"event":"worker.shutdown_deferred_release","level":"warn","timestamp":"2026-10-05T13:11:14.525Z","eventId":"outbox_8d660b0e-8fa7-4bba-9fd9-9697cebe0284","workerId":"worker-pg-continuous-192-e","leaseAction":"expire_for_retry","operation":"outbox"}
-{"event":"worker.metric","name":"worker_outbox_shutdown_releases_total","value":1,"attributes":{"outcome":"deferred"},"timestamp":"2026-10-05T13:11:14.526Z"}
-{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-05T13:11:14.526Z","workerId":"worker-pg-continuous-192-e","reason":"stop","claimed":1,"processed":0,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":0,"released":0,"lag":0,"inFlight":1}
-{"event":"worker.stopped","level":"info","timestamp":"2026-10-05T13:11:14.526Z","workerId":"worker-pg-continuous-192-e","drained":false,"released":0,"releaseFailed":0,"processed":0,"failed":0,"deadLettered":0,"lag":0}
-{"event":"worker.metric","name":"worker_outbox_processed_total","value":1,"attributes":{"status":"processed"},"timestamp":"2026-10-05T13:11:14.535Z"}
-{"event":"worker.outbox.processed","level":"info","timestamp":"2026-10-05T13:11:14.535Z","eventId":"outbox_8d660b0e-8fa7-4bba-9fd9-9697cebe0284","workerId":"worker-pg-continuous-192-e","status":"processed","attempt":1,"leaseLost":false,"operation":"outbox"}
-{"event":"worker.started","level":"info","timestamp":"2026-10-05T13:11:14.539Z","workerId":"worker-pg-continuous-192-f","concurrency":2,"pollIntervalMs":5,"idleMaxBackoffMs":5000,"errorBackoffMs":500,"errorMaxBackoffMs":30000,"leaseMs":1000,"heartbeatIntervalMs":333,"drainMs":5000,"backlogProbe":true,"sweeps":false,"externalEffects":false,"durable":true}
-{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-05T13:11:14.539Z","workerId":"worker-pg-continuous-192-f","reason":"start","claimed":0,"processed":0,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":0,"released":0,"lag":null,"inFlight":0}
-{"event":"worker.metric","name":"worker_outbox_lag","value":0,"attributes":{"operation":"outbox"},"timestamp":"2026-10-05T13:11:14.555Z"}
-{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-05T13:11:14.555Z","workerId":"worker-pg-continuous-192-f","backoffMs":5,"lag":0}
-{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-05T13:11:14.555Z","workerId":"worker-pg-continuous-192-f","reason":"stop","claimed":0,"processed":0,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":1,"released":0,"lag":0,"inFlight":0}
-{"event":"worker.stopped","level":"info","timestamp":"2026-10-05T13:11:14.555Z","workerId":"worker-pg-continuous-192-f","drained":true,"released":0,"releaseFailed":0,"processed":0,"failed":0,"deadLettered":0,"lag":0}
- [32m✓[39m apps/worker/src/__tests__/continuous-worker-postgres.integration.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 3371[2mms[22m[39m
-     [33m[2m✓[22m[39m consumes events across a simulated restart and dead-letters a poison event [33m 1096[2mms[22m[39m
-     [33m[2m✓[22m[39m observes queue lag, completes in-flight work on shutdown and releases bounded leases [33m 1284[2mms[22m[39m
-     [33m[2m✓[22m[39m composes durable approval and journal sweeps for the kernel worker [33m 989[2mms[22m[39m
- [32m✓[39m packages/persistence/src/__tests__/retention-postgres.test.ts [2m([22m[2m13 tests[22m[2m)[22m[33m 2625[2mms[22m[39m
- [32m✓[39m apps/api/src/__tests__/journeys-api-postgres.test.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 2323[2mms[22m[39m
-     [33m[2m✓[22m[39m applies migration 0014 during postgres startup before serving journeys [33m 918[2mms[22m[39m
- [32m✓[39m packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts [2m([22m[2m14 tests[22m[2m)[22m[33m 2233[2mms[22m[39m
-     [33m[2m✓[22m[39m applies 0015 additively over 0014 with the checksum guard [33m 965[2mms[22m[39m
- [32m✓[39m packages/persistence/src/__tests__/platform-approval-postgres.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 2154[2mms[22m[39m
-     [33m[2m✓[22m[39m persists bindings and consumes approvals atomically exactly once [33m 1170[2mms[22m[39m
-     [33m[2m✓[22m[39m enforces tenant visibility for the durable approval table under FORCE RLS [33m 982[2mms[22m[39m
- [32m✓[39m packages/persistence/src/__tests__/journeys-postgres.test.ts [2m([22m[2m24 tests[22m[2m)[22m[33m 2358[2mms[22m[39m
-     [33m[2m✓[22m[39m applies 0014 additively over a 0013 database and preserves prior data [33m 976[2mms[22m[39m
- [32m✓[39m apps/worker/src/__tests__/kernel-composition-postgres.integration.test.ts [2m([22m[2m14 tests[22m[2m)[22m[33m 1801[2mms[22m[39m
-     [33m[2m✓[22m[39m runs the approved draft write once and replays without a second effect [33m 326[2mms[22m[39m
- [32m✓[39m apps/worker/src/__tests__/kernel-durable-orchestrator-postgres.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 1708[2mms[22m[39m
-     [33m[2m✓[22m[39m creates a durable Goal and stops at WAITING_APPROVAL through the governed kernel [33m 322[2mms[22m[39m
- [32m✓[39m apps/api/src/__tests__/operator-replay-store.test.ts [2m([22m[2m20 tests[22m[2m)[22m[33m 1646[2mms[22m[39m
-     [33m[2m✓[22m[39m reclaims expired claims and purges only expired rows [33m 1533[2mms[22m[39m
- [32m✓[39m packages/persistence/src/__tests__/tenant-isolation.test.ts [2m([22m[2m14 tests[22m[2m)[22m[33m 1450[2mms[22m[39m
-     [33m[2m✓[22m[39m enforces cross-tenant isolation with a non-BYPASSRLS role and resets pooled context [33m 1066[2mms[22m[39m
-     [33m[2m✓[22m[39m quarantines legacy tenant mismatches before enabling RLS [33m 356[2mms[22m[39m
- [32m✓[39m apps/worker/src/__tests__/postgres-role-preflight.test.ts [2m([22m[2m13 tests[22m[2m)[22m[33m 1343[2mms[22m[39m
- [32m✓[39m apps/worker/src/__tests__/postgres-outbox-bridge.integration.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1336[2mms[22m[39m
-     [33m[2m✓[22m[39m consumes the event written by the API through a separate worker pool [33m 1334[2mms[22m[39m
- [32m✓[39m packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts [2m([22m[2m19 tests[22m[2m)[22m[33m 1169[2mms[22m[39m
- [32m✓[39m packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 1196[2mms[22m[39m
- [32m✓[39m packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 1187[2mms[22m[39m
- [32m✓[39m packages/persistence/src/__tests__/orchestrator-postgres.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 1094[2mms[22m[39m
- [32m✓[39m packages/persistence/src/__tests__/effect-journal-postgres.test.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 1077[2mms[22m[39m
- [32m✓[39m packages/persistence/src/__tests__/postgres-migration-smoke.test.ts [2m([22m[2m9 tests[22m[2m)[22m[33m 1017[2mms[22m[39m
-     [33m[2m✓[22m[39m applies the migration and persists runtime evidence in an isolated PostgreSQL schema [33m 997[2mms[22m[39m
- [32m✓[39m packages/persistence/src/__tests__/attendance-approval-postgres.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 995[2mms[22m[39m
-     [33m[2m✓[22m[39m forces two connections past the same pending read and rolls back failed audit [33m 994[2mms[22m[39m
- [32m✓[39m packages/persistence/src/__tests__/session-version-pinning-postgres.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1015[2mms[22m[39m
-     [33m[2m✓[22m[39m binds sessions atomically under the tenant-aware migration and never replaces the pin [33m 1011[2mms[22m[39m
- [32m✓[39m packages/persistence/src/__tests__/journey-task-atomicity.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 1041[2mms[22m[39m
- [32m✓[39m apps/api/src/__tests__/webhook-security.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 304[2mms[22m[39m
- [32m✓[39m apps/api/src/__tests__/operator-replay-guard.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 251[2mms[22m[39m
- [32m✓[39m packages/chaos/src/__tests__/chaos-postgres.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 72[2mms[22m[39m
- [32m✓[39m packages/persistence/src/__tests__/audit-evidence-checkpoint-postgres.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/outbox-durability.test.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 6206[2mms[22m[39m
+     [33m[2m✓[22m[39m backfills a legacy processed row while RLS is already forced [33m 458[2mms[22m[39m
+     [33m[2m✓[22m[39m fences a stale claim when a worker id is reused after takeover [33m 901[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps the effect journal when the ack loses its lease after the effect ran [33m 884[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps the committed effect journal across a lease takeover race [33m 886[2mms[22m[39m
+     [33m[2m✓[22m[39m fences an ack when the lease expires before the final compare-and-swap [33m 846[2mms[22m[39m
+     [33m[2m✓[22m[39m redacts legacy rows without making routable pending work disappear [33m 465[2mms[22m[39m
+     [33m[2m✓[22m[39m claims once across two connections, journals at-least-once ack, retries and requeues in-place [33m 902[2mms[22m[39m
+     [33m[2m✓[22m[39m commits inbound message and durable intent together [33m 859[2mms[22m[39m
+ [32m✓[39m apps/api/src/__tests__/postgres-persistence-mode.test.ts [2m([22m[2m25 tests[22m[2m)[22m[33m 4801[2mms[22m[39m
+     [33m[2m✓[22m[39m commits and rolls back the tenant-scoped runtime finalizer atomically [33m 892[2mms[22m[39m
+     [33m[2m✓[22m[39m validates tenant-scoped startup with separate migration and runtime roles [33m 1027[2mms[22m[39m
+     [33m[2m✓[22m[39m runs inbound, timeline, task, approval and audit endpoints against PostgreSQL when configured [33m 882[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps PostgreSQL inbound idempotency isolated by tenant [33m 917[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps human takeover and session continuation fail-closed on PostgreSQL [33m 911[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/platform-postgres-smoke.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 4297[2mms[22m[39m
+     [33m[2m✓[22m[39m persists an immutable published version and a tenant-scoped trace [33m 885[2mms[22m[39m
+     [33m[2m✓[22m[39m persists versioned suites and redacted A/B run metadata under tenant RLS [33m 855[2mms[22m[39m
+     [33m[2m✓[22m[39m persists tenant-scoped plugin metadata with immutable identity and guarded status [33m 841[2mms[22m[39m
+     [33m[2m✓[22m[39m persists tenant-scoped knowledge source metadata without content or lifecycle bypass [33m 856[2mms[22m[39m
+     [33m[2m✓[22m[39m persists a validated release-candidate evidence ledger without mutating the version [33m 859[2mms[22m[39m
+ [32m✓[39m apps/worker/src/__tests__/continuous-worker-entrypoint.integration.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 3523[2mms[22m[39m
+     [33m[2m✓[22m[39m consumes events around a restart and drains on a real SIGTERM without loss or duplication [33m 2100[2mms[22m[39m
+     [33m[2m✓[22m[39m runs the role preflight before the first claim and leaves the queue untouched on rejection [33m 1422[2mms[22m[39m
+ [32m✓[39m apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts [2m([22m[2m79 tests[22m[2m)[22m[33m 3044[2mms[22m[39m
+{"event":"worker.started","level":"info","timestamp":"2026-10-08T15:51:26.956Z","workerId":"worker-pg-continuous-192-a","concurrency":2,"pollIntervalMs":5,"idleMaxBackoffMs":5000,"errorBackoffMs":500,"errorMaxBackoffMs":30000,"leaseMs":1000,"heartbeatIntervalMs":333,"drainMs":5000,"backlogProbe":true,"sweeps":false,"externalEffects":false,"durable":true}
+{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-08T15:51:26.958Z","workerId":"worker-pg-continuous-192-a","reason":"start","claimed":0,"processed":0,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":0,"released":0,"lag":null,"inFlight":0}
+{"event":"worker.metric","name":"worker_outbox_processed_total","value":1,"attributes":{"status":"processed"},"timestamp":"2026-10-08T15:51:26.987Z"}
+{"event":"worker.outbox.processed","level":"info","timestamp":"2026-10-08T15:51:26.988Z","eventId":"outbox_9577ab9a-035d-4b3b-b488-06f72a387ae0","workerId":"worker-pg-continuous-192-a","status":"processed","attempt":1,"leaseLost":false,"operation":"outbox"}
+{"event":"worker.metric","name":"worker_outbox_lag","value":0,"attributes":{"operation":"outbox"},"timestamp":"2026-10-08T15:51:26.988Z"}
+{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-08T15:51:26.988Z","workerId":"worker-pg-continuous-192-a","backoffMs":5,"lag":0}
+{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-08T15:51:26.996Z","workerId":"worker-pg-continuous-192-a","backoffMs":10,"lag":0}
+{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-08T15:51:27.009Z","workerId":"worker-pg-continuous-192-a","backoffMs":20,"lag":0}
+{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-08T15:51:27.011Z","workerId":"worker-pg-continuous-192-a","reason":"stop","claimed":1,"processed":1,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":3,"released":0,"lag":0,"inFlight":0}
+{"event":"worker.stopped","level":"info","timestamp":"2026-10-08T15:51:27.011Z","workerId":"worker-pg-continuous-192-a","drained":true,"released":0,"releaseFailed":0,"processed":1,"failed":0,"deadLettered":0,"lag":0}
+{"event":"worker.started","level":"info","timestamp":"2026-10-08T15:51:27.017Z","workerId":"worker-pg-continuous-192-b","concurrency":2,"pollIntervalMs":5,"idleMaxBackoffMs":5000,"errorBackoffMs":500,"errorMaxBackoffMs":30000,"leaseMs":1000,"heartbeatIntervalMs":333,"drainMs":5000,"backlogProbe":true,"sweeps":false,"externalEffects":false,"durable":true}
+{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-08T15:51:27.017Z","workerId":"worker-pg-continuous-192-b","reason":"start","claimed":0,"processed":0,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":0,"released":0,"lag":null,"inFlight":0}
+{"event":"worker.metric","name":"worker_outbox_dead_lettered_total","value":1,"attributes":{"status":"dead_letter"},"timestamp":"2026-10-08T15:51:27.039Z"}
+{"event":"worker.outbox.dead_letter","level":"info","timestamp":"2026-10-08T15:51:27.039Z","eventId":"outbox_01374428-e533-4b6d-bde1-2b639b14c1a2","workerId":"worker-pg-continuous-192-b","status":"dead_letter","attempt":1,"leaseLost":false,"error":"[redacted-outbox-error]","operation":"outbox"}
+{"event":"worker.metric","name":"worker_outbox_lag","value":0,"attributes":{"operation":"outbox"},"timestamp":"2026-10-08T15:51:27.048Z"}
+{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-08T15:51:27.048Z","workerId":"worker-pg-continuous-192-b","backoffMs":5,"lag":0}
+{"event":"worker.metric","name":"worker_outbox_processed_total","value":1,"attributes":{"status":"processed"},"timestamp":"2026-10-08T15:51:27.054Z"}
+{"event":"worker.outbox.processed","level":"info","timestamp":"2026-10-08T15:51:27.054Z","eventId":"outbox_59fa8b02-f106-4706-874e-f8363875166b","workerId":"worker-pg-continuous-192-b","status":"processed","attempt":1,"leaseLost":false,"operation":"outbox"}
+{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-08T15:51:27.055Z","workerId":"worker-pg-continuous-192-b","backoffMs":10,"lag":0}
+{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-08T15:51:27.068Z","workerId":"worker-pg-continuous-192-b","backoffMs":20,"lag":0}
+{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-08T15:51:27.070Z","workerId":"worker-pg-continuous-192-b","reason":"stop","claimed":2,"processed":1,"failed":0,"deadLettered":1,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":3,"released":0,"lag":0,"inFlight":0}
+{"event":"worker.stopped","level":"info","timestamp":"2026-10-08T15:51:27.070Z","workerId":"worker-pg-continuous-192-b","drained":true,"released":0,"releaseFailed":0,"processed":1,"failed":0,"deadLettered":1,"lag":0}
+{"event":"worker.started","level":"info","timestamp":"2026-10-08T15:51:28.131Z","workerId":"worker-pg-continuous-192-d","concurrency":2,"pollIntervalMs":5,"idleMaxBackoffMs":5000,"errorBackoffMs":500,"errorMaxBackoffMs":30000,"leaseMs":1000,"heartbeatIntervalMs":333,"drainMs":5000,"backlogProbe":true,"sweeps":false,"externalEffects":false,"durable":true}
+{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-08T15:51:28.132Z","workerId":"worker-pg-continuous-192-d","reason":"start","claimed":0,"processed":0,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":0,"released":0,"lag":null,"inFlight":0}
+{"event":"worker.metric","name":"worker_outbox_processed_total","value":1,"attributes":{"status":"processed"},"timestamp":"2026-10-08T15:51:28.155Z"}
+{"event":"worker.outbox.processed","level":"info","timestamp":"2026-10-08T15:51:28.155Z","eventId":"outbox_6c437e0a-2144-4e97-80ad-a6121d97e356","workerId":"worker-pg-continuous-192-d","status":"processed","attempt":1,"leaseLost":false,"operation":"outbox"}
+{"event":"worker.metric","name":"worker_outbox_lag","value":0,"attributes":{"operation":"outbox"},"timestamp":"2026-10-08T15:51:28.162Z"}
+{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-08T15:51:28.162Z","workerId":"worker-pg-continuous-192-d","backoffMs":5,"lag":0}
+{"event":"worker.metric","name":"worker_outbox_processed_total","value":1,"attributes":{"status":"processed"},"timestamp":"2026-10-08T15:51:28.168Z"}
+{"event":"worker.outbox.processed","level":"info","timestamp":"2026-10-08T15:51:28.168Z","eventId":"outbox_054b7b86-a59e-4ffd-90e1-6996bd2d334a","workerId":"worker-pg-continuous-192-d","status":"processed","attempt":1,"leaseLost":false,"operation":"outbox"}
+{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-08T15:51:28.169Z","workerId":"worker-pg-continuous-192-d","backoffMs":10,"lag":0}
+{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-08T15:51:28.181Z","workerId":"worker-pg-continuous-192-d","backoffMs":20,"lag":0}
+{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-08T15:51:28.182Z","workerId":"worker-pg-continuous-192-d","reason":"stop","claimed":2,"processed":2,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":3,"released":0,"lag":0,"inFlight":0}
+{"event":"worker.stopped","level":"info","timestamp":"2026-10-08T15:51:28.182Z","workerId":"worker-pg-continuous-192-d","drained":true,"released":0,"releaseFailed":0,"processed":2,"failed":0,"deadLettered":0,"lag":0}
+{"event":"worker.started","level":"info","timestamp":"2026-10-08T15:51:28.186Z","workerId":"worker-pg-continuous-192-e","concurrency":1,"pollIntervalMs":5,"idleMaxBackoffMs":5000,"errorBackoffMs":500,"errorMaxBackoffMs":30000,"leaseMs":1000,"heartbeatIntervalMs":333,"drainMs":5000,"backlogProbe":true,"sweeps":false,"externalEffects":false,"durable":true}
+{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-08T15:51:28.186Z","workerId":"worker-pg-continuous-192-e","reason":"start","claimed":0,"processed":0,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":0,"released":0,"lag":null,"inFlight":0}
+{"event":"worker.metric","name":"worker_outbox_lag","value":0,"attributes":{"operation":"outbox"},"timestamp":"2026-10-08T15:51:28.208Z"}
+{"event":"worker.shutdown_deferred_release","level":"warn","timestamp":"2026-10-08T15:51:28.239Z","eventId":"outbox_dca37a9d-9f8a-4f83-bbff-6d3df74a75eb","workerId":"worker-pg-continuous-192-e","leaseAction":"expire_for_retry","operation":"outbox"}
+{"event":"worker.metric","name":"worker_outbox_shutdown_releases_total","value":1,"attributes":{"outcome":"deferred"},"timestamp":"2026-10-08T15:51:28.239Z"}
+{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-08T15:51:28.239Z","workerId":"worker-pg-continuous-192-e","reason":"stop","claimed":1,"processed":0,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":0,"released":0,"lag":0,"inFlight":1}
+{"event":"worker.stopped","level":"info","timestamp":"2026-10-08T15:51:28.239Z","workerId":"worker-pg-continuous-192-e","drained":false,"released":0,"releaseFailed":0,"processed":0,"failed":0,"deadLettered":0,"lag":0}
+{"event":"worker.metric","name":"worker_outbox_processed_total","value":1,"attributes":{"status":"processed"},"timestamp":"2026-10-08T15:51:28.247Z"}
+{"event":"worker.outbox.processed","level":"info","timestamp":"2026-10-08T15:51:28.247Z","eventId":"outbox_dca37a9d-9f8a-4f83-bbff-6d3df74a75eb","workerId":"worker-pg-continuous-192-e","status":"processed","attempt":1,"leaseLost":false,"operation":"outbox"}
+{"event":"worker.started","level":"info","timestamp":"2026-10-08T15:51:28.249Z","workerId":"worker-pg-continuous-192-f","concurrency":2,"pollIntervalMs":5,"idleMaxBackoffMs":5000,"errorBackoffMs":500,"errorMaxBackoffMs":30000,"leaseMs":1000,"heartbeatIntervalMs":333,"drainMs":5000,"backlogProbe":true,"sweeps":false,"externalEffects":false,"durable":true}
+{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-08T15:51:28.249Z","workerId":"worker-pg-continuous-192-f","reason":"start","claimed":0,"processed":0,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":0,"released":0,"lag":null,"inFlight":0}
+{"event":"worker.metric","name":"worker_outbox_lag","value":0,"attributes":{"operation":"outbox"},"timestamp":"2026-10-08T15:51:28.262Z"}
+{"event":"worker.idle_backoff","level":"debug","timestamp":"2026-10-08T15:51:28.262Z","workerId":"worker-pg-continuous-192-f","backoffMs":5,"lag":0}
+{"event":"worker.outbox.summary","level":"info","timestamp":"2026-10-08T15:51:28.262Z","workerId":"worker-pg-continuous-192-f","reason":"stop","claimed":0,"processed":0,"failed":0,"deadLettered":0,"handoffs":0,"errors":0,"claimFailures":0,"leaseLost":0,"heartbeats":0,"idlePolls":1,"released":0,"lag":0,"inFlight":0}
+{"event":"worker.stopped","level":"info","timestamp":"2026-10-08T15:51:28.262Z","workerId":"worker-pg-continuous-192-f","drained":true,"released":0,"releaseFailed":0,"processed":0,"failed":0,"deadLettered":0,"lag":0}
+ [32m✓[39m apps/worker/src/__tests__/continuous-worker-postgres.integration.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 3060[2mms[22m[39m
+     [33m[2m✓[22m[39m consumes events across a simulated restart and dead-letters a poison event [33m 993[2mms[22m[39m
+     [33m[2m✓[22m[39m observes queue lag, completes in-flight work on shutdown and releases bounded leases [33m 1196[2mms[22m[39m
+     [33m[2m✓[22m[39m composes durable approval and journal sweeps for the kernel worker [33m 870[2mms[22m[39m
+ [32m✓[39m apps/api/src/__tests__/postgres-rate-limit.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 2349[2mms[22m[39m
+     [33m[2m✓[22m[39m denies a saturated real pool and releases the connection that arrives after expiry [33m 2025[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/retention-postgres.test.ts [2m([22m[2m13 tests[22m[2m)[22m[33m 2255[2mms[22m[39m
+ [32m✓[39m apps/api/src/__tests__/shared-rate-boundary.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 2133[2mms[22m[39m
+     [33m[2m✓[22m[39m returns generic HTTP 503 within the acquisition deadline for a stalled pool [33m 2012[2mms[22m[39m
+ [32m✓[39m apps/api/src/__tests__/journeys-api-postgres.test.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 2052[2mms[22m[39m
+     [33m[2m✓[22m[39m applies migration 0014 during postgres startup before serving journeys [33m 826[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/journeys-postgres.test.ts [2m([22m[2m24 tests[22m[2m)[22m[33m 2043[2mms[22m[39m
+     [33m[2m✓[22m[39m applies 0014 additively over a 0013 database and preserves prior data [33m 921[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts [2m([22m[2m14 tests[22m[2m)[22m[33m 1958[2mms[22m[39m
+     [33m[2m✓[22m[39m applies 0015 additively over 0014 with the checksum guard [33m 853[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/platform-approval-postgres.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1953[2mms[22m[39m
+     [33m[2m✓[22m[39m persists bindings and consumes approvals atomically exactly once [33m 1042[2mms[22m[39m
+     [33m[2m✓[22m[39m enforces tenant visibility for the durable approval table under FORCE RLS [33m 909[2mms[22m[39m
+ [32m✓[39m apps/worker/src/__tests__/kernel-composition-postgres.integration.test.ts [2m([22m[2m14 tests[22m[2m)[22m[33m 1687[2mms[22m[39m
+     [33m[2m✓[22m[39m runs the approved draft write once and replays without a second effect [33m 302[2mms[22m[39m
+ [32m✓[39m apps/worker/src/__tests__/kernel-durable-orchestrator-postgres.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 1569[2mms[22m[39m
+ [32m✓[39m apps/api/src/__tests__/operator-replay-store.test.ts [2m([22m[2m20 tests[22m[2m)[22m[33m 1634[2mms[22m[39m
+     [33m[2m✓[22m[39m reclaims expired claims and purges only expired rows [33m 1530[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/tenant-isolation.test.ts [2m([22m[2m14 tests[22m[2m)[22m[33m 1317[2mms[22m[39m
+     [33m[2m✓[22m[39m enforces cross-tenant isolation with a non-BYPASSRLS role and resets pooled context [33m 971[2mms[22m[39m
+     [33m[2m✓[22m[39m quarantines legacy tenant mismatches before enabling RLS [33m 321[2mms[22m[39m
+ [32m✓[39m apps/worker/src/__tests__/postgres-role-preflight.test.ts [2m([22m[2m13 tests[22m[2m)[22m[33m 1232[2mms[22m[39m
+ [32m✓[39m apps/worker/src/__tests__/postgres-outbox-bridge.integration.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1161[2mms[22m[39m
+     [33m[2m✓[22m[39m consumes the event written by the API through a separate worker pool [33m 1159[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts [2m([22m[2m19 tests[22m[2m)[22m[33m 1088[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 1040[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 1045[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/effect-journal-postgres.test.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 970[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/orchestrator-postgres.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 992[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/journey-task-atomicity.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 939[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/postgres-migration-smoke.test.ts [2m([22m[2m9 tests[22m[2m)[22m[33m 934[2mms[22m[39m
+     [33m[2m✓[22m[39m applies the migration and persists runtime evidence in an isolated PostgreSQL schema [33m 916[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/attendance-approval-postgres.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 890[2mms[22m[39m
+     [33m[2m✓[22m[39m forces two connections past the same pending read and rolls back failed audit [33m 889[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/session-version-pinning-postgres.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 889[2mms[22m[39m
+     [33m[2m✓[22m[39m binds sessions atomically under the tenant-aware migration and never replaces the pin [33m 886[2mms[22m[39m
+ [32m✓[39m apps/api/src/__tests__/webhook-security.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 247[2mms[22m[39m
+ [32m✓[39m apps/api/src/__tests__/operator-replay-guard.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 232[2mms[22m[39m
+ [32m✓[39m packages/chaos/src/__tests__/chaos-postgres.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 53[2mms[22m[39m
+ [32m✓[39m packages/persistence/src/__tests__/audit-evidence-checkpoint-postgres.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 16[2mms[22m[39m
 
-[2m Test Files [22m [1m[32m30 passed[39m[22m[90m (30)[39m
-[2m      Tests [22m [1m[32m356 passed[39m[22m[90m (356)[39m
-[2m   Start at [22m 13:10:41
-[2m   Duration [22m 86.92s[2m (transform 1.38s, setup 0ms, import 6.67s, tests 59.42s, environment 17.54s)[22m
+[2m Test Files [22m [1m[32m32 passed[39m[22m[90m (32)[39m
+[2m      Tests [22m [1m[32m369 passed[39m[22m[90m (369)[39m
+[2m   Start at [22m 15:50:58
+[2m   Duration [22m 84.29s[2m (transform 1.24s, setup 0ms, import 6.29s, tests 57.61s, environment 17.25s)[22m
 
-JSON report written to /home/ricardo/cvg-claw/certification/phase11/logs/postgres-report.json
+JSON report written to /tmp/cvg-aud06-certification-aottnvx0/repo/certification/phase11/logs/postgres-report.json
 
 

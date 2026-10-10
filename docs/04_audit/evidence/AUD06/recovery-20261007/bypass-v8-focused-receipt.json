@@ -1,0 +1,36 @@
+{
+  "at": "2026-10-08T04:23:59.293819+00:00",
+  "status": "IMPLEMENTED_NOT_ACCEPTED",
+  "red": {
+    "exitCode": 1,
+    "failed": 4,
+    "passed": 65,
+    "log": "bypass-v7-red.log"
+  },
+  "green": {
+    "exitCode": 0,
+    "passed": 95,
+    "files": 3,
+    "log": "bypass-v8-green.log"
+  },
+  "publicScanner": {
+    "exitCode": 0,
+    "report": "bypass-v8-public.json"
+  },
+  "lint": {
+    "exitCode": 0,
+    "log": "bypass-v8-lint.log"
+  },
+  "sourceHashes": {
+    "scripts/phase11-bypass-audit.mjs": "9274417cbfef94dfaa9a9eccfc2b3abf682016f2a39872d32ba8b73e666c6f28",
+    "tests/phase11-bypass-audit.test.js": "d40dac5243366c4089cb2aaa8d1a8410362289cd47d0623870c24e91bf6ea6a3"
+  },
+  "provenance": "Observed actual tool exits; no fabricated raw outer exit receipts",
+  "independentAcceptance": "PENDING",
+  "integratedPass3": {
+    "exitCode": 143,
+    "qualification": "INTERRUPTED_NOT_PASS",
+    "cleanupErrors": 0,
+    "ownResourcesAbsent": true
+  }
+}

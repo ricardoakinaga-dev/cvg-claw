@@ -1,0 +1,17 @@
+{
+  "packages/agent-runtime/src/__tests__/aud06-n3-executor.test.ts": "1540b3a29c76f75c62f652ff6fd4297f83114cbf4e8934ae954089ea8b520d5e",
+  "packages/policy-engine/package.json": "f7bec27c43540c60d03fd2ceabc77b8df9f94818bbfcfecab4e8eac43cef6cb7",
+  "packages/policy-engine/src/__tests__/aud06-n3-policy.test.ts": "9b7332296c8b46141321dfb138bccce2888c1d8fb2b36c51db841168305fa2e7",
+  "packages/policy-engine/src/__tests__/capability-scope.test.ts": "eb2464b0fe417ef21479a2edbd982454d7d11b6e3dca73c85e308adc700e13ab",
+  "packages/policy-engine/src/__tests__/execution-contract-matrix.test.ts": "8fbcde29b87aa76d55d3230f0b712311ae89a57fbc951744a6f2b0dd8e9fc7e8",
+  "packages/policy-engine/src/__tests__/policy-coverage.test.ts": "3e47cd6c15524725ea913d2ab3b689210bb8907f41ef7b5ca9c2d0fb1dcff220",
+  "packages/policy-engine/src/__tests__/policy-engine-branch-hardening.test.ts": "b183bee3132ecd935f83362c0f4700297ebbb87b93914bd38792f22a2fe845be",
+  "packages/policy-engine/src/__tests__/policy-engine.test.ts": "7a552d7d6a8dd96a708026c9585585c46c7542e8aee4f207f99d0c228e54c752",
+  "packages/policy-engine/src/autonomy.ts": "014a94849c29c614b4c627b1fa5a1a8314a1a86018def92685793017d5403b5e",
+  "packages/policy-engine/src/capabilities.ts": "8bd71d6980b503394e8c66237d1174d87241ce97e15493e17b70685326bfb00c",
+  "packages/policy-engine/src/documents.ts": "1a181cb51c23330990c6e5e596462588eb40af9a5dd2f675956c4905874f8b97",
+  "packages/policy-engine/src/engine.ts": "d5147d5f299c9072b5b8d098efcde2ad17ced365b4c36da533c39aece2223606",
+  "packages/policy-engine/src/grants.ts": "50963f38c2e15373800b81a97106df7b286606156fe80b22d73d8c4b0b7f08f7",
+  "packages/policy-engine/src/index.ts": "d6fe20a2909930ef8136f4558c420234d4200b56694d4941a45ce50d4210e367",
+  "packages/policy-engine/tsconfig.json": "b1df01c7b3ffbfde2f65f433286f600e3ff181d47db39bce8337daea3c30a2c7"
+}

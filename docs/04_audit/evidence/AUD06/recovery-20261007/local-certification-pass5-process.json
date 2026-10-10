@@ -1,0 +1,11 @@
+{
+  "pid": 775154,
+  "procStartTicks": "16622744",
+  "command": [
+    "bash",
+    "/tmp/cvg-aud06-certification-aottnvx0/repo/scripts/certify-controlled.sh",
+    "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5.log"
+  ],
+  "cwd": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+  "startedAt": "2026-10-08T14:58:33.192505+00:00"
+}

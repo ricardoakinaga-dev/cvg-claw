@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "kind": "phase11-promotion-check",
+  "eligible": false,
+  "expectation": "EXTERNAL_ONLY",
+  "expectationSatisfied": true,
+  "verifier": "PASS",
+  "currentProfile": "CONTROLLED_LOCAL",
+  "requestedProfile": "PRODUCTION",
+  "blockingGates": [],
+  "blockingFindings": [],
+  "blockingInvariants": [],
+  "externalBlockers": [
+    "external_gate_pending:modelProvider:expected_VALIDATED_REAL:actual_NOT_VALIDATED",
+    "external_gate_pending:channel:expected_VALIDATED_REAL:actual_NOT_VALIDATED",
+    "external_gate_pending:externalIdentity:expected_VALIDATED_REAL:actual_NOT_VALIDATED",
+    "external_gate_pending:institutionalRag:expected_VALIDATED_APPROVED:actual_NOT_VALIDATED",
+    "external_gate_pending:rpoRto:expected_VALIDATED:actual_NOT_VALIDATED",
+    "external_gate_pending:pilot:expected_PASS:actual_NOT_VALIDATED",
+    "external_gate_pending:rollback:expected_PASS:actual_NOT_VALIDATED",
+    "external_gate_pending:humanSignoff:expected_VALIDATED:actual_PENDING"
+  ],
+  "reason": "production_assurance_incomplete",
+  "note": "Only human/external gates remain; no internal blocker was found.",
+  "noProductionEffect": true
+}

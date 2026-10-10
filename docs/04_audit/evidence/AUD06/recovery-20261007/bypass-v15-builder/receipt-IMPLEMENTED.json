@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "status": "IMPLEMENTED",
+  "noSelfApproval": true,
+  "sourceFrozen": true,
+  "frozenAtUTC": "2026-10-08T08:55:16.220596+00:00",
+  "node": "v22.23.2",
+  "sourceHashes": {
+    "scripts/phase11-bypass-audit.mjs": "e1d90f06f9403397436651ea72024161aadcaebf655fd3b926337a28d2c18f74",
+    "tests/phase11-bypass-audit.test.js": "2d4f2a784c3a5fec7610afab00e43ba537acee16d077b8115a526a0024418084",
+    "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+    "docs/02_spec/aud06_remediation_20261006.md": "fcf44f618fe6aec06c0d101fd7b0574f83f547fec6bf31ea84c8330f81c8753e",
+    "docs/04_audit/evidence/AUD06/quality-bar.json": "72e793837e58a98699a9d94bf8110ab59bcfb6a5154d0d71a4d3af76fde730af"
+  },
+  "scope": [
+    "scripts/phase11-bypass-audit.mjs",
+    "tests/phase11-bypass-audit.test.js"
+  ],
+  "repair": "Shared intrinsic Function member origin classification and complete effective argument projection; own literal/stored bind/call/apply invokes its projected callable and preserves bound prefixes. Mutation/escape consumes effective query arguments; static nested bind spreads use existing complete bounded materialization.",
+  "RED": {
+    "cases": 84,
+    "divergences": 27,
+    "matches": 57,
+    "valid": true,
+    "raw": "RED-summary.json",
+    "beforeSourceBinding": "RED-before-source-binding.json"
+  },
+  "GREEN": {
+    "fourFilesTests": 945,
+    "passed": 945,
+    "skips": 0,
+    "exit": 0,
+    "raw": "check-all-four-tests.json",
+    "CLI": {
+      "cases": 90,
+      "matches": 90,
+      "valid": true,
+      "raw": "GREEN-2-summary.json"
+    },
+    "corpus": {
+      "scannedFiles": 59,
+      "status": "PASS",
+      "exit": 0,
+      "raw": "check-corpus.json"
+    },
+    "gates": [
+      {
+        "name": "all-four-tests",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "corpus",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "lint",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "eslint-scoped",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "format",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "syntax-scanner",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "syntax-tests",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "docs-check",
+        "exit": 0,
+        "stable": true
+      }
+    ],
+    "sourcesStable": true,
+    "summary": "checks-summary.json"
+  },
+  "protectedBytes": {
+    "metadata-grants": {
+      "unchanged": true,
+      "before_sha256": "f87f502ba145cb2cab3378687b308a123da18f5773560d8b226dd5938025a194",
+      "after_sha256": "f87f502ba145cb2cab3378687b308a123da18f5773560d8b226dd5938025a194"
+    },
+    "forwarder": {
+      "unchanged": true,
+      "before_sha256": "fb66ce2b46f6f3df9ea130b6a7e85102fd8c14053fb89878d0808ebf59f3bf9e",
+      "after_sha256": "fb66ce2b46f6f3df9ea130b6a7e85102fd8c14053fb89878d0808ebf59f3bf9e"
+    },
+    "report-effectBoundaries": {
+      "unchanged": true,
+      "before_sha256": "d5b5ab19d7364b0b0d8cacd6fefb1c09f31629ff4cded912fc4cfbdffd236b63",
+      "after_sha256": "d5b5ab19d7364b0b0d8cacd6fefb1c09f31629ff4cded912fc4cfbdffd236b63"
+    }
+  },
+  "intermediates": "intermediates.json",
+  "freshCriticInput": "../bypass-v14-fresh-reject-I1/report.json",
+  "rejectedCandidate": "884b8f30840f593047989f724cc4952f02048bd8437a0b03d7b8f15a74715eaa",
+  "frozenClone": {
+    "path": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+    "builderAccess": "No reads or writes in this v15 lane; no target atime affected"
+  },
+  "constraints": {
+    "onlyTwoSourceFilesWritten": true,
+    "helperSpecBarFrozen": true,
+    "noRuntimeMastersWrites": true,
+    "inputsParsedOnly": true,
+    "noDatabaseDockerNetworkInstallCommitPushDescendants": true,
+    "mainGitUnchanged": "No Git operations on MAIN; disposable fixture git inventory only, as used by required existing tests"
+  },
+  "limitations": [
+    "Implementation evidence is not independent approval. Lead owns candidate freeze, fresh critique and canonical certification.",
+    "Bounded static origin/copy projection; no universal JS/PG claim.",
+    "Global NO_GO; N3 DENY; Pilot11 DEFERRED; publication/CI pending."
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "decision": "INVALID",
+  "criticIdentity": "01a11bde-3329-7250-9251-0d0b59dc6aff",
+  "closed": true,
+  "machineReportProduced": false,
+  "noApproval": true,
+  "reason": "Historical conclusions exposed by full Q01 planning documents and Q07 first60 history; no material code defect adjudicated by this invalid reviewer.",
+  "wholeTreeNonMutation": true,
+  "recordsVerified": 1718,
+  "mismatches": 0,
+  "ownSourceRetained": "/tmp/aud06-v20-I1-independent-napchkii",
+  "copied": [
+    {
+      "path": "git-copy-verification.json",
+      "sha256": "22962d613497c8c99602cfb80cfafcebeb4086ef6bf752661c394e3973828f9f",
+      "size": 842991
+    },
+    {
+      "path": "exact-skips-independent.json",
+      "sha256": "fb7ac49b817560d2b6b4a003b5045bbfbe0cc289aab9c5f0a1e80622a2ca61ad",
+      "size": 308
+    },
+    {
+      "path": "write-reports.py",
+      "sha256": "835de66bc5d5d7a337871c4be059ae1be5fb96193b3e2a61c353d9d605e97f0e",
+      "size": 19995
+    },
+    {
+      "path": "before-full-manifest.json",
+      "sha256": "1dc6e890612599e8ae7fb9b5d1ef3bd35d9c7516f22fe474b0a7432f07ac0d85",
+      "size": 12778179
+    },
+    {
+      "path": "candidate-files.json",
+      "sha256": "b14fecee2075f88567344adeebfce8a8fd9bc219622d75a72d2baa2bc6e6ef56",
+      "size": 243167
+    },
+    {
+      "path": "direct-raw-facts.json",
+      "sha256": "a6ff80d93c811e4ad609c3930a134db030d62c37dd5d84fe1cdc4ffce5c180dd",
+      "size": 4799
+    },
+    {
+      "path": "after-full-manifest.json",
+      "sha256": "1dc6e890612599e8ae7fb9b5d1ef3bd35d9c7516f22fe474b0a7432f07ac0d85",
+      "size": 12778179
+    },
+    {
+      "path": "report.md",
+      "sha256": "10738da1df078ad05c80fb4090ed9b943d8c400b3c09a9b5eebb4131314282e9",
+      "size": 15166
+    },
+    {
+      "path": "sentinel-comparison.json",
+      "sha256": "5c09b408ef4448b20910f60d6d1868b2b7f49c87a7bc7e6eaa32e03a723c5bf2",
+      "size": 79
+    },
+    {
+      "path": "plan.json",
+      "sha256": "fd4df9a3d5b30c63ba469cc07912323d4d69f95c8cc789998b91f988f1a20f0c",
+      "size": 2519
+    },
+    {
+      "path": "current-routing-filtered.json",
+      "sha256": "242f8e87220a5c19abc5eb587ecbd2867aaffe74812d70eedddf9db9f7385bb8",
+      "size": 3117
+    },
+    {
+      "path": "fullartifactmanifest.json",
+      "sha256": "6a3404de76ca9aefe81fad2763c49fef93bcee91e624c085f201f8efe54d2f36",
+      "size": 308083
+    },
+    {
+      "path": "close-facts.py",
+      "sha256": "d6fa30ace6aeb867cd620673be4e1280cb7d5f0413d75f0f827e4327a188b679",
+      "size": 4951
+    },
+    {
+      "path": "git-opaque-before.json",
+      "sha256": "1b69a3af4ae3a768cf3ea8e0de9f0b877113509730a945c9d65f52d4d73978a1",
+      "size": 844932
+    },
+    {
+      "path": "candidate-before.json",
+      "sha256": "3235c00440d9c7f06e5822902da0c477184cf4f94a98535b14f991d3b40ad038",
+      "size": 440746
+    },
+    {
+      "path": "report.json",
+      "sha256": "a2fae5aab051b8d36de5fce7eddf58655cfbcf9095f1a87ca5434917f8b6f366",
+      "size": 19473
+    },
+    {
+      "path": "git-index-head-manifest.json",
+      "sha256": "85980b0282d293a0858912b466815d1d7fc8d96c03beea64bb8b3f7bfc191169",
+      "size": 1636679
+    },
+    {
+      "path": "closure-index.json",
+      "sha256": "f298ee55c97f60bce160c2fb43c7de37738d11ffecd0516e4ae99817f58525fa",
+      "size": 2559
+    },
+    {
+      "path": "bindings.py",
+      "sha256": "6eb5ec03a72bba12ab5d84c30f917bdd3ccd4cca4a1e8e0eeed27abeca40a371",
+      "size": 8502
+    },
+    {
+      "path": "sentinel.py",
+      "sha256": "d1beebe2c71419f9cbe3fb2db3f2c6ad6bbf4a0c497ef458fb5ef7817ba996bf",
+      "size": 5286
+    },
+    {
+      "path": "copy-verification.json",
+      "sha256": "3c9dcec9aae7462bc5bfc7d30b8c83b659abe95dcc15f6230fda35865c8bdbf2",
+      "size": 12835192
+    },
+    {
+      "path": "runtime-bindings-independent.json",
+      "sha256": "6c250cb771b7127bb346f511c92123c6bf579d0a01361bf3ca1c84f1ed3e929b",
+      "size": 401
+    },
+    {
+      "path": "candidate-after.json",
+      "sha256": "ce3262f68e858ee34fc78ffcbec976f9db1d597d28a5488c449b9ab455307978",
+      "size": 440837
+    },
+    {
+      "path": "snapshot-binding.json",
+      "sha256": "9ce96383da80681f3c50b29fd0666f95abd1b3d28896183591f218a49f8a4a91",
+      "size": 30470
+    }
+  ],
+  "copiedOwnFullTree": false,
+  "originalCopyAndDependenciesRetained": true,
+  "global": "NO_GO",
+  "createdAt": "2026-10-08T14:35:30.166257+00:00"
+}

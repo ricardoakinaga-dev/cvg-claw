@@ -1,0 +1,29 @@
+{
+  "steps": [
+    "Whole-tree BEFORE via O_NOATIME/statx; guarded exclusive independent byte copy including dependencies, ignored outputs, evidence and caches; opaque independent root .git copy",
+    "Reconstruct candidate1256, fingerprint, HEAD/index/blobs/tree, reconcile extras, validate opaque bindings; semantic whitelist enforced",
+    "Execute verified normative projection against verified owncopy; inspect real product/public-path code and selected current/first raw gate facts before judgment",
+    "Validate 35 gate/log integrity, exact skips, coverage, 370 runtime bindings/422 proofs and owned cleanup from actual raw records; no repeated canonical cycle",
+    "Close own jobs; whole-tree AFTER; permanently stop TARGET reads; atomically generate companion all14 + separate indices/manifests + CLOSED"
+  ],
+  "caps": {
+    "CLI": 40,
+    "paired": 12,
+    "SQL": 40,
+    "corpus": 1,
+    "corpusTimeoutSeconds": 300
+  },
+  "prohibited": [
+    "network",
+    "DB",
+    "Docker",
+    "installs",
+    "fixture execution",
+    "TARGET tests",
+    "descendants",
+    "source/TARGET/gauntlet writes",
+    "new machine input"
+  ],
+  "corpusPolicy": "Only if a material uncertainty cannot be discriminated statically; no routine repetition",
+  "sharedFilesystem": "contract and O_NOATIME guards, not OS isolation"
+}

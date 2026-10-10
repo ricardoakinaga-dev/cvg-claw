@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "status": "IMPLEMENTED",
+  "noSelfApproval": true,
+  "sourceFrozen": true,
+  "ownershipEnded": true,
+  "frozenAtUTC": "2026-10-08T09:24:11.726222+00:00",
+  "node": "v22.23.2",
+  "sourceHashes": {
+    "scripts/phase11-bypass-audit.mjs": "52aa6254bf8a97fa081310789ae10e77869e18a8b2c38b6b12bb9636ad191d72",
+    "tests/phase11-bypass-audit.test.js": "2ce3cb2f04b39bf217852368816a106252761cc448421a019e5b37b65b0017f7",
+    "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+    "docs/02_spec/aud06_remediation_20261006.md": "1a81ba9aafbc4c4b31867a16076882d66583989e2e6b0b66945db3b2349c895f",
+    "docs/04_audit/evidence/AUD06/quality-bar.json": "dcf0e104be03da4b09e1e42706fae477fa06a6c1f687444777430144f8111816"
+  },
+  "scope": [
+    "scripts/phase11-bypass-audit.mjs",
+    "tests/phase11-bypass-audit.test.js"
+  ],
+  "repair": {
+    "R01": "Known bound construction has one stable callable allocation per AST site, distinct from its original function. Existing shared selection and receiver projection preserve stores, aliases, holders, arrays, defaults, rest/spread and prefixes.",
+    "R02": "Bounded recursive normalization of known intrinsic bind/call/apply and aliases uses invocation receiver and complete projected arguments. Construction stays inert; invocation, mutation/escape, prefix and SQL selection share the normalized target. No user factories or arbitrary reflection/prototypes interpreted."
+  },
+  "RED": {
+    "cases": 204,
+    "matches": 168,
+    "divergences": 36,
+    "valid": true,
+    "raw": "RED-summary.json",
+    "beforeSourceBinding": "RED-before-source-binding.json",
+    "scannerSource": "e1d90f06f9403397436651ea72024161aadcaebf655fd3b926337a28d2c18f74"
+  },
+  "GREEN": {
+    "fourFilesTests": 1149,
+    "passed": 1149,
+    "skips": 0,
+    "exit": 0,
+    "raw": "check-all-four-tests.json",
+    "CLI": {
+      "cases": 204,
+      "matches": 204,
+      "valid": true,
+      "raw": "GREEN-2-summary.json"
+    },
+    "corpus": {
+      "scannedFiles": 59,
+      "status": "PASS",
+      "exit": 0,
+      "raw": "check-corpus.json"
+    },
+    "gates": [
+      {
+        "name": "all-four-tests",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "corpus",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "lint",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "eslint-scoped",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "format",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "syntax-scanner",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "syntax-tests",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "docs-check",
+        "exit": 0,
+        "stable": true
+      }
+    ],
+    "sourcesStable": true,
+    "summary": "checks-summary.json"
+  },
+  "protectedBytes": {
+    "metadata-grants": {
+      "unchanged": true,
+      "before_sha256": "f87f502ba145cb2cab3378687b308a123da18f5773560d8b226dd5938025a194",
+      "after_sha256": "f87f502ba145cb2cab3378687b308a123da18f5773560d8b226dd5938025a194"
+    },
+    "forwarder": {
+      "unchanged": true,
+      "before_sha256": "fb66ce2b46f6f3df9ea130b6a7e85102fd8c14053fb89878d0808ebf59f3bf9e",
+      "after_sha256": "fb66ce2b46f6f3df9ea130b6a7e85102fd8c14053fb89878d0808ebf59f3bf9e"
+    },
+    "report-effectBoundaries": {
+      "unchanged": true,
+      "before_sha256": "d5b5ab19d7364b0b0d8cacd6fefb1c09f31629ff4cded912fc4cfbdffd236b63",
+      "after_sha256": "d5b5ab19d7364b0b0d8cacd6fefb1c09f31629ff4cded912fc4cfbdffd236b63"
+    }
+  },
+  "intermediates": "intermediates.json",
+  "freshCriticInput": "../bypass-v15-fresh-reject-I1/report.json",
+  "rejectedCandidate": "7f2f21d2dc3c3fb2c8e2bda13180f87a4e7aaf75206a4a0c8235c3a81f479e85",
+  "frozenClone": {
+    "path": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+    "builderAccess": "No reads or writes in v16; no target atime affected"
+  },
+  "constraints": {
+    "onlyTwoSourceFilesWritten": true,
+    "helperSpecBarFrozen": true,
+    "noRuntimeMastersWrites": true,
+    "inputsParsedOnly": true,
+    "noDatabaseDockerNetworkInstallCommitPushDescendants": true,
+    "mainGitUnchanged": "No MAIN Git operations; only disposable fixture inventory used by the required test harness"
+  },
+  "limits": [
+    "Bounded static identity/origin and known Function operation normalization, limit64; unknown/incomplete argument projection remains conservative.",
+    "Implementation is not independent approval. Lead owns appendices, candidate freeze, fresh critique and canonical certification.",
+    "Pass4 NOT_STARTED. Global NO_GO; N3 DENY; Q11 DEFERRED; publication/remote CI pending."
+  ]
+}

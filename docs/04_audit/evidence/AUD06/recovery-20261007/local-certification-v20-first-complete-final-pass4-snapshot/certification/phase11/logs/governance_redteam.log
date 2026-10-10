@@ -1,0 +1,29 @@
+$ npm test -- --run packages/policy-engine/src/__tests__/policy-engine-branch-hardening.test.ts packages/platform/src/__tests__/tool-invocation-boundary-hardening.test.ts packages/platform/src/__tests__/critical-safety-preflight.test.ts
+# certificationId=phase11-f15cece0c6784845-muzjnd5e
+# candidateId=f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0
+# commit=7c1fdfc488664c365b4df6423d1b81c60e27ac22
+# treeHash=4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283
+# gate=governance_redteam
+# profile=CONTROLLED_LOCAL
+# databaseConfigured=false
+# realEffects=disabled
+# exitCode=0 durationMs=3100
+
+
+> cvg-claw@1.0.0 test
+> vitest run --no-file-parallelism --maxWorkers=2 --run packages/policy-engine/src/__tests__/policy-engine-branch-hardening.test.ts packages/platform/src/__tests__/tool-invocation-boundary-hardening.test.ts packages/platform/src/__tests__/critical-safety-preflight.test.ts
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/tmp/cvg-aud06-certification-aottnvx0/repo[39m
+
+ [32m✓[39m packages/platform/src/__tests__/critical-safety-preflight.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 130[2mms[22m[39m
+ [32m✓[39m packages/policy-engine/src/__tests__/policy-engine-branch-hardening.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m packages/platform/src/__tests__/tool-invocation-boundary-hardening.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m      Tests [22m [1m[32m27 passed[39m[22m[90m (27)[39m
+[2m   Start at [22m 14:07:54
+[2m   Duration [22m 2.67s[2m (transform 249ms, setup 0ms, import 485ms, tests 149ms, environment 1.73s)[22m
+
+
+

@@ -1,5 +1,9 @@
 # 0300 — Build Engineer Master
 
+## Programa de BUILD corrente — AUD06 — 2026-10-06
+
+Consultar [0348](0348_aud06_roadmap.md) e [0349](0349_aud06_backlog.md). Pedido executivo atual admite correções locais; histórico abaixo não define a próxima ação. Produção `NO_GO`.
+
 ## Estado incremental pós-query-parser — 2026-09-24
 
 A [revisão 0571](../04_audit/0571_implementation_state_review_2026-09-23.md),

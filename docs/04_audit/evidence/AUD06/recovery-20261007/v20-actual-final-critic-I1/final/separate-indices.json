@@ -1,0 +1,42 @@
+[
+  {
+    "path": "/tmp/aud06-finalcritic-I1-db55luic/candidate-independent-files.json",
+    "sha256": "b14fecee2075f88567344adeebfce8a8fd9bc219622d75a72d2baa2bc6e6ef56",
+    "size": 243167
+  },
+  {
+    "path": "/tmp/aud06-finalcritic-I1-db55luic/candidate-git-index.json",
+    "sha256": "0e85db117a96494a8d36e6cc74c80babb9bfa0c2c4d65b8a156b798d0a5a397a",
+    "size": 606169
+  },
+  {
+    "path": "/tmp/aud06-finalcritic-I1-db55luic/ignored-generated-index.json",
+    "sha256": "f4873da63b0c9ad7e9113bb7937de95dfb2939d07bae0e710979a2a385ad08f1",
+    "size": 6504088
+  },
+  {
+    "path": "/tmp/aud06-finalcritic-I1-db55luic/gate-log-index.json",
+    "sha256": "575bf01aefae61dd1380f567aa5ec59039c11d64f41e84f1d3b966c4812c6b39",
+    "size": 27052
+  },
+  {
+    "path": "/tmp/aud06-finalcritic-I1-db55luic/exact-skip-index.json",
+    "sha256": "f07d214b1322510a40bba641714a1a0011d4503d26860f20e8cbbebd0b814e89",
+    "size": 58058
+  },
+  {
+    "path": "/tmp/aud06-finalcritic-I1-db55luic/manifest-resolved-index.json",
+    "sha256": "e7768d7f91e6b7d11b815e8484e68c23bc9365a7f0dc368ab0eada5011a3757d",
+    "size": 30062
+  },
+  {
+    "path": "/tmp/aud06-finalcritic-I1-db55luic/git-physical-independence-index.json",
+    "sha256": "52cb5e308a3aadfba8b33fab1fdd93cd7c70d5b2e40bb3efbeefe67c76983334",
+    "size": 1460528
+  },
+  {
+    "path": "/tmp/aud06-finalcritic-I1-db55luic/raw-integrity-indices.json",
+    "sha256": "abc45f53790cc634960c94b4abc12dbb53849d648a1edf8ab23d086516bfaa25",
+    "size": 243594
+  }
+]

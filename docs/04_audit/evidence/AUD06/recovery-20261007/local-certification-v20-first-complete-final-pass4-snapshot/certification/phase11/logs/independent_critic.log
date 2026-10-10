@@ -1,0 +1,78 @@
+$ node scripts/phase11-2-evidence-check.mjs --critic
+# certificationId=phase11-f15cece0c6784845-muzjnd5e
+# candidateId=f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0
+# commit=7c1fdfc488664c365b4df6423d1b81c60e27ac22
+# treeHash=4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283
+# gate=independent_critic
+# profile=CONTROLLED_LOCAL
+# databaseConfigured=false
+# realEffects=disabled
+# exitCode=1 durationMs=364
+
+{
+  "schemaVersion": 1,
+  "kind": "phase11-2-evidence-check",
+  "mode": "critic",
+  "status": "FAIL",
+  "syntheticOnly": true,
+  "sideEffects": false,
+  "checks": [
+    {
+      "id": "CRITIC:environment",
+      "status": "PASS",
+      "detail": "live candidate f15cece0c678@7c1fdfc48866"
+    },
+    {
+      "id": "CRITIC:schema",
+      "status": "PASS",
+      "detail": "phase11-critic-report schema v1"
+    },
+    {
+      "id": "CRITIC:binding",
+      "status": "FAIL",
+      "detail": "candidateId=72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267!=f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0, treeHash=d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569!=4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283, commit=185f82168a11e813c218f2e6da1c49b671bf451f!=7c1fdfc488664c365b4df6423d1b81c60e27ac22"
+    },
+    {
+      "id": "CRITIC:fingerprint",
+      "status": "FAIL",
+      "detail": "worktree changed after review: reported ad6087e1cad09d16ec532dc5e893a21e4d4e7759f4f30d1bec6cab4a6ec11865, current ffc25aad2f22adcf4c9a35ba58fb1e01ee57adac5a8477a182a29eb14c934a8d"
+    },
+    {
+      "id": "CRITIC:identity",
+      "status": "PASS",
+      "detail": "CLAW-W1 FINAL — fresh independent Critic — openai/gpt-6.1-sol"
+    },
+    {
+      "id": "CRITIC:independence",
+      "status": "PASS",
+      "detail": "fresh-context,separate-identity,artifact-only-input,no-worktree-write,no-builder-justification"
+    },
+    {
+      "id": "CRITIC:builder_content",
+      "status": "PASS",
+      "detail": "no builder justification fields"
+    },
+    {
+      "id": "CRITIC:artifacts",
+      "status": "FAIL",
+      "detail": "digest mismatch: docs/03_build/tracking/current_state.json (declared f5901420ee52539e5ff5268d899d2b9fd18a244e0dda919dd878cb1e4ced9435)"
+    },
+    {
+      "id": "CRITIC:check_evidence",
+      "status": "PASS",
+      "detail": "8 check(s) cite declared artifacts"
+    },
+    {
+      "id": "CRITIC:verdict",
+      "status": "PASS",
+      "detail": "PASS derived from checks"
+    }
+  ],
+  "failures": [
+    "CRITIC:binding:candidateId=72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267!=f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0, treeHash=d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569!=4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283, commit=185f82168a11e813c218f2e6da1c49b671bf451f!=7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "CRITIC:fingerprint:worktree changed after review: reported ad6087e1cad09d16ec532dc5e893a21e4d4e7759f4f30d1bec6cab4a6ec11865, current ffc25aad2f22adcf4c9a35ba58fb1e01ee57adac5a8477a182a29eb14c934a8d",
+    "CRITIC:artifacts:digest mismatch: docs/03_build/tracking/current_state.json (declared f5901420ee52539e5ff5268d899d2b9fd18a244e0dda919dd878cb1e4ced9435)"
+  ]
+}
+
+

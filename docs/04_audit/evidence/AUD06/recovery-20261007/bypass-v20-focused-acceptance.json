@@ -1,0 +1,36 @@
+{
+  "at": "2026-10-08T12:59:32.167196+00:00",
+  "agentId": "01a11b86-d671-7bb0-b8e7-45241e557fb8",
+  "originalTemp": "/tmp/aud06-i1-q13-2oiOPlTk",
+  "decision": "APPROVE",
+  "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+  "manifestRecordsVerified": 32424,
+  "recordCounts": {
+    "regular": 28466,
+    "symlink": 87,
+    "directory": 3871
+  },
+  "copiedFiles": 679,
+  "omittedFilesRetainedOriginal": 27877,
+  "mismatches": 0,
+  "nonMutationVerified": true,
+  "sentinelRecords": 28178,
+  "validCLI": 42,
+  "invalidCLI": 2,
+  "SQL": 35,
+  "corpus": 59,
+  "qualification": {
+    "builderExplanationOrHistoryConsulted": false,
+    "checkpointQualification": "Parent send_input checkpoints were sent, but the <=60s interval was not consistently met while preparing the own report script during the one corpus run (at least the 12:48:23 to after12:50:25 UTC interval exceeded60s). This scheduling deviation does not substitute for OS isolation; parent zero-TARGET agreement remained in force.",
+    "copyDependencyVerification": "No shared inode/hardlink or external symlink dependencies; all copied regular byte hashes and symlink targets independently matched.",
+    "descendants": 0,
+    "level": "I1",
+    "qualification": "Same model family, no inherited builder context; authorization depends on shared-FS contract, not OS enforcement. Symlink O_PATH ignores enforcement of O_NOATIME; descriptor readlinkat did not change any available timestamps in guards or final comparison.",
+    "sharedFSContract": "not OS-enforced",
+    "targetSemanticReads": "None; target content read opaquely for sentinel/fullcopy/Gitcopy. Generic AGENTS read semantically only from verified owncopy after whole-tree pre-sentinel. Sealed contract read first."
+  },
+  "scope": "Focused Q13 I1 only; not FINAL_GAUNTLET, no global or production approval",
+  "reportPath": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v20-focused-accept-I1/report.json",
+  "reportSha256": "3f31a5d021dd79d72eb03cbc1727bfe1b8076519b3b0039cf928be1fdf7cd26a",
+  "fullVerification": true
+}

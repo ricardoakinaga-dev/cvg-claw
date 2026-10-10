@@ -1,0 +1,14 @@
+{
+  "docsCheckExitCode": 0,
+  "certificateCheckExitCode": 0,
+  "certificateCommand": [
+    "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+    "scripts/phase11-verify.mjs"
+  ],
+  "certificateLogSHA256": "f0e7470decfae247bc46d3a26a78f917fe90db7b7b6c08ce5fc62134c7c7246a",
+  "verificationGitContext": "detached HEAD, matching sealed pointer branch=HEAD and CI checkout",
+  "namedBranchFailurePreserved": true,
+  "sourceDocumentAttemptRejectedAndRestored": true,
+  "fullSuiteRerun": false,
+  "scope": "audit evidence only"
+}

@@ -1,0 +1,35 @@
+{
+  "status": "PAUSED_KNOWN_P1",
+  "pausedAtUTC": "2026-10-08T10:37:30.347900+00:00",
+  "sourceHashes": {
+    "scripts/phase11-bypass-audit.mjs": "5e1dd518776ef6a1d9cba8c5756bfc7220b31f2dd2bb945d6a3af62e292b647e",
+    "tests/phase11-bypass-audit.test.js": "7cceb388ebb8175377a96ad28b14947c05cbeb76f2e80f227b545e8ff6193340",
+    "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+    "docs/02_spec/aud06_remediation_20261006.md": "2fe004434eed9e2ace2b31b2c2b762beb1ec5b3e34248ca3149998d0c742fb25",
+    "docs/04_audit/evidence/AUD06/quality-bar.json": "21ec78d84ca0e9e8294f067d5c63322e726f43e9eb4ccf18ca5a8473eee6e6ed"
+  },
+  "noSourceEditsAfterLeadI0": true,
+  "sourceFrozen": false,
+  "ownershipEnded": false,
+  "noSelfApproval": true,
+  "full4": {
+    "exit": 0,
+    "countLine": [
+      "1396 passed (1396)"
+    ]
+  },
+  "corpus": {
+    "status": "INTERRUPTED_ON_LEAD_REQUEST",
+    "exit": null,
+    "termination": "SIGTERM child2540779 and owned verification parent2478442; parent stopped before termination to prevent next check",
+    "stdout": "not emitted before interruption; no completed corpus result claimed",
+    "declaredTimeoutSeconds": 240
+  },
+  "knownP1": "same recognized module/export identity is incorrectly keyed by import declaration; lead-import-identity-review-v18/summary.json",
+  "qualification": "GREEN93/full4 are intermediate only and do not establish acceptance; awaiting registered v18b before any edit/new check.",
+  "quiescent": true,
+  "ownedProcessStates": {
+    "2478442": "absent",
+    "2540779": "absent"
+  }
+}

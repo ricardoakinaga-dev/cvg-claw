@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "kind": "aud19-documentation-check",
+  "valid": false,
+  "links": {
+    "checked": 2498,
+    "broken": [
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-adjudication.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-adjudication.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-teardown.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-teardown.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-independent-adjudication/bypass-adjudication-20261008.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-independent-adjudication/bypass-adjudication-20261008.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-focused-reject-I1/q13-focused-review-reject.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-focused-reject-I1/q13-focused-review-reject.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-v7-reject-I1/focused-review-reject.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v7-reject-I1/focused-review-reject.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass3-teardown.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass3-teardown.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-v8-fresh-reject-I1/focused-review-reject.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v8-fresh-reject-I1/focused-review-reject.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-v9-fresh-reject-I1/report.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v9-fresh-reject-I1/report.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-v9-fresh-reject-I1/report.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v9-fresh-reject-I1/report.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-adjudication.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-adjudication.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-teardown.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-teardown.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-independent-adjudication/bypass-adjudication-20261008.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-independent-adjudication/bypass-adjudication-20261008.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-focused-reject-I1/q13-focused-review-reject.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-focused-reject-I1/q13-focused-review-reject.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-v7-reject-I1/focused-review-reject.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v7-reject-I1/focused-review-reject.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass3-teardown.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass3-teardown.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-v8-fresh-reject-I1/focused-review-reject.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v8-fresh-reject-I1/focused-review-reject.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-v9-fresh-reject-I1/report.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v9-fresh-reject-I1/report.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-v9-fresh-reject-I1/report.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v9-fresh-reject-I1/report.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-adjudication.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-adjudication.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-teardown.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass2-teardown.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-independent-adjudication/bypass-adjudication-20261008.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-independent-adjudication/bypass-adjudication-20261008.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-focused-reject-I1/q13-focused-review-reject.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-focused-reject-I1/q13-focused-review-reject.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-v7-reject-I1/focused-review-reject.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v7-reject-I1/focused-review-reject.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass3-teardown.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass3-teardown.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-v8-fresh-reject-I1/focused-review-reject.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v8-fresh-reject-I1/focused-review-reject.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-v9-fresh-reject-I1/report.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v9-fresh-reject-I1/report.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-v9-fresh-reject-I1/report.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v9-fresh-reject-I1/report.json"
+      }
+    ]
+  },
+  "json": {
+    "checked": 1415,
+    "invalid": []
+  },
+  "states": {
+    "declared": [
+      "WAITING_HUMAN_APPROVAL",
+      "READY_FOR_NEXT_STEP"
+    ],
+    "unexpected": []
+  },
+  "nextAction": {
+    "valid": true,
+    "reason": null,
+    "runtimeStateAction": "conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.",
+    "currentIndexAction": "conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite."
+  },
+  "semantic": {
+    "valid": true,
+    "failures": [],
+    "state": {
+      "valid": true,
+      "failures": []
+    },
+    "node": {
+      "valid": true,
+      "failures": []
+    },
+    "observedNode": "v22.23.2"
+  }
+}

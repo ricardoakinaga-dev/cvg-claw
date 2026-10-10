@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "kind": "aud20-16-lifecycle-human-decision",
+  "decisionId": "AUD20-16-LIFECYCLE-RENEWAL-1",
+  "renews": "docs/04_audit/evidence/AUD20/AUD20-16-human-decision-20260922.json",
+  "status": "APPROVED",
+  "policyVersion": "AUD20-16-LIFECYCLE-v1",
+  "policyRulesChanged": false,
+  "postTombstoneHorizonDays": 30,
+  "formalOwnerAndRole": {
+    "name": "Ricardo",
+    "role": "Engineering Owner"
+  },
+  "previousValidUntil": "2026-12-31T23:59:59-03:00",
+  "validUntil": "2027-06-30T23:59:59-03:00",
+  "decidedAt": "2026-10-05T12:00:42Z",
+  "authorityEvidence": "explicit_choice_in_active_claude_code_session",
+  "environmentAndEffectScope": "CONTROLLED_LOCAL_SYNTHETIC_ONLY",
+  "implementation": {
+    "task": "CLAW-W1-07",
+    "when": "first_build_after_the_wave_1_seal",
+    "deadline": "2026-11-30",
+    "changes": [
+      "packages/persistence/src/retention.ts: INBOUND_TOMBSTONE_POLICY_VALID_UNTIL=2027-07-01T02:59:59.000Z, APPROVED_AT and APPROVAL_REF pointing to this renewal",
+      "boundary tests updated to the new window",
+      "early-warning test that fails 30 days before validUntil"
+    ],
+    "effectiveOnlyAfterCodeChange": true
+  },
+  "constraintsAndRevocation": [
+    "UNCERTAIN_never_expires_automatically",
+    "no_destructive_purge",
+    "no_staging_or_production_authorization",
+    "policy_change_or_expiry_reopens_the_gate",
+    "wave_5_staging_requires_a_new_policy_for_real_data"
+  ],
+  "releaseEligible": false
+}

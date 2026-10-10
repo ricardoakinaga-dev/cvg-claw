@@ -1,0 +1,108 @@
+{
+  "at": "2026-10-08T02:15:35.100Z",
+  "candidate": "380ccc525d3c8313463bf8a845f634fb34757d8c85682b6ee7601a59a4a4495d",
+  "critical": {
+    "schemaVersion": 1,
+    "kind": "aud19-critical-coverage-report",
+    "floorBranchesPct": 95,
+    "valid": true,
+    "modules": [
+      {
+        "module": "kernel",
+        "files": [
+          "packages/agent-runtime/src/orchestration.ts",
+          "packages/agent-runtime/src/runtime.ts",
+          "packages/agent-runtime/src/composition.ts",
+          "apps/worker/src/kernel-composition.ts"
+        ],
+        "branches": 1923,
+        "covered": 1873,
+        "pct": 97.39989599583984,
+        "pass": true,
+        "filesBelowFloor": []
+      },
+      {
+        "module": "approval",
+        "files": [
+          "packages/approval-engine/src/engine.ts",
+          "packages/persistence/src/runtime-approval-store.ts",
+          "packages/platform/src/approval-authority.ts"
+        ],
+        "branches": 635,
+        "covered": 627,
+        "pct": 98.74015748031496,
+        "pass": true,
+        "filesBelowFloor": []
+      },
+      {
+        "module": "policy",
+        "files": [
+          "packages/policy-engine/src/engine.ts",
+          "packages/platform/src/policy-evaluator.ts"
+        ],
+        "branches": 143,
+        "covered": 137,
+        "pct": 95.8041958041958,
+        "pass": true,
+        "filesBelowFloor": []
+      },
+      {
+        "module": "journal",
+        "files": [
+          "packages/agent-runtime/src/effect-journal.ts",
+          "packages/channel-gateway/src/effect-journal.ts",
+          "packages/persistence/src/outbox.ts"
+        ],
+        "branches": 593,
+        "covered": 582,
+        "pct": 98.1450252951096,
+        "pass": true,
+        "filesBelowFloor": []
+      },
+      {
+        "module": "canal",
+        "files": [
+          "packages/channel-gateway/src"
+        ],
+        "branches": 425,
+        "covered": 414,
+        "pct": 97.41176470588235,
+        "pass": true,
+        "filesBelowFloor": []
+      },
+      {
+        "module": "rls",
+        "files": [
+          "apps/api/src/server/tenant-isolation.ts"
+        ],
+        "branches": 66,
+        "covered": 66,
+        "pct": 100,
+        "pass": true,
+        "filesBelowFloor": []
+      }
+    ],
+    "blockers": []
+  },
+  "global": {
+    "valid": true,
+    "floors": {
+      "statements": 90,
+      "branches": 85,
+      "functions": 90,
+      "lines": 90
+    },
+    "metrics": {
+      "statements": 97.16,
+      "branches": 94.38,
+      "functions": 96.81,
+      "lines": 97.77
+    },
+    "blockers": []
+  },
+  "sourceBinding": {
+    "mainUnchanged": true,
+    "copyUnchanged": true,
+    "bindingReceipt": "verify-9-source-binding-correction.json"
+  }
+}

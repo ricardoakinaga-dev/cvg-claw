@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "kind": "aud19-documentation-check",
+  "valid": true,
+  "links": {
+    "checked": 2829,
+    "broken": []
+  },
+  "json": {
+    "checked": 6938,
+    "invalid": []
+  },
+  "states": {
+    "declared": [
+      "WAITING_HUMAN_APPROVAL",
+      "READY_FOR_NEXT_STEP"
+    ],
+    "unexpected": []
+  },
+  "nextAction": {
+    "valid": true,
+    "reason": null,
+    "runtimeStateAction": "definir a margem do Verify remoto e o merge que preserve a âncora 7c1fdfc; revisar o pacote local 716bf465 sem trechos privados; manter AUD06-11 e AUD06-14 sem aceite.",
+    "currentIndexAction": "definir a margem do Verify remoto e o merge que preserve a âncora 7c1fdfc; revisar o pacote local 716bf465 sem trechos privados; manter AUD06-11 e AUD06-14 sem aceite."
+  },
+  "semantic": {
+    "valid": true,
+    "failures": [],
+    "state": {
+      "valid": true,
+      "failures": []
+    },
+    "node": {
+      "valid": true,
+      "failures": []
+    },
+    "observedNode": "v22.23.2"
+  }
+}

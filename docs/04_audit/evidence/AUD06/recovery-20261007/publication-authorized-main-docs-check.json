@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+    "scripts/docs-check.mjs"
+  ],
+  "startedAt": "2026-10-09T01:48:00.423643+00:00",
+  "endedAt": "2026-10-09T01:48:04.705123+00:00",
+  "exitCode": 0,
+  "logSHA256": "a10207bd0729b62710692f1f518e57e060921b42ef3c38defd9404b50578f27e",
+  "scope": "local publication state synchronized; remote SHA remains716bf465",
+  "firstAttemptPreserved": true
+}

@@ -1,0 +1,222 @@
+{
+  "runId": "cvg-aud06-stack-1791422392227-f517287933",
+  "checkedAt": "2026-10-08T01:22:34.600330+00:00",
+  "manifestEntries": 370,
+  "sourceManifestSha256": "db34a2651bbd55169585e57f3a8ed198bf35bb1b653f784dfb374724cdb02816",
+  "sourceMismatch": [],
+  "runnerSha256": "457be0ab1848f48395941d52712f9b9d2fa8f01ad0660ab8750e5c3390342b37",
+  "testSha256": "b544e97d603267df7ecdb829e8a502fb08224cc7ab8b8c51ae9cd95e24723551",
+  "sha256sumsSha256": "062219acee4e3130e7bc59e55720e09596a90b01d5019b708fc042990c9f1809",
+  "artifactHashesMatched": true,
+  "commandOutputHashesMatched": true,
+  "commands": 110,
+  "workerBinding": {
+    "path": "apps/worker/src/main.ts",
+    "sha256": "62321b97efbb710d67d94a15d3d41a7a0fa722494ca7ecae43bb7cbacf15b47a"
+  },
+  "quotaBinding": {
+    "path": "apps/api/src/postgres-rate-limit.ts",
+    "sha256": "ab5cfb3a5017cf964bef597cf6876239a16202ea37a81a2596a86fa17c04c6a1"
+  },
+  "serverBinding": {
+    "path": "apps/api/src/server.ts",
+    "sha256": "81b40fceee095b7a98787f2680f5f6afff2d06140e7f6339cffe33b638f35270"
+  },
+  "codeFreezeUnchanged": true,
+  "temporaryDirectory": "/tmp/cvg-aud06-stack-slWRK1",
+  "temporaryDirectoryAbsent": true,
+  "removedResources": [
+    {
+      "command": [
+        "docker",
+        "container",
+        "inspect",
+        "e5addcc05e12"
+      ],
+      "exitCode": 1,
+      "absent": true,
+      "stdoutFile": "absence-00-container.stdout.log",
+      "stderrFile": "absence-00-container.stderr.log",
+      "observedAt": "2026-10-08T01:22:34.448075+00:00"
+    },
+    {
+      "command": [
+        "docker",
+        "container",
+        "inspect",
+        "24350f543f0f"
+      ],
+      "exitCode": 1,
+      "absent": true,
+      "stdoutFile": "absence-01-container.stdout.log",
+      "stderrFile": "absence-01-container.stderr.log",
+      "observedAt": "2026-10-08T01:22:34.459493+00:00"
+    },
+    {
+      "command": [
+        "docker",
+        "container",
+        "inspect",
+        "e1f665b23fd7"
+      ],
+      "exitCode": 1,
+      "absent": true,
+      "stdoutFile": "absence-02-container.stdout.log",
+      "stderrFile": "absence-02-container.stderr.log",
+      "observedAt": "2026-10-08T01:22:34.471014+00:00"
+    },
+    {
+      "command": [
+        "docker",
+        "container",
+        "inspect",
+        "d28e0664a414"
+      ],
+      "exitCode": 1,
+      "absent": true,
+      "stdoutFile": "absence-03-container.stdout.log",
+      "stderrFile": "absence-03-container.stderr.log",
+      "observedAt": "2026-10-08T01:22:34.482142+00:00"
+    },
+    {
+      "command": [
+        "docker",
+        "container",
+        "inspect",
+        "0fbb85ff2df0"
+      ],
+      "exitCode": 1,
+      "absent": true,
+      "stdoutFile": "absence-04-container.stdout.log",
+      "stderrFile": "absence-04-container.stderr.log",
+      "observedAt": "2026-10-08T01:22:34.493074+00:00"
+    },
+    {
+      "command": [
+        "docker",
+        "container",
+        "inspect",
+        "d9d33b08a549"
+      ],
+      "exitCode": 1,
+      "absent": true,
+      "stdoutFile": "absence-05-container.stdout.log",
+      "stderrFile": "absence-05-container.stderr.log",
+      "observedAt": "2026-10-08T01:22:34.504741+00:00"
+    },
+    {
+      "command": [
+        "docker",
+        "container",
+        "inspect",
+        "de4afbee580e"
+      ],
+      "exitCode": 1,
+      "absent": true,
+      "stdoutFile": "absence-06-container.stdout.log",
+      "stderrFile": "absence-06-container.stderr.log",
+      "observedAt": "2026-10-08T01:22:34.517243+00:00"
+    },
+    {
+      "command": [
+        "docker",
+        "container",
+        "inspect",
+        "33d9ed7f581e"
+      ],
+      "exitCode": 1,
+      "absent": true,
+      "stdoutFile": "absence-07-container.stdout.log",
+      "stderrFile": "absence-07-container.stderr.log",
+      "observedAt": "2026-10-08T01:22:34.529365+00:00"
+    },
+    {
+      "command": [
+        "docker",
+        "network",
+        "inspect",
+        "cvg-aud06-stack-1791422392227-f517287933-edge-network"
+      ],
+      "exitCode": 1,
+      "absent": true,
+      "stdoutFile": "absence-08-network.stdout.log",
+      "stderrFile": "absence-08-network.stderr.log",
+      "observedAt": "2026-10-08T01:22:34.541103+00:00"
+    },
+    {
+      "command": [
+        "docker",
+        "network",
+        "inspect",
+        "cvg-aud06-stack-1791422392227-f517287933-network"
+      ],
+      "exitCode": 1,
+      "absent": true,
+      "stdoutFile": "absence-09-network.stdout.log",
+      "stderrFile": "absence-09-network.stderr.log",
+      "observedAt": "2026-10-08T01:22:34.553490+00:00"
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "inspect",
+        "cvg-aud06-stack-1791422392227-f517287933-db-data"
+      ],
+      "exitCode": 1,
+      "absent": true,
+      "stdoutFile": "absence-10-volume.stdout.log",
+      "stderrFile": "absence-10-volume.stderr.log",
+      "observedAt": "2026-10-08T01:22:34.565056+00:00"
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "inspect",
+        "cvg-aud06-stack-1791422392227-f517287933-restore-data"
+      ],
+      "exitCode": 1,
+      "absent": true,
+      "stdoutFile": "absence-11-volume.stdout.log",
+      "stderrFile": "absence-11-volume.stderr.log",
+      "observedAt": "2026-10-08T01:22:34.576658+00:00"
+    },
+    {
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "cvg-aud06-stack-1791422392227-f517287933-runtime:synthetic"
+      ],
+      "exitCode": 1,
+      "absent": true,
+      "stdoutFile": "absence-12-image.stdout.log",
+      "stderrFile": "absence-12-image.stderr.log",
+      "observedAt": "2026-10-08T01:22:34.588477+00:00"
+    },
+    {
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "cvg-aud06-stack-1791422392227-f517287933-web:synthetic"
+      ],
+      "exitCode": 1,
+      "absent": true,
+      "stdoutFile": "absence-13-image.stdout.log",
+      "stderrFile": "absence-13-image.stderr.log",
+      "observedAt": "2026-10-08T01:22:34.600195+00:00"
+    }
+  ],
+  "teardown": {
+    "remaining": {
+      "containers": [],
+      "networks": [],
+      "volumes": []
+    },
+    "passed": true
+  },
+  "production": "NO_GO",
+  "approval": false
+}

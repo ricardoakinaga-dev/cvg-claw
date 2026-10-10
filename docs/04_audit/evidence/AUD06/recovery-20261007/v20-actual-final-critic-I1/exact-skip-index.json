@@ -1,0 +1,1602 @@
+[
+  {
+    "file": "apps/api/src/__tests__/journeys-api-postgres.test.ts",
+    "fullName": "journeys API over PostgreSQL serves the full owner, patient, slot, appointment and task journey over HTTP",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/journeys-api-postgres.test.ts",
+    "fullName": "journeys API over PostgreSQL keeps journey state tenant-isolated over HTTP",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/journeys-api-postgres.test.ts",
+    "fullName": "journeys API over PostgreSQL preserves authentication, validation and approval boundaries over PostgreSQL",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/journeys-api-postgres.test.ts",
+    "fullName": "journeys API over PostgreSQL reads created journey state back after a server restart",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/journeys-api-postgres.test.ts",
+    "fullName": "journeys API over PostgreSQL serves journeys through a direct PostgreSQL client without a pool",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/journeys-api-postgres.test.ts",
+    "fullName": "journeys API over PostgreSQL applies migration 0014 during postgres startup before serving journeys",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/journeys-api-postgres.test.ts",
+    "fullName": "journeys API over PostgreSQL fails journey routes closed when no journey repository is available",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/journeys-api-postgres.test.ts",
+    "fullName": "journeys API over PostgreSQL fails startup when a postgres pool cannot construct the journey repository",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/journeys-api-postgres.test.ts",
+    "fullName": "journeys API over PostgreSQL records the authenticated actor and request correlation on journey audit",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/journeys-api-postgres.test.ts",
+    "fullName": "journeys API over PostgreSQL keeps the HTTP journey mutation and audit atomic and replayable",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/operator-replay-guard.test.ts",
+    "fullName": "operator replay guard (PostgreSQL) rejects the second use of the same JTI across PostgreSQL-backed instances",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/operator-replay-store.test.ts",
+    "fullName": "operator replay store (PostgreSQL) claims atomically across two instances sharing the same store",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/operator-replay-store.test.ts",
+    "fullName": "operator replay store (PostgreSQL) reclaims expired claims and purges only expired rows",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/operator-replay-store.test.ts",
+    "fullName": "operator replay store (PostgreSQL) fails closed when the replay table is not installed",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/postgres-persistence-mode.test.ts",
+    "fullName": "api PostgreSQL persistence mode uses PostgreSQL-backed webhook replay state across reserve and commit operations",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/postgres-persistence-mode.test.ts",
+    "fullName": "api PostgreSQL persistence mode commits and rolls back the tenant-scoped runtime finalizer atomically",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/postgres-persistence-mode.test.ts",
+    "fullName": "api PostgreSQL persistence mode rejects a superuser runtime connection when RLS enforcement is requested",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/postgres-persistence-mode.test.ts",
+    "fullName": "api PostgreSQL persistence mode validates tenant-scoped startup with separate migration and runtime roles",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/postgres-persistence-mode.test.ts",
+    "fullName": "api PostgreSQL persistence mode runs inbound, timeline, task, approval and audit endpoints against PostgreSQL when configured",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/postgres-persistence-mode.test.ts",
+    "fullName": "api PostgreSQL persistence mode keeps PostgreSQL inbound idempotency isolated by tenant",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/postgres-persistence-mode.test.ts",
+    "fullName": "api PostgreSQL persistence mode keeps human takeover and session continuation fail-closed on PostgreSQL",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/postgres-rate-limit.test.ts",
+    "fullName": "PostgreSQL quota across API instances (synthetic) admits exactly the quota under concurrent traffic through two APIs",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/postgres-rate-limit.test.ts",
+    "fullName": "PostgreSQL quota across API instances (synthetic) bounds capacity without evicting live quotas and reclaims expired entries",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/postgres-rate-limit.test.ts",
+    "fullName": "PostgreSQL quota across API instances (synthetic) never reduces an active counter when replicas use different policy limits",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/postgres-rate-limit.test.ts",
+    "fullName": "PostgreSQL quota across API instances (synthetic) denies HTTP on unavailable storage without fallback or diagnostic leakage",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/postgres-rate-limit.test.ts",
+    "fullName": "PostgreSQL quota across API instances (synthetic) denies a saturated real pool and releases the connection that arrives after expiry",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/postgres-rate-limit.test.ts",
+    "fullName": "PostgreSQL quota across API instances (synthetic) separates deployment namespaces and rejects malformed input",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/api/src/__tests__/webhook-security.test.ts",
+    "fullName": "HmacWebhookVerifier recovers stale PostgreSQL replay leases and preserves committed replay retention",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/continuous-worker-entrypoint.integration.test.ts",
+    "fullName": "AAA-19 continuous worker entrypoint over PostgreSQL consumes events around a restart and drains on a real SIGTERM without loss or duplication",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/continuous-worker-entrypoint.integration.test.ts",
+    "fullName": "AAA-19 continuous worker entrypoint over PostgreSQL runs the role preflight before the first claim and leaves the queue untouched on rejection",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/continuous-worker-postgres.integration.test.ts",
+    "fullName": "AAA-19 continuous PostgreSQL worker consumes events across a simulated restart and dead-letters a poison event",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/continuous-worker-postgres.integration.test.ts",
+    "fullName": "AAA-19 continuous PostgreSQL worker observes queue lag, completes in-flight work on shutdown and releases bounded leases",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/continuous-worker-postgres.integration.test.ts",
+    "fullName": "AAA-19 continuous PostgreSQL worker composes durable approval and journal sweeps for the kernel worker",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) rethrows an unrelated durable orchestrator error",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) does not convert a lease-lost error when the goal was deleted",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) returns a fenced result with the active plan after a conflict",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) recovers an expired lease with no approval using the requirement decision",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) treats an unreadable approval or missing operation key as uncertain",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) decides replay safety from the persisted journal and approval state",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) retries terminal no-effect journal states only for re-armable approvals",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) retries an absent journal only for an approved reservation",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) resolves an expired waiting approval and skips pending ones",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) skips waiting goals without a plan, without a waiting step or without an approval identity",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) skips a waiting goal whose approval cannot be read",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) rejects reuse when persisted planner context has unexpected lineage fields",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) fails closed when no persisted or runtime planner context exists",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) rejects a persisted runtime snapshot that does not match the controlled kernel",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) executes a seeded step with a null conversation and session lineage",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) executes a seeded step with a non-object input and absent model messages",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) executes a seeded step with a null idempotency key and tool identity",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) re-evaluates a recovered plan and executes the recovered step",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) re-evaluates a recovered plan without tool identity",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) resolves a rejected durable approval continuation and fails closed on a mismatch",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) resumes a durable approval continuation and ignores an undecided approval",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) rejects a durable continuation whose approval does not match a waiting step",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) fails closed when a waiting goal has no active plan for a continuation",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) completes a message.draft goal through the durable journal and reports the effect",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) replays a confirmed message.draft effect without a tool call",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) denies a message.draft goal when the caller operation is uncertain",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) drives a denied capability to a terminal goal without evidence",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) keeps a step successful when the outbox is unavailable after the effect",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-branch-hardening.test.ts",
+    "fullName": "kernel durable composition branch hardening (PostgreSQL) fails closed when the durable runtime audit chain is invalid",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-postgres.integration.test.ts",
+    "fullName": "AAA-21 composed kernel path over API → outbox → worker (PostgreSQL) runs the approved draft write once and replays without a second effect",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-postgres.integration.test.ts",
+    "fullName": "AAA-21 composed kernel path over API → outbox → worker (PostgreSQL) never auto-retries an UNCERTAIN journal state",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-postgres.integration.test.ts",
+    "fullName": "AAA-21 composed kernel path over API → outbox → worker (PostgreSQL) routes the API outbox through the opt-in durable orchestrator and resumes the same Goal after approval",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-postgres.integration.test.ts",
+    "fullName": "AAA-21 composed kernel path over API → outbox → worker (PostgreSQL) composes kernel handlers when the runtime kind is selected",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-composition-postgres.integration.test.ts",
+    "fullName": "AAA-21 composed kernel path over API → outbox → worker (PostgreSQL) fails closed when durable kernel tables are missing",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-durable-orchestrator-postgres.test.ts",
+    "fullName": "durable worker Goal orchestration creates a durable Goal and stops at WAITING_APPROVAL through the governed kernel",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-durable-orchestrator-postgres.test.ts",
+    "fullName": "durable worker Goal orchestration rebuilds the first plan from persisted planner context after restart",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-durable-orchestrator-postgres.test.ts",
+    "fullName": "durable worker Goal orchestration acknowledges a fenced durable-goal loser instead of retrying it",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-durable-orchestrator-postgres.test.ts",
+    "fullName": "durable worker Goal orchestration converges two concurrent outbox journeys on one Goal and one effect",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-durable-orchestrator-postgres.test.ts",
+    "fullName": "durable worker Goal orchestration redelivers after a crash following Goal creation and never duplicates the effect",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/kernel-durable-orchestrator-postgres.test.ts",
+    "fullName": "durable worker Goal orchestration combines lease-expiry redelivery, final DLQ and durable effect recovery",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/postgres-outbox-bridge.integration.test.ts",
+    "fullName": "API to PostgreSQL worker outbox bridge consumes the event written by the API through a separate worker pool",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/postgres-role-preflight.test.ts",
+    "fullName": "worker PostgreSQL role preflight rejects an additional permissive policy before any claim",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/postgres-role-preflight.test.ts",
+    "fullName": "worker PostgreSQL role preflight rejects missing effect privileges and forbidden privileges on any critical table",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/postgres-role-preflight.test.ts",
+    "fullName": "worker PostgreSQL role preflight rejects a superuser role",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/postgres-role-preflight.test.ts",
+    "fullName": "worker PostgreSQL role preflight rejects a BYPASSRLS role",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/postgres-role-preflight.test.ts",
+    "fullName": "worker PostgreSQL role preflight rejects a role that inherits another role",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/postgres-role-preflight.test.ts",
+    "fullName": "worker PostgreSQL role preflight rejects a role that owns a tenant-isolated table",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/postgres-role-preflight.test.ts",
+    "fullName": "worker PostgreSQL role preflight rejects a role that can create schema objects",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/postgres-role-preflight.test.ts",
+    "fullName": "worker PostgreSQL role preflight rejects a role without the tenant-isolated schema",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/postgres-role-preflight.test.ts",
+    "fullName": "worker PostgreSQL role preflight rejects a role with non-minimal outbox privileges",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/postgres-role-preflight.test.ts",
+    "fullName": "worker PostgreSQL role preflight accepts a minimal role and consumes an event",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/postgres-role-preflight.test.ts",
+    "fullName": "worker PostgreSQL role preflight clears the tenant context of the same pool connection after a rejected preflight",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "apps/worker/src/__tests__/postgres-role-preflight.test.ts",
+    "fullName": "worker PostgreSQL role preflight destroys a connection whose tenant context cannot be cleared",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/chaos/src/__tests__/chaos-postgres.test.ts",
+    "fullName": "chaos: PostgreSQL resilience CHAOS-04 temporary disconnect: pool recovers after backend termination",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/chaos/src/__tests__/chaos-postgres.test.ts",
+    "fullName": "chaos: PostgreSQL resilience CHAOS-05 mass termination: connections are re-established cleanly",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/attendance-approval-postgres.test.ts",
+    "fullName": "attendance approval PostgreSQL atomicity forces two connections past the same pending read and rolls back failed audit",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts",
+    "fullName": "channel effect journal PostgreSQL adapter with a disposable PostgreSQL schema applies 0012 with forced RLS and the legacy hash default",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts",
+    "fullName": "channel effect journal PostgreSQL adapter with a disposable PostgreSQL schema reserves, sends, confirms and replays the result",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts",
+    "fullName": "channel effect journal PostgreSQL adapter with a disposable PostgreSQL schema reserves atomically under two concurrent clients",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts",
+    "fullName": "channel effect journal PostgreSQL adapter with a disposable PostgreSQL schema returns conflict for the same key with a different payload hash",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts",
+    "fullName": "channel effect journal PostgreSQL adapter with a disposable PostgreSQL schema takes over an expired PENDING lease and fences the stale worker",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts",
+    "fullName": "channel effect journal PostgreSQL adapter with a disposable PostgreSQL schema marks an expired SENDING lease uncertain and never resends by itself",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts",
+    "fullName": "channel effect journal PostgreSQL adapter with a disposable PostgreSQL schema releases a retryable failure back to PENDING for a same-key retry",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts",
+    "fullName": "channel effect journal PostgreSQL adapter with a disposable PostgreSQL schema resolves UNCERTAIN only through explicit reconciliation",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts",
+    "fullName": "channel effect journal PostgreSQL adapter with a disposable PostgreSQL schema rejects reconciliation without a valid actor and never mutates the row",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts",
+    "fullName": "channel effect journal PostgreSQL adapter with a disposable PostgreSQL schema fails closed for invalid or malformed hash versions",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/channel-effect-journal-postgres.test.ts",
+    "fullName": "channel effect journal PostgreSQL adapter with a disposable PostgreSQL schema isolates cross-tenant rows with a non-BYPASSRLS role",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/effect-journal-postgres.test.ts",
+    "fullName": "runtime effect journal PostgreSQL adapter with a disposable PostgreSQL schema applies 0012/0013 in order with forced RLS and reserved columns",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/effect-journal-postgres.test.ts",
+    "fullName": "runtime effect journal PostgreSQL adapter with a disposable PostgreSQL schema reserves, starts, confirms and replays the persisted result digest",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/effect-journal-postgres.test.ts",
+    "fullName": "runtime effect journal PostgreSQL adapter with a disposable PostgreSQL schema reserves atomically under two concurrent clients",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/effect-journal-postgres.test.ts",
+    "fullName": "runtime effect journal PostgreSQL adapter with a disposable PostgreSQL schema fails closed with idempotency_key_reuse for a different proposal hash",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/effect-journal-postgres.test.ts",
+    "fullName": "runtime effect journal PostgreSQL adapter with a disposable PostgreSQL schema abandons an expired reservation and re-arms a safe retry",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/effect-journal-postgres.test.ts",
+    "fullName": "runtime effect journal PostgreSQL adapter with a disposable PostgreSQL schema marks an expired EFFECT_STARTED reservation uncertain without retrying",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/effect-journal-postgres.test.ts",
+    "fullName": "runtime effect journal PostgreSQL adapter with a disposable PostgreSQL schema fences a stale attempt after a safe takeover",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/effect-journal-postgres.test.ts",
+    "fullName": "runtime effect journal PostgreSQL adapter with a disposable PostgreSQL schema reconciles UNCERTAIN explicitly and audits the actor",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/effect-journal-postgres.test.ts",
+    "fullName": "runtime effect journal PostgreSQL adapter with a disposable PostgreSQL schema isolates cross-tenant reads and writes with a non-BYPASSRLS role",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts",
+    "fullName": "Goal get-or-create concurrency over PostgreSQL relies on the existing partial unique index instead of a new migration",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts",
+    "fullName": "Goal get-or-create concurrency over PostgreSQL converges concurrent first deliveries on one canonical Goal without a unique violation",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts",
+    "fullName": "Goal get-or-create concurrency over PostgreSQL creates distinct Goals for the same inbound message id in different tenants",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts",
+    "fullName": "Goal get-or-create concurrency over PostgreSQL converges redelivery on the winner lineage and rejects incompatible reuse",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts",
+    "fullName": "Goal get-or-create concurrency over PostgreSQL rejects every divergent canonical lineage field without changing the winner",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts",
+    "fullName": "Goal get-or-create concurrency over PostgreSQL bounds the creation and claim race to one lease and one effect attempt",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts",
+    "fullName": "Goal get-or-create concurrency over PostgreSQL does not produce retry or dead-letter side effects for a benign conflict",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts",
+    "fullName": "Goal get-or-create concurrency over PostgreSQL rejects settlement from an expired lease holder and accepts only the fresh fencing token",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journey-task-atomicity.test.ts",
+    "fullName": "journey task atomicity PostgreSQL rolls back task on rejected audit and retries with one trusted event",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journey-task-atomicity.test.ts",
+    "fullName": "journey task atomicity PostgreSQL concurrent same-key insert returns winner without aborted-transaction recovery",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journeys-postgres.test.ts",
+    "fullName": "journey PostgreSQL persistence journey contract (postgres parity) creates, reloads and lists owner drafts with normalized candidates",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journeys-postgres.test.ts",
+    "fullName": "journey PostgreSQL persistence journey contract (postgres parity) records journey audit with the supplied actor and correlation",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journeys-postgres.test.ts",
+    "fullName": "journey PostgreSQL persistence journey contract (postgres parity) audits journey tasks once with trusted actor and session context",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journeys-postgres.test.ts",
+    "fullName": "journey PostgreSQL persistence journey contract (postgres parity) links a patient and creates an approval-blocked appointment draft",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journeys-postgres.test.ts",
+    "fullName": "journey PostgreSQL persistence journey contract (postgres parity) expires drafts in place without deleting evidence or inventing confirmation",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journeys-postgres.test.ts",
+    "fullName": "journey PostgreSQL persistence journey contract (postgres parity) fails closed across tenant boundaries for reads and writes",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journeys-postgres.test.ts",
+    "fullName": "journey PostgreSQL persistence journey contract (postgres parity) creates journey tasks idempotently and records handoffs",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journeys-postgres.test.ts",
+    "fullName": "journey PostgreSQL persistence journey contract (postgres parity) rejects invalid inputs with stable validation failures",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journeys-postgres.test.ts",
+    "fullName": "journey PostgreSQL persistence applies 0014 with forced RLS, idempotency constraints and draft-only states",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journeys-postgres.test.ts",
+    "fullName": "journey PostgreSQL persistence applies 0014 additively over a 0013 database and preserves prior data",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journeys-postgres.test.ts",
+    "fullName": "journey PostgreSQL persistence fails closed for a non-BYPASSRLS runtime role without tenant context",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journeys-postgres.test.ts",
+    "fullName": "journey PostgreSQL persistence persists journey task and handoff evidence through the tenant scope",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journeys-postgres.test.ts",
+    "fullName": "journey PostgreSQL persistence rolls back the whole journey mutation when the audit insert fails",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journeys-postgres.test.ts",
+    "fullName": "journey PostgreSQL persistence serializes concurrent creates with the same idempotency key",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/journeys-postgres.test.ts",
+    "fullName": "journey PostgreSQL persistence clears the tenant context of the borrowed connection after a transaction",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/orchestrator-postgres.test.ts",
+    "fullName": "durable orchestrator PostgreSQL store applies the orchestrator migration and preserves tenant-scoped Goal/Plan/Step lineage",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/orchestrator-postgres.test.ts",
+    "fullName": "durable orchestrator PostgreSQL store rejects orphan effect and outbox orchestration lineage",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/orchestrator-postgres.test.ts",
+    "fullName": "durable orchestrator PostgreSQL store enforces CAS, claim fencing, attempt history and recovery in PostgreSQL",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/orchestrator-postgres.test.ts",
+    "fullName": "durable orchestrator PostgreSQL store loads plan steps and step attempts in bulk with tenant scoping",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/orchestrator-postgres.test.ts",
+    "fullName": "durable orchestrator PostgreSQL store persists the iteration guard and observation in PostgreSQL",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/outbox-durability.test.ts",
+    "fullName": "durable PostgreSQL outbox backfills a legacy processed row while RLS is already forced",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/outbox-durability.test.ts",
+    "fullName": "durable PostgreSQL outbox fences a stale claim when a worker id is reused after takeover",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/outbox-durability.test.ts",
+    "fullName": "durable PostgreSQL outbox keeps the effect journal when the ack loses its lease after the effect ran",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/outbox-durability.test.ts",
+    "fullName": "durable PostgreSQL outbox keeps the committed effect journal across a lease takeover race",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/outbox-durability.test.ts",
+    "fullName": "durable PostgreSQL outbox fences an ack when the lease expires before the final compare-and-swap",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/outbox-durability.test.ts",
+    "fullName": "durable PostgreSQL outbox redacts legacy rows without making routable pending work disappear",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/outbox-durability.test.ts",
+    "fullName": "durable PostgreSQL outbox claims once across two connections, journals at-least-once ack, retries and requeues in-place",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/outbox-durability.test.ts",
+    "fullName": "durable PostgreSQL outbox commits inbound message and durable intent together",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/platform-approval-postgres.test.ts",
+    "fullName": "PostgreSQL capability approval authority persists bindings and consumes approvals atomically exactly once",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/platform-approval-postgres.test.ts",
+    "fullName": "PostgreSQL capability approval authority enforces tenant visibility for the durable approval table under FORCE RLS",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/platform-postgres-smoke.test.ts",
+    "fullName": "Postgres platform control plane smoke persists an immutable published version and a tenant-scoped trace",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/platform-postgres-smoke.test.ts",
+    "fullName": "Postgres platform control plane smoke persists versioned suites and redacted A/B run metadata under tenant RLS",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/platform-postgres-smoke.test.ts",
+    "fullName": "Postgres platform control plane smoke persists tenant-scoped plugin metadata with immutable identity and guarded status",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/platform-postgres-smoke.test.ts",
+    "fullName": "Postgres platform control plane smoke persists tenant-scoped knowledge source metadata without content or lifecycle bypass",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/platform-postgres-smoke.test.ts",
+    "fullName": "Postgres platform control plane smoke persists a validated release-candidate evidence ledger without mutating the version",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/postgres-migration-smoke.test.ts",
+    "fullName": "postgres migration smoke applies the migration and persists runtime evidence in an isolated PostgreSQL schema",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/retention-postgres.test.ts",
+    "fullName": "retention sweep on PostgreSQL (synthetic fixtures) ships an additive, tenant-isolated retention ledger migration with checksum",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/retention-postgres.test.ts",
+    "fullName": "retention sweep on PostgreSQL (synthetic fixtures) bounds the migration advisory lock with an explicit timeout",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/retention-postgres.test.ts",
+    "fullName": "retention sweep on PostgreSQL (synthetic fixtures) expires tenant A, preserves tenant B and held records, and is idempotent",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/retention-postgres.test.ts",
+    "fullName": "retention sweep on PostgreSQL (synthetic fixtures) keeps the ledger invisible outside the target tenant and rejects context mismatch",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/retention-postgres.test.ts",
+    "fullName": "AUD20-04 inbound dedupe retention keeps a durable tombstone and rejects late replay after TTL",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/retention-postgres.test.ts",
+    "fullName": "AUD20-04 inbound dedupe retention rolls back the current batch when statement timeout is exceeded",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/retention-postgres.test.ts",
+    "fullName": "AUD20-04 inbound dedupe retention processes inbound tombstones in bounded ordered batches",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/retention-postgres.test.ts",
+    "fullName": "AUD20-04 inbound dedupe retention reports an incomplete checkpoint and converges on restart",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/retention-postgres.test.ts",
+    "fullName": "AUD20-04 inbound dedupe retention lets concurrent sweepers split rows without duplicate tombstones",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/retention-postgres.test.ts",
+    "fullName": "AUD20-04 inbound dedupe retention minimizes mature tombstones in restartable batches without reopening replay",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/retention-postgres.test.ts",
+    "fullName": "AUD20-04 inbound dedupe retention keeps prepared old reader/writer statements compatible across migration 0029",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/retention-postgres.test.ts",
+    "fullName": "AUD20-04 inbound dedupe retention serializes inbound hold changes with lifecycle minimization",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/retention-postgres.test.ts",
+    "fullName": "AUD20-04 inbound dedupe retention fails closed outside the immutable lifecycle approval window",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts",
+    "fullName": "durable runtime approval branch hardening deduplicates an inbound continuation and rejects a divergent reuse",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts",
+    "fullName": "durable runtime approval branch hardening round-trips a minimal approval without optional proposal columns",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts",
+    "fullName": "durable runtime approval branch hardening decides a PENDING approval with and without a reason, idempotently",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts",
+    "fullName": "durable runtime approval branch hardening decides rejections from REQUESTED and PENDING and refuses terminal states",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts",
+    "fullName": "durable runtime approval branch hardening decides every REQUESTED and PENDING reason variant",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts",
+    "fullName": "durable runtime approval branch hardening persists an explicit operator rejection and cancellation",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts",
+    "fullName": "durable runtime approval branch hardening refuses to resume a continuation without a durable trace root",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts",
+    "fullName": "durable runtime approval branch hardening consumes an approved single-use approval and persists the execution",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts",
+    "fullName": "durable runtime approval branch hardening marks a reserved approval uncertain with an explicit reason",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts",
+    "fullName": "durable runtime approval branch hardening fails a reserved approval with explicit no-effect evidence",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts",
+    "fullName": "durable runtime approval branch hardening reports not-found for missing approvals and lookups",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts",
+    "fullName": "durable runtime approval branch hardening finds a continuation by inbound message and returns undefined otherwise",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts",
+    "fullName": "durable runtime approval branch hardening sweeps expired reservations with the repository clock",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts",
+    "fullName": "durable runtime approval branch hardening expires stale requests for one tenant through the set-based update",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-branch-hardening.test.ts",
+    "fullName": "durable runtime approval branch hardening rejects the cross-tenant expireStale sweep",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts",
+    "fullName": "durable runtime approval authority (PROD-04) ships the additive runtime approval migration with forced RLS",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts",
+    "fullName": "durable runtime approval authority (PROD-04) ships the continuation pointer and trace migration without weakening RLS",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts",
+    "fullName": "durable runtime approval authority (PROD-04) atomically commits a decision, continuation outbox event and audit",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts",
+    "fullName": "durable runtime approval authority (PROD-04) rolls the decision back when the continuation enqueue fails",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts",
+    "fullName": "durable runtime approval authority (PROD-04) applies 0015 additively over 0014 with the checksum guard",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts",
+    "fullName": "durable runtime approval authority (PROD-04) keeps proposal and reservation across an adapter restart",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts",
+    "fullName": "durable runtime approval authority (PROD-04) serializes a two-connection reserve to exactly one winner",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts",
+    "fullName": "durable runtime approval authority (PROD-04) fences generations and ships the SQL compare-and-set predicate",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts",
+    "fullName": "durable runtime approval authority (PROD-04) releases an expired RESERVED approval with no_effect evidence",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts",
+    "fullName": "durable runtime approval authority (PROD-04) keeps an EXECUTING approval UNCERTAIN until explicit reconciliation",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts",
+    "fullName": "durable runtime approval authority (PROD-04) isolates rows for a non-BYPASSRLS runtime role",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts",
+    "fullName": "durable runtime approval authority (PROD-04) returns operation-key candidates and filters pending approvals",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts",
+    "fullName": "durable runtime approval authority (PROD-04) persists the engine expiry transition before rethrowing expired",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts",
+    "fullName": "durable runtime approval authority (PROD-04) rejects the cross-tenant expireStale sweep",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/session-version-pinning-postgres.test.ts",
+    "fullName": "session version pinning migration contract binds sessions atomically under the tenant-aware migration and never replaces the pin",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/tenant-isolation.test.ts",
+    "fullName": "tenant-scoped PostgreSQL boundary enforces cross-tenant isolation with a non-BYPASSRLS role and resets pooled context",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  },
+  {
+    "file": "packages/persistence/src/__tests__/tenant-isolation.test.ts",
+    "fullName": "tenant-scoped PostgreSQL boundary quarantines legacy tenant mismatches before enabling RLS",
+    "dedicatedStatuses": [
+      "passed"
+    ],
+    "passed": true
+  }
+]

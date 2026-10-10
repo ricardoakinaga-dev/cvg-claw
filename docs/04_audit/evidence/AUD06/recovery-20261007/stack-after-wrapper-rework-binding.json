@@ -1,0 +1,7 @@
+{
+  "run": "cvg-aud06-stack-1791422392227-f517287933",
+  "entries": 370,
+  "sourceMismatches": [],
+  "stackRunnerHash": "457be0ab1848f48395941d52712f9b9d2fa8f01ad0660ab8750e5c3390342b37",
+  "meaning": "Current canonical-certification-wrapper rework is outside stack runtime source manifest; actual stack need not be replayed if hashes match."
+}

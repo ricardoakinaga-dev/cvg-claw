@@ -1,0 +1,375 @@
+{
+  "schemaVersion": "aud06-normative-projection-v1",
+  "sourceRecords": [
+    {
+      "path": "docs/03_build/0348_aud06_roadmap.md",
+      "sha256": "c7d4c589b854c5c67e999d4f4cbb9ff480f620bb2d5d55365aff7c48a4ff4392"
+    },
+    {
+      "path": "docs/03_build/0349_aud06_backlog.md",
+      "sha256": "8757bf3a6fb45e8f4ca7318c55bdfff72088205d83fba328ba0c5df5a6e0e512"
+    },
+    {
+      "path": "docs/03_build/tracking/aud06_tasks.json",
+      "sha256": "7ef72447378e0d2d909de814d4d4291d24ef4dacb651225634622081b5afc495"
+    }
+  ],
+  "Q01": {
+    "roadmapNormativeSections": [
+      {
+        "section": "introduction",
+        "lineStart": 1,
+        "lineEnd": 7,
+        "lines": [
+          "# 0348 — Roadmap e ExecPlan AUD06",
+          "",
+          "Objetivo integral: criar roadmap/backlog e implementar o plano de melhoria da",
+          "auditoria 0576, cobrindo F01–F08 até sua verificação, sem substituir gates reais",
+          "por resultados sintéticos. [Backlog](0349_aud06_backlog.md) é a fonte dos estados;",
+          "[SPEC](../02_spec/aud06_remediation_20261006.md) é o contrato de implementação.",
+          ""
+        ]
+      },
+      {
+        "section": "Marcos e demonstrações",
+        "lineStart": 16,
+        "lineEnd": 25,
+        "lines": [
+          "## Marcos e demonstrações",
+          "",
+          "| Marco                           | Tarefas | Resultado observável                                                                      | Dependência        |",
+          "| ------------------------------- | ------- | ----------------------------------------------------------------------------------------- | ------------------ |",
+          "| M0 — Contratos                  | 01      | Roadmap, backlog, SPEC e barra publicados                                                 | Auditoria          |",
+          "| M1 — Barreiras e confiabilidade | 02–06   | Audit limpo, N3 DENY, E2E reproduzível, runner correto, retenção vigente                  | M0                 |",
+          "| M2 — Manutenção e operação      | 07–10   | Estado reconciliado, fronteira extraída, stack/observação/restore demonstrados localmente | M1 para integração |",
+          "| M3 — Produto e integração       | 11      | Discovery validada, contratos HIS e integração testada                                    | Decisões de 0026   |",
+          "| M4 — Qualificação               | 12–14   | Regressão, críticas, selo/CI e oito gates externos válidos                                | Marcos anteriores  |",
+          ""
+        ]
+      },
+      {
+        "section": "Execução e ownership",
+        "lineStart": 26,
+        "lineEnd": 33,
+        "lines": [
+          "## Execução e ownership",
+          "",
+          "Lead cria contratos, atualiza dependências, integra mudanças e mantém estado.",
+          "Builder A: N3/policy-engine e testes de política; Builder B: CI/Playwright e",
+          "artefatos visuais próprios; Builder C: retenção e runner em arquivos separados.",
+          "Após esses retornos, atribuir refatoração e infraestrutura em lanes exclusivas.",
+          "Não rodar duas suítes que compartilhem coverage/, portas ou banco.",
+          ""
+        ]
+      },
+      {
+        "section": "Verificação",
+        "lineStart": 34,
+        "lineEnd": 42,
+        "lines": [
+          "## Verificação",
+          "",
+          "Usar executáveis de Node 22.23.2. Gates: npm run typecheck, npm run lint,",
+          "npm run format:check, npm run docs:check, npm run build, npm test,",
+          "npm run test:coverage, npm run test:postgres em banco descartável,",
+          "Browser E2E em Playwright pinado e npm audit. Testes focados precedem regressão.",
+          "Após integrar, crítico fresh-context diferente dos builders, sem escrita;",
+          "comparar hashes e exigir evidência direta por Q01–Q14.",
+          ""
+        ]
+      },
+      {
+        "section": "Concrete Steps",
+        "lineStart": 57,
+        "lineEnd": 64,
+        "lines": [
+          "## Concrete Steps",
+          "",
+          "1. AUD06-02: atualizar a dependência vulnerável e registrar audit/build atuais.",
+          "2. Executar lanes 03–06 e integrar após crítica.",
+          "3. Reconciliar estado e executar 08–10, preservando a dependência humana de 11.",
+          "4. Qualificar 12–14 somente com evidência correspondente; manter todo item",
+          "   pendente no backlog até seu aceite, mesmo se a rodada local terminar.",
+          ""
+        ]
+      },
+      {
+        "section": "Recuperação",
+        "lineStart": 65,
+        "lineEnd": 71,
+        "lines": [
+          "## Recuperação",
+          "",
+          "Ler AGENTS, CURRENT, backlog 0349, esta SPEC e os últimos recibos AUD06; conferir",
+          "git diff e handles vivos. Não repetir comandos com efeito cuja conclusão seja",
+          "desconhecida. Retomar a próxima ação do estado corrente, não históricos IMP50.",
+          "Status global só pode ser COMPLETED após todos Q01–Q14 satisfeitos.",
+          ""
+        ]
+      }
+    ],
+    "backlogTaskContracts": [
+      {
+        "line": 9,
+        "id": "AUD06-01",
+        "finding": "Todos",
+        "objectiveWhereHow": "Criar roadmap, backlog, PRD/SPEC e barra Q01–Q14 em docs",
+        "dependency": "Auditoria",
+        "acceptance": "Q01; links válidos, escopo completo"
+      },
+      {
+        "line": 10,
+        "id": "AUD06-02",
+        "finding": "F01",
+        "objectiveWhereHow": "Atualizar source-map-js no lockfile com instalação reproduzível",
+        "dependency": "01",
+        "acceptance": "Q02; audit sem high/critical, build/testes"
+      },
+      {
+        "line": 11,
+        "id": "AUD06-03",
+        "finding": "F02",
+        "objectiveWhereHow": "N3 canônico e irredutível em policy-engine, negativos no runtime",
+        "dependency": "01",
+        "acceptance": "Q03; cinco operações DENY sem executor, sem promoção"
+      },
+      {
+        "line": 12,
+        "id": "AUD06-04",
+        "finding": "F03",
+        "objectiveWhereHow": "Ambiente visual CI e runner Playwright pinados; diagnóstico por imagens",
+        "dependency": "01",
+        "acceptance": "Q04; 75/75 nos três browsers, tolerâncias preservadas"
+      },
+      {
+        "line": 13,
+        "id": "AUD06-05",
+        "finding": "F07",
+        "objectiveWhereHow": "Runner scripts/ preserva exit, cleanup próprio e prazo",
+        "dependency": "01",
+        "acceptance": "Q05; sucesso/falha/timeout/sinal demonstrados"
+      },
+      {
+        "line": 14,
+        "id": "AUD06-06",
+        "finding": "F05",
+        "objectiveWhereHow": "Implementar decisão de retenção em retention.ts e testes",
+        "dependency": "01; receipt CLAW-W1-07",
+        "acceptance": "Q06; janela, aviso, fronteiras e PostgreSQL PASS"
+      },
+      {
+        "line": 15,
+        "id": "AUD06-07",
+        "finding": "F05/F08",
+        "objectiveWhereHow": "Reconciliar CURRENT/runtime/matriz/backlog, manter histórico",
+        "dependency": "01",
+        "acceptance": "Q07; checker e ponteiros refletem o estado observado"
+      },
+      {
+        "line": 16,
+        "id": "AUD06-08",
+        "finding": "F08",
+        "objectiveWhereHow": "Extrair registrador coeso da API e reduzir acoplamento de cliente",
+        "dependency": "03/04 para integração",
+        "acceptance": "Q08; regressão pública e redução medida"
+      },
+      {
+        "line": 17,
+        "id": "AUD06-09",
+        "finding": "F06",
+        "objectiveWhereHow": "Composição descartável API/worker/web/banco, migração, TLS/headers",
+        "dependency": "01",
+        "acceptance": "Q09; startup/health/teardown isolados observados"
+      },
+      {
+        "line": 18,
+        "id": "AUD06-10",
+        "finding": "F06",
+        "objectiveWhereHow": "Rate compartilhado, coleta/exportação e ensaio de restore",
+        "dependency": "09",
+        "acceptance": "Q10; duas réplicas, falha de storage, telemetria, integridade restaurada"
+      },
+      {
+        "line": 19,
+        "id": "AUD06-11",
+        "finding": "F04",
+        "objectiveWhereHow": "Resolver Discovery 0026 e contratos/integrações HIS/piloto",
+        "dependency": "Respostas de produto e identidade",
+        "acceptance": "Q11; contratos aprovados e fluxo ponta a ponta qualificado"
+      },
+      {
+        "line": 20,
+        "id": "AUD06-12",
+        "finding": "Todos",
+        "objectiveWhereHow": "Regressão integrada e Gauntlet com crítica fresca",
+        "dependency": "02–10",
+        "acceptance": "Q12; testes, PostgreSQL, E2E, critic sem achado material"
+      },
+      {
+        "line": 21,
+        "id": "AUD06-13",
+        "finding": "F03/certificação",
+        "objectiveWhereHow": "Selar candidato após docs estáveis; validar CI do mesmo candidato",
+        "dependency": "12; autoridade de publicação",
+        "acceptance": "Q13; certificado+Verify/Security com SHA correspondente"
+      },
+      {
+        "line": 22,
+        "id": "AUD06-14",
+        "finding": "F04/F06",
+        "objectiveWhereHow": "Oito gates externos/humanos em ambiente e janela autorizados",
+        "dependency": "11/13; owners/ambiente",
+        "acceptance": "Q14; evidências reais e signoff, sem síntese de aprovação"
+      }
+    ]
+  },
+  "Q07": {
+    "backlogRouting": [
+      {
+        "line": 9,
+        "id": "AUD06-01",
+        "status": "COMPLETED"
+      },
+      {
+        "line": 10,
+        "id": "AUD06-02",
+        "status": "COMPLETED"
+      },
+      {
+        "line": 11,
+        "id": "AUD06-03",
+        "status": "COMPLETED"
+      },
+      {
+        "line": 12,
+        "id": "AUD06-04",
+        "status": "COMPLETED"
+      },
+      {
+        "line": 13,
+        "id": "AUD06-05",
+        "status": "COMPLETED"
+      },
+      {
+        "line": 14,
+        "id": "AUD06-06",
+        "status": "COMPLETED"
+      },
+      {
+        "line": 15,
+        "id": "AUD06-07",
+        "status": "COMPLETED"
+      },
+      {
+        "line": 16,
+        "id": "AUD06-08",
+        "status": "COMPLETED"
+      },
+      {
+        "line": 17,
+        "id": "AUD06-09",
+        "status": "COMPLETED"
+      },
+      {
+        "line": 18,
+        "id": "AUD06-10",
+        "status": "COMPLETED"
+      },
+      {
+        "line": 19,
+        "id": "AUD06-11",
+        "status": "WAITING_HUMAN_APPROVAL"
+      },
+      {
+        "line": 20,
+        "id": "AUD06-12",
+        "status": "COMPLETED"
+      },
+      {
+        "line": 21,
+        "id": "AUD06-13",
+        "status": "WAITING_HUMAN_APPROVAL"
+      },
+      {
+        "line": 22,
+        "id": "AUD06-14",
+        "status": "WAITING_HUMAN_APPROVAL"
+      }
+    ],
+    "taskMatrixRouting": [
+      {
+        "id": "AUD06-01",
+        "status": "COMPLETED",
+        "executionDisposition": null
+      },
+      {
+        "id": "AUD06-02",
+        "status": "COMPLETED",
+        "executionDisposition": null
+      },
+      {
+        "id": "AUD06-03",
+        "status": "COMPLETED",
+        "executionDisposition": null
+      },
+      {
+        "id": "AUD06-04",
+        "status": "COMPLETED",
+        "executionDisposition": null
+      },
+      {
+        "id": "AUD06-05",
+        "status": "COMPLETED",
+        "executionDisposition": null
+      },
+      {
+        "id": "AUD06-06",
+        "status": "COMPLETED",
+        "executionDisposition": null
+      },
+      {
+        "id": "AUD06-07",
+        "status": "COMPLETED",
+        "executionDisposition": null
+      },
+      {
+        "id": "AUD06-08",
+        "status": "COMPLETED",
+        "executionDisposition": null
+      },
+      {
+        "id": "AUD06-09",
+        "status": "COMPLETED",
+        "executionDisposition": null
+      },
+      {
+        "id": "AUD06-10",
+        "status": "COMPLETED",
+        "executionDisposition": null
+      },
+      {
+        "id": "AUD06-11",
+        "status": "WAITING_HUMAN_APPROVAL",
+        "executionDisposition": "DEFERRED_BY_USER"
+      },
+      {
+        "id": "AUD06-12",
+        "status": "COMPLETED",
+        "executionDisposition": null
+      },
+      {
+        "id": "AUD06-13",
+        "status": "WAITING_HUMAN_APPROVAL",
+        "executionDisposition": "LOCAL_CERTIFICATION_PREPARATION_AUTHORIZED_PUBLICATION_PENDING"
+      },
+      {
+        "id": "AUD06-14",
+        "status": "WAITING_HUMAN_APPROVAL",
+        "executionDisposition": null
+      }
+    ],
+    "currentTask": "AUD06-13",
+    "currentStatus": "WAITING_HUMAN_APPROVAL"
+  },
+  "qualification": "Only explicitly whitelisted normative sections and structured routing fields. Full files were hashed opaquely; historical baseline/progress/updates/critic conclusions/rework/evidence lists and scores not exposed. Links in the projection are identifiers, not authority to open historical targets."
+}

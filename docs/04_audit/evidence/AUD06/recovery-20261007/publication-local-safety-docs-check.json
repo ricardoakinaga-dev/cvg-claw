@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+    "scripts/docs-check.mjs"
+  ],
+  "startedAt": "2026-10-09T01:07:40.687017+00:00",
+  "endedAt": "2026-10-09T01:07:47.658752+00:00",
+  "exitCode": 0,
+  "logSHA256": "0ee301b6270a09c0919a16038de385a09be3e583b0fbba0647669eef7a9d8f41",
+  "scope": "MAIN after second critic review and local confidentiality safety fixes",
+  "completeSuiteRerun": false
+}

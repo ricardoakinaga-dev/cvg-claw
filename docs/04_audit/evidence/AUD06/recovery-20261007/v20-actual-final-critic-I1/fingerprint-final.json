@@ -1,0 +1,7 @@
+{
+  "algorithm": "sha256-candidate-v1",
+  "before": "ffc25aad2f22adcf4c9a35ba58fb1e01ee57adac5a8477a182a29eb14c934a8d",
+  "after": "ffc25aad2f22adcf4c9a35ba58fb1e01ee57adac5a8477a182a29eb14c934a8d",
+  "equal": true,
+  "owncopyOnly": true
+}

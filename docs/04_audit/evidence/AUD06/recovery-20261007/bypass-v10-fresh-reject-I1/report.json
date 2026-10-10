@@ -1,0 +1,1907 @@
+{
+  "schemaVersion": 1,
+  "kind": "independent-focused-critic",
+  "critic": "Fresh independent I1; not builder; no descendants",
+  "independence": "I1",
+  "mode": "READ_ONLY target, Direct critic lane under Gauntlet+orchestrate",
+  "verdict": "REJECT",
+  "scope": "Q13 bounded scanner/helper + two tests + 59-source corpus; no global certification or production verdict",
+  "createdAt": "2026-10-08T05:56:22.093553+00:00",
+  "target": "/tmp/cvg-aud06-certification-aottnvx0/repo",
+  "artifactIdentity": {
+    "candidateId": "31be26de0174acd2dff1e9320f8ed77c724c86fdf9e36cf673383fb0fd65e075",
+    "behaviorTreeHash": "b1e76ae97c202debdd0aee4bf4cc51e20af34c939ef5cfb9c70a5a034ae0acf8",
+    "fileCount": 1256,
+    "commit": "19aef7141b74bf981c714fbfdba551f7c15de9f9",
+    "specSha256": "c7f8f7574145506449d5885c16d56157c1468fe24362b20e83ddde9451a6379a",
+    "barSha256": "ef4a73a45ca924f6e0561624ea2b4444e35d7726804da647e09524de26508fd4"
+  },
+  "barVersion": "AUD06-v10-lexical-identity-SQL-command-audit",
+  "severityCounts": {
+    "P0": 0,
+    "P1": 4,
+    "P2": 2
+  },
+  "findings": [
+    {
+      "id": "F-I1-Q13-01",
+      "severity": "P1",
+      "criterion": "Q13 scanner subcontrol",
+      "title": "Object and array escape tracking stops before contained references and non-CallExpression invocations",
+      "confidence": "high",
+      "contract": "Latest admission: aliases, indirect/computed mutation and escape to unmodeled calls invalidate array/config inference.",
+      "source": {
+        "path": "scripts/phase11-bypass-audit.mjs",
+        "lines": [
+          370,
+          399,
+          512,
+          535
+        ]
+      },
+      "rootCause": "mutationOrigin returns the outer array/object identity without traversing contained references; SpreadElement is not resolved. Escape discovery handles only CallExpression, skipping tagged-template and constructor arguments. Local parameter mutation cannot reconnect to the passed object.",
+      "observableConsequence": "Six concrete sources mutate a config text or loop table into billing_items, yet the exact public CLI reports PASS with no findings by retaining the original SELECT/quota value.",
+      "negativeProofs": [
+        {
+          "id": "escape-array-concrete",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 1.167,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/escape-array-concrete",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/escape-array-concrete/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "escape-object-concrete",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.851,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/escape-object-concrete",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/escape-object-concrete/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "escape-spread-concrete",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.899,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/escape-spread-concrete",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/escape-spread-concrete/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "escape-tag-concrete",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.963,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/escape-tag-concrete",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/escape-tag-concrete/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "escape-new-concrete",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.818,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/escape-new-concrete",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/escape-new-concrete/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "array-escape-concrete",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.875,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/array-escape-concrete",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/array-escape-concrete/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "replay-escape-array-concrete",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.354,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-escape-array-concrete",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-escape-array-concrete/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "replay-escape-tag-concrete",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.379,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-escape-tag-concrete",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-escape-tag-concrete/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "replay-escape-new-concrete",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.356,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-escape-new-concrete",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-escape-new-concrete/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        }
+      ],
+      "pairedPositiveControls": [
+        {
+          "id": "config-alias-positive",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.383,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/config-alias-positive",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/config-alias-positive/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "escape-inert-template-control",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.9,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/escape-inert-template-control",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/escape-inert-template-control/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "array-alias-control",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.871,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/array-alias-control",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/array-alias-control/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "replay-escape-inert-template-control",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.347,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-escape-inert-template-control",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-escape-inert-template-control/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        }
+      ],
+      "pairedDetectionControls": [
+        {
+          "id": "escape-direct-concrete-control",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 1,
+          "matched": true,
+          "durationSeconds": 1.196,
+          "stdoutSha256": "d0a56d84d64b672012473df39b8e4d6ca492833b80c8ff8a611cbb3dacaf1d13",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/escape-direct-concrete-control",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/escape-direct-concrete-control/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "replay-escape-direct-concrete-control",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 1,
+          "matched": true,
+          "durationSeconds": 0.359,
+          "stdoutSha256": "d0a56d84d64b672012473df39b8e4d6ca492833b80c8ff8a611cbb3dacaf1d13",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-escape-direct-concrete-control",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-escape-direct-concrete-control/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        }
+      ],
+      "recommendedNextAction": "Invalidate contained config/array identities on unmodeled escapes through aggregate values, spreads, tags and constructors; avoid treating retained initializer provenance as immutable. Add paired public CLI cases."
+    },
+    {
+      "id": "F-I1-Q13-02",
+      "severity": "P1",
+      "criterion": "Q13 scanner subcontrol",
+      "title": "Destructuring assignment leaves do not invalidate the object actually written",
+      "confidence": "high",
+      "contract": "Latest admission: const does not make objects immutable; indirect/computed mutation invalidates config and finite-table inference.",
+      "source": {
+        "path": "scripts/phase11-bypass-audit.mjs",
+        "lines": [
+          490,
+          496,
+          506,
+          509,
+          399
+        ]
+      },
+      "rootCause": "For assignment-pattern LHS, mutationOrigin identifies the object/array pattern itself. It does not inspect assignment leaves such as c.text or tables[0]. The referenced config or array remains untainted.",
+      "observableConsequence": "Object-pattern and array-pattern assignments visibly set DELETE FROM billing_items or replace the quota loop entry with billing_items; all three CLI probes return PASS.",
+      "negativeProofs": [
+        {
+          "id": "config-destructure-object-write",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.407,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/config-destructure-object-write",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/config-destructure-object-write/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "config-destructure-array-write",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.415,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/config-destructure-array-write",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/config-destructure-array-write/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "array-destructure-write",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.404,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/array-destructure-write",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/array-destructure-write/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "replay-config-destructure-object-write",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.377,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-config-destructure-object-write",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-config-destructure-object-write/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "replay-array-destructure-write",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.371,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-array-destructure-write",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-array-destructure-write/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        }
+      ],
+      "pairedPositiveControls": [
+        {
+          "id": "destructure-copy-positive",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.377,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/destructure-copy-positive",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/destructure-copy-positive/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "replay-destructure-copy-positive",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.37,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-destructure-copy-positive",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-destructure-copy-positive/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        }
+      ],
+      "pairedDetectionControls": [
+        {
+          "id": "config-alias-write",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 1,
+          "matched": true,
+          "durationSeconds": 0.389,
+          "stdoutSha256": "d0a56d84d64b672012473df39b8e4d6ca492833b80c8ff8a611cbb3dacaf1d13",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/config-alias-write",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/config-alias-write/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "array-own-join-write",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 1,
+          "matched": true,
+          "durationSeconds": 0.38,
+          "stdoutSha256": "d0a56d84d64b672012473df39b8e4d6ca492833b80c8ff8a611cbb3dacaf1d13",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/array-own-join-write",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/array-own-join-write/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        }
+      ],
+      "recommendedNextAction": "Walk destructuring assignment destinations and invalidate their real origin symbols/objects before SQL inference. Preserve harmless destructuring reads."
+    },
+    {
+      "id": "F-I1-Q13-03",
+      "severity": "P1",
+      "criterion": "Q13 scanner subcontrol",
+      "title": "Read method names are trusted without verifying the callable identity",
+      "confidence": "high",
+      "contract": "Latest admission: effective static members preserve effects and mutable configs require conservative provenance; local function names alone do not establish effect/purity.",
+      "source": {
+        "path": "scripts/phase11-bypass-audit.mjs",
+        "lines": [
+          455,
+          527,
+          529,
+          532,
+          370
+        ]
+      },
+      "rootCause": "readMethods exemptions depend only on member spelling (join, slice, etc.). A locally declared impure method with this.text assignment is treated as an intrinsic read method. mutationOrigin does not resolve ThisKeyword to the receiver.",
+      "observableConsequence": "Calling a config own join/slice method changes its text to DELETE FROM billing_items; the later client.query(config) is inferred as SELECT 1 and returns PASS. Alias receiver variant also passes.",
+      "negativeProofs": [
+        {
+          "id": "config-own-join-write",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.397,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/config-own-join-write",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/config-own-join-write/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "own-slice-mutation",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.87,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/own-slice-mutation",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/own-slice-mutation/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "own-join-via-alias",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.818,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/own-join-via-alias",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/own-join-via-alias/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "replay-config-own-join-write",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.363,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-config-own-join-write",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-config-own-join-write/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        }
+      ],
+      "pairedPositiveControls": [
+        {
+          "id": "config-own-join-pure",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.403,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/config-own-join-pure",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/config-own-join-pure/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "own-other-pure-control",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 1.117,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/own-other-pure-control",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/own-other-pure-control/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "replay-config-own-join-pure",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.365,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-config-own-join-pure",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-config-own-join-pure/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        }
+      ],
+      "pairedDetectionControls": [
+        {
+          "id": "own-other-method-mutation-control",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 1,
+          "matched": true,
+          "durationSeconds": 0.787,
+          "stdoutSha256": "1c5da67f3d89af32bffc852ec86abcf4abc394c96b6c800a38b9081345bf8040",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "unresolved_static_callable",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            },
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/own-other-method-mutation-control",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/own-other-method-mutation-control/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "replay-own-other-method-mutation-control",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 1,
+          "matched": true,
+          "durationSeconds": 0.369,
+          "stdoutSha256": "1c5da67f3d89af32bffc852ec86abcf4abc394c96b6c800a38b9081345bf8040",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "unresolved_static_callable",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            },
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-own-other-method-mutation-control",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-own-other-method-mutation-control/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        }
+      ],
+      "recommendedNextAction": "Base read exemptions on verified builtin receiver/callable provenance, or invalidate unknown/impure receiver methods, including local methods using this."
+    },
+    {
+      "id": "F-I1-Q13-04",
+      "severity": "P1",
+      "criterion": "Q13 scanner subcontrol",
+      "title": "Known node-fetch effect is lost at namespace.default",
+      "confidence": "high",
+      "contract": "Latest admission: imports, destructuring and static object members preserve known host effects; lexical aliases remain detectable.",
+      "source": {
+        "path": "scripts/phase11-bypass-audit.mjs",
+        "lines": [
+          260,
+          306,
+          330,
+          340,
+          356,
+          360,
+          361,
+          368
+        ]
+      },
+      "rootCause": "node-fetch import resolves to the fetch marker, but memberEffect propagates module effects only for axios/got/undici. A literal default property on the node-fetch namespace resolves to null. Aliasing and destructuring that member retain the omission.",
+      "observableConsequence": "The CLI accepts import * as nf from node-fetch; nf.default(url), namespace default alias/destructure, and await-import default invocation. The paired default import from the same module is correctly flagged direct_fetch.",
+      "negativeProofs": [
+        {
+          "id": "nodefetch-namespace-default",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.447,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/nodefetch-namespace-default",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/nodefetch-namespace-default/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "namespace-default-call",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.88,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/namespace-default-call",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/namespace-default-call/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "namespace-destructure-default",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 1.078,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/namespace-destructure-default",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/namespace-destructure-default/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "dynamic-nodefetch-default",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.933,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/dynamic-nodefetch-default",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/dynamic-nodefetch-default/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "replay-nodefetch-namespace-default",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.364,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-nodefetch-namespace-default",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-nodefetch-namespace-default/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        }
+      ],
+      "pairedPositiveControls": [
+        {
+          "id": "local-default-pure-control",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.759,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/local-default-pure-control",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/local-default-pure-control/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "replay-local-default-pure-control",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.368,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-local-default-pure-control",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-local-default-pure-control/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        }
+      ],
+      "pairedDetectionControls": [
+        {
+          "id": "nodefetch-default-import",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 1,
+          "matched": true,
+          "durationSeconds": 0.462,
+          "stdoutSha256": "490aff5670e3aeeeab5bb26418b1bedd5c92ced6fc5e7712bf5886c987b0a209",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_fetch",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/nodefetch-default-import",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/nodefetch-default-import/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "nodefetch-named-default",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 1,
+          "matched": true,
+          "durationSeconds": 0.459,
+          "stdoutSha256": "490aff5670e3aeeeab5bb26418b1bedd5c92ced6fc5e7712bf5886c987b0a209",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_fetch",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/nodefetch-named-default",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/nodefetch-named-default/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "local-default-real-effect-control",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 1,
+          "matched": true,
+          "durationSeconds": 0.55,
+          "stdoutSha256": "00a39dfc874d7e2ac7ce6c0c863dc44387476d52aa3cac3a2cf803c7c2a6319d",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_fetch",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            },
+            {
+              "id": "unresolved_static_callable",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/local-default-real-effect-control",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/local-default-real-effect-control/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "replay-nodefetch-default-import",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 1,
+          "matched": true,
+          "durationSeconds": 0.36,
+          "stdoutSha256": "490aff5670e3aeeeab5bb26418b1bedd5c92ced6fc5e7712bf5886c987b0a209",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_fetch",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-nodefetch-default-import",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-nodefetch-default-import/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        }
+      ],
+      "recommendedNextAction": "Preserve the namespace/default-export shape for the already recognized node-fetch module through static aliases and destructuring; keep local inert default methods benign."
+    },
+    {
+      "id": "F-I1-Q13-05",
+      "severity": "P2",
+      "criterion": "Q13 scanner subcontrol",
+      "title": "query.bind construction is classified as a SQL execution",
+      "confidence": "high",
+      "contract": "Actual known host effects versus inert local operations; binding constructs a callable, as the source itself documents.",
+      "source": {
+        "path": "scripts/phase11-bypass-audit.mjs",
+        "lines": [
+          347,
+          358,
+          663,
+          664,
+          667,
+          668
+        ]
+      },
+      "rootCause": "visit skips bind for network effects but does not skip bind when name is query. It interprets the thisArg as SQL; the later invocation also discards bound SQL arguments.",
+      "observableConsequence": "An unused const q=client.query.bind(client,\"SELECT 1\") returns FAIL/unresolved_query_expression even though no query occurs. A bound function called only with SELECT 1 also fails. Unused fetch.bind and pure local query.bind are accepted.",
+      "negativeProofs": [
+        {
+          "id": "sql-bind-unused",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 0,
+          "matched": false,
+          "durationSeconds": 0.369,
+          "stdoutSha256": "d0a56d84d64b672012473df39b8e4d6ca492833b80c8ff8a611cbb3dacaf1d13",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/sql-bind-unused",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/sql-bind-unused/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "sql-bind-select",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 0,
+          "matched": false,
+          "durationSeconds": 0.365,
+          "stdoutSha256": "f3b8d1dcef45eeab0d4782898580cb9ffd4bc33e44764df0be62f1885d48aca1",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            },
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/sql-bind-select",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/sql-bind-select/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "bind-sql-benign-no-preargs",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 0,
+          "matched": false,
+          "durationSeconds": 0.391,
+          "stdoutSha256": "d0a56d84d64b672012473df39b8e4d6ca492833b80c8ff8a611cbb3dacaf1d13",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/bind-sql-benign-no-preargs",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/bind-sql-benign-no-preargs/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "replay-sql-bind-unused",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 0,
+          "matched": false,
+          "durationSeconds": 0.386,
+          "stdoutSha256": "d0a56d84d64b672012473df39b8e4d6ca492833b80c8ff8a611cbb3dacaf1d13",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-sql-bind-unused",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-sql-bind-unused/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        }
+      ],
+      "pairedPositiveControls": [
+        {
+          "id": "bind-fetch-unused-control",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.364,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/bind-fetch-unused-control",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/bind-fetch-unused-control/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "bind-local-function-unused",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.378,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/bind-local-function-unused",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/bind-local-function-unused/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "replay-bind-fetch-unused-control",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.354,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-bind-fetch-unused-control",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-bind-fetch-unused-control/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "select-positive",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 1.052,
+          "stdoutSha256": "b7c4beffafab0381f94a26c4a42a2085e265048f7ab36a1dad4b143d9e3c0f80",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/select-positive",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/select-positive/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        }
+      ],
+      "pairedDetectionControls": [
+        {
+          "id": "sql-bind-domain",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 1,
+          "matched": true,
+          "durationSeconds": 0.377,
+          "stdoutSha256": "f3b8d1dcef45eeab0d4782898580cb9ffd4bc33e44764df0be62f1885d48aca1",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            },
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/sql-bind-domain",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/sql-bind-domain/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "bind-sql-domain-no-preargs",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 1,
+          "matched": true,
+          "durationSeconds": 0.4,
+          "stdoutSha256": "12fb7f3f8da0f313bdd4e5b191d8b9bcfc221df42136070cab6047f881c945da",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            },
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "DELETE is outside the authorized SQL write boundary",
+              "offset": 0,
+              "target": "billing_items"
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/bind-sql-domain-no-preargs",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/bind-sql-domain-no-preargs/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        },
+        {
+          "id": "domain-negative",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 1,
+          "matched": true,
+          "durationSeconds": 0.8,
+          "stdoutSha256": "c93807897f9f16add26236ae269fc9d1810a96b67ceffd934d1c967c0325962a",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "DELETE is outside the authorized SQL write boundary",
+              "offset": 0,
+              "target": "billing_items"
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/domain-negative",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/domain-negative/source/apps/api/src/postgres-rate-limit.ts"
+          ]
+        }
+      ],
+      "recommendedNextAction": "Separate bind construction from invocation; inspect SQL only at a real invocation and conservatively refuse unresolved bound argument provenance."
+    },
+    {
+      "id": "F-I1-Q13-06",
+      "severity": "P2",
+      "criterion": "Q13 scanner subcontrol",
+      "title": "Exact forwarder admission also accepts default and rest parameter transformations",
+      "confidence": "high for admission mismatch; no demonstrated executed domain bypass",
+      "contract": "Existing forwarder may be recognized only as the exact preexisting direct client.query(text, values), with its own unchanged parameters; no additional transformation.",
+      "source": {
+        "path": "scripts/phase11-bypass-audit.mjs",
+        "lines": [
+          625,
+          646,
+          649,
+          651,
+          653,
+          680
+        ]
+      },
+      "rootCause": "transparentForwarder checks identifier names and argument count, but not parameter initializer or dotDotDotToken. It discloses transformed declarations as existing-transparent-parameter-forwarder.",
+      "observableConsequence": "An arrow with text=\"DELETE FROM billing_items\" defaults or ...values receives PASS and the exact-forwarder disclosure. Default/rest alter caller-to-client behavior. Exact body and same-file consumer controls still work; no default-triggered execution was run or claimed.",
+      "negativeProofs": [
+        {
+          "id": "forwarder-parameters-default",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.411,
+          "stdoutSha256": "e7e3a2bac56602d428cc44b9f899dc6aea1f37a98c535faa0fcd64ca42ac4fc8",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [
+            {
+              "path": "apps/api/src/server/bootstrap-persistence.ts",
+              "line": 1,
+              "kind": "existing-transparent-parameter-forwarder",
+              "sqlTargetExemption": false
+            }
+          ],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/forwarder-parameters-default",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/forwarder-parameters-default/source/apps/api/src/server/bootstrap-persistence.ts"
+          ]
+        },
+        {
+          "id": "forwarder-parameters-rest",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.416,
+          "stdoutSha256": "e7e3a2bac56602d428cc44b9f899dc6aea1f37a98c535faa0fcd64ca42ac4fc8",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [
+            {
+              "path": "apps/api/src/server/bootstrap-persistence.ts",
+              "line": 1,
+              "kind": "existing-transparent-parameter-forwarder",
+              "sqlTargetExemption": false
+            }
+          ],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/forwarder-parameters-rest",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/forwarder-parameters-rest/source/apps/api/src/server/bootstrap-persistence.ts"
+          ]
+        },
+        {
+          "id": "replay-forwarder-parameters-default",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 1,
+          "matched": false,
+          "durationSeconds": 0.368,
+          "stdoutSha256": "e7e3a2bac56602d428cc44b9f899dc6aea1f37a98c535faa0fcd64ca42ac4fc8",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [
+            {
+              "path": "apps/api/src/server/bootstrap-persistence.ts",
+              "line": 1,
+              "kind": "existing-transparent-parameter-forwarder",
+              "sqlTargetExemption": false
+            }
+          ],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-forwarder-parameters-default",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-forwarder-parameters-default/source/apps/api/src/server/bootstrap-persistence.ts"
+          ]
+        }
+      ],
+      "pairedPositiveControls": [
+        {
+          "id": "forwarder-exact-control",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.555,
+          "stdoutSha256": "e7e3a2bac56602d428cc44b9f899dc6aea1f37a98c535faa0fcd64ca42ac4fc8",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [
+            {
+              "path": "apps/api/src/server/bootstrap-persistence.ts",
+              "line": 1,
+              "kind": "existing-transparent-parameter-forwarder",
+              "sqlTargetExemption": false
+            }
+          ],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/forwarder-exact-control",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/forwarder-exact-control/source/apps/api/src/server/bootstrap-persistence.ts"
+          ]
+        },
+        {
+          "id": "forwarder-consumer-select",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.492,
+          "stdoutSha256": "e7e3a2bac56602d428cc44b9f899dc6aea1f37a98c535faa0fcd64ca42ac4fc8",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [
+            {
+              "path": "apps/api/src/server/bootstrap-persistence.ts",
+              "line": 1,
+              "kind": "existing-transparent-parameter-forwarder",
+              "sqlTargetExemption": false
+            }
+          ],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/forwarder-consumer-select",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/forwarder-consumer-select/source/apps/api/src/server/bootstrap-persistence.ts"
+          ]
+        },
+        {
+          "id": "replay-forwarder-exact-control",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.366,
+          "stdoutSha256": "e7e3a2bac56602d428cc44b9f899dc6aea1f37a98c535faa0fcd64ca42ac4fc8",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [
+            {
+              "path": "apps/api/src/server/bootstrap-persistence.ts",
+              "line": 1,
+              "kind": "existing-transparent-parameter-forwarder",
+              "sqlTargetExemption": false
+            }
+          ],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-forwarder-exact-control",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-forwarder-exact-control/source/apps/api/src/server/bootstrap-persistence.ts"
+          ]
+        },
+        {
+          "id": "replay-forwarder-consumer-select",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 0,
+          "expectedExit": 0,
+          "matched": true,
+          "durationSeconds": 0.371,
+          "stdoutSha256": "e7e3a2bac56602d428cc44b9f899dc6aea1f37a98c535faa0fcd64ca42ac4fc8",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [],
+          "scannedFiles": 1,
+          "forwardingQueries": [
+            {
+              "path": "apps/api/src/server/bootstrap-persistence.ts",
+              "line": 1,
+              "kind": "existing-transparent-parameter-forwarder",
+              "sqlTargetExemption": false
+            }
+          ],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-forwarder-consumer-select",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-forwarder-consumer-select/source/apps/api/src/server/bootstrap-persistence.ts"
+          ]
+        }
+      ],
+      "pairedDetectionControls": [
+        {
+          "id": "forwarder-body-transform",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 1,
+          "matched": true,
+          "durationSeconds": 0.442,
+          "stdoutSha256": "cc0d59fac4e58a068c0d48ef8e097dca20958669e2a7639710fb18b31b247fc6",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "sql_lexical_unresolved",
+              "path": "apps/api/src/server/bootstrap-persistence.ts",
+              "line": 1,
+              "reason": "Unknown SQL interpolation",
+              "offset": 0
+            },
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/server/bootstrap-persistence.ts",
+              "line": 1,
+              "reason": "Unsupported executable SQL statement class: ${__cvg_unknown__}",
+              "offset": 0
+            },
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/server/bootstrap-persistence.ts",
+              "line": 1,
+              "reason": "DELETE is outside the authorized SQL write boundary",
+              "offset": 19,
+              "target": "billing_items"
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/forwarder-body-transform",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/forwarder-body-transform/source/apps/api/src/server/bootstrap-persistence.ts"
+          ]
+        },
+        {
+          "id": "forwarder-consumer-write",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 1,
+          "matched": true,
+          "durationSeconds": 0.434,
+          "stdoutSha256": "0bf0f1bd54ec2e1ae0737ac3458a0df42aba746889ffb719c8a3e808cc1b1128",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/server/bootstrap-persistence.ts",
+              "line": 1,
+              "reason": "DELETE is outside the authorized SQL write boundary",
+              "offset": 0,
+              "target": "billing_items"
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [
+            {
+              "path": "apps/api/src/server/bootstrap-persistence.ts",
+              "line": 1,
+              "kind": "existing-transparent-parameter-forwarder",
+              "sqlTargetExemption": false
+            }
+          ],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/forwarder-consumer-write",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/forwarder-consumer-write/source/apps/api/src/server/bootstrap-persistence.ts"
+          ]
+        },
+        {
+          "id": "replay-forwarder-consumer-write",
+          "argv": [
+            "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+            "scripts/phase11-bypass-audit.mjs"
+          ],
+          "cwd": "/tmp/cvg-critic-i1-q13-3j7v8xe_/work",
+          "exit": 1,
+          "expectedExit": 1,
+          "matched": true,
+          "durationSeconds": 0.371,
+          "stdoutSha256": "0bf0f1bd54ec2e1ae0737ac3458a0df42aba746889ffb719c8a3e808cc1b1128",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/server/bootstrap-persistence.ts",
+              "line": 1,
+              "reason": "DELETE is outside the authorized SQL write boundary",
+              "offset": 0,
+              "target": "billing_items"
+            }
+          ],
+          "scannedFiles": 1,
+          "forwardingQueries": [
+            {
+              "path": "apps/api/src/server/bootstrap-persistence.ts",
+              "line": 1,
+              "kind": "existing-transparent-parameter-forwarder",
+              "sqlTargetExemption": false
+            }
+          ],
+          "receipt": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-forwarder-consumer-write",
+          "sourceArtifacts": [
+            "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes/replay-forwarder-consumer-write/source/apps/api/src/server/bootstrap-persistence.ts"
+          ]
+        }
+      ],
+      "recommendedNextAction": "Match the existing plain-parameter shape strictly and refuse transformed forwarder admission. Keep auditing known consumers without granting any table exemption."
+    }
+  ],
+  "sentinel": {
+    "status": "PASS",
+    "fullFilesystemBefore": "c9db762b863a75065001a6a88ad5526fee5f05c74a30de9515974521a9e4563a",
+    "fullFilesystemAfter": "c9db762b863a75065001a6a88ad5526fee5f05c74a30de9515974521a9e4563a",
+    "entries": 28020,
+    "files": 25167,
+    "excluded": [
+      "root .git only"
+    ],
+    "changedEntries": [],
+    "candidateUnchanged": true,
+    "specUnchanged": true,
+    "barUnchanged": true
+  },
+  "checks": {
+    "publicCLIInvocations": 115,
+    "initialAndFollowupCLIInvocations": 95,
+    "independentReplayInvocations": 20,
+    "rawCLIMismatches": 37,
+    "realCorpus": {
+      "files": 59,
+      "scannerExit": 0,
+      "queryNodesInspected": 66,
+      "literalQueriesInspectedWithHelper": 62,
+      "literalHelperFindings": 0,
+      "nonliteralQueries": "Exact existing forwarder; replay lease template; finite worker readiness table loop; ROLE_QUERY constant. Inspected source; full scanner PASS."
+    },
+    "sqlHelperCases": 135,
+    "sqlHelperMatchedAfterExpectationCorrection": 135,
+    "testSuites": "NOT_RUN: Vitest/framework execution expressly prohibited. Both test sources were inspected as coverage receipts, not acceptance proof.",
+    "parserAndDependency": "Node 22.23.2; TypeScript 140 files copied into own temp, bytes checked, no symlink/hardlink/shared framework cache. Synthetic source parsed only; never executed."
+  },
+  "expectationAdjudications": [
+    {
+      "probe": "getter-spread-before",
+      "rawExpectedExit": 1,
+      "adjudicatedExpectedExit": 0,
+      "classification": "WITHDRAWN hypothesis",
+      "reason": "Later explicit text establishes effective property under frozen contract. This inert getter followed by override is not established unsafe; not a finding."
+    },
+    {
+      "probe": "nodefetch-require-default",
+      "classification": "NOT_USED as definitive proof",
+      "reason": "require/default module shape can depend on package/runtime; ESM namespace/default pairs provide the conclusive F04 proof."
+    },
+    {
+      "id": "quota-qualified",
+      "mode": "replay",
+      "classification": "critic-expectation-error",
+      "reason": "Legacy replay exception preserves unresolved grammar refusal; qualified target grammar is unsupported even with replay grant. Initial raw result preserved."
+    }
+  ],
+  "constraintsObserved": {
+    "targetWrites": false,
+    "fixtureExecution": false,
+    "docker": false,
+    "network": false,
+    "database": false,
+    "frameworkVitest": false,
+    "sharedCachesOrDependencyLinks": false,
+    "priorCriticReportsRead": false,
+    "gauntletVerdictHistoryUsed": false,
+    "builderHandoffsAcceptedAsProof": false,
+    "requiredMastersRead": "Latest required status read; assertions did not substitute for source/CLI evidence.",
+    "canonicalCertification": "NOT_STARTED (user steering); none launched."
+  },
+  "residualBoundedLimits": [
+    "This is a bounded static measurement audit, not a proof of universal JavaScript effects or PostgreSQL function/operator/trigger semantics.",
+    "SELECT-class calls (including existing diagnostic functions), runtime privileges and runtime effect guards need their own evidence; no database or fixture execution occurred.",
+    "Replay INSERT/UPDATE/DELETE grant is the preserved source-owned legacy two-file exception; this audit did not invent a new replay target whitelist. Unknown/unsupported SQL classes remain refused in tested modes.",
+    "No conclusion about Q01-Q12/Q14, remote CI, global certification, pilot or production approval.",
+    "No claim that the existing 59-source runtime currently performs these synthetic bypasses; the scanner contract is defeated by the discriminating source probes.",
+    "The two test sources contain broad prior coverage, but do not independently prove the new provenance/import cases; suites were not executed."
+  ],
+  "recommendedNextAction": "Keep candidate and pass4 unaccepted; remediate four P1s and two measurement P2s under the frozen admission, add paired public CLI regression probes, freeze a new identity and obtain a fresh independent review. Lead owns any subsequent master/backlog updates.",
+  "artifacts": {
+    "report": "/tmp/cvg-critic-i1-q13-3j7v8xe_/report.json",
+    "humanReport": "/tmp/cvg-critic-i1-q13-3j7v8xe_/report.md",
+    "rawCommands": "/tmp/cvg-critic-i1-q13-3j7v8xe_/commands.jsonl",
+    "inspectionCommands": "/tmp/cvg-critic-i1-q13-3j7v8xe_/rawcommands.txt",
+    "probes": "/tmp/cvg-critic-i1-q13-3j7v8xe_/probes",
+    "sqlProbes": "/tmp/cvg-critic-i1-q13-3j7v8xe_/sql-probe-results.json",
+    "sqlAdjudication": "/tmp/cvg-critic-i1-q13-3j7v8xe_/sql-probe-adjudicated.json",
+    "candidateBefore": "/tmp/cvg-critic-i1-q13-3j7v8xe_/candidate-before.json",
+    "candidateAfter": "/tmp/cvg-critic-i1-q13-3j7v8xe_/candidate-after.json",
+    "fingerprintBefore": "/tmp/cvg-critic-i1-q13-3j7v8xe_/fingerprint-before.json",
+    "fingerprintAfter": "/tmp/cvg-critic-i1-q13-3j7v8xe_/fingerprint-after.json",
+    "sentinel": "/tmp/cvg-critic-i1-q13-3j7v8xe_/sentinel.json",
+    "dependencyManifest": "/tmp/cvg-critic-i1-q13-3j7v8xe_/typescript-copy-manifest.json",
+    "corpusManifest": "/tmp/cvg-critic-i1-q13-3j7v8xe_/corpus-manifest.json",
+    "corpusInspection": "/tmp/cvg-critic-i1-q13-3j7v8xe_/corpus-inspection.json",
+    "hashes": "/tmp/cvg-critic-i1-q13-3j7v8xe_/SHA256SUMS"
+  }
+}

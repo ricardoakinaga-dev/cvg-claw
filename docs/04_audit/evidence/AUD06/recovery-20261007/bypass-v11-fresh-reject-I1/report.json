@@ -1,0 +1,448 @@
+{
+  "role": "independent I1",
+  "scope": "Q13 scanner CLI + helper SQL only",
+  "verdict": "REJECT",
+  "assessment": "NON_COMPLIANT in bounded scanner requirements",
+  "candidate": {
+    "head": "362a69ecf416eb421e74154b35916eaf3d7783d9",
+    "candidateId": "04ff9c61d40d0281cfbe554c7e2be6a7c13af72685090d5ee5b0e15cc961a395",
+    "files": 1256,
+    "behaviorTree": "7be04265495131bee53d2861630060afb7ef52d6438273930fc8e72b10239883",
+    "dirty": false
+  },
+  "source_binding": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "2b7f28d3c42f7a7c6fc9a1d96c48110c2dc3b43aa212d3bb11ac7e228c28f884",
+      "size": 1305
+    },
+    {
+      "path": "docs/07_agents/AGENTS.md",
+      "sha256": "d61ec23e923a02e522851d6140d5b6cafafcb1d851ea829a1743d267e3d6f8d0",
+      "size": 5022
+    },
+    {
+      "path": "docs/02_spec/aud06_remediation_20261006.md",
+      "sha256": "3108c39a6b3bb9821f7211e525c1c96efb557fc10d93b7b7a4d6e1f78e483208",
+      "size": 19318
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/quality-bar.json",
+      "sha256": "e73f403bf577c3d186cda49f2673133e04af70c65dbba54d149d00640537a43f",
+      "size": 21176
+    },
+    {
+      "path": "scripts/phase11-bypass-audit.mjs",
+      "sha256": "22096e4af2b90cf0b269ae7b9cb998ab6de243650ec1e96df14158cd14ea5552",
+      "size": 35646
+    },
+    {
+      "path": "scripts/lib/bypass-sql-audit.mjs",
+      "sha256": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+      "size": 19509
+    },
+    {
+      "path": "scripts/lib/certification-rules.mjs",
+      "sha256": "bdc6f0dec4efaf6ee3e4466f9b1a43132c0b17f039960232c0ab683d083d172e",
+      "size": 45990
+    },
+    {
+      "path": "node_modules/typescript/package.json",
+      "sha256": "9332e97c30d3e53ed54910b89207ed657fb444066484df6e5b6965bf130865e9",
+      "size": 3527
+    },
+    {
+      "path": "node_modules/typescript/lib/typescript.js",
+      "sha256": "569177652966bd528c319171c7dd22860dbf72bde116cbc4f644f1d02bb12e39",
+      "size": 9144216
+    }
+  ],
+  "distinct_probes": 93,
+  "replays": 18,
+  "cli_executions": 111,
+  "findings": [
+    {
+      "id": "I1-Q13-01",
+      "severity": "P1",
+      "title": "Aliases estáticos em arrays perdem a identidade callable de HTTP e query",
+      "lines": [
+        128,
+        313,
+        368
+      ],
+      "spec_lines": [
+        239,
+        240,
+        260
+      ],
+      "bad": [
+        "array_effect_member",
+        "array_effect_binding",
+        "array_binding_import",
+        "sql_query_array_alias",
+        "array_binding_query",
+        "array_nested_object_effect"
+      ],
+      "good": [
+        "array_pure_member",
+        "array_pure_binding",
+        "array_binding_import_inert",
+        "sql_query_array_alias_read",
+        "array_nested_object_benign"
+      ],
+      "rationale": "O índice literal 0 e o binding const de array selecionam exatamente fetch (incluindo import node-fetch) ou client.query. A chamada realiza HTTP ou recebe DELETE FROM patients, mas o CLI retorna PASS/0/findings=[]. Nenhuma construção dinâmica é necessária. O resolver só trata binding de objeto e object literal em memberEffect; arrays conhecidos perdem o efeito. O controle SQL SELECT sozinho também passa, mas os controles diretos fetch_direct e quota_domain demonstram que o CLI rejeita os mesmos efeitos quando invocados diretamente.",
+      "path": "scripts/phase11-bypass-audit.mjs",
+      "confidence": "HIGH",
+      "executions": [
+        {
+          "id": "array_effect_member",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "array_effect_binding",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "array_binding_import",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "sql_query_array_alias",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "array_binding_query",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "array_nested_object_effect",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "array_pure_member",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "array_pure_binding",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "array_binding_import_inert",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "sql_query_array_alias_read",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "array_nested_object_benign",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        }
+      ]
+    },
+    {
+      "id": "I1-Q13-02",
+      "severity": "P1",
+      "title": "Closure que armazena configuração expõe referência sem invalidar SQL inferido",
+      "lines": [
+        552,
+        556,
+        564
+      ],
+      "spec_lines": [
+        259,
+        260,
+        279,
+        280
+      ],
+      "bad": [
+        "closure_store_config",
+        "closure_store_arrow"
+      ],
+      "good": [
+        "closure_store_benign",
+        "closure_read_config",
+        "closure_return_config"
+      ],
+      "rationale": "publish grava a mesma referência cfg em mailbox.value. consume chama publish e escreve DELETE FROM patients em mailbox.value.text; client.query(cfg) portanto recebe essa escrita. Todos os passos do contraexemplo são locais e explícitos, sem execução da fixture. O CLI ainda infere SELECT 1 e retorna PASS/0. reachableOrigins da função percorre somente retornos, descartando o armazenamento de referência. No par benigno publish armazena uma cópia {text:cfg.text}; cfg permanece SELECT 1 e PASS/0 é correto. A closure que retorna cfg é corretamente recusada, isolando a lacuna de armazenamento.",
+      "path": "scripts/phase11-bypass-audit.mjs",
+      "confidence": "HIGH",
+      "executions": [
+        {
+          "id": "closure_store_config",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "closure_store_arrow",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "closure_store_benign",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "closure_read_config",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "closure_return_config",
+          "actual": "FAIL",
+          "exit": 1,
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/probe.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "I1-Q13-03",
+      "severity": "P1",
+      "title": "Alias criado por atribuição destructuring não transporta origem da configuração",
+      "lines": [
+        690,
+        693,
+        697,
+        710,
+        784
+      ],
+      "spec_lines": [
+        237,
+        238,
+        261,
+        262
+      ],
+      "bad": [
+        "assignment_concrete",
+        "assignment_object_concrete"
+      ],
+      "good": [
+        "assignment_concrete_benign",
+        "assignment_object_benign"
+      ],
+      "rationale": "[alias]=[cfg] (e ({value:alias}={value:cfg})) torna alias a mesma referência cfg. A função local mutate escreve DELETE FROM patients em alias.text e a query seguinte usa cfg. O CLI retorna PASS/0. O registro assignedValues aceita somente LHS identifier direto; assignmentLeaves marca o símbolo alias como mutado, mas não registra o valor/origem atribuído pelo padrão. Assim o argumento escapado alias não invalida cfg. O par que atribui objeto distinto permite que mutate altere somente a cópia e PASS/0 é correto.",
+      "path": "scripts/phase11-bypass-audit.mjs",
+      "confidence": "HIGH",
+      "executions": [
+        {
+          "id": "assignment_concrete",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "assignment_object_concrete",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "assignment_concrete_benign",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "assignment_object_benign",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        }
+      ]
+    },
+    {
+      "id": "I1-Q13-04",
+      "severity": "P1",
+      "title": "Accessor que retorna configuração é omitido no alcance transitivo de objeto",
+      "lines": [
+        539,
+        547,
+        552
+      ],
+      "spec_lines": [
+        259,
+        260,
+        279,
+        280
+      ],
+      "bad": [
+        "getter_escape"
+      ],
+      "good": [
+        "getter_benign",
+        "method_return_escape"
+      ],
+      "rationale": "box.value é um getter local que retorna exatamente cfg. mutate(box) escreve DELETE FROM patients em o.value.text; a query posterior recebe cfg já alterado. PASS/0 é indevido. A lista de propriedades percorridas em reachableOrigins inclui métodos, mas omite GetAccessorDeclaration. O par getter retornando uma nova cópia permanece benigno e PASS/0. O método ordinário retornando cfg é recusado, mostrando que a falta é na referência exposta pelo accessor, não no lexer SQL.",
+      "path": "scripts/phase11-bypass-audit.mjs",
+      "confidence": "HIGH",
+      "executions": [
+        {
+          "id": "getter_escape",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "getter_benign",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        },
+        {
+          "id": "method_return_escape",
+          "actual": "FAIL",
+          "exit": 1,
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/probe.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "I1-Q13-05",
+      "severity": "P2",
+      "title": "Leitura de valor primitivo por closure invalida lista fechada benigna",
+      "lines": [
+        523,
+        524,
+        557,
+        846
+      ],
+      "spec_lines": [
+        264,
+        265,
+        279,
+        281
+      ],
+      "bad": [
+        "closure_length_concrete_benign",
+        "closure_index_concrete_benign",
+        "closure_join_concrete_benign"
+      ],
+      "good": [
+        "closure_array_escape_concrete",
+        "quota_delete"
+      ],
+      "rationale": "expose retorna tables.length, tables[0] ou tables.join: valores primitivos de uma lista const fechada. consume apenas chama expose e retorna seu resultado, sem exposição da referência ou mutação. O CLI acusa unresolved_query_expression/FAIL/1 no DELETE da única tabela quota admitida. O fallback de alcance recua do membro não resolvido ao array inteiro e a passagem do callable marca a lista como escapada. O controle que retorna o array e muda seu índice para patients é corretamente rejeitado. Isso viola a precisão explícita de closures somente leitoras; não é exigência de provar pureza universal.",
+      "path": "scripts/phase11-bypass-audit.mjs",
+      "confidence": "HIGH",
+      "executions": [
+        {
+          "id": "closure_length_concrete_benign",
+          "actual": "FAIL",
+          "exit": 1,
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 5,
+              "reason": "unresolved_query_expression"
+            }
+          ]
+        },
+        {
+          "id": "closure_index_concrete_benign",
+          "actual": "FAIL",
+          "exit": 1,
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ]
+        },
+        {
+          "id": "closure_join_concrete_benign",
+          "actual": "FAIL",
+          "exit": 1,
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 1,
+              "reason": "unresolved_query_expression"
+            }
+          ]
+        },
+        {
+          "id": "closure_array_escape_concrete",
+          "actual": "FAIL",
+          "exit": 1,
+          "findings": [
+            {
+              "id": "direct_sql_write",
+              "path": "apps/api/src/postgres-rate-limit.ts",
+              "line": 5,
+              "reason": "unresolved_query_expression"
+            }
+          ]
+        },
+        {
+          "id": "quota_delete",
+          "actual": "PASS",
+          "exit": 0,
+          "findings": []
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Static synthetic fixtures were only parsed by copied scanner CLI; fixture code never executed.",
+    "No repository framework/tests, Docker, DB, network, install, target writes, dependency links, publication or global Gauntlet acceptance.",
+    "No universal proof of JS/PG effects, external CI identity or operational safety.",
+    "One exploratory mismatch bind_config_unused has unknown callee origin; it is inconclusive and excluded from findings. Known local/native bind controls passed.",
+    "No new P1 demonstrated in SQL helper itself in 20 SQL-specific CLI probes; bounded sample only.",
+    "Pilot11 remains deferred; global NO_GO unchanged."
+  ],
+  "integrity": {
+    "before_entries": 28051,
+    "after_entries": 28051,
+    "added": 0,
+    "removed": 0,
+    "bytes_or_link_changes": 0,
+    "stable_metadata_changes": 0,
+    "atime_changes": 5,
+    "candidate_binding_unchanged": true
+  }
+}

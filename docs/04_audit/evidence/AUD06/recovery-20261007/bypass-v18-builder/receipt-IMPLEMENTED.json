@@ -1,0 +1,267 @@
+{
+  "schemaVersion": 1,
+  "status": "IMPLEMENTED",
+  "version": "AUD06-v18b",
+  "sourceFrozen": true,
+  "ownershipEnded": true,
+  "noSelfApproval": true,
+  "frozenAtUTC": "2026-10-08T10:59:14.244319+00:00",
+  "node": "v22.23.2",
+  "maxConcurrency": 1,
+  "maxWorkers": 1,
+  "scope": [
+    "scripts/phase11-bypass-audit.mjs",
+    "tests/phase11-bypass-audit.test.js"
+  ],
+  "sourceHashes": {
+    "scripts/phase11-bypass-audit.mjs": "8a33e36ec736d3b1d72367dd3b6a689e8f28b7c838bf8f3d9e22e7356c43bc13",
+    "tests/phase11-bypass-audit.test.js": "df052868fdcb192f974647e09194f1d138206268b1b9ec1ae8423b1bbdce0bee",
+    "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+    "docs/02_spec/aud06_remediation_20261006.md": "e2e03eeb06584284bcdc5abebdac4cbb3d33eaf32635e57659ad1c27721a9178",
+    "docs/04_audit/evidence/AUD06/quality-bar.json": "a9307aeabb1d58ea3126e8b1e27c1b88dc8194b4963687bd481de2bada2fc6ae"
+  },
+  "repair": "Shared projectValues gives already recognized global/imported callables stable object identity and callee preserves their direct effect. Known imports to the same literal module/export share this identity across lexical bindings; distinct modules/exports, lexical shadowing and bind allocations remain separate. Existing stored-member selection, effective SQL arguments, mutation/escape and native array handling are reused without widening recognition.",
+  "RED": {
+    "baselineScanner": "6ffb7b4834fc9da79bb918a36d6e54bcc6cde240840f6cb0b4bf5a4b747594c1",
+    "cases": 93,
+    "matches": 72,
+    "divergences": 21,
+    "valid": true,
+    "raw": "red-valid-summary.json",
+    "binding": "red-before-source-binding.json",
+    "qualification": "One mixed same-export store expectation was corrected later; original RED93 and GREEN93 bytes remain preserved."
+  },
+  "REDv18b": {
+    "cases": 3,
+    "matches": 1,
+    "divergences": 2,
+    "valid": true,
+    "raw": "red-v18b-summary.json",
+    "binding": "red-v18b-before-source-binding.json",
+    "baselineScanner": "5e1dd518776ef6a1d9cba8c5756bfc7220b31f2dd2bb945d6a3af62e292b647e",
+    "baselineTests": "7cceb388ebb8175377a96ad28b14947c05cbeb76f2e80f227b545e8ff6193340",
+    "beforeSourceEdits": true
+  },
+  "GREEN": {
+    "fourFilesTests": 1399,
+    "passed": 1399,
+    "skips": 0,
+    "exit": 0,
+    "raw": "check-all-four-tests.json",
+    "CLI": {
+      "cases": 96,
+      "matches": 96,
+      "valid": true,
+      "raw": "green-v18b-summary.json"
+    },
+    "corpus": {
+      "scannedFiles": 59,
+      "status": "PASS",
+      "findings": 0,
+      "exit": 0,
+      "durationSeconds": 230.64561414718628,
+      "declaredTimeoutSeconds": 240,
+      "attemptsAfterV18bRelease": 1,
+      "raw": "check-corpus.json"
+    },
+    "gates": [
+      {
+        "name": "all-four-tests",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "corpus",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "lint",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "eslint-scoped",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "format",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "syntax-scanner",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "syntax-tests",
+        "exit": 0,
+        "stable": true
+      },
+      {
+        "name": "docs-check",
+        "exit": 0,
+        "stable": true
+      }
+    ],
+    "sourcesStable": true,
+    "allExitZero": true,
+    "summary": "checks-summary.json",
+    "docsCheck": {
+      "exit": 0,
+      "writersCompleteBeforeCheck": true,
+      "invalidJSON": [],
+      "raw": "check-docs-check.json"
+    }
+  },
+  "commands": {
+    "all-four-tests": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "tests/phase11-bypass-audit.test.js",
+      "tests/bypass-sql-audit.test.js",
+      "tests/docs-readiness.test.js",
+      "tests/docs-integrity.test.js",
+      "--no-file-parallelism",
+      "--maxWorkers=1"
+    ],
+    "corpus": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "scripts/phase11-bypass-audit.mjs"
+    ],
+    "lint": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "node_modules/eslint/bin/eslint.js",
+      "."
+    ],
+    "eslint-scoped": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "node_modules/eslint/bin/eslint.js",
+      "scripts/phase11-bypass-audit.mjs",
+      "tests/phase11-bypass-audit.test.js"
+    ],
+    "format": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "node_modules/prettier/bin/prettier.cjs",
+      "--check",
+      "scripts/phase11-bypass-audit.mjs",
+      "tests/phase11-bypass-audit.test.js"
+    ],
+    "syntax-scanner": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "--check",
+      "scripts/phase11-bypass-audit.mjs"
+    ],
+    "syntax-tests": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "--check",
+      "tests/phase11-bypass-audit.test.js"
+    ],
+    "docs-check": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "scripts/docs-check.mjs"
+    ]
+  },
+  "CLImatrixCommand": {
+    "driver": [
+      "python3",
+      "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v18-builder/run-cases.py",
+      "green-v18b"
+    ],
+    "actualPublicCLI": [
+      "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+      "scripts/phase11-bypass-audit.mjs"
+    ],
+    "cwd": "Own disposable per-case roots recorded in each raw CLI JSON; no fixture effects executed",
+    "finalCases": "cases.json"
+  },
+  "original93": {
+    "file": "cases-v18-original93.json",
+    "sha256": "01ae613c444e9f22a35837e3f811c8d8fa22f3ef6b5219e612f76a801e415497",
+    "cases": 93,
+    "expectation0Preserved": true
+  },
+  "mixedStoreMeasurementCorrection": {
+    "name": "import-symbols-independent",
+    "oldCase": {
+      "name": "import-symbols-independent",
+      "source": "import a from \"node-fetch\";import b from \"node-fetch\";a.custom=db.query;b.custom=()=>0;b.custom(\"DELETE FROM appointments\")",
+      "expected": 0,
+      "path": "apps/api/src/postgres-rate-limit.ts"
+    },
+    "correctedCase": {
+      "name": "import-symbols-independent",
+      "source": "import a from \"node-fetch\";import b from \"node-fetch\";a.custom=db.query;b.custom=()=>0;b.custom(\"DELETE FROM appointments\")",
+      "expected": 1,
+      "path": "apps/api/src/postgres-rate-limit.ts"
+    },
+    "reason": "Both imports are references to the same module/default export. Query and pure candidate stores must be unioned without asserting execution order; domain SQL remains rejected. No additional case or waived effect expectation.",
+    "originalMatrixFile": "cases-v18-original93.json",
+    "originalMatrixSha256": "01ae613c444e9f22a35837e3f811c8d8fa22f3ef6b5219e612f76a801e415497",
+    "originalTestsFile": "tests-before-v18b.rawtxt",
+    "originalTestsSha256": "7cceb388ebb8175377a96ad28b14947c05cbeb76f2e80f227b545e8ff6193340",
+    "chronology": "Expectation correction stated in commentary and lead send_input before scanner patch; qualification JSON and original93 copy persisted in the following command, after scanner patch and before test rewrite. Initial RED93/GREEN93 preserved unchanged. No claim that this JSON predates the scanner patch.",
+    "leadAcceptedMeasurementCorrection": true,
+    "caseCountDelta": 0
+  },
+  "leadQualification": "../v18b-matrix-expectation-qualification.json",
+  "leadInitialQualificationPreserved": "../v18b-matrix-expectation-qualification-initial.raw.txt",
+  "protectedBytes": {
+    "metadata-grants": {
+      "unchanged": true,
+      "before": "f87f502ba145cb2cab3378687b308a123da18f5773560d8b226dd5938025a194",
+      "after": "f87f502ba145cb2cab3378687b308a123da18f5773560d8b226dd5938025a194"
+    },
+    "exact-forwarder": {
+      "unchanged": true,
+      "before": "fb66ce2b46f6f3df9ea130b6a7e85102fd8c14053fb89878d0808ebf59f3bf9e",
+      "after": "fb66ce2b46f6f3df9ea130b6a7e85102fd8c14053fb89878d0808ebf59f3bf9e"
+    },
+    "report-effect-boundaries": {
+      "unchanged": true,
+      "before": "d5b5ab19d7364b0b0d8cacd6fefb1c09f31629ff4cded912fc4cfbdffd236b63",
+      "after": "d5b5ab19d7364b0b0d8cacd6fefb1c09f31629ff4cded912fc4cfbdffd236b63"
+    }
+  },
+  "intermediates": "intermediates-v18b.json",
+  "preservation": {
+    "initial94": "red-summary.json; cases-attempt1.json; attempt1-qualification.json",
+    "initial94Valid": false,
+    "REDvalid93": "red-valid-summary.json",
+    "priorCLI93": "green-summary.json",
+    "priorFull4": "check-all-four-tests-attempt1-known-P1.json",
+    "priorFull4Count": 1396,
+    "priorFull4Qualification": "Intermediate with known P1, not final GREEN",
+    "pause": "pause-known-P1.json",
+    "ownedVerifierSessionExit": 143,
+    "interruptedPriorCorpus": {
+      "completedResult": false,
+      "status": null,
+      "exit": null
+    },
+    "unadjudicatedFunctionSpread": "critic-excluded-qualified.json; no waived expectation/test added",
+    "rawsDeleted": false
+  },
+  "freshCriticInput": "../bypass-v17-fresh-reject-I1/report.json",
+  "leadConcreteInput": "../lead-import-identity-review-v18/summary.json",
+  "constraints": {
+    "onlyTwoSourceFilesWritten": true,
+    "helperSpecBarFrozen": true,
+    "metadataGrantsBoundariesExactForwarderBytesUnchanged": true,
+    "nativeArrayProjectionUnchanged": true,
+    "noRuntimeMastersStateWrites": true,
+    "noPathExemptionsOrGrantChanges": true,
+    "inputsParsedOnly": true,
+    "noCloneReadsOrWrites": true,
+    "noDatabaseDockerNetworkInstallCommitPushDescendants": true,
+    "mainGit": "No direct MAIN Git commands or mutations; required public scanner read-only inventory and own disposable fixture Git inventory only"
+  },
+  "limits": [
+    "Exactly initial93 plus three concrete lead controls; one accepted measurement correction within93. No new probes or general factories/reflection/prototypes/opaque module resolution.",
+    "IMPLEMENTED records local implementation only, without independent acceptance. Lead owns integration, preservation, candidate freeze and fresh critique.",
+    "No checks after ownershipEnded. Pass4 NOT_STARTED. N3 DENY; Q11/pilot11 DEFERRED; publication/remote CI pending; global NO_GO."
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "state": "CLOSED/STOP",
+  "actualIdentity": "01a11c45-fee4-7243-bbdc-e75eb18920ec / Socrates",
+  "fork_context": false,
+  "descendants": 0,
+  "ownTEMP": "/tmp/aud06-finalcritic-I1-db55luic",
+  "targetReadsPermanentlyEndedUTC": "2026-10-08T16:17:52.031843+00:00",
+  "afterJobExit": 0,
+  "openOwnBackgroundJobs": 0,
+  "canonicalJobs": "ended, factualdispatchattestation + rawcompletedexit/resourceabsence inspected; no freshDocker",
+  "decision": {
+    "fullOriginalGoal": "NO_GO_NOT_COMPLETED",
+    "globalProduction": "NO_GO",
+    "boundedLocalTechnical": "CONDITIONAL_GO_CONTROLLED_LOCAL_SYNTHETIC_ONLY",
+    "requiredItemsSatisfiedInBoundedScope": 11,
+    "requiredItemsUnsatisfied": [
+      "Q11",
+      "Q13",
+      "Q14"
+    ],
+    "N3": "DENY",
+    "pilot11": "DEFERRED_BY_USER",
+    "remoteVerifySecurity": "NOT_RUN_UNSATISFIED",
+    "Q14": "PENDING",
+    "synthesizedApproval": false,
+    "noAverageOverridesRequiredGate": true,
+    "publishAuthorityGranted": false
+  },
+  "counts": {
+    "originalCriteria": 14,
+    "boundedPass": 11,
+    "unsatisfied": 3,
+    "candidate": 1256,
+    "wholeTree": 28651,
+    "bytes": 705687876,
+    "gitPhysicalEntries": 1984,
+    "gitRegular": 1711,
+    "blobs": 3523,
+    "currentGates": 35,
+    "rawGateLogs": 30,
+    "snapshot": 158,
+    "manifest": 78,
+    "runtimeBindings": 370,
+    "proofs": 422,
+    "exactSkips": 200,
+    "ownedCanonicalResourcesAbsent": 3,
+    "fullArtifactEntries": 30675,
+    "fullArtifactRegular": 27476
+  },
+  "files": [
+    {
+      "path": "/tmp/aud06-finalcritic-I1-db55luic/final/report.json",
+      "sha256": "da0cbf133d63b7ae0c48a1a0b88ef5b230d29bd646982fb3a584c8ac8b825614",
+      "size": 59132
+    },
+    {
+      "path": "/tmp/aud06-finalcritic-I1-db55luic/final/report.md",
+      "sha256": "5178c04341e0f71c3e9a6571320f3c8b8f0fc34defb779cb929b9ca0324217f7",
+      "size": 36269
+    },
+    {
+      "path": "/tmp/aud06-finalcritic-I1-db55luic/final/fullartifactmanifest.json",
+      "sha256": "0cf65cc0ab796f54a878d9d32e076e9ed17c9b3a31892ee759a3bd467760b49e",
+      "size": 7552872
+    },
+    {
+      "path": "/tmp/aud06-finalcritic-I1-db55luic/final/separate-indices.json",
+      "sha256": "539dfc5b8fed9515a6060cf3f652e25892311b2389c757805a564bd4315a93e0",
+      "size": 1504
+    },
+    {
+      "path": "/tmp/aud06-finalcritic-I1-db55luic/final/execution-index.json",
+      "sha256": "626158641a5a0a8689cd1fed29c8c6869df0590a74b57308db99eb7d1b767cd0",
+      "size": 3174
+    },
+    {
+      "path": "/tmp/aud06-finalcritic-I1-db55luic/final/owncopy-artifact-index.json",
+      "sha256": "a7358d1fe4e275ade1232bc45b690e5a0f688b4b110d04b452cd425050e29e8c",
+      "size": 8667065
+    }
+  ],
+  "noMachineInputCreatedOrModified": true,
+  "parentMayResumeTargetOnlyAfterThisExplicitClosure": true,
+  "actualFinalizationProcessExit": 0,
+  "closureIndexNormalization": "Staging directory inventory entry normalized to atomic final directory after publication; own artifact packaging only, no TARGETread."
+}

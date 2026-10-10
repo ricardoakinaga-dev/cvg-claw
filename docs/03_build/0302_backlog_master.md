@@ -1,5 +1,9 @@
 # 0302 — Backlog Master
 
+## Backlog corrente — AUD06 — 2026-10-06
+
+Consultar [0348](0348_aud06_roadmap.md) e [0349](0349_aud06_backlog.md). Pedido executivo atual admite correções locais; histórico abaixo não define a próxima ação. Produção `NO_GO`.
+
 ## Backlog corrente em ondas — 2026-10-05
 
 Consultar [0347](0347_claw_waves_backlog_20261005.md) e [roadmap 0346](0346_claw_waves_roadmap_20261005.md). Itens `CLAW-W1-*` a `CLAW-W8-*` e trilha `CLAW-G-*`; só a Onda 1 está admitida. 0345 e as seções abaixo permanecem históricas.

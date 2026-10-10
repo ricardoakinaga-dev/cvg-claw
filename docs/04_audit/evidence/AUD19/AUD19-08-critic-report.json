@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "kind": "phase11-critic-report",
   "critic": {
-    "identity": "CLAW-W1 FINAL — fresh independent Critic — openai/gpt-6.1-sol",
+    "identity": "01a11bf1-fc38-7ec1-a0af-8603dfea9356 / Curie",
     "freshContext": true,
-    "builderIdentity": "cvg-lead-agent",
+    "builderIdentity": "AUD06-lead-01a11315-639f-7793-a147-b880b9d73160/v20-builder-01a11a64-2a94-7271-994e-f39fbb83bbc1",
     "independence": {
       "criteria": [
         "fresh-context",
@@ -19,156 +19,286 @@
     }
   },
   "binding": {
-    "candidateId": "72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267",
-    "commit": "185f82168a11e813c218f2e6da1c49b671bf451f",
-    "treeHash": "d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569"
+    "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+    "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283"
   },
   "fingerprint": {
     "algorithm": "sha256-candidate-v1",
-    "before": "ad6087e1cad09d16ec532dc5e893a21e4d4e7759f4f30d1bec6cab4a6ec11865",
-    "after": "ad6087e1cad09d16ec532dc5e893a21e4d4e7759f4f30d1bec6cab4a6ec11865"
+    "before": "ffc25aad2f22adcf4c9a35ba58fb1e01ee57adac5a8477a182a29eb14c934a8d",
+    "after": "ffc25aad2f22adcf4c9a35ba58fb1e01ee57adac5a8477a182a29eb14c934a8d"
   },
   "verdict": {
     "status": "PASS",
-    "summary": "Maior lacuna: não há nesta entrada prova executável atual dos 14 critérios Phase 11.2 nem de 35 gates; passada 2, validação deste JSON e certificação final continuam necessárias. PASS significa somente admissibilidade do delta para essa passada. Observações: li integralmente as 994 linhas do patch candidato e o patch dos helpers, confrontando os testes e blocos atuais do lock com fontes reais. Não identifiquei P0/P1 ou regressão material demonstrada no delta candidato. Pedido e complemento, considerados juntos, explicitam a sincronização do lock com o manifest agent-evals e os helpers fora do candidato. P2 observado, não bloqueante neste escopo: certify-pass.sh registra o exit da certificação, mas não o propaga; comandos posteriores e o echo final podem devolver sucesso após falha. Seu exit isolado não pode provar certificação; exigir resultados e verificação oficiais. A política implementada continua vencendo em 2027-01-01T02:59:59.000Z; a renovação documental não a estende. Hipóteses não verificadas: compatibilidade comportamental das dependências após atualização e execução bem-sucedida das suítes; dependem da passada 2. Hashes/tamanhos e igualdade frozen/live são medições factuais dos receipts do Lead, não recomputações minhas. before/after são valores declarados, com after condicionado à conferência pós-retorno pelo Lead, inclusive sentinel completo; não atesto ausência de mutação por medição própria. Usei exclusivamente Read absoluto, sem escrita, shell, delegação, histórico .gauntlet, pareceres anteriores ou busca de justificativa Builder. Independência limitada a I1: papel separado e contexto novo, sem session ID exposto ou família distinta comprovada. Staging/produção permanecem NO_GO."
+    "summary": "PASS only for current artifact review and CONTROLLED_LOCAL fresh critic evidence renewal. No material independent runtime gap found in finite source/public-path and current immutable executed-evidence inspection. First actual qualification remains NO_GO: independent_critic and PHASE11_FORMAL_CLOSURE FAIL with stale-input binding/fingerprint/digest errors. Report is not a substitute for full actual second qualification or a different fresh FinalCritic afterward; this critic cannot be FinalCritic. Global NO_GO: N3 DENY, pilot11 deferred, Q13 remote NOT_RUN/UNSATISFIED, Q14 pending. SharedFS I1 contractual read-only, not OS isolation. Companion records current automatic invariants/externalGates annotation exposure and checkpoint communication limitations; no human builder rationale or prior critic conclusions/scores reused."
   },
   "findings": {
     "P0": 0,
     "P1": 0,
-    "P2": 1
+    "P2": 2
   },
   "checks": [
     {
-      "id": "C1-binding-declarado-e-receipts",
+      "id": "SEALED1256_CANDIDATE_AND_FINGERPRINT",
       "status": "PASS",
-      "method": "Confrontei pedido, receipts e regras lidas em scripts/lib/certification-rules.mjs e critic-evidence.mjs. Receipt registra 1217 arquivos, igualdade integral frozen/live, binding congelado e reprodução de 2414ae1538227881cb294abd051d3ce593c266c59f7f0c6e6173a417f9b49ecd em f8c2639. HEAD posterior altera apenas evidências segundo a medição. PASS de coerência e suporte documental ao binding, não recomputação independente de hashes.",
+      "method": "Independent owncopy byte/index/head/blob/tree reconstruction and exact sha256-candidate-v1 before/after; original candidate controlfields and immutable digest bindings verified.",
       "evidence": [
-        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
-        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
-        "docs/04_audit/evidence/CLAW-W1/critic-delta-preflight-20261005.json"
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/phase11-result.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/manifest.json"
       ]
     },
     {
-      "id": "C2-delta-integral-e-fidelidade",
+      "id": "CURRENT_RAW_TECHNICAL_EXECUTION_AND_EXACT_SKIPS",
       "status": "PASS",
-      "method": "Inspecionei patch candidato inteiro, linhas 1–994 em páginas sem truncamento, e helper patch inteiro. Delta candidato: documentos/governança, nome/descrição raiz, banco de exemplo, lock e dois testes; nenhum hunk de produto, migração, script, threshold ou configuração de teste. Complemento restringe corretamente a declaração ao escopo candidato e revela os helpers excluídos pela regra oficial. Sem P0/P1 identificado por inspeção. P2 no helper certify-pass.sh: ausência de propagação do exit da certificação, com término em echo; não aceitar sucesso do wrapper como gate.",
+      "method": "Parse executed unit/PG logs/JSON; reconcile all200 unique file+fullName skipped identities to exact32-file PG selection with369 passed assertions, no duplicates/absence/failures. Coverage4538pass and75browserE2E current; no reruns.",
       "evidence": [
-        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
-        "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md",
-        "docs/04_audit/evidence/CLAW-W1/critic-candidate-delta-20261005.patch",
-        "docs/04_audit/evidence/CLAW-W1/critic-helper-delta-20261005.patch"
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/unit-report.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/postgres-report.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/coverage.log",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/e2e.log",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/coverage/coverage-summary.json"
       ]
     },
     {
-      "id": "C2-legitimidade-das-duas-correcoes",
+      "id": "CURRENT_CANONICAL_FAILURE_PRESERVED_AND_RENEWABLE_INPUT",
       "status": "PASS",
-      "method": "Confrontei hunks com journeys-api.test.ts, journeys.ts:850–879, retention-postgres.test.ts:1081–1202 e retention.ts:1534–1720. Slots usam próximo dia UTC: formato e Date.parse maior que agora substituem corretamente ano fixo, sem aceitar data inválida. Tombstone recente agora fica cinco dias antes do relógio Node, dentro do horizonte SQL de 30 dias; permanecem asserts de preservação, minimização e replay. Pressupõe relógios Node/PostgreSQL razoavelmente alinhados; não foi executado. A correção não elimina a expiração intencional da política.",
+      "method": "Current first actual cycle is NO_GO with independent_critic/formal closure FAIL. Inspect actual schema/errors: stale candidate/tree/commit/fingerprint and cited currentstate digest only. Accept artifact for fresh critic input renewal; no conversion of failed gates or assertion about unexecuted second cycle.",
       "evidence": [
-        "docs/04_audit/evidence/CLAW-W1/critic-candidate-delta-20261005.patch",
-        "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md"
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/independent_critic.log",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/phase11-result.json"
       ]
     },
     {
-      "id": "C2-lock-e-manifest-workspace",
+      "id": "PUBLIC_POLICY_APPROVAL_RETENTION_WRAPPER_REGRESSIONS",
       "status": "PASS",
-      "method": "Li todos os hunks do lock e blocos atuais em package-lock.json:1–100,2430–2519,3065–3209,4955–5024,5310–5384; confrontei package.json e packages/agent-evals/package.json. Mudanças: nome raiz, brace-expansion 5.0.12, fast-uri 3.1.8/4.2.1, fastify 5.12.5, undici 7.30.0 e agent-core 1.0.0 em agent-evals. Versões/ranges e engines lidos são coerentes com Node22.23.2. Receipt factual before/after mostra manifest agent-evals idêntico já contendo agent-core: trata-se de sincronização do lock, não nova dependência no manifest. npm ci/audit/compatibilidade runtime não foram executados.",
+      "method": "Bounded actual source/test/public-path inspection correlated with current executed assertions; N3DENY zeroexecutor, payload-bound approvals, synthetic renewal/time boundaries, public HTTP/client/export surfaces, wrapper ownedcleanup/status/signals.",
       "evidence": [
-        "docs/04_audit/evidence/CLAW-W1/critic-candidate-delta-20261005.patch",
-        "docs/04_audit/evidence/CLAW-W1/critic-delta-preflight-20261005.json",
-        "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md"
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/unit-report.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/governance_redteam.log",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/verify.log",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/production_preflight.log"
       ]
     },
     {
-      "id": "C3-escopo-sem-certificacao-por-inferencia",
+      "id": "ACTUAL370_RUNTIME_SOURCE_AND_RAW_STACK_BINDING",
       "status": "PASS",
-      "method": "Comparei os 14 critérios congelados com o delta e limites dos receipts. Execução atual NÃO ATESTADA para P11.2-PROMPT, CANONICAL, CALCULUS, ORCHESTRATION, FENCING, EFFECT, LINEAGE, REDTEAM, POSTGRES, CONSOLE, PREFLIGHT, SUPPLY, EXTERNAL e NO-PRODUCTION-EFFECT. Não há resultados brutos atuais suficientes para marcar esses gates PASS; permanecem sujeitos à passada 2 ou evidência autorizada externa. Contagens históricas, texto da auditoria e pacote descartado não foram usados como aprovação. Este check aprova a delimitação honesta do parecer, não a execução desses critérios.",
+      "method": "Rehash all370 sources against current owncopy,255 raw stack artifact digests and110command output digests; observe TLShealth/durableworker/sharedquota/storagefailclosed/restored44tablefingerprint/telemetryshutdownredaction. Reuse exact immutable original runtime, no new stack execution.",
       "evidence": [
-        "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
-        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
-        "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md"
+        "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/source-manifest.json",
+        "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/commands.jsonl",
+        "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/SHA256SUMS",
+        "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/shared-quota-burst.json",
+        "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/quota-storage-failure.json",
+        "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/quota-storage-recovery.json",
+        "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/restore-integrity.json",
+        "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/worker-durability.json",
+        "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/https-api-health.json",
+        "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/telemetry-api-a-shutdown.jsonl",
+        "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/telemetry-api-b-shutdown.jsonl",
+        "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/telemetry-worker-shutdown.jsonl"
       ]
     },
     {
-      "id": "C4-no-go-e-renovacao-nao-implementada",
+      "id": "OWNED_ACTUAL_CLEANUP_AND_PROVENANCE",
       "status": "PASS",
-      "method": "Estado atual mantém staging/produção NO_GO; external-gates contém três NOT_VALIDATED e humanSignoff PENDING, não oito aprovações externas. Pedido preserva os oito gates externos/humanos pendentes. Recibo de renovação limita efeito ao sintético local, releaseEligible=false e effectiveOnlyAfterCodeChange=true. Li retention.ts:47,1534–1609 e teste de borda:1310–1325: código conserva validade antiga e falha fechado após ela. Renovação para julho não constitui implementação nem autorização de produção.",
+      "method": "Match immutable birth container IDs/anonymous volume/private creation cidfiles to actual teardown no-such-object/volume receipt and original exit1/time bounds. No own resource execution; sharedFS read-only contract plus alltime noatime integral sentinel equal.",
       "evidence": [
-        "docs/03_build/tracking/current_state.json",
-        "certification/external-gates.json",
-        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
-        "docs/04_audit/evidence/CLAW-W1/CLAW-W1-07-tombstone-policy-renewal-decision-20261005.json",
-        "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md"
-      ]
-    },
-    {
-      "id": "C5-procedimento-independente-read-only",
-      "status": "PASS",
-      "method": "Revisão FINAL em contexto novo, identidade de papel distinta de cvg-lead-agent; nenhuma identidade de sessão única foi exposta. Apenas Read com caminhos absolutos; nenhum write/shell/delegação, parecer anterior, .gauntlet ou justificativa Builder buscada. Prosa histórica incidental do delta foi tratada como objeto documental, não conclusão herdada. I1 máximo, sem prova de família distinta. before/after informado é declaração vinculada ao preflight e sujeito à medição Lead pós-retorno; sentinel completo não foi lido nem recomputado por mim. PASS do procedimento observado, não de teste mecânico de imutabilidade.",
-      "evidence": [
-        "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
-        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json"
-      ]
-    },
-    {
-      "id": "C6-schema-e-rastreabilidade-do-relatorio",
-      "status": "PASS",
-      "method": "Conferência estrutural manual contra CriticReportSchema strict em scripts/lib/critic-evidence.mjs: campos, enums, limites, critérios, findings e binding. Toda evidence é declarada em artifacts e fica em docs/ ou certification/; fontes de código são descritas somente nos métodos. Digests/tamanhos provêm dos receipts medidos pelo Lead; os dois receipts usam digests/tamanhos fornecidos no packet. Todos os artifacts listados foram lidos. Não executei safeParse, verificador nem hashing próprio: Lead deve salvar sem alteração, conferir sentinel e validar este JSON antes da passada 2.",
-      "evidence": [
-        "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
-        "docs/04_audit/evidence/CLAW-W1/critic-delta-preflight-20261005.json"
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/host-local-certification-pass4-resources.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/host-local-certification-pass4-teardown.json",
+        "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/host-local-certification-pass4-receipt.json"
       ]
     }
   ],
   "artifacts": [
     {
-      "path": "docs/04_audit/evidence/CLAW-W1/critic-request-20261005.md",
-      "sha256": "56efaf276840b66aa9a5b9d5c38dfeea99520baaf91c95db0b9ee2f0e70092cf",
-      "size": 2919
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/snapshot-manifest.json",
+      "sha256": "ede4f0fd29142ecb2bcd6d43feac74736024e79cdfbefdf59ef7efc6cc18fbcd",
+      "size": 29501
     },
     {
-      "path": "docs/04_audit/evidence/CLAW-W1/critic-request-addendum-20261005.md",
-      "sha256": "e9eca83d41e37cca9cefb06185981cdeb83d1859a33e672bd5fb62a4a6cab356",
-      "size": 2629
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/manifest.json",
+      "sha256": "384a375e540f7825bdf36718e637d04de3585db0ef16ed45ffc0d12b6ebeed79",
+      "size": 27713
     },
     {
-      "path": "docs/04_audit/evidence/CLAW-W1/critic-candidate-delta-20261005.patch",
-      "sha256": "c3ca3a98b476ed485b32a3a46dabac1a1eb4f56b8b554e509d5419a59cae935d",
-      "size": 86189
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/phase11-result.json",
+      "sha256": "928a15508c16f0ce3abc95d24c790f1a001db3adac7641ca9b550125c966f54e",
+      "size": 357965
     },
     {
-      "path": "docs/04_audit/evidence/CLAW-W1/critic-helper-delta-20261005.patch",
-      "sha256": "b328a015ea3c88f3c1e52f201e46ae8d72cabc7eafee94015fd809db342ea4ac",
-      "size": 2296
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/coverage/coverage-summary.json",
+      "sha256": "863ead96ac672aecb2fc50b0ff2bf69e7188956aca086b6ac5c49050b8425df4",
+      "size": 70605
     },
     {
-      "path": "docs/04_audit/evidence/CLAW-W1/critic-preflight-20261005.json",
-      "sha256": "ad8d8fdf0a746615f184dab251c37d10447182a634f65dda5b3c345b57833f7d",
-      "size": 6308
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/host-local-certification-pass4-resources.json",
+      "sha256": "71eb8899a81b60be5ce14fd54f480f8238f417c2246265f75a8bca06d5f8cbd2",
+      "size": 21315
     },
     {
-      "path": "docs/04_audit/evidence/CLAW-W1/critic-delta-preflight-20261005.json",
-      "sha256": "6584f33be7794892cef5e5093e93ffd5671e55561590aab47a45be6ac8721d61",
-      "size": 2490
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/host-local-certification-pass4-teardown.json",
+      "sha256": "fd4f5404526f687c20a5056040d413a9f575690c20a873b9e62c3207467a30ce",
+      "size": 1814
     },
     {
-      "path": "docs/04_audit/evidence/AAA/AAA-21/quality-bar-phase11-2-v1.json",
-      "sha256": "1d477beef8340674c009032168fa7d0c4b99b9af8697af0472903ebb2b9735a6",
-      "size": 4436
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/host-local-certification-pass4-receipt.json",
+      "sha256": "a859f44ff1fb28906f9c4368b3d6a8ac18e9f7782e6c11748511d1bb4aa8bda6",
+      "size": 719
     },
     {
-      "path": "certification/external-gates.json",
-      "sha256": "ccaecccf62b52cb02ce278ec84dd15cf3a0f13ca2d691f7ca20f9b86fed60ca9",
-      "size": 361
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/host-local-certification-pass4-skip-reconciliation-final.json",
+      "sha256": "e51507266532f58c25c171cd84637f9cd253b84751bd50b944934a04226cc99e",
+      "size": 118981
     },
     {
-      "path": "docs/03_build/tracking/current_state.json",
-      "sha256": "f5901420ee52539e5ff5268d899d2b9fd18a244e0dda919dd878cb1e4ced9435",
-      "size": 1310
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/unit-report.json",
+      "sha256": "44afa539a86cf26bf63b91d4b1086e5367415b5c58a3ccb73539809e0c909eb5",
+      "size": 1551214
     },
     {
-      "path": "docs/04_audit/evidence/CLAW-W1/CLAW-W1-07-tombstone-policy-renewal-decision-20261005.json",
-      "sha256": "ddc816bd01c3881bc0cbdeeef05bf9cc5d1b572cd823f9a564cfe7c75857b705",
-      "size": 1461
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/postgres-report.json",
+      "sha256": "56d3a2244b9e77774be683ed78b3765bf1f55b6f2ed895aabcff5e5653ab4b32",
+      "size": 136977
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/unit.log",
+      "sha256": "a0743ea0738d2162dd61e2509ff45196fd03d40802115eb721b5035eac12f6de",
+      "size": 182850
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/postgres.log",
+      "sha256": "520285bbddea538d197be49e6b78720ffd2fbe6f4338b27e9cd249d5c50661bf",
+      "size": 23710
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/coverage.log",
+      "sha256": "5ae6115d2ed9aa30e362705295eece0a17a1cec5eec385fe8a415969d1c61e46",
+      "size": 220808
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/verify.log",
+      "sha256": "3b22fbf4b4a7b04d32fcee29922bdb1ca7eabe4a0fbf94de4b44bdbfeee20232",
+      "size": 388753
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/security.log",
+      "sha256": "434633dc274b976147537763e8adf2cbf1aeb4cdb7434a81a263edf76792b5d8",
+      "size": 495
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/e2e.log",
+      "sha256": "1b04f9ead99767f502e536f23c3f1d24276a023cc91a97f75a1a1a955d286e27",
+      "size": 12646
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/governance_redteam.log",
+      "sha256": "2ebbb2e7fbdf98ca9dbd29c4d59a6a60dca83cc13fe41bd82eac5601fcf4f0ba",
+      "size": 1754
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/independent_critic.log",
+      "sha256": "f1fc506c5d7ba73d3f9457dba83aab037a354c23f2d8ac711dd6c6c365a2de2d",
+      "size": 3290
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/production_preflight.log",
+      "sha256": "df2ec4bd6ea993418caeb5abfc5013cae10624a2f82255b3aca5ef6d9ad24a8d",
+      "size": 8609
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/bypass_audit.log",
+      "sha256": "06e6a7cd1aab79732af4526db2ff0a8a6415ffbee6694a50e3c1a084d0e67310",
+      "size": 1851
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/build.log",
+      "sha256": "1694274e06817d773b7e49fe31fc602fefbf8977a950a3e09fe16839e26a1f6c",
+      "size": 1018
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/worker_startup.log",
+      "sha256": "7a706a3caa3acefc764eae13d542dac1d14b6803097055543d89f594135b7cfd",
+      "size": 701
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/mutation_sentinel.log",
+      "sha256": "c8c3dc9da92c52b8cc938fe0fc740e4a4dad77ff608477dc89f32a91452db7f8",
+      "size": 2748
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/source-manifest.json",
+      "sha256": "db34a2651bbd55169585e57f3a8ed198bf35bb1b653f784dfb374724cdb02816",
+      "size": 54423
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/commands.jsonl",
+      "sha256": "f66721e3432111a5cd8ad97c6f3fa65cd0225a391e7a24564367116e4d2c4724",
+      "size": 69388
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/SHA256SUMS",
+      "sha256": "062219acee4e3130e7bc59e55720e09596a90b01d5019b708fc042990c9f1809",
+      "size": 26639
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/015-build-runtime.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/015-build-runtime.stderr.log",
+      "sha256": "e6394ab499f9066d365392feb589d5794e92db29adc0976c07856adccc89965d",
+      "size": 3664
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/shared-quota-burst.json",
+      "sha256": "03462efd02229dd114fb328ad069602f264d1aa1d5c43e0455d48e040060596c",
+      "size": 74931
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/quota-storage-failure.json",
+      "sha256": "a6be747e84cdae8b9219dc2f97d8171c0e617b070066fcc24493374ac34e3d3e",
+      "size": 10951
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/quota-storage-recovery.json",
+      "sha256": "8b9edfa41d24bd686ae90605fe02f297f1c4bff7ef6d6657790c7ff615ed4301",
+      "size": 2405
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/restore-integrity.json",
+      "sha256": "e24013d7e3a1058298e74f97895b22fbb7aea0a36d61be6a48632b6ce57a9e5a",
+      "size": 305770
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/worker-durability.json",
+      "sha256": "0dab96972dc654515e431eca8127483c821d8664f04fe2006ac632d7ccef0564",
+      "size": 1206
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/https-api-health.json",
+      "sha256": "57908810c3ff03c7c6ff88498b4d1d1b79beed7698d1367a1756ef198da8ecd0",
+      "size": 2405
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/https-web.json",
+      "sha256": "874e60a6e4d1b5b96a7c07ae61dc5c9acfe9ea93cd679f4c214cbb95bf4e82ad",
+      "size": 2529
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/telemetry-api-a-shutdown.jsonl",
+      "sha256": "1450af5cb7c2514b0462feeabb60c43cb912b26e248eea7c503015a66841a72e",
+      "size": 1451
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/telemetry-api-b-shutdown.jsonl",
+      "sha256": "8ebba8373568f800936a3dd0928d785cd4a243f94995c5f20cbe1102f606de76",
+      "size": 1451
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/telemetry-worker-shutdown.jsonl",
+      "sha256": "7b3b0901d525524dd64fc55bdaabcd0017cf39a3bc7702d1ea92c691e366f22c",
+      "size": 13728
     }
   ],
   "disclaimers": {

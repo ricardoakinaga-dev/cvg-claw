@@ -2,6 +2,10 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 export const CURRENT_STATE_PATH = 'docs/03_build/tracking/current_state.json'
+const TASK_MATRIX_BY_PROGRAM = Object.freeze({
+  'AUD20-REM-v2': 'docs/03_build/tracking/aud20_v2_findings_matrix.json',
+  AUD06: 'docs/03_build/tracking/aud06_tasks.json'
+})
 export const OFFICIAL_STATES = Object.freeze([
   'IN_PROGRESS',
   'READY_FOR_NEXT_STEP',
@@ -160,6 +164,43 @@ export function checkCanonicalState({
   return { valid: failures.length === 0, failures }
 }
 
+function checkTaskBacklogStatuses(matrix, content) {
+  const failures = []
+  const tasks = matrix?.tasks
+  if (!Array.isArray(tasks) || tasks.length === 0)
+    return ['task_backlog_matrix_invalid']
+  const taskIds = new Set()
+  for (const task of tasks) {
+    if (typeof task.id !== 'string' || !OFFICIAL_STATES.includes(task.status)) {
+      failures.push('task_backlog_matrix_invalid')
+    }
+    if (taskIds.has(task.id)) failures.push(`task_matrix_duplicate:${task.id}`)
+    taskIds.add(task.id)
+  }
+  const rows = new Map()
+  for (const line of content.split('\n')) {
+    if (!line.trim().startsWith('|')) continue
+    const cells = line
+      .trim()
+      .split('|')
+      .slice(1, -1)
+      .map((cell) => cell.trim().replace(/`/g, ''))
+    const id = cells[0]
+    if (!/^[A-Z][A-Z0-9_-]+-\d+$/.test(id ?? '')) continue
+    if (!taskIds.has(id)) failures.push(`task_backlog_unknown_task:${id}`)
+    const states = rows.get(id) ?? []
+    states.push(cells.at(-1))
+    rows.set(id, states)
+  }
+  for (const task of tasks) {
+    const states = rows.get(task.id) ?? []
+    if (states.length !== 1) failures.push(`task_backlog_row_count:${task.id}`)
+    else if (states[0] !== task.status)
+      failures.push(`task_backlog_status_mismatch:${task.id}`)
+  }
+  return failures
+}
+
 function rangeAcceptsExact(range, exact) {
   if (typeof range !== 'string' || typeof exact !== 'string') return false
   const major = Number(exact.split('.')[0])
@@ -247,9 +288,21 @@ export function checkRepositoryState(
     }
   }
   const canonical = readJson(CURRENT_STATE_PATH)
-  const matrix = readJson(
-    'docs/03_build/tracking/aud20_v2_findings_matrix.json'
+  // A new program must not mutate another program's historical task matrix.
+  // Resolve only a declared, known path; never read a caller-selected file.
+  const matrixPath = Object.hasOwn(
+    TASK_MATRIX_BY_PROGRAM,
+    canonical?.program ?? ''
   )
+    ? TASK_MATRIX_BY_PROGRAM[canonical.program]
+    : undefined
+  const matrixPathValid =
+    matrixPath !== undefined && canonical?.sources?.taskMatrix === matrixPath
+  if (!matrixPathValid) failures.push('canonical_task_matrix_source_invalid')
+  const matrix = matrixPathValid ? readJson(matrixPath) : null
+  if (matrix && matrix.program !== canonical?.program) {
+    failures.push('canonical_task_matrix_program_mismatch')
+  }
   const current = parseCurrentIndex(readText('docs/CURRENT.md') ?? '')
   const runtime = readText('docs/99_runtime_state.md') ?? ''
   const actions = [...runtime.matchAll(/^- next_action: (.+)$/gm)]
@@ -270,6 +323,17 @@ export function checkRepositoryState(
     certificationPointer,
     pathExists: (relative) => fs.existsSync(path.join(root, relative))
   })
+  if (canonical?.program === 'AUD06') {
+    const backlogPath = 'docs/03_build/0349_aud06_backlog.md'
+    if (canonical.sources?.backlog !== backlogPath) {
+      state.failures.push('canonical_task_backlog_source_invalid')
+    } else {
+      state.failures.push(
+        ...checkTaskBacklogStatuses(matrix, readText(backlogPath) ?? '')
+      )
+    }
+    state.valid = state.failures.length === 0
+  }
   const node = checkNodePins({
     exact: canonical?.runtime?.node?.exact,
     declaredRange: canonical?.runtime?.node?.range,

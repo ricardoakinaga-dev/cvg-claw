@@ -1,0 +1,31 @@
+{
+  "commit": "716bf465fb17389e24fde589978fd6a31ac324c8",
+  "sourceAnchor": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+  "fullSuiteExecutedAtAnchorOnly": true,
+  "currentMaterializedChecks": [
+    {
+      "check": "docs",
+      "command": [
+        "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+        "scripts/docs-check.mjs"
+      ],
+      "startedAt": "2026-10-08T23:37:29.620729+00:00",
+      "endedAt": "2026-10-08T23:37:30.310595+00:00",
+      "exitCode": 0,
+      "logSHA256": "199202a430db5517b6e64be1c94abe1d9b7a1b21aca984eeef1c1c09c312f357"
+    },
+    {
+      "check": "certificate",
+      "command": [
+        "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+        "scripts/phase11-verify.mjs"
+      ],
+      "startedAt": "2026-10-08T23:37:30.310773+00:00",
+      "endedAt": "2026-10-08T23:37:31.299892+00:00",
+      "exitCode": 0,
+      "logSHA256": "f0e7470decfae247bc46d3a26a78f917fe90db7b7b6c08ce5fc62134c7c7246a"
+    }
+  ],
+  "independentInstalledDependencyCopy": true,
+  "noRemoteCIExecuted": true
+}

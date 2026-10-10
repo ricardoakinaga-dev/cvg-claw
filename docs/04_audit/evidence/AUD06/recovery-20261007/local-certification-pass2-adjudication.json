@@ -1,0 +1,351 @@
+{
+  "recordedAt": "2026-10-08T03:49:39.010801+00:00",
+  "candidateId": "9cacf65ddf8c2a0deebe60c135ebb891f5166b170df21a85bf8919a0d03029a6",
+  "status": "NO_GO",
+  "gates": [
+    {
+      "id": "prompt_integrity",
+      "command": "phase11 internal check",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 0
+    },
+    {
+      "id": "format",
+      "command": "npm run format:check",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 19745,
+      "log": "certification/phase11/logs/format.log",
+      "logSha256": "ae0aa15509c6eb1fd86463e3936589f1f4b52ade8f2af54972407463c1146a3f"
+    },
+    {
+      "id": "typecheck",
+      "command": "npm run typecheck",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 11925,
+      "log": "certification/phase11/logs/typecheck.log",
+      "logSha256": "3b883d7734794dc481029774784d8b35159ed24d05d3fe1b5e4e9b09cd3dfdba"
+    },
+    {
+      "id": "lint",
+      "command": "npm run lint",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 8934,
+      "log": "certification/phase11/logs/lint.log",
+      "logSha256": "fe7d6449204e02b8aaea20ae65f4bd82f0fca5cbaf247d96ad43bda9d2e3543d"
+    },
+    {
+      "id": "build",
+      "command": "npm run build",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 12098,
+      "log": "certification/phase11/logs/build.log",
+      "logSha256": "ba28c7657d01e088aa7a43c75869c68ddd3aa043c88804fbb6278ca2aa64b700"
+    },
+    {
+      "id": "unit",
+      "command": "npm test -- --reporter=default --reporter=json --outputFile=certification/phase11/logs/unit-report.json",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 371459,
+      "log": "certification/phase11/logs/unit.log",
+      "logSha256": "f6f2ccc221f0615b5c7639bf0ef8736351b4ec90983c4b41fecc23333f0755e3"
+    },
+    {
+      "id": "coverage",
+      "command": "npm run test:coverage",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 470932,
+      "log": "certification/phase11/logs/coverage.log",
+      "logSha256": "3cade2c188c8ea28725f63c5c7fe884f45edfd87436bd0e7ca58cee3312938c6"
+    },
+    {
+      "id": "security",
+      "command": "npm run audit:security",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 727,
+      "log": "certification/phase11/logs/security.log",
+      "logSha256": "0fd10496905c612cf1e8424b2ec1f10f19ffd68c53d6cf3787c175fedc8697b7"
+    },
+    {
+      "id": "supply_chain",
+      "command": "npm run sbom && npm run licenses:check",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 283,
+      "log": "certification/phase11/logs/supply_chain.log",
+      "logSha256": "320dc385731249fdf3892694e852cd9e36489e679e487788d78a406b79ba6bae"
+    },
+    {
+      "id": "worker_startup",
+      "command": "npm run test:worker:startup",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 1305,
+      "log": "certification/phase11/logs/worker_startup.log",
+      "logSha256": "9a48af7b1c5546e429168ba2f25d4e82c71e0606681dc9bee52e5ddfd6f3eac0"
+    },
+    {
+      "id": "postgres",
+      "command": "npm run test:postgres -- --reporter=default --reporter=json --outputFile=certification/phase11/logs/postgres-report.json",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 101843,
+      "log": "certification/phase11/logs/postgres.log",
+      "logSha256": "a20774994c62d6492aa32bc6517a9debbff86bb43127afe87ce4e2afebe7c469"
+    },
+    {
+      "id": "e2e",
+      "command": "npm run test:e2e",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 217963,
+      "log": "certification/phase11/logs/e2e.log",
+      "logSha256": "41e99301c8f2ab4e2a1b3974653a34c6fcfc63b2522e1adcb36d61f9df882a3d"
+    },
+    {
+      "id": "evals",
+      "command": "npm run test:evals && npx tsx scripts/phase10-eval-report.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 6301,
+      "log": "certification/phase11/logs/evals.log",
+      "logSha256": "66e462f8aba522acc0e76859ca7e02f6a931e6eb207054813ebcaa247e0e31b8"
+    },
+    {
+      "id": "chaos",
+      "command": "npm run test:chaos -- --reporter=json --outputFile=certification/chaos-report.json",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 3879,
+      "log": "certification/phase11/logs/chaos.log",
+      "logSha256": "f0602cae936e0cfc4cbae78bb1deb82874b292c1d8240f392b928d99d3d3eb3a"
+    },
+    {
+      "id": "load",
+      "command": "npx tsx scripts/phase10-load.ts --events=10000",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 11301,
+      "log": "certification/phase11/logs/load.log",
+      "logSha256": "4d41d59f002faa7b9a7b76ab8c8af9b5a37178e56f495355ff5e2bdd7327c979"
+    },
+    {
+      "id": "recovery",
+      "command": "npm test -- --run packages/agent-runtime/src/__tests__/runtime-execution-recovery.test.ts apps/worker/src/__tests__/outbox-recovery.test.ts apps/worker/src/__tests__/worker-sweeps.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 4142,
+      "log": "certification/phase11/logs/recovery.log",
+      "logSha256": "b8e514ba8d16eca3d3ae63a3bf1ce1112653043fcddf0d2dea53abd3fc526ee8"
+    },
+    {
+      "id": "bypass_audit",
+      "command": "node scripts/phase11-bypass-audit.mjs",
+      "status": "FAIL",
+      "exitCode": 1,
+      "durationMs": 44,
+      "log": "certification/phase11/logs/bypass_audit.log",
+      "logSha256": "b3c3ef6e89eb91c8db2b2056aa1da4913eebd81b6dd177bcf9ca86b5e848b6ad"
+    },
+    {
+      "id": "certification_self_test",
+      "command": "node scripts/phase11-self-test.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 92,
+      "log": "certification/phase11/logs/certification_self_test.log",
+      "logSha256": "8929e20a5c394a4484480170a5ba82ad351c5345dd4d640940120874cdd9f273"
+    },
+    {
+      "id": "phase10_historical_verification",
+      "command": "node scripts/phase10-verify.mjs --historical --base certification/logs/historical/2026-09-11-phase10",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 88,
+      "log": "certification/phase11/logs/phase10_historical_verification.log",
+      "logSha256": "6946287095b444344b76c03d1c159498e6879bbd9ccf282dc804f2d389778dda"
+    },
+    {
+      "id": "evidence_graph",
+      "command": "phase11 internal check",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 0
+    },
+    {
+      "id": "candidate_clean",
+      "command": "phase11 internal check",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 0
+    },
+    {
+      "id": "node_target",
+      "command": "phase11 internal check",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 0
+    },
+    {
+      "id": "verify",
+      "command": "npm run verify",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 857915,
+      "log": "certification/phase11/logs/verify.log",
+      "logSha256": "50fda417b7cc875436299f99266a8a79ef7e9d9a6179f2e6347a9a0d380a3e9d"
+    },
+    {
+      "id": "production_preflight",
+      "command": "node scripts/production-preflight.mjs --profile=PRODUCTION --expect=REJECT",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 34,
+      "log": "certification/phase11/logs/production_preflight.log",
+      "logSha256": "939261b705e59241629eec6c4ef0e9d741224232580cd2afac92052c5e8bbe97"
+    },
+    {
+      "id": "evidence_reports",
+      "command": "node scripts/phase11-2-evidence-check.mjs --reports",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 96,
+      "log": "certification/phase11/logs/evidence_reports.log",
+      "logSha256": "be62054e4b83ff638a2e87c619a605500c406c8ec11323b68858a47a373bdba2"
+    },
+    {
+      "id": "independent_critic",
+      "command": "node scripts/phase11-2-evidence-check.mjs --critic",
+      "status": "FAIL",
+      "exitCode": 1,
+      "durationMs": 359,
+      "log": "certification/phase11/logs/independent_critic.log",
+      "logSha256": "7e5dd433531613eb51081d22006cba2fe79145fc08cca3884b3624edce3d472d"
+    },
+    {
+      "id": "mutation_sentinel",
+      "command": "node scripts/mutation-sentinel.mjs --fail-on-gaps --out=certification/phase11/mutation-raw-report.json",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 50679,
+      "log": "certification/phase11/logs/mutation_sentinel.log",
+      "logSha256": "60177e2e10083802a70cd5e32004077cb045028efd24c40ae90a8837ee488c77"
+    },
+    {
+      "id": "trace_lineage",
+      "command": "npm test -- --run apps/api/src/__tests__/orchestration-observability.test.ts packages/observability/src/__tests__/observability.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 3157,
+      "log": "certification/phase11/logs/trace_lineage.log",
+      "logSha256": "ede10567773c7808770d57662ddc842d2808cc673d27cf9fab4f95e8c8cb94d9"
+    },
+    {
+      "id": "governance_redteam",
+      "command": "npm test -- --run packages/policy-engine/src/__tests__/policy-engine-branch-hardening.test.ts packages/platform/src/__tests__/tool-invocation-boundary-hardening.test.ts packages/platform/src/__tests__/critical-safety-preflight.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 3117,
+      "log": "certification/phase11/logs/governance_redteam.log",
+      "logSha256": "21836136842b5846feffb6b9cdd17a35d134e96ebbb29ac37bf646c4bd186267"
+    },
+    {
+      "id": "tenant_redteam",
+      "command": "npm test -- --run apps/api/src/__tests__/tenant-inbound-isolation.test.ts packages/persistence/src/__tests__/tenant-isolation.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 3136,
+      "log": "certification/phase11/logs/tenant_redteam.log",
+      "logSha256": "392a18a443901eff11ffb13b200f5a6d05f8a5a98adcf050648c7021e61541b0"
+    },
+    {
+      "id": "certification_redteam",
+      "command": "node scripts/phase11-2-redteam.mjs --suite=certification && npm test -- --run apps/api/src/__tests__/aud17-connected-redteam.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 2345,
+      "log": "certification/phase11/logs/certification_redteam.log",
+      "logSha256": "cfc0e841f820332dc4fef03d0449f0759c331d9067e1bc081435ec649dcded72"
+    },
+    {
+      "id": "adversarial_proof",
+      "command": "node scripts/phase11-2-redteam.mjs --suite=all",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 92,
+      "log": "certification/phase11/logs/adversarial_proof.log",
+      "logSha256": "1c9a65d0cbc1e66f5c7c17ba9c9a8d43b76358f32c6cc55213c27ce2a6c029d6"
+    },
+    {
+      "id": "outbox_replay",
+      "command": "npm test -- --run packages/persistence/src/__tests__/outbox-durability.test.ts apps/worker/src/__tests__/outbox-recovery.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 2688,
+      "log": "certification/phase11/logs/outbox_replay.log",
+      "logSha256": "ae03c0a9b195351640bf068e8e467a69ef24dfbd727e47b696194e77c820dedd"
+    },
+    {
+      "id": "clone_verify",
+      "command": "node scripts/phase11-2-redteam.mjs --suite=clone",
+      "status": "PASS",
+      "exitCode": 0,
+      "durationMs": 90,
+      "log": "certification/phase11/logs/clone_verify.log",
+      "logSha256": "8658a464bb01914b46fcf27fd3c2af1c89165a4626328108f90d8cbf5047cd77"
+    },
+    {
+      "id": "PHASE11_FORMAL_CLOSURE",
+      "command": "phase11 internal check",
+      "status": "FAIL",
+      "exitCode": 1,
+      "durationMs": 0,
+      "blocker": "mandatory local gates, findings, invariants, graph or prompt integrity are incomplete"
+    }
+  ],
+  "passed": 32,
+  "total": 35,
+  "logSummaries": {
+    "verify": [
+      " \u001b[2m\u001b[90m\u2193\u001b[39m\u001b[22m packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts \u001b[2m(\u001b[22m\u001b[2m8 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[33m8 skipped\u001b[39m\u001b[2m)\u001b[22m",
+      " \u001b[2m\u001b[90m\u2193\u001b[39m\u001b[22m packages/persistence/src/__tests__/orchestrator-postgres.test.ts \u001b[2m(\u001b[22m\u001b[2m5 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[33m5 skipped\u001b[39m\u001b[2m)\u001b[22m",
+      " \u001b[2m\u001b[90m\u2193\u001b[39m\u001b[22m packages/persistence/src/__tests__/platform-approval-postgres.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[33m2 skipped\u001b[39m\u001b[2m)\u001b[22m",
+      " \u001b[2m\u001b[90m\u2193\u001b[39m\u001b[22m packages/persistence/src/__tests__/platform-postgres-smoke.test.ts \u001b[2m(\u001b[22m\u001b[2m5 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[33m5 skipped\u001b[39m\u001b[2m)\u001b[22m",
+      " \u001b[2m\u001b[90m\u2193\u001b[39m\u001b[22m packages/persistence/src/__tests__/retention-postgres.test.ts \u001b[2m(\u001b[22m\u001b[2m13 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[33m13 skipped\u001b[39m\u001b[2m)\u001b[22m",
+      " \u001b[2m\u001b[90m\u2193\u001b[39m\u001b[22m packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts \u001b[2m(\u001b[22m\u001b[2m14 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[33m14 skipped\u001b[39m\u001b[2m)\u001b[22m",
+      "\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m320 passed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[33m12 skipped\u001b[39m\u001b[90m (332)\u001b[39m",
+      "\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m2868 passed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[33m200 skipped\u001b[39m\u001b[90m (3068)\u001b[39m"
+    ],
+    "unit": [
+      " \u001b[2m\u001b[90m\u2193\u001b[39m\u001b[22m packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts \u001b[2m(\u001b[22m\u001b[2m8 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[33m8 skipped\u001b[39m\u001b[2m)\u001b[22m",
+      " \u001b[2m\u001b[90m\u2193\u001b[39m\u001b[22m packages/persistence/src/__tests__/orchestrator-postgres.test.ts \u001b[2m(\u001b[22m\u001b[2m5 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[33m5 skipped\u001b[39m\u001b[2m)\u001b[22m",
+      " \u001b[2m\u001b[90m\u2193\u001b[39m\u001b[22m packages/persistence/src/__tests__/platform-approval-postgres.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[33m2 skipped\u001b[39m\u001b[2m)\u001b[22m",
+      " \u001b[2m\u001b[90m\u2193\u001b[39m\u001b[22m packages/persistence/src/__tests__/platform-postgres-smoke.test.ts \u001b[2m(\u001b[22m\u001b[2m5 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[33m5 skipped\u001b[39m\u001b[2m)\u001b[22m",
+      " \u001b[2m\u001b[90m\u2193\u001b[39m\u001b[22m packages/persistence/src/__tests__/retention-postgres.test.ts \u001b[2m(\u001b[22m\u001b[2m13 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[33m13 skipped\u001b[39m\u001b[2m)\u001b[22m",
+      " \u001b[2m\u001b[90m\u2193\u001b[39m\u001b[22m packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts \u001b[2m(\u001b[22m\u001b[2m14 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[33m14 skipped\u001b[39m\u001b[2m)\u001b[22m",
+      "\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m320 passed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[33m12 skipped\u001b[39m\u001b[90m (332)\u001b[39m",
+      "\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m2868 passed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[33m200 skipped\u001b[39m\u001b[90m (3068)\u001b[39m"
+    ],
+    "coverage": [
+      "# exitCode=0 durationMs=470932",
+      "\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m332 passed\u001b[39m\u001b[22m\u001b[90m (332)\u001b[39m",
+      "\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m3068 passed\u001b[39m\u001b[22m\u001b[90m (3068)\u001b[39m"
+    ],
+    "postgres": [
+      "# exitCode=0 durationMs=101843",
+      "\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m32 passed\u001b[39m\u001b[22m\u001b[90m (32)\u001b[39m",
+      "\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m369 passed\u001b[39m\u001b[22m\u001b[90m (369)\u001b[39m"
+    ],
+    "e2e": [
+      "# exitCode=0 durationMs=217963",
+      "\u001b[1A\u001b[2K  75 passed (3.6m)"
+    ]
+  }
+}

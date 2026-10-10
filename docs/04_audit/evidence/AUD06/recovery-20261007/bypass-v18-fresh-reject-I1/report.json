@@ -1,0 +1,287 @@
+{
+  "schemaVersion": 1,
+  "kind": "blind-independent-focused-Q13-critic",
+  "decision": "REJECT",
+  "scope": "FOCUSED_LOCAL_Q13_NOT_FINAL_GAUNTLET",
+  "temp": "/tmp/aud06-q13-independent-esuH0jb7",
+  "closed": true,
+  "status": "CLOSED/STOP",
+  "independence": {
+    "I1": "fresh fork_context:false shared filesystem by contract, not OS enforced",
+    "descendants": 0,
+    "priorReasoningUsed": false,
+    "normativeEntry": "sealed-contract.json"
+  },
+  "bindings": {
+    "actualNonexcludedRegularFiles": 1270,
+    "candidateFiles": 1256,
+    "candidateId": "eb456ea3bccc421b0472e7116f3ef814961c401926f582a7ca5ca2c9eb8ffbbd",
+    "candidateTreeHash": "4037cf2ff851b3ba632b34435055e86d860c3c4cc77c95124a961090b9bdfd9d",
+    "corpusFiles": 59,
+    "frozenDiffCount": 0,
+    "gitTree": "37cf308394d18cff56b7d5d2934c7bf73a6ed454",
+    "hashes": {
+      "docs/02_spec/aud06_remediation_20261006.md": "e2e03eeb06584284bcdc5abebdac4cbb3d33eaf32635e57659ad1c27721a9178",
+      "node_modules/typescript/lib/typescript.js": "569177652966bd528c319171c7dd22860dbf72bde116cbc4f644f1d02bb12e39",
+      "node_modules/typescript/package.json": "9332e97c30d3e53ed54910b89207ed657fb444066484df6e5b6965bf130865e9",
+      "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+      "scripts/phase11-bypass-audit.mjs": "8a33e36ec736d3b1d72367dd3b6a689e8f28b7c838bf8f3d9e22e7356c43bc13"
+    },
+    "head": "0a4e01670b4d84acf8e97e0ffdd402d4e5f9466a",
+    "ignoredNonexcludedCount": 14,
+    "indexHeadDiffCount": 0,
+    "indexSha256": "c0893ca4c24aa950a4f8318afc2499f228fa870ea8c6930aa9c8252cb0e854de",
+    "trackedCount": 4105,
+    "untrackedNonignoredCount": 3558,
+    "barSha256": "a9307aeabb1d58ea3126e8b1e27c1b88dc8194b4963687bd481de2bada2fc6ae",
+    "barOpaquePath": "docs/04_audit/evidence/AUD06/quality-bar.json",
+    "specHashVerifiedOpaque": true,
+    "barHashVerifiedOpaque": true,
+    "headBlobCount": 1256,
+    "headBlobMismatchCount": 0
+  },
+  "counts": {
+    "initialCliDeclared": 57,
+    "initialCliLimit": 120,
+    "initialCliExecuted": 3,
+    "initialCliNotExecuted": 54,
+    "pairedConfirmationLimit": 16,
+    "pairedConfirmationsExecuted": 5,
+    "totalCliExecuted": 8,
+    "validParseCli": 7,
+    "invalidParseControl": 1,
+    "invalidControlCountsAsValidPass": false,
+    "validCliPass": 6,
+    "validCliFail": 1,
+    "decisiveDefaultImportFalseNegatives": 2,
+    "sqlControlLimit": 60,
+    "sqlDeclaredAndExecuted": 30,
+    "sqlExpectationsMatched": 30,
+    "sqlExit": 0,
+    "corpusAttempts": 1,
+    "corpusDeadlineSeconds": 300,
+    "corpusParseValid": 59,
+    "corpusParseFiles": 59,
+    "corpusExit": 0,
+    "corpusTimeout": false,
+    "corpusScannedFiles": 59,
+    "corpusStatus": "PASS"
+  },
+  "findings": [
+    {
+      "id": "Q13-I1-MEMBER-IDENTITY-01",
+      "severity": "HIGH",
+      "confidence": "HIGH",
+      "material": true,
+      "title": "Known HTTP member identities collapse to their owning imported callable, transferring a pure own override to a different method",
+      "detail": {
+        "path": "finding.json",
+        "sha256": "cf1e01b1a8a0204a599c2149891afc787f20356d132408a5e6b9c68f2f106713",
+        "size": 3173
+      }
+    }
+  ],
+  "sentinel": {
+    "before": {
+      "path": "before.json",
+      "sha256": "577c52e9edf52a645116cb8ee416e4bce6354c240ec7820da6b9d8713c7c0133",
+      "size": 12908546
+    },
+    "after": {
+      "path": "after.json",
+      "sha256": "7c549872aeae031025c15eedb74970398ad070196bb4fa0fa9c7a1cf3bfa5aa6",
+      "size": 12908545
+    },
+    "diff": {
+      "path": "sentinel-diff.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "size": 2
+    },
+    "diffCount": 0,
+    "beforeCounts": {
+      "directory": 2839,
+      "file": 25267,
+      "symlink": 43
+    },
+    "afterCounts": {
+      "directory": 2839,
+      "file": 25267,
+      "symlink": 43
+    },
+    "beforeDigest": "7751c665f7580221bc484517f579273b9ca269be8490da7dc8e22c0257496801",
+    "afterDigest": "7751c665f7580221bc484517f579273b9ca269be8490da7dc8e22c0257496801",
+    "rootMetadataBeforeOpenRecorded": true,
+    "metadataFields": [
+      "mode",
+      "uid",
+      "gid",
+      "ino",
+      "nlink",
+      "size",
+      "dev",
+      "atime_ns",
+      "mtime_ns",
+      "ctime_ns",
+      "per-fd statx birthtime seconds/nanoseconds"
+    ],
+    "birthAvailableBefore": 28149,
+    "birthAvailableAfter": 28149,
+    "birthUnavailableBefore": 0,
+    "birthUnavailableAfter": 0,
+    "excludedOnly": [
+      "root .git"
+    ],
+    "noWrite": true,
+    "noRestoration": true,
+    "noUniversalEveryProcessOpenClaim": true
+  },
+  "boundaries": {
+    "effects": [
+      "packages/channel-gateway/src/adapters/",
+      "packages/model-gateway/src/providers/",
+      "packages/adapters/src/fake/"
+    ],
+    "effectsExcludedByInventory": true,
+    "sqlQuota": {
+      "file": "apps/api/src/postgres-rate-limit.ts",
+      "exactStaticUnquotedUnqualifiedTable": "api_rate_limit_buckets",
+      "supportedValidatedGrammarOnly": true
+    },
+    "legacySecurityStores": [
+      "apps/api/src/webhook-security.ts",
+      "apps/api/src/operator-replay-store.ts"
+    ],
+    "legacySecurityAllowance": "source-owned validated write allowance, not restricted to a particular replay table; lexical/grammar uncertainty still finding",
+    "existingForwarder": {
+      "content": "query: (text, values) => client.query(text, values),",
+      "line": 295,
+      "path": "apps/api/src/server/bootstrap-persistence.ts",
+      "shape": "exact two unchanged plain parameters directly forwarded to client.query in query property arrow",
+      "sqlTargetExemption": false
+    }
+  },
+  "artifacts": {
+    "sealed-contract.json": {
+      "path": "sealed-contract.json",
+      "sha256": "ceef3ae0a66d4d23fe48d34b9789ca185d9dffcdd718746c993c11f3028c112c",
+      "size": 16879
+    },
+    "finite-plan.json": {
+      "path": "finite-plan.json",
+      "sha256": "d9c994c02b43a9d06a14bfc2db58e2b21ac0c5bed58bb98d96c7ce1c8b1fe6a9",
+      "size": 20409
+    },
+    "confirmation-plan.json": {
+      "path": "confirmation-plan.json",
+      "sha256": "859447ea729dc432585274819e552db46a15d75390fe372529c7169486463976",
+      "size": 1752
+    },
+    "candidate-files.json": {
+      "path": "candidate-files.json",
+      "sha256": "4b693c6735545be12c34c67c9cecea702ec2169d885f8472c69e51fc28b795e8",
+      "size": 205485
+    },
+    "scope-reconciliation.json": {
+      "path": "scope-reconciliation.json",
+      "sha256": "ec14965cf123aa6fe19612810ca4240f4aed0d5a5f45be314f4ea6d29cbf1f8d",
+      "size": 66252
+    },
+    "head-blob-binding.json": {
+      "path": "head-blob-binding.json",
+      "sha256": "626a03ce36fd5c97d0b1f1cf52b41d2008ed179fb31b9d7ec0513f316c0bc435",
+      "size": 280863
+    },
+    "head-blob-binding.status.json": {
+      "path": "head-blob-binding.status.json",
+      "sha256": "e717fad8d0bff99bdd8aa42ac0bd2c99add90be95db6651be131b6d237c828da",
+      "size": 254
+    },
+    "corpus-files.json": {
+      "path": "corpus-files.json",
+      "sha256": "37cc0c5d9c635e58accf2e9c49c4578f507f4a08c04aa215ccb055247b375fb8",
+      "size": 2490
+    },
+    "cli-results.json": {
+      "path": "cli-results.json",
+      "sha256": "19ca97bafb7018d02aa9be33a0b811ad9b5b66e54aee95c32d60240e8d9488a5",
+      "size": 17792
+    },
+    "sql-controls.stdout": {
+      "path": "sql-controls.stdout",
+      "sha256": "5dfbe972017c146d87a40e38aee4b28ec0ce59273bb2fc112d3adb1ff51ac2e3",
+      "size": 11569
+    },
+    "sql-controls.stderr": {
+      "path": "sql-controls.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "sql-controls.status.json": {
+      "path": "sql-controls.status.json",
+      "sha256": "6f08357648ad36edd5f15fd892b4bdb1e08aea4432af34af6b7fa11a4d906bbc",
+      "size": 348
+    },
+    "corpus.stdout": {
+      "path": "corpus.stdout",
+      "sha256": "0f1011e9d2b116443a624e42aea138c9976e157fc0ec70499c5ba22e77b19ead",
+      "size": 1423
+    },
+    "corpus.stderr": {
+      "path": "corpus.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "corpus.status.json": {
+      "path": "corpus.status.json",
+      "sha256": "55b6b63c690a81296ccea1301b62360f36ba1c2995820577a71108157a453600",
+      "size": 367
+    },
+    "corpus-parse.stdout": {
+      "path": "corpus-parse.stdout",
+      "sha256": "4b257802844de79f96cb3baaef39b3ca4466b0e515b002bda655337f5297facb",
+      "size": 5383
+    },
+    "source-copy-manifest.json": {
+      "path": "source-copy-manifest.json",
+      "sha256": "29778554fa969d3d1bcd795a3eb7f31fdbb33d13b719ae55d66bd69839222876",
+      "size": 7254416
+    },
+    "source-copy-verification.json": {
+      "path": "source-copy-verification.json",
+      "sha256": "4ec80fb74c26485edb33ce644c95a1a3de2c79696ec42e5fe69552de4edee291",
+      "size": 161
+    },
+    "access-qualification.json": {
+      "path": "access-qualification.json",
+      "sha256": "06ae1cc676240dca76a7c2dab0034635e245eaa8f1a9945d24ca97142cdd8554",
+      "size": 1585
+    },
+    "hash-manifest.json": {
+      "path": "hash-manifest.json",
+      "sha256": "52f5a01182689d721a3920e471a2f9253934d473262fe221cc4f25c0940f1660",
+      "size": 4662619
+    }
+  },
+  "operational": {
+    "global": "NO_GO",
+    "production": "NO_GO",
+    "N3": "DENY",
+    "pilot11": "DEFERRED_BY_USER",
+    "remote13": "UNSATISFIED/NOT_RUN",
+    "Q14": "PENDING"
+  },
+  "qualifications": [
+    "Finite observations only; the57-case plan was not fully executed: expansion stopped on a material pair. No universal correctness claim.",
+    "Initial namespace observations not relied on for real export semantics; decisive known default-import member controls are separate.",
+    "No real data/actions or network/DB/Docker/install/commits; fixtures parsed only.",
+    "Only excluded root.git used ordinary index/object reads; target .git metadata not asserted unchanged.",
+    "Shared FS independence by contract; no syscall trace or OS isolation.",
+    "All target reads ended before final after sentinel; all own jobs have ended before CLOSED.",
+    "No source/state/log/backlog or target evidence writes; lead owns transport/acceptance/canonical action."
+  ],
+  "reportMarkdown": {
+    "path": "report.md",
+    "sha256": "6811a2daa4f25e1f29b964c249959947705d7c31180a085b60303e659765c40f",
+    "size": 5440
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "auditId": "AUD-20261006-CLAW",
+  "observedAt": "2026-10-06T21:42:57.847Z",
+  "baselineCommit": "1a66436ffed42b656aa980bd64ac6bed45548ba4",
+  "auditDocumentationVerified": true,
+  "format": {
+    "exitCode": 0,
+    "output": "Checking formatting...\nAll matched files use Prettier code style!",
+    "error": ""
+  },
+  "documentation": {
+    "exitCode": 0,
+    "valid": true,
+    "links": {
+      "checked": 2271,
+      "broken": []
+    },
+    "json": {
+      "checked": 663,
+      "invalid": []
+    }
+  },
+  "whitespace": {
+    "exitCode": 0,
+    "output": "",
+    "error": ""
+  },
+  "baselineCertification": "PASS",
+  "finalCertification": {
+    "exitCode": 1,
+    "status": "FAIL",
+    "documentedDriftOnly": true,
+    "driftPaths": [
+      "docs/04_audit/0576_repository_audit_2026-10-06.md",
+      "docs/20_master_execution_log.md",
+      "docs/30_backlog_master.md",
+      "docs/99_runtime_state.md",
+      "docs/CURRENT.md"
+    ],
+    "resealed": false
+  },
+  "scoring": {
+    "items": 13,
+    "totalWeight": 100,
+    "weightedScore": 61.11,
+    "roundedScore": 61
+  },
+  "onlyAuditFilesChanged": true,
+  "changedFiles": [
+    "docs/20_master_execution_log.md",
+    "docs/30_backlog_master.md",
+    "docs/99_runtime_state.md",
+    "docs/CURRENT.md",
+    "docs/04_audit/0576_repository_audit_2026-10-06.md",
+    "docs/04_audit/evidence/AUD-20261006-CLAW/README.md",
+    "docs/04_audit/evidence/AUD-20261006-CLAW/baseline-certification.json",
+    "docs/04_audit/evidence/AUD-20261006-CLAW/baseline-promotion.json",
+    "docs/04_audit/evidence/AUD-20261006-CLAW/ci-browser-excerpt.log",
+    "docs/04_audit/evidence/AUD-20261006-CLAW/ci-verify.json",
+    "docs/04_audit/evidence/AUD-20261006-CLAW/coverage-total.json",
+    "docs/04_audit/evidence/AUD-20261006-CLAW/final-certification.json",
+    "docs/04_audit/evidence/AUD-20261006-CLAW/final-docs-check.json",
+    "docs/04_audit/evidence/AUD-20261006-CLAW/final-validation.json",
+    "docs/04_audit/evidence/AUD-20261006-CLAW/npm-audit-production.json",
+    "docs/04_audit/evidence/AUD-20261006-CLAW/npm-audit.json",
+    "docs/04_audit/evidence/AUD-20261006-CLAW/verification-receipt.md"
+  ],
+  "reportSha256": "bea510dfd5d7efa24fa224b2dd08ffce8d287208f51d76b954cb76e72f33b0d8",
+  "productFindingsResolved": false,
+  "productionDecision": "NO_GO"
+}

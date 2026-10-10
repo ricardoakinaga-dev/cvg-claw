@@ -205,7 +205,7 @@ describe('AAA34 policy-engine branch hardening', () => {
     expect(active.evaluate(input()).decision).toBe('DENY')
   })
 
-  it('honours explicit medical operator and emergency context', () => {
+  it('keeps N3 blocked with explicit medical operator and emergency context', () => {
     const policy = engine()
     const medicalOperator = policy.evaluate(
       input({
@@ -215,10 +215,8 @@ describe('AAA34 policy-engine branch hardening', () => {
         context: { medicalOperator: true }
       })
     )
-    expect(medicalOperator.decision).toBe('REQUIRE_APPROVAL')
-    expect(medicalOperator.reason).toBe(
-      'Capability grant requires human approval'
-    )
+    expect(medicalOperator.decision).toBe('DENY')
+    expect(medicalOperator.reason).toBe('autonomy_n3_blocked')
 
     const emergency = policy.evaluate(
       input({
@@ -228,8 +226,8 @@ describe('AAA34 policy-engine branch hardening', () => {
         context: { emergency: true }
       })
     )
-    expect(emergency.decision).toBe('REQUIRE_APPROVAL')
-    expect(emergency.reason).toBe('Capability grant requires human approval')
+    expect(emergency.decision).toBe('DENY')
+    expect(emergency.reason).toBe('autonomy_n3_blocked')
   })
 
   it('reports approval thresholds for every risk level', () => {

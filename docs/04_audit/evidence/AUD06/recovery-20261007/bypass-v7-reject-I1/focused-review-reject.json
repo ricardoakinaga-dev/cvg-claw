@@ -1,0 +1,446 @@
+{
+  "schemaVersion": 1,
+  "kind": "focused-Q13-v7-scanner-review",
+  "at": "2026-10-08T04:15:14.599191+00:00",
+  "decision": "REJECT",
+  "scope": "Focused scanner/test/SPEC/bar re-review only; canonical package remains historical NO_GO; not final Phase11 certificate",
+  "independence": "Same focused critic re-review; source/raw artifacts, prior raw input probes and new independently authored variants; zero descendants. A separate fresh Final Critic is required after integrated run.",
+  "binding": {
+    "commit": "a1e741b1bcdb3e161076c6006c569fdacdec4996",
+    "scannerSha256": "cf8ec4e961d212c9009e32668b645950e967b129ee41123ca31829ea78d47b5d",
+    "testSha256": "2942b3d9cb7db057aca4d9e2e940077a48c7a06e487abc69a862960b8566c31a",
+    "specSha256": "97a78deacca2b095d692f4328434e1cfe94363c541564dc921ac54e017581a54",
+    "barVersion": "AUD06-v7-lexical-SQL-comments",
+    "barSha256": "d471be1d3a5c242920f64d80d2199894c4f6c0daaa8cdd325301b3c5897c7911",
+    "candidateScope": "User reports1254 frozen source files; focused review does not independently certify whole candidate"
+  },
+  "findings": [
+    {
+      "id": "Q13-V7-F01",
+      "priority": "P1",
+      "dimension": "certification measurement",
+      "source": "scripts/phase11-bypass-audit.mjs",
+      "line": 135,
+      "relatedLines": [
+        120,
+        122,
+        132,
+        137,
+        200
+      ],
+      "title": "SQL masking removes executable host-language template expressions",
+      "criterion": "The exact quota file/table SQL exception must not permit other effects in that file; host syntax/template expressions must remain inspected.",
+      "observed": "Three valid TypeScript fixtures return exit0/PASS/findings[]: fetch inside SQL value interpolation, fetch inside SQL line-comment interpolation, sendMessage inside SQL block-comment interpolation. Actual expression ASTs have no parse errors.",
+      "cases": [
+        "sql-value-fetch-expression",
+        "sql-comment-fetch-expression",
+        "sql-blockcomment-send-expression"
+      ],
+      "rootCause": "visit(span.expression) is concatenated into SQL literal text, then passed through stripSqlComments/maskSqlValues. SQL quotation/comments erase real executable expression code from the only normalized host source. Expressions remain executable before the SQL call irrespective of where their resulting text lies in SQL.",
+      "boundedCorrection": "Inspect template span expression ASTs separately as executable host syntax; analyze SQL literal text separately with placeholders that cannot swallow or grant exemption to expression code. Keep existing exact quota exception.",
+      "neededNegatives": [
+        "fetch inside interpolated SQL single-quoted value",
+        "fetch inside interpolated -- SQL comment",
+        "sendMessage/axios/got/undici inside interpolated block comment",
+        "Nested expressions inside nested templates and template-tag call arguments"
+      ],
+      "preservePositives": [
+        "SQL literal values containing forbidden words remain inert",
+        "Actual SQL comment prose remains ignored",
+        "Pure safe interpolation and quota UPSERT stay accepted"
+      ]
+    },
+    {
+      "id": "Q13-V7-F02",
+      "priority": "P1",
+      "dimension": "certification measurement",
+      "source": "scripts/phase11-bypass-audit.mjs",
+      "line": 107,
+      "relatedLines": [
+        64,
+        94,
+        120,
+        122
+      ],
+      "title": "Unconditional backslash escape handling masks a following domain statement",
+      "criterion": "Mixed SQL statements may not inherit quota exception; literal-value masking must not discard subsequent writes.",
+      "observed": "SQL-standard-backslash-value fixture, valid host parse, returns exit0/PASS/findings[]. Decoded SQL is INSERT INTO api_rate_limit_buckets VALUES ('literal\\'); DELETE FROM billing_items WHERE id=$1 . The literal is an ordinary SQL string, without E prefix.",
+      "semanticLimit": "No SQL/DB executed. Under standard-conforming SQL string semantics the backslash is ordinary data and the next quote closes the value; the subsequent DELETE is a separate domain statement. The scanner incorrectly assumes backslash escapes a quote for every SQL string. Unspecified escape-mode uncertainty cannot justify a quota exemption.",
+      "cases": [
+        "SQL-standard-backslash-value"
+      ],
+      "rootCause": "Both SQL-comment stripping and value masking skip the character after every backslash while quoted, conflating ordinary strings with escape strings; masking stays active over the rest of the SQL.",
+      "boundedCorrection": "Distinguish ordinary SQL string quoting from explicit escape-string syntax; retain following statements, or fail closed on unresolved lexical mode. Do not make a general quota-path exception.",
+      "neededNegatives": [
+        "Ordinary SQL backslash immediately before closing value quote followed by domain DELETE/UPDATE/INSERT",
+        "Same source with a mixed quota/domain CTE or multiple statement sequence"
+      ],
+      "preservePositives": [
+        "Ordinary quoted values with doubled apostrophes",
+        "Actual E-prefixed escaped strings containing harmless SQL words",
+        "Existing privilege read-only SQL and quota metadata values"
+      ]
+    }
+  ],
+  "findingCounts": {
+    "P0": 0,
+    "P1": 2,
+    "P2": 0
+  },
+  "verification": {
+    "node": "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+    "version": "v22.23.2",
+    "frameworkExecution": false,
+    "tscBuildExecution": false,
+    "targetExecution": false,
+    "DBDockerNetworkExecution": false,
+    "dependency": {
+      "package": "typescript",
+      "version": "6.0.3",
+      "copyMode": "Copied140files once into owned TEMP ancestor/node_modules/typescript; no symlinks",
+      "treeSha256": "17bad13a6f8fa2cd5616ddac2b862a6dc30e10bc930717293b8abb8eb831063e",
+      "dependencyDiff": "package.json/package-lock diff from prior scoped candidate1dc4d09 to current HEAD empty",
+      "copyVerified": true
+    },
+    "probes": 44,
+    "matchedExpectations": 40,
+    "incorrectPasses": 4,
+    "incorrectCases": [
+      "sql-value-fetch-expression",
+      "sql-comment-fetch-expression",
+      "sql-blockcomment-send-expression",
+      "SQL-standard-backslash-value"
+    ],
+    "prior22ProbesAllMatch": true,
+    "allProbeRawHashIntegrity": true
+  },
+  "boundedObservations": [
+    "Earlier quoted aliases, SQL comment variants, URL masking and test-like directory inventory gaps are corrected in the original22 independent probes.",
+    "Exact unqualified quota-file/table exceptions remain narrow in recognized cases, including rejection of dynamic/quoted/schema-qualified targets.",
+    "Positive controls for quota UPSERT/expiry, plain aliases, real comments, ordinary URL/verb constants, quoted SQL values and privilege SELECT remain accepted.",
+    "Supplied valid RED10failed/40passed and latest GREEN82passed/3files/public59files PASS do not cover the newly reproduced effects/SQL lexical masking gaps."
+  ],
+  "sentinel": {
+    "kind": "focused-reviewed-files-and-parser-sentinel",
+    "at": "2026-10-08T04:15:14.597533+00:00",
+    "status": "PASS",
+    "files": [
+      {
+        "path": "docs/02_spec/aud06_remediation_20261006.md",
+        "sha256": "97a78deacca2b095d692f4328434e1cfe94363c541564dc921ac54e017581a54",
+        "size": 11707
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/quality-bar.json",
+        "sha256": "d471be1d3a5c242920f64d80d2199894c4f6c0daaa8cdd325301b3c5897c7911",
+        "size": 17545
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-docs-final.log",
+        "sha256": "a485bc36daa0e3680963585e451b9107b05b10c917d400779819d202896e9ca4",
+        "size": 1103
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-docs.log",
+        "sha256": "68d9bd50fdc79dcd6296bd3426f4f584c70592273d2542e2c1f497138cbc6db7",
+        "size": 1103
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-final-focused-receipt.json",
+        "sha256": "2d4be8ae4a8c42c1b1f98af8d4711e9ee7d01d6adb2fc723c98242c61c459555",
+        "size": 1465
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-format-2.log",
+        "sha256": "8c32d36ac4e83e76e1f030377a95f292c068050f7c4dce514ce66145b3b007d2",
+        "size": 90
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-format-3.log",
+        "sha256": "11bbd69ffa615846b2b85bd216212b22e0b63e78fcd4141ed18bb303cb1a71fc",
+        "size": 78
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-format-4.log",
+        "sha256": "5e6f943b2a7d64366470439606b509b672693c3fd657383d011e10279831e1ae",
+        "size": 102
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-format-check-4.log",
+        "sha256": "ea5d5001757d2b0c1ae794aee8799b0faa167de4b19a5f583b9c80a0b42cb15f",
+        "size": 119
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-format.log",
+        "sha256": "3050c3d615e2c6e66131737be743016ac6650d41219a30888d53bea92fc0806c",
+        "size": 138
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-green-2.log",
+        "sha256": "00b8d467f38a0069ce699513d321bd7a9a66bac109c1e271c51a05e28aad74a8",
+        "size": 213
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-green-3.log",
+        "sha256": "17123a2726ef5e231e703b0da183e1f2804fb85b3f94fce3059ad1a1f46abbe8",
+        "size": 213
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-green-4.log",
+        "sha256": "99c429ae59c73217cbd491672a468302f02f523412e08caccd31490621e5d0fd",
+        "size": 213
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-green.log",
+        "sha256": "ec766f384708544e149ae29542a0a3172e3d8fbabd028f34c0d20faa2f1ea3b8",
+        "size": 213
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-invalid-red-attempt.json",
+        "sha256": "2221583cdce671de5b8f831827a7194174ae7c567981547743185e1c222bd32c",
+        "size": 270
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-lint-4.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-lint.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-public-3.json",
+        "sha256": "ee094a19cb7c313bff72de6316e704bdb05f8a4fbb8bb2cfbb099c6af8943fc0",
+        "size": 3045
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-public-4.json",
+        "sha256": "e7da5083a79ab470ad95671bb2077a3f430ca763b14dff2ad16b90eabe2c508a",
+        "size": 1264
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-public.json",
+        "sha256": "e7da5083a79ab470ad95671bb2077a3f430ca763b14dff2ad16b90eabe2c508a",
+        "size": 1264
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-red-valid.log",
+        "sha256": "cfec1a6fc62d2e619a7754b7a31763f944878162946c6ae08b607436767fce7f",
+        "size": 2341
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-red.log",
+        "sha256": "02dee0849e74eebfd76e8070a57d2a57aedb600ee599ebc693c2e6810ba42124",
+        "size": 209
+      },
+      {
+        "path": "package-lock.json",
+        "sha256": "ba75acab43ab821ca2eb4decd7fee82eb248cebd9d6fed53a8e3469a4e90588c",
+        "size": 186586
+      },
+      {
+        "path": "package.json",
+        "sha256": "d1268057a58afce5acd32b8bbb032d9f2d645e84aa94b7ea105477ce9da6e8d0",
+        "size": 6112
+      },
+      {
+        "path": "scripts/phase11-bypass-audit.mjs",
+        "sha256": "cf8ec4e961d212c9009e32668b645950e967b129ee41123ca31829ea78d47b5d",
+        "size": 8562
+      },
+      {
+        "path": "tests/phase11-bypass-audit.test.js",
+        "sha256": "2942b3d9cb7db057aca4d9e2e940077a48c7a06e487abc69a862960b8566c31a",
+        "size": 13251
+      }
+    ],
+    "drift": [],
+    "targetTypescriptStable": true,
+    "ownedTypescriptCopyStable": true,
+    "typescriptTreeSha256": "17bad13a6f8fa2cd5616ddac2b862a6dc30e10bc930717293b8abb8eb831063e",
+    "commitStable": true,
+    "scope": "26 reviewed source/SPEC/bar/package/raw files plus 140 TypeScript package files; generated certification outputs and caches are explicitly outside this sentinel",
+    "wholeFilesystemFrozenClaim": false
+  },
+  "reviewedArtifacts": [
+    {
+      "path": "docs/02_spec/aud06_remediation_20261006.md",
+      "sha256": "97a78deacca2b095d692f4328434e1cfe94363c541564dc921ac54e017581a54",
+      "size": 11707
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/quality-bar.json",
+      "sha256": "d471be1d3a5c242920f64d80d2199894c4f6c0daaa8cdd325301b3c5897c7911",
+      "size": 17545
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-docs-final.log",
+      "sha256": "a485bc36daa0e3680963585e451b9107b05b10c917d400779819d202896e9ca4",
+      "size": 1103
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-docs.log",
+      "sha256": "68d9bd50fdc79dcd6296bd3426f4f584c70592273d2542e2c1f497138cbc6db7",
+      "size": 1103
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-final-focused-receipt.json",
+      "sha256": "2d4be8ae4a8c42c1b1f98af8d4711e9ee7d01d6adb2fc723c98242c61c459555",
+      "size": 1465
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-format-2.log",
+      "sha256": "8c32d36ac4e83e76e1f030377a95f292c068050f7c4dce514ce66145b3b007d2",
+      "size": 90
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-format-3.log",
+      "sha256": "11bbd69ffa615846b2b85bd216212b22e0b63e78fcd4141ed18bb303cb1a71fc",
+      "size": 78
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-format-4.log",
+      "sha256": "5e6f943b2a7d64366470439606b509b672693c3fd657383d011e10279831e1ae",
+      "size": 102
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-format-check-4.log",
+      "sha256": "ea5d5001757d2b0c1ae794aee8799b0faa167de4b19a5f583b9c80a0b42cb15f",
+      "size": 119
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-format.log",
+      "sha256": "3050c3d615e2c6e66131737be743016ac6650d41219a30888d53bea92fc0806c",
+      "size": 138
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-green-2.log",
+      "sha256": "00b8d467f38a0069ce699513d321bd7a9a66bac109c1e271c51a05e28aad74a8",
+      "size": 213
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-green-3.log",
+      "sha256": "17123a2726ef5e231e703b0da183e1f2804fb85b3f94fce3059ad1a1f46abbe8",
+      "size": 213
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-green-4.log",
+      "sha256": "99c429ae59c73217cbd491672a468302f02f523412e08caccd31490621e5d0fd",
+      "size": 213
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-green.log",
+      "sha256": "ec766f384708544e149ae29542a0a3172e3d8fbabd028f34c0d20faa2f1ea3b8",
+      "size": 213
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-invalid-red-attempt.json",
+      "sha256": "2221583cdce671de5b8f831827a7194174ae7c567981547743185e1c222bd32c",
+      "size": 270
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-lint-4.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-public-3.json",
+      "sha256": "ee094a19cb7c313bff72de6316e704bdb05f8a4fbb8bb2cfbb099c6af8943fc0",
+      "size": 3045
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-public-4.json",
+      "sha256": "e7da5083a79ab470ad95671bb2077a3f430ca763b14dff2ad16b90eabe2c508a",
+      "size": 1264
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-public.json",
+      "sha256": "e7da5083a79ab470ad95671bb2077a3f430ca763b14dff2ad16b90eabe2c508a",
+      "size": 1264
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-red-valid.log",
+      "sha256": "cfec1a6fc62d2e619a7754b7a31763f944878162946c6ae08b607436767fce7f",
+      "size": 2341
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-I1-red.log",
+      "sha256": "02dee0849e74eebfd76e8070a57d2a57aedb600ee599ebc693c2e6810ba42124",
+      "size": 209
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "ba75acab43ab821ca2eb4decd7fee82eb248cebd9d6fed53a8e3469a4e90588c",
+      "size": 186586
+    },
+    {
+      "path": "package.json",
+      "sha256": "d1268057a58afce5acd32b8bbb032d9f2d645e84aa94b7ea105477ce9da6e8d0",
+      "size": 6112
+    },
+    {
+      "path": "scripts/phase11-bypass-audit.mjs",
+      "sha256": "cf8ec4e961d212c9009e32668b645950e967b129ee41123ca31829ea78d47b5d",
+      "size": 8562
+    },
+    {
+      "path": "tests/phase11-bypass-audit.test.js",
+      "sha256": "2942b3d9cb7db057aca4d9e2e940077a48c7a06e487abc69a862960b8566c31a",
+      "size": 13251
+    }
+  ],
+  "ownEvidence": [
+    {
+      "path": "/tmp/cvg-q13-v7-critic-Z1EYKXpv/reviewed-pre.json",
+      "sha256": "cc4bff87a6ff665e9d8b333c15e5bfcd9c49904da6c11071835d2d3ae66e9280",
+      "size": 27772
+    },
+    {
+      "path": "/tmp/cvg-q13-v7-critic-Z1EYKXpv/reviewed-post.json",
+      "sha256": "8e912e6066bde3cc2705dfdc78cc664986866d5692598a63aaf413f3c399ef79",
+      "size": 5603
+    },
+    {
+      "path": "/tmp/cvg-q13-v7-critic-Z1EYKXpv/probe-results.json",
+      "sha256": "a52702f04a635a0fd11aeecc45d92f78f7e90950e32331c3717ece81996c61e7",
+      "size": 147264
+    },
+    {
+      "path": "/tmp/cvg-q13-v7-critic-Z1EYKXpv/cases.json",
+      "sha256": "8479ab31d82c2c948e6eabb452ed014dcb0052aa3d21a20136b3fb9b6dcd7656",
+      "size": 11803
+    },
+    {
+      "path": "/tmp/cvg-q13-v7-critic-Z1EYKXpv/independent-probes.receipt.json",
+      "sha256": "a5955c28c4b28e8175481df22c9582de42fded17dc36b72bb7f1b46c5437796f",
+      "size": 266
+    },
+    {
+      "path": "/tmp/cvg-q13-v7-critic-Z1EYKXpv/decoded-host-literals.raw",
+      "sha256": "c84d588ad6d93c71023d12cd5c7e9bf4585a66c2e20bbb5b88a94263821bd7bf",
+      "size": 1412
+    },
+    {
+      "path": "/tmp/cvg-q13-v7-critic-Z1EYKXpv/decoded-host-literals.receipt.json",
+      "sha256": "c67a773701db5656257b3c4a0e4e6c386253f9dee8b24f2629b94446c28f9060",
+      "size": 317
+    },
+    {
+      "path": "/tmp/cvg-q13-v7-critic-Z1EYKXpv/dep-diff.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    }
+  ],
+  "qualificationLimits": [
+    "Only scanner parsing/static reports executed in OWN TEMP fixtures; forbidden calls are inert input text, never executed.",
+    "Parent canonical pass3 may write generated outputs/caches concurrently; no whole-filesystem immutability claim.",
+    "Material focused rejection prevents acceptance of this scanner rework; no global Q11/Q13remoteCI/Q14 PASS or human/production approval implied."
+  ]
+}

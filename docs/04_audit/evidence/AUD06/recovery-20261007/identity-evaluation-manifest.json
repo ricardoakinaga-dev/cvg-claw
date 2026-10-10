@@ -1,0 +1,34 @@
+{
+  "capturedAt": "2026-10-08T01:26:21.191565+00:00",
+  "claimType": "LOCAL_STATIC_AND_EXECUTED_SYNTHETIC_TESTS",
+  "identityApproved": false,
+  "productStage": "DEFERRED_BY_USER",
+  "testCommand": "env -u TEST_DATABASE_URL node node_modules/vitest/vitest.mjs run apps/api/src/__tests__/trusted-operator-identity.test.ts apps/api/src/__tests__/operator-identity-rbac.test.ts apps/api/src/__tests__/operator-replay-store.test.ts apps/api/src/__tests__/operator-replay-guard.test.ts --no-file-parallelism --maxWorkers=1",
+  "testExitCode": 0,
+  "testCounts": {
+    "passed": 37,
+    "skipped": 4
+  },
+  "sources": [
+    {
+      "path": "apps/api/src/operator-identity.ts",
+      "sha256": "9913056566f48314386dc09345b6ae11097223736ed4a5d4b0c85b3ac49741d2"
+    },
+    {
+      "path": "apps/api/src/operator-replay-store.ts",
+      "sha256": "ef387dea54f0eae3e1838cf3a83be28fdd54d3b4e279e5121f45bbc1f2282909"
+    },
+    {
+      "path": "apps/api/src/server.ts",
+      "sha256": "81b40fceee095b7a98787f2680f5f6afff2d06140e7f6339cffe33b638f35270"
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/HIS-contract-reference-manifest.json",
+      "sha256": "4bed791f1969c7a6e290a36382505cc0e20d3235ae5bfb0a0c740a16b6cb2f3b"
+    },
+    {
+      "path": "docs/04_audit/evidence/AUD06/recovery-20261007/identity-local-review-tests.log",
+      "sha256": "7b51cd0ab3638d0ec1e703b8943e82e47e95b56a06d090d2df11cff3d87bb19b"
+    }
+  ]
+}

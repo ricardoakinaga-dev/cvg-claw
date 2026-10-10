@@ -1,5 +1,15 @@
 # 0190 — SPEC Validation
 
+## AUD06 — admissão executiva de remediação — 2026-10-06
+
+SPEC_APPROVED_CONTROLLED_BUILD para a manutenção corretiva descrita na
+[SPEC AUD06](aud06_remediation_20261006.md) e tasks 02–10 do backlog 0349.
+Autoridade: pedido atual do usuário para criar roadmap/backlog e implementar
+todo o plano da auditoria. Não representa aprovação de hash não apresentado,
+novo produto, promoção de autonomia, piloto real, signoff ou produção.
+Gate deve ser reavaliado se a implementação ampliar capacidade ou tocar dados
+reais; dependências humanas e externas de AUD06-11/14 continuam abertas.
+
 ## Gate aprovado AUD20-17 / IMP50-40 — emenda request-context v2 — 2026-09-24
 
 `SPEC_APPROVED_CONTROLLED_BUILD`: o usuário aprovou por hash a proposta de

@@ -1,0 +1,70 @@
+{
+  "observedAt": "2026-10-08T05:29:17.807689+00:00",
+  "task": "AUD06-13 bounded SQL helper / I1-Q13-06",
+  "status": "IMPLEMENTED_FOCUSED_GREEN_SOURCE_FROZEN",
+  "sourceFrozen": true,
+  "selfApproval": false,
+  "independentAcceptance": "PENDING",
+  "sourceFiles": {
+    "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b",
+    "tests/bypass-sql-audit.test.js": "6351cc6c3cf22e261586448a1f97048e2fa9e876e9d0a0aa447fe486bbacce54"
+  },
+  "implementation": "Explicit statement-position classification, recursive WITH/CTE query classification and SELECT INTO refusal precede unchanged IUD grant validation. Unsupported command classes never receive quota/replay grants. Bare BEGIN/COMMIT/ROLLBACK (+ WORK/TRANSACTION) and the two existing SET LOCAL timeout controls are discriminated from query bodies. Keywords in SELECT columns, values and quoted identifiers do not become command classes.",
+  "verification": {
+    "node": "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+    "version": "v22.23.2",
+    "red": {
+      "exitCode": 1,
+      "failed": 180,
+      "passed": 224,
+      "receipt": "red-receipt.json",
+      "previousHelperSha256": "6e44a70609e8b0be6787feaa265fc8879a83a11330337c3cc9531f5391ef5b78",
+      "baselineByteIdentical": true
+    },
+    "firstGreen": {
+      "exitCode": 0,
+      "passed": 404,
+      "receipt": "green-attempt1-receipt.json",
+      "supersededByFinal": true
+    },
+    "green": {
+      "exitCode": 0,
+      "passed": 429,
+      "skipped": 0,
+      "receipt": "green-receipt.json"
+    },
+    "lint": {
+      "exitCode": 0,
+      "receipt": "lint-receipt.json"
+    },
+    "format": {
+      "exitCode": 0,
+      "receipt": "format-receipt.json"
+    },
+    "selfReview": "Diff inspected after final checks: original lexer, Reader, write validator, array handling, lock recognition, UPSERT suppression and source-owned replay exception retained. Added malformed CTE separator/query-only controls before final verification. This is builder self-inspection, not independent critique."
+  },
+  "baselineGateBindings": {
+    "scripts/lib/bypass-sql-audit.mjs": "6e44a70609e8b0be6787feaa265fc8879a83a11330337c3cc9531f5391ef5b78",
+    "tests/bypass-sql-audit.test.js": "443df68de81ea2955a715c1ef271237a1b81e6916c910b3f50b2943ee66267e4",
+    "docs/02_spec/aud06_remediation_20261006.md": "c7f8f7574145506449d5885c16d56157c1468fe24362b20e83ddde9451a6379a",
+    "docs/99_runtime_state.md": "33f29f62e051c5667b38ae12b85f13ba9a87e52daf9ffa674f517aab6913c689",
+    "docs/20_master_execution_log.md": "9cc982720cdb53edc38f661a3a138f61fd540aa59712a0d6ed992d2a48579fce",
+    "docs/30_backlog_master.md": "9a7e102ea25a09b69528570a6474251d880ed021271679868a454688b594e746",
+    "docs/03_build/tracking/aud06_tasks.json": "dac7554ad7286fcabf4a613079e52f7230d9a96edf8b83d8a79128ffe5c157b9"
+  },
+  "productionSourcesReadOnly": [
+    "apps/api/src/postgres-rate-limit.ts",
+    "apps/api/src/operator-replay-store.ts",
+    "apps/api/src/webhook-security.ts",
+    "apps/api/src/server/postgres-role-checks.ts"
+  ],
+  "fileOwnership": "Only the two source files listed above and artifacts under this evidence directory were intentionally written by this builder. Masters/SPEC/bar/frozen copies/scanner/public tests remain lead-owned.",
+  "limitations": [
+    "Static bounded classifier, not a complete PostgreSQL parser or function-effect proof.",
+    "No runtime, DB or network execution; no dependency changes.",
+    "Public scanner/integrated tests and fresh independent critic are lead-owned and NOT_RUN by this builder.",
+    "429 final cases include 25 additional cases added after the original 404-case RED; the exact RED source/test hashes and previous helper snapshot are preserved.",
+    "No global Q13 acceptance, certification, publication or production authority is implied."
+  ],
+  "nextAction": "Lead integrates frozen helper, runs public scanner/tests and commissions fresh critic; lead reconciles masters and candidate binding. No further builder source edits."
+}

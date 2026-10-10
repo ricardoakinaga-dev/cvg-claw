@@ -1,0 +1,33 @@
+{
+  "role": "lead I0 focused same-root code-review controls, not independent acceptance",
+  "sourceStable": true,
+  "sourceHashes": {
+    "scripts/phase11-bypass-audit.mjs": "5e1dd518776ef6a1d9cba8c5756bfc7220b31f2dd2bb945d6a3af62e292b647e",
+    "scripts/lib/bypass-sql-audit.mjs": "d668aeaa8b666294e3abf53c059345d482fdcfb08497646ab1367398494a7e1b"
+  },
+  "temp": "/tmp/aud06-v18-import-review-4p2flg_1",
+  "cases": [
+    {
+      "name": "same-export-domain",
+      "expected": 1,
+      "actual": 0,
+      "matches": false,
+      "scannedFiles": 1
+    },
+    {
+      "name": "same-export-read",
+      "expected": 0,
+      "actual": 0,
+      "matches": true,
+      "scannedFiles": 1
+    },
+    {
+      "name": "same-export-pure",
+      "expected": 0,
+      "actual": 1,
+      "matches": false,
+      "scannedFiles": 1
+    }
+  ],
+  "fixturesParsedNotExecuted": true
+}

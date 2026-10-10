@@ -1,0 +1,64 @@
+{
+  "capturedAt": "2026-10-08T01:27:31.379631+00:00",
+  "candidate": "19387020a63641ff093797387d8f13d9b52043f8e6732df27d92985f222d2476",
+  "overallProduction": "NO_GO",
+  "pilotDisposition": "DEFERRED_BY_USER",
+  "historicalBaseline": {
+    "path": "docs/04_audit/evidence/AUD-20261006-CLAW/baseline-promotion.json",
+    "sha256": "1c729ec8f47aa0c526a0d27ea75a43e728530cec4d9da8fbc60ec55d53ee04aa",
+    "notCurrentCertification": true
+  },
+  "gates": [
+    {
+      "id": "modelProvider",
+      "requiredStatus": "VALIDATED_REAL",
+      "currentEvidenceDisposition": "NOT_QUALIFIED",
+      "gap": "Provider externo/versionado e avaliação operacional autorizada; provider determinístico não basta."
+    },
+    {
+      "id": "channel",
+      "requiredStatus": "VALIDATED_REAL",
+      "currentEvidenceDisposition": "NOT_QUALIFIED",
+      "gap": "Canal autorizado, aprovação/handoff e entrega verificáveis; nenhuma mensagem real foi enviada nesta remediação."
+    },
+    {
+      "id": "externalIdentity",
+      "requiredStatus": "VALIDATED_REAL",
+      "currentEvidenceDisposition": "NOT_QUALIFIED",
+      "gap": "Contrato HIS/Claw compatível e sessão/tenant/replay entre fronteiras; token emissor e credencial de serviço permanecem em avaliação."
+    },
+    {
+      "id": "institutionalRag",
+      "requiredStatus": "VALIDATED_APPROVED",
+      "currentEvidenceDisposition": "NOT_QUALIFIED",
+      "gap": "Corpus institucional com dono/versão/aprovação e respostas citando fontes; nenhum novo corpus foi aprovado."
+    },
+    {
+      "id": "rpoRto",
+      "requiredStatus": "VALIDATED",
+      "currentEvidenceDisposition": "NOT_QUALIFIED",
+      "gap": "Objetivos, janela, restauração e recuperação observados no ambiente autorizado; restauração sintética não prova esses objetivos."
+    },
+    {
+      "id": "pilot",
+      "requiredStatus": "PASS",
+      "currentEvidenceDisposition": "NOT_QUALIFIED",
+      "gap": "Piloto com participantes/owners/métricas e evidência ponta a ponta; etapa explicitamente adiada pelo usuário."
+    },
+    {
+      "id": "rollback",
+      "requiredStatus": "PASS",
+      "currentEvidenceDisposition": "NOT_QUALIFIED",
+      "gap": "Plano e execução de rollback no ambiente/versão autorizados; teardown sintético não é rollback operacional."
+    },
+    {
+      "id": "humanSignoff",
+      "requiredStatus": "VALIDATED",
+      "currentEvidenceDisposition": "NOT_QUALIFIED",
+      "gap": "Decisão humana explícita sobre pacote, versão e gates reais; nenhum novo signoff foi inferido."
+    }
+  ],
+  "localCertification": "NOT_RUN_CURRENT_REMEDIATION",
+  "sameCandidateRemoteCI": "NOT_RUN",
+  "noQuestionReopened": true
+}

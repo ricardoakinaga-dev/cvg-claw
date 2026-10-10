@@ -67,6 +67,18 @@ function expectedDecision(
   capability: Capability,
   role: Role
 ): { decision: DecisionValue; reason: string } {
+  // Institutional oracle is independent of the grant tables below.
+  if (
+    [
+      'finance.write',
+      'clinical.diagnose',
+      'clinical.prescribe',
+      'patient.record.write',
+      'exam.release'
+    ].includes(capability)
+  ) {
+    return { decision: 'DENY', reason: 'autonomy_n3_blocked' }
+  }
   const grant = grantFor(profile, capability)
   if (!grant) return { decision: 'DENY', reason: 'capability_not_granted' }
   if (!roleAllowsCapability(role, capability)) {
@@ -341,11 +353,20 @@ describe('AAA-03 §10 capability matrix across every profile and role', () => {
     )
     expect(grantBeforeRole.reason).toBe('capability_not_granted')
 
-    const roleAfterGrant = policy.evaluate(
+    const n3BeforeRole = policy.evaluate(
       input({
         agentProfile: 'clinical',
         capability: 'patient.record.write',
         action: 'patient.record.write',
+        operatorRole: 'Operator'
+      })
+    )
+    expect(n3BeforeRole.reason).toBe('autonomy_n3_blocked')
+    const roleAfterGrant = policy.evaluate(
+      input({
+        agentProfile: 'clinical',
+        capability: 'patient.record.read',
+        action: 'patient.record.read',
         operatorRole: 'Operator'
       })
     )
@@ -496,7 +517,8 @@ describe('AAA-03 §10 capability matrix across every profile and role', () => {
   it('separates operator, approver, supervisor and admin approval authority', () => {
     expect(canApproveCapability('Operator', 'schedule.read')).toBe(false)
     expect(canApproveCapability('Operator', 'admin.policy.manage')).toBe(false)
-    expect(canApproveCapability('Approver', 'finance.write')).toBe(true)
+    expect(canApproveCapability('Approver', 'finance.write')).toBe(false)
+    expect(canApproveCapability('Approver', 'appointment.cancel')).toBe(true)
     expect(canApproveCapability('Approver', 'admin.policy.manage')).toBe(false)
     expect(canApproveCapability('Supervisor', 'appointment.cancel')).toBe(true)
     expect(canApproveCapability('Supervisor', 'admin.agent.manage')).toBe(false)
