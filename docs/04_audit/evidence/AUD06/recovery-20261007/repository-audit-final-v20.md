@@ -1,5 +1,7 @@
 # Auditoria final AUD06 — 2026-10-08
 
+**Correção posterior de publicação:** a proposta `d55c9f0` foi revogada por incluir trechos do HIS privado em um destino público. Os resultados técnicos abaixo continuam vinculados à âncora; não validam a confidencialidade do pacote. O novo materializado `716bf465` usa somente caminhos/hashes nas referências HIS. Publicação continua bloqueada por decisões de CI e merge. [Revisão e correções](publication-critic-comments-review.md).
+
 **Aceite técnico local condicionado, somente sintético. Objetivo integral e produção: NO_GO.** A revisão final independente atende 11 dos 14 critérios no escopo local. O piloto foi adiado pelo usuário; CI remota e qualificação externa/humana permanecem pendentes.
 
 Este relatório avalia o candidato congelado `f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0`, com 1.256 fontes, HEAD âncora `7c1fdfc488664c365b4df6423d1b81c60e27ac22` e árvore de comportamento `4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283`. Os masters atuais do repositório principal registram o fechamento posterior e não integram esse hash de fontes. A nota histórica 74,27 do relatório 0577 pertence ao snapshot 380ccc52 e não é a nota deste candidato.
@@ -56,5 +58,10 @@ O [Gauntlet real](v20-actual-gauntlet-finish.log) encerrou **FAIL** pela barra i
 
 A próxima ação é revisar o pacote materializado de publicação e, com autoridade explícita, enviar a branch e abrir PR draft para executar Verify/Security do mesmo SHA. O usuário já adiou o piloto: não será solicitado novamente nesta rodada. Provider, canal, IdP, RAG institucional, RPO/RTO, piloto, rollback e sign-off exigem suas evidências reais em ambiente autorizado.
 
+## Revisão adicional dos riscos locais de publicação
 
-Publication correction: original d55c9f0 is blocked by confidential HIS excerpts. This checkout is rematerialized from clean anchor7c1fdfc; both HIS references contain only paths/SHA256. Full tests ran at anchor7c1fdfc. Subsequent evidence-only materialization does not claim a new complete suite. CI timeout and ancestry-preserving merge remain unresolved publication conditions. certification/current.json is replaced by the new controlled-local certificate; this is not production approval.
+O checkout contaminado ficou sem remotes. Os originais HIS foram arquivados fora do repositório com hashes verificados e permissões restritas; seus caminhos em MAIN agora contêm somente referências limpas. O commit revisado `716bf465` permanece intacto. A proposta mantém Verify em 40 minutos para medir o draft e exige merge commit preservando a âncora. Publicação continua dependente de autorização humana. Ver [revisão atualizada](publication-critic-comments-review.md) e [recibo local](publication-local-safety-followup.json).
+
+## CI remota posterior à publicação
+
+O Verify de `716bf465` terminou com falha, sem timeout: coverage 4.530 PASS e 8 FAIL. O workflow Security passou; o check de análise CodeQL reportou 3 alertas altos e falhou. Esses resultados não invalidam o registro histórico da execução local; impedem aceite remoto. Ver [resultado remoto](publication-remote-ci-result-716bf465.json). Workflow e código não foram alterados nesta sincronização Git.

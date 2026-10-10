@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "kind": "aud19-documentation-check",
+  "valid": false,
+  "links": {
+    "checked": 2854,
+    "broken": []
+  },
+  "json": {
+    "checked": 6947,
+    "invalid": []
+  },
+  "states": {
+    "declared": [
+      "WAITING_HUMAN_APPROVAL",
+      "READY_FOR_NEXT_STEP",
+      "IN_PROGRESS"
+    ],
+    "unexpected": []
+  },
+  "nextAction": {
+    "valid": true,
+    "reason": null,
+    "runtimeStateAction": "conferir Verify e Security do PR draft #1 no SHA716bf465; preservar falhas ou timeout sem alterar workflow sem requalificação; não realizar merge, deploy ou retomada do piloto.",
+    "currentIndexAction": "conferir Verify e Security do PR draft #1 no SHA716bf465; preservar falhas ou timeout sem alterar workflow sem requalificação; não realizar merge, deploy ou retomada do piloto."
+  },
+  "semantic": {
+    "valid": false,
+    "failures": [
+      "current_status_mismatch",
+      "task_backlog_status_mismatch:AUD06-13"
+    ],
+    "state": {
+      "valid": false,
+      "failures": [
+        "current_status_mismatch",
+        "task_backlog_status_mismatch:AUD06-13"
+      ]
+    },
+    "node": {
+      "valid": true,
+      "failures": []
+    },
+    "observedNode": "v22.23.2"
+  }
+}

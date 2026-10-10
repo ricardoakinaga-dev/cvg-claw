@@ -1,0 +1,25 @@
+{
+  "checks": [
+    {
+      "name": "docs",
+      "command": [
+        "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+        "scripts/docs-check.mjs"
+      ],
+      "exitCode": 0,
+      "logSHA256": "9f54e2b28e4f73267dab397dce807332ab891b774a88a1e882e294326b1a1ebb"
+    },
+    {
+      "name": "certificate",
+      "command": [
+        "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+        "scripts/phase11-verify.mjs"
+      ],
+      "exitCode": 1,
+      "logSHA256": "f1a79b883d0951e0da94309ba00013cca4b09a012802b2315feade29dbc5ab8f"
+    }
+  ],
+  "scope": "audit-evidence-only",
+  "fullSuiteRerun": false,
+  "rejectedSourceDocumentAttemptPreserved": true
+}

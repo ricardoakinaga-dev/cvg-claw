@@ -1,0 +1,20 @@
+{
+  "recordedAt": "2026-10-09T01:45:37.720801+00:00",
+  "authority": "explicit-user-message",
+  "authorizedCommit": "716bf465fb17389e24fde589978fd6a31ac324c8",
+  "authorizedBranch": "codex/aud06-remediation-20261008",
+  "requiredPushRepository": "/home/ricardo/cvg-claw",
+  "authorizedActions": [
+    "push-exact-commit",
+    "open-draft-pr-against-main-with-designated-body"
+  ],
+  "prBodySHA256": "28c045d8e1553eb81f3f534b233d04376a0aa8234ffcd76b88668683136aba4e",
+  "verifyTimeoutMinutes": 40,
+  "onTimeout": "preserve-failure; no-workflow-change-without-requalification",
+  "excluded": [
+    "merge",
+    "repository-settings",
+    "deploy",
+    "pilot-resumption"
+  ]
+}

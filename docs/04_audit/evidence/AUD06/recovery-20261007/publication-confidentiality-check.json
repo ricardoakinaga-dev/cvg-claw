@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-08T23:37:20.186810+00:00",
+  "commit": "716bf465fb17389e24fde589978fd6a31ac324c8",
+  "knownBadControlDetected": [
+    "HIS-contract-reference-manifest.json",
+    "HIS-contract-reference.txt"
+  ],
+  "knownPrivateSourceFiles": 20,
+  "capturedPrivateExcerpts": 62,
+  "capturedPrivateExcerptBytes": 105535,
+  "finiteTextMarkers": 220,
+  "reachableBlobsScanned": 6052,
+  "findings": [],
+  "unsafeD55NotAncestor": true,
+  "status": "PASS_BOUNDED",
+  "scope": "Known HIS source file hashes, original sensitive artifact hashes, captured literal fragments and long windows; JSON string values decoded. All reachable proposed-commit blobs. Not a universal proprietary-code detector."
+}

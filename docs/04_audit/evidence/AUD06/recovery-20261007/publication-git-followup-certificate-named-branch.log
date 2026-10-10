@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "kind": "phase11-verification",
+  "mode": "current",
+  "status": "FAIL",
+  "currentPointer": "certification/current.json",
+  "result": "certification/phase11/phase11-result.json",
+  "manifest": "certification/phase11/manifest.json",
+  "failures": [
+    "candidate_branch_stale",
+    "pointer_branch_mismatch"
+  ]
+}

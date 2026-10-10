@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-09T01:06:02.634049+00:00",
+  "task": "AUD06-13",
+  "scope": "local-publication-safety",
+  "branch": "codex/aud06-remediation-20261008",
+  "commit": "716bf465fb17389e24fde589978fd6a31ac324c8",
+  "oldContaminatedCheckoutRemotes": [],
+  "oldCommitAndPatchPreservedForensics": true,
+  "privateArchiveIdentifier": "20261008-HIS-contract-reference",
+  "privateArchiveDirectoryMode": "0700",
+  "files": [
+    {
+      "name": "HIS-contract-reference-manifest.json",
+      "privateOriginalSHA256": "4bed791f1969c7a6e290a36382505cc0e20d3235ae5bfb0a0c740a16b6cb2f3b",
+      "privateOriginalBytes": 160174,
+      "archivedVerified": true,
+      "archiveMode": "0600",
+      "publicReplacementSHA256": "926be80c1018565553e9865e0fb07debce5c8346f7946da0054131454d5ed980",
+      "publicReplacementBytes": 4481,
+      "mainEqualsSafeCommit": true
+    },
+    {
+      "name": "HIS-contract-reference.txt",
+      "privateOriginalSHA256": "bda162a92476106712d3035ab3641b8b2a742bb11f35a3f62c49d9d491de92c4",
+      "privateOriginalBytes": 29765,
+      "archivedVerified": true,
+      "archiveMode": "0600",
+      "publicReplacementSHA256": "9fba9a5b49ad246b9b32e1c424b4c47fd1f651a062c4bb6fb6f7de516fcc7f06",
+      "publicReplacementBytes": 2819,
+      "mainEqualsSafeCommit": true
+    }
+  ],
+  "sourceEdits": false,
+  "remotePush": false,
+  "pullRequestCreated": false,
+  "decisions": {
+    "verifyTimeoutMinutes": 40,
+    "verifyPolicy": "measure-on-authorized-draft; timeout requires requalification before workflow change",
+    "futureMerge": "merge-commit-preserving-7c1fdfc; no squash/rebase",
+    "remoteSettingsChanged": false
+  },
+  "boundary": "WAITING_HUMAN_APPROVAL_FOR_PUBLICATION; globalProductionNO_GO",
+  "verification": {
+    "docsCheckExitCode": 0,
+    "docsCheckReceipt": "publication-local-safety-docs-check.json",
+    "postActionChecks": "archive hashes and modes, clean MAIN references, no old remotes, branch SHA and anchor ancestry verified",
+    "fullSuiteRerun": false
+  },
+  "countCorrections": {
+    "datedSpecSections": 16,
+    "level2": 8,
+    "level3": 8,
+    "invalidAuthorEmailsTotal": 15,
+    "aud06-local@invalid": 10,
+    "aud06-local@test.invalid": 5
+  }
+}

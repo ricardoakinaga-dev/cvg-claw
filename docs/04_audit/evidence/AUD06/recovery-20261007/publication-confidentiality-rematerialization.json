@@ -1,0 +1,21 @@
+{
+  "createdAt": "2026-10-08T23:36:11.590278+00:00",
+  "checkout": "/home/ricardo/.local/share/cvg-aud06/publication-confidentiality-q_9kh_5s/repo",
+  "base": "/home/ricardo/.local/share/cvg-aud06/publication-confidentiality-q_9kh_5s",
+  "commit": "716bf465fb17389e24fde589978fd6a31ac324c8",
+  "sourceAnchor": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+  "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+  "source1256Unchanged": true,
+  "unsafeD55NotAncestor": true,
+  "confidentialOriginalsRetainedLocalOnly": true,
+  "HISReferences": "paths and sha256 only",
+  "publicationStillBlocked": true,
+  "pending": [
+    "bounded confidentiality verification",
+    "docs-check",
+    "local phase11-verify",
+    "CI timeout decision",
+    "ancestry-preserving merge agreement"
+  ],
+  "remoteWrites": 0
+}

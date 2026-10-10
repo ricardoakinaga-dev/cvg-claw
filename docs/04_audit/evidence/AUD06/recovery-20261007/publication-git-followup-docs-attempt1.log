@@ -1,0 +1,222 @@
+{
+  "schemaVersion": 1,
+  "kind": "aud19-documentation-check",
+  "valid": false,
+  "links": {
+    "checked": 2710,
+    "broken": [
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-v20-focused-acceptance.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v20-focused-acceptance.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass4-process.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass4-process.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass4-adjudication-v20.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass4-adjudication-v20.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-critic-dispatch.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-critic-dispatch.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-invalid-I1/report.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-invalid-I1/report.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-invalid-I1/transport-manifest.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-invalid-I1/transport-manifest.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-acceptance.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-acceptance.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-accept-I1/report.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-accept-I1/report.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-process.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-process.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-resources.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-resources.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-acceptance.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-acceptance.json"
+      },
+      {
+        "file": "docs/20_master_execution_log.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-teardown.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-teardown.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-v20-focused-acceptance.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v20-focused-acceptance.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass4-process.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass4-process.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass4-adjudication-v20.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass4-adjudication-v20.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-critic-dispatch.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-critic-dispatch.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-invalid-I1/report.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-invalid-I1/report.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-invalid-I1/transport-manifest.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-invalid-I1/transport-manifest.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-acceptance.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-acceptance.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-accept-I1/report.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-accept-I1/report.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-process.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-process.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-resources.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-resources.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-acceptance.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-acceptance.json"
+      },
+      {
+        "file": "docs/30_backlog_master.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-teardown.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-teardown.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/bypass-v20-focused-acceptance.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/bypass-v20-focused-acceptance.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass4-process.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass4-process.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass4-adjudication-v20.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass4-adjudication-v20.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-critic-dispatch.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-critic-dispatch.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-invalid-I1/report.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-invalid-I1/report.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-invalid-I1/transport-manifest.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-invalid-I1/transport-manifest.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-acceptance.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-acceptance.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-accept-I1/report.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-accept-I1/report.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-process.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-process.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-resources.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-resources.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/v20-integration-acceptance.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/v20-integration-acceptance.json"
+      },
+      {
+        "file": "docs/99_runtime_state.md",
+        "target": "04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-teardown.json",
+        "resolved": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-pass5-teardown.json"
+      }
+    ]
+  },
+  "json": {
+    "checked": 802,
+    "invalid": []
+  },
+  "states": {
+    "declared": [
+      "BLOCKED",
+      "READY_FOR_NEXT_STEP",
+      "WAITING_HUMAN_APPROVAL",
+      "IN_PROGRESS"
+    ],
+    "unexpected": []
+  },
+  "nextAction": {
+    "valid": true,
+    "reason": null,
+    "runtimeStateAction": "diagnosticar e corrigir as falhas de Verify e os 3 alertas altos CodeQL do PR#1 com requalificação; manter workflow40min, sem merge, deploy ou retomada do piloto.",
+    "currentIndexAction": "diagnosticar e corrigir as falhas de Verify e os 3 alertas altos CodeQL do PR#1 com requalificação; manter workflow40min, sem merge, deploy ou retomada do piloto."
+  },
+  "semantic": {
+    "valid": true,
+    "failures": [],
+    "state": {
+      "valid": true,
+      "failures": []
+    },
+    "node": {
+      "valid": true,
+      "failures": []
+    },
+    "observedNode": "v22.23.2"
+  }
+}

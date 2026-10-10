@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "kind": "aud19-documentation-check",
+  "valid": true,
+  "links": {
+    "checked": 2855,
+    "broken": []
+  },
+  "json": {
+    "checked": 6948,
+    "invalid": []
+  },
+  "states": {
+    "declared": [
+      "IN_PROGRESS",
+      "READY_FOR_NEXT_STEP",
+      "WAITING_HUMAN_APPROVAL"
+    ],
+    "unexpected": []
+  },
+  "nextAction": {
+    "valid": true,
+    "reason": null,
+    "runtimeStateAction": "conferir Verify e Security do PR draft #1 no SHA716bf465; preservar falhas ou timeout sem alterar workflow sem requalificação; não realizar merge, deploy ou retomada do piloto.",
+    "currentIndexAction": "conferir Verify e Security do PR draft #1 no SHA716bf465; preservar falhas ou timeout sem alterar workflow sem requalificação; não realizar merge, deploy ou retomada do piloto."
+  },
+  "semantic": {
+    "valid": true,
+    "failures": [],
+    "state": {
+      "valid": true,
+      "failures": []
+    },
+    "node": {
+      "valid": true,
+      "failures": []
+    },
+    "observedNode": "v22.23.2"
+  }
+}

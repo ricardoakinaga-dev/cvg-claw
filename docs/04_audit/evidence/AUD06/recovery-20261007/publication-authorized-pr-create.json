@@ -1,0 +1,23 @@
+{
+  "command": [
+    "gh",
+    "pr",
+    "create",
+    "--repo",
+    "ricardoakinaga-dev/cvg-claw",
+    "--base",
+    "main",
+    "--head",
+    "codex/aud06-remediation-20261008",
+    "--draft",
+    "--title",
+    "AUD06: bloquear N3 e qualificar remediação local",
+    "--body-file",
+    "/home/ricardo/cvg-claw/docs/04_audit/evidence/AUD06/recovery-20261007/publication-pr-body-v20-final.md"
+  ],
+  "observedAt": "2026-10-09T01:46:01.786998+00:00",
+  "exitCode": 0,
+  "verifiedRemoteSHA": "716bf465fb17389e24fde589978fd6a31ac324c8",
+  "bodySHA256": "28c045d8e1553eb81f3f534b233d04376a0aa8234ffcd76b88668683136aba4e",
+  "output": "Warning: 79 uncommitted changes\nhttps://github.com/ricardoakinaga-dev/cvg-claw/pull/1"
+}

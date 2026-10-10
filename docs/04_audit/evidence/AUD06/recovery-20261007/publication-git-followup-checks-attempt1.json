@@ -1,0 +1,23 @@
+{
+  "checks": [
+    {
+      "name": "docs",
+      "command": [
+        "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+        "scripts/docs-check.mjs"
+      ],
+      "exitCode": 0,
+      "logSHA256": "a64818ab5c357aa2c225db307def130162029e05996ae42624b4c478a6a7a999"
+    },
+    {
+      "name": "certificate",
+      "command": [
+        "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+        "scripts/phase11-verify.mjs"
+      ],
+      "exitCode": 1,
+      "logSHA256": "32adfd2ee15781dac0fb73ae450e8e8774f578f1304440e945c6f677cd80a0f5"
+    }
+  ],
+  "fullSuiteRerun": false
+}

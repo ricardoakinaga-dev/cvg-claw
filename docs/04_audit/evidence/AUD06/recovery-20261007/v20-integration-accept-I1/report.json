@@ -1,0 +1,1075 @@
+{
+  "schemaVersion": "aud06-I1-independent-integration-companion-v1",
+  "at": "2026-10-08T14:52:18.042362+00:00",
+  "critic": {
+    "identity": "01a11bf1-fc38-7ec1-a0af-8603dfea9356",
+    "name": "Curie",
+    "role": "I1 NOT_FINAL_GAUNTLET",
+    "freshContext": true,
+    "fork_context": false,
+    "hostSpawnAttestedByUser": true,
+    "builderIdentity": "AUD06-lead-01a11315-639f-7793-a147-b880b9d73160/v20-builder-01a11a64-2a94-7271-994e-f39fbb83bbc1",
+    "descendants": 0,
+    "cannotBeFinalCriticLater": true
+  },
+  "contractFirst": {
+    "path": "/tmp/aud06-v20-integration-critic-contract-normative.json",
+    "sha256": "1b0b10442e70c2f2a4c62070114266094652bc72d085ebb09a04a5a2170aceee"
+  },
+  "ownTEMP": "/tmp/aud06-I1-independent-01qbnf6i",
+  "targetReadOnlyByContract": true,
+  "OSIsolation": false,
+  "parentZeroTargetAccess": "Asserted by dispatch/user; not OS-enforced/independently measured",
+  "semanticInputAssessment": {
+    "exposures": [
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/phase11-result.json",
+        "field": "invariants[0..15].rationale",
+        "utf8Bytes": 69,
+        "minimalContent": "The mapped executable gates passed in the controlled synthetic scope.",
+        "origin": "current phase11 deterministic gate-status summary; scripts/phase11-certify.mjs:968-971",
+        "semanticClassification": "CURRENT_AUTOMATIC_EXECUTION_FACT",
+        "usedAsAcceptanceEvidence": false,
+        "opaqueOriginalOccurrences": 16,
+        "exposedOccurrences": 16
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/phase11-result.json",
+        "field": "externalGates.notes[0]",
+        "utf8Bytes": 97,
+        "minimalContent": "No real provider credentials, channels, IdP or human approval were available in this environment.",
+        "origin": "current result externalGates environment/normative annotation; not human approval",
+        "semanticClassification": "CURRENT_EXTERNAL_ENVIRONMENT_ANNOTATION",
+        "usedAsAcceptanceEvidence": false,
+        "opaqueOriginalOccurrences": 2,
+        "exposedOccurrences": 1
+      },
+      {
+        "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/phase11-result.json",
+        "field": "externalGates.notes[1]",
+        "utf8Bytes": 94,
+        "minimalContent": "Recorded as NOT_VALIDATED/PENDING; the mechanical decision must remain CONDITIONAL_GO at best.",
+        "origin": "current result externalGates environment/normative annotation; not human approval",
+        "semanticClassification": "CURRENT_EXTERNAL_ENVIRONMENT_ANNOTATION",
+        "usedAsAcceptanceEvidence": false,
+        "opaqueOriginalOccurrences": 2,
+        "exposedOccurrences": 1
+      }
+    ],
+    "originalSha256": "928a15508c16f0ce3abc95d24c790f1a001db3adac7641ca9b550125c966f54e",
+    "initialSelectorExceededDesiredFieldGranularity": true,
+    "contentAssessment": "Repeated current invariant PASS status summary automatically generated from mapped gate states and current synthetic external environment/decision limitations. No prior critic judgment, human builder rationale, rootCause/fix/remainingRisk or score values exposed. Invariants/externalGates/current raw execution admitted by contract; these annotations do not establish execution and are excluded from direct acceptance reasoning.",
+    "prohibitedHumanOrHistoricalNarrativeObserved": false,
+    "reviewIndependence": "I1_CURRENT_ARTIFACT_ONLY_WITH_RECORDED_FILTER_LIMITATION",
+    "strictNoNarrativeGranularitySatisfied": false,
+    "minimalExposedUTF8TextBytes": 1295
+  },
+  "communication": {
+    "initialCheckpoints": "Commentary emitted; lead reported nonreceipt. Corrected to direct send_input after discovery.",
+    "interval60SecondsCompliance": "NOT_ESTABLISHED / VIOLATION_QUALIFIED",
+    "limitation": "Actual >60sec intervals occurred or cannot be disproven from preserved tool timestamps; no invented precise duration. No silent compliance claim."
+  },
+  "node": {
+    "executable": "/home/ricardo/.nvm/versions/node/v22.23.2/bin/node",
+    "actualCapturedVersion": "v22.23.2"
+  },
+  "scope": "Finite whole-candidate identity+integrated current execution+bounded public-path code/test review. Not a formal proof over every possible execution. No extra corpus/gates/fixtures/tests/Docker/DB/network/install.",
+  "reconstruction": {
+    "candidateCount": 1256,
+    "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+    "treeHash": "4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283",
+    "fingerprintBefore": "ffc25aad2f22adcf4c9a35ba58fb1e01ee57adac5a8477a182a29eb14c934a8d",
+    "head": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+    "gitTree": "1e0dd618b6a8cf8aeaf574082d4332e9030281cd",
+    "trackedCount": 4105,
+    "indexCount": 4105,
+    "headBlobCount": 4105,
+    "gitObjectCount": 3933,
+    "gitTreeCount": 409,
+    "indexHeadDifferences": [],
+    "candidateHeadDifferences": [],
+    "excludedOrIgnoredCount": 26012
+  },
+  "fingerprint": {
+    "algorithm": "sha256-candidate-v1",
+    "before": "ffc25aad2f22adcf4c9a35ba58fb1e01ee57adac5a8477a182a29eb14c934a8d",
+    "after": "ffc25aad2f22adcf4c9a35ba58fb1e01ee57adac5a8477a182a29eb14c934a8d"
+  },
+  "sentinel": {
+    "beforePath": "/tmp/aud06-I1-independent-01qbnf6i/target-before.json",
+    "afterPath": "/tmp/aud06-I1-independent-01qbnf6i/target-after.json",
+    "sha256": "32965a3e0c574f3a790b8458b6edc5e7193c928086ac2d00a760851d64c3232f",
+    "entries": 28421,
+    "files": 25514,
+    "symlinks": 43,
+    "equalAllAvailableMetadataTimesBytes": true,
+    "rootGitExcludedOnly": true,
+    "noTimestampRestoration": true,
+    "copyEntries": 30405,
+    "allTargetReadersClosed": true,
+    "targetReadsAfterFinalAfter": 0,
+    "guards": "O_NOATIME O_NOFOLLOW for regular files/directories; statx includes atime/mtime/ctime/btime availability masks/dev/inode/size/blocks/nlink/uid/gid/mode/attributes/mountid/xattrs. Whole before/copy expected comparison/per-object pre-postguards/final integral equality. Symlink readlink pre-postmetadataguard; all own resolutions confined. Git copied opaquely into new inodes; no alternates/commondir/externalworktree.",
+    "limitations": "Contract-only sharedFS; no OS deny mechanism. Object/directory sampled guards plus final equality cannot rule out every undetectable transient change. Allavailable times means statx reported fields; rootGit sentinel excluded by agreement, Git copy guarded separately."
+  },
+  "independentObservations": {
+    "runtimeSources": {
+      "count": 370,
+      "mismatches": []
+    },
+    "stackArtifactDigests": {
+      "count": 255,
+      "mismatches": []
+    },
+    "rawCommands": {
+      "count": 110,
+      "outputDigestMismatches": [],
+      "nonzero": [
+        {
+          "id": "008",
+          "name": "volume-must-not-exist",
+          "exitCode": 1
+        },
+        {
+          "id": "010",
+          "name": "volume-must-not-exist",
+          "exitCode": 1
+        },
+        {
+          "id": "043",
+          "name": "production-preflight-api",
+          "exitCode": 1
+        },
+        {
+          "id": "044",
+          "name": "production-preflight-worker",
+          "exitCode": 1
+        }
+      ]
+    },
+    "exactSkips": {
+      "skippedAssertions": 200,
+      "uniqueIdentities": 200,
+      "dedicatedAssertions": 369,
+      "selectedFiles": 32,
+      "dedicatedActualFiles": 32,
+      "errors": [],
+      "dedicatedFilesOutsideSelection": []
+    },
+    "rawGateBindings": {
+      "count": 30,
+      "errors": []
+    },
+    "cleanup": {
+      "birthIDs": [
+        "4ac7c1f2a736b32ede18e22c5be6effa70fdbfb7dd88b9a957815a18aafb5c12",
+        "c6f8dc9f2cd723493e15af8604f9990921e7a8b0a35f62c29dda8073633d8a1d"
+      ],
+      "volumes": [
+        "3627e694aac076baf95d46930c9c8c6dc8ebd2a43886753eeb559d33cd563e55"
+      ],
+      "allAbsentInRawReceipt": true,
+      "tempDirAbsentInReceipt": true,
+      "cleanupRawZero": true,
+      "noDockerInvokedByCritic": true
+    },
+    "stackObserved": {
+      "shared-quota-burst.json": {
+        "requests": 302,
+        "statuses": {
+          "200": 300,
+          "429": 2
+        },
+        "replicas": [
+          "api-a:3000",
+          "api-b:3000"
+        ]
+      },
+      "quota-storage-failure.json": {
+        "statuses": [
+          503,
+          503,
+          503,
+          503
+        ],
+        "errorCodes": [
+          "rate_limit_unavailable",
+          "rate_limit_unavailable",
+          "rate_limit_unavailable",
+          "rate_limit_unavailable"
+        ]
+      },
+      "quota-storage-recovery.json": {
+        "status": 200
+      },
+      "restore-integrity.json": {
+        "keys": [
+          "original",
+          "restored",
+          "sourceUnchanged"
+        ],
+        "originalSha256": "bb2c651468eedc82a1e5ad37957b184e946de2df7e0136a39263447ff59055b0",
+        "restoredSha256": "bb2c651468eedc82a1e5ad37957b184e946de2df7e0136a39263447ff59055b0",
+        "tables": 44
+      },
+      "worker-durability.json": {
+        "readiness": {
+          "schemaVersion": 1,
+          "kind": "cvg-worker-readiness",
+          "status": "ready",
+          "pid": 1,
+          "updatedAt": "2026-10-08T01:20:22.690Z",
+          "workerId": "cvg-aud06-stack-1791422392227-f517287933-worker",
+          "adapter": "postgres-controlled",
+          "durable": true,
+          "externalEffects": false
+        },
+        "pending": {
+          "rows": [
+            {
+              "id": "outbox_030405a7-5728-40f8-9a29-eec1b002b2a9",
+              "idempotency_key": "aud06-stack-after",
+              "status": "pending",
+              "attempts": 0,
+              "effects": 0
+            },
+            {
+              "id": "outbox_76ed5f13-6e29-46f8-9935-2c4a1e924fc2",
+              "idempotency_key": "aud06-stack-before",
+              "status": "processed",
+              "attempts": 1,
+              "effects": 1
+            }
+          ]
+        },
+        "completed": {
+          "rows": [
+            {
+              "id": "outbox_030405a7-5728-40f8-9a29-eec1b002b2a9",
+              "idempotency_key": "aud06-stack-after",
+              "status": "processed",
+              "attempts": 1,
+              "effects": 1
+            },
+            {
+              "id": "outbox_76ed5f13-6e29-46f8-9935-2c4a1e924fc2",
+              "idempotency_key": "aud06-stack-before",
+              "status": "processed",
+              "attempts": 1,
+              "effects": 1
+            }
+          ]
+        }
+      },
+      "http-redirect.json": {
+        "status": 308,
+        "tls": null,
+        "headers": {
+          "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+          "location": "https://localhost:38021/",
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY"
+        }
+      },
+      "https-web.json": {
+        "status": 200,
+        "tls": {
+          "authorized": true,
+          "protocol": "TLSv1.3",
+          "cipher": {
+            "name": "TLS_AES_128_GCM_SHA256",
+            "standardName": "TLS_AES_128_GCM_SHA256",
+            "version": "TLSv1.3"
+          },
+          "fingerprint256": "AE:87:70:3B:5C:8B:66:FB:A9:BC:EF:27:4D:10:CC:A6:1A:5C:0E:3E:58:7F:7E:32:3D:EA:DF:5B:6A:DB:25:5A"
+        },
+        "headers": {
+          "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+          "content-type": "text/html; charset=utf-8",
+          "strict-transport-security": "max-age=300",
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY"
+        }
+      },
+      "https-api-health.json": {
+        "status": 200,
+        "tls": {
+          "authorized": true,
+          "protocol": "TLSv1.3",
+          "cipher": {
+            "name": "TLS_AES_128_GCM_SHA256",
+            "standardName": "TLS_AES_128_GCM_SHA256",
+            "version": "TLSv1.3"
+          },
+          "fingerprint256": "AE:87:70:3B:5C:8B:66:FB:A9:BC:EF:27:4D:10:CC:A6:1A:5C:0E:3E:58:7F:7E:32:3D:EA:DF:5B:6A:DB:25:5A"
+        },
+        "headers": {
+          "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+          "content-type": "application/json; charset=utf-8",
+          "strict-transport-security": "max-age=300, max-age=31536000",
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY"
+        }
+      },
+      "https-api-ready.json": {
+        "status": 200,
+        "tls": {
+          "authorized": true,
+          "protocol": "TLSv1.3",
+          "cipher": {
+            "name": "TLS_AES_128_GCM_SHA256",
+            "standardName": "TLS_AES_128_GCM_SHA256",
+            "version": "TLSv1.3"
+          },
+          "fingerprint256": "AE:87:70:3B:5C:8B:66:FB:A9:BC:EF:27:4D:10:CC:A6:1A:5C:0E:3E:58:7F:7E:32:3D:EA:DF:5B:6A:DB:25:5A"
+        },
+        "headers": {
+          "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+          "content-type": "application/json; charset=utf-8",
+          "strict-transport-security": "max-age=300, max-age=31536000",
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY"
+        }
+      },
+      "https-web-asset.json": {
+        "status": 200,
+        "tls": {
+          "authorized": true,
+          "protocol": "TLSv1.3",
+          "cipher": {
+            "name": "TLS_AES_128_GCM_SHA256",
+            "standardName": "TLS_AES_128_GCM_SHA256",
+            "version": "TLSv1.3"
+          },
+          "fingerprint256": "AE:87:70:3B:5C:8B:66:FB:A9:BC:EF:27:4D:10:CC:A6:1A:5C:0E:3E:58:7F:7E:32:3D:EA:DF:5B:6A:DB:25:5A"
+        },
+        "headers": {
+          "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+          "content-type": "text/javascript; charset=utf-8",
+          "strict-transport-security": "max-age=300",
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY"
+        }
+      },
+      "untrusted-certificate.json": {}
+    },
+    "stackRun": {
+      "runId": "cvg-aud06-stack-1791422392227-f517287933",
+      "startedAt": "2026-10-08T01:19:52.227Z",
+      "endedAt": "2026-10-08T01:20:55.943Z",
+      "exitCode": 0,
+      "cleanupErrors": [],
+      "teardown": {
+        "remaining": {
+          "containers": [],
+          "networks": [],
+          "volumes": []
+        },
+        "passed": true
+      },
+      "ports": {
+        "http": "127.0.0.1:39067",
+        "https": "127.0.0.1:38021"
+      },
+      "backupSha256": "b4f7c7c380a475e4b15b8de5f799e6e3bb186e82dc7fc2b0901f207b04d2b4e2",
+      "sourceManifestSha256": "db34a2651bbd55169585e57f3a8ed198bf35bb1b653f784dfb374724cdb02816"
+    },
+    "currentCriticGateFailures": [
+      "CRITIC:binding:candidateId=72fa77fcda6fad8cfdc893e8341cd5a6d371e9b5b2b9ef5eaa274cf3ee076267!=f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0, treeHash=d3c0ed467fd3ad307e8665678b54c092ff9255fb3354c36da0a96d656a105569!=4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283, commit=185f82168a11e813c218f2e6da1c49b671bf451f!=7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+      "CRITIC:fingerprint:worktree changed after review: reported ad6087e1cad09d16ec532dc5e893a21e4d4e7759f4f30d1bec6cab4a6ec11865, current ffc25aad2f22adcf4c9a35ba58fb1e01ee57adac5a8477a182a29eb14c934a8d",
+      "CRITIC:artifacts:digest mismatch: docs/03_build/tracking/current_state.json (declared f5901420ee52539e5ff5268d899d2b9fd18a244e0dda919dd878cb1e4ced9435)"
+    ],
+    "rawSummary-e2e": [
+      "\u001b[1A\u001b[2K  75 passed (3.6m)"
+    ],
+    "rawSummary-verify": [
+      "↓ apps/worker/src/__tests__/kernel-durable-orchestrator-postgres.test.ts (6 tests | 6 skipped)",
+      "↓ packages/chaos/src/__tests__/chaos-postgres.test.ts (2 tests | 2 skipped)",
+      "↓ packages/persistence/src/__tests__/attendance-approval-postgres.test.ts (1 test | 1 skipped)",
+      "↓ packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts (8 tests | 8 skipped)",
+      "↓ packages/persistence/src/__tests__/orchestrator-postgres.test.ts (5 tests | 5 skipped)",
+      "↓ packages/persistence/src/__tests__/platform-approval-postgres.test.ts (2 tests | 2 skipped)",
+      "↓ packages/persistence/src/__tests__/platform-postgres-smoke.test.ts (5 tests | 5 skipped)",
+      "↓ packages/persistence/src/__tests__/retention-postgres.test.ts (13 tests | 13 skipped)",
+      "↓ packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts (14 tests | 14 skipped)",
+      "Test Files  322 passed | 12 skipped (334)",
+      "Tests  4338 passed | 200 skipped (4538)",
+      "found 0 vulnerabilities"
+    ],
+    "rawSummary-unit": [
+      "↓ apps/worker/src/__tests__/continuous-worker-postgres.integration.test.ts (3 tests | 3 skipped)",
+      "↓ apps/worker/src/__tests__/kernel-durable-orchestrator-postgres.test.ts (6 tests | 6 skipped)",
+      "↓ packages/chaos/src/__tests__/chaos-postgres.test.ts (2 tests | 2 skipped)",
+      "↓ packages/persistence/src/__tests__/attendance-approval-postgres.test.ts (1 test | 1 skipped)",
+      "↓ packages/persistence/src/__tests__/goal-concurrency-postgres.test.ts (8 tests | 8 skipped)",
+      "↓ packages/persistence/src/__tests__/orchestrator-postgres.test.ts (5 tests | 5 skipped)",
+      "↓ packages/persistence/src/__tests__/platform-approval-postgres.test.ts (2 tests | 2 skipped)",
+      "↓ packages/persistence/src/__tests__/platform-postgres-smoke.test.ts (5 tests | 5 skipped)",
+      "↓ packages/persistence/src/__tests__/retention-postgres.test.ts (13 tests | 13 skipped)",
+      "↓ packages/persistence/src/__tests__/runtime-approval-store-postgres.test.ts (14 tests | 14 skipped)",
+      "Test Files  322 passed | 12 skipped (334)",
+      "Tests  4338 passed | 200 skipped (4538)"
+    ],
+    "rawSummary-postgres": [
+      "Test Files  32 passed (32)",
+      "Tests  369 passed (369)"
+    ],
+    "rawSummary-coverage": [
+      "Test Files  334 passed (334)",
+      "Tests  4538 passed (4538)"
+    ],
+    "rawSummary-security": [
+      "found 0 vulnerabilities"
+    ]
+  },
+  "integrity": {
+    "snapshotIntegrity": {
+      "count": 162,
+      "errors": []
+    },
+    "runtimeInstalled": {
+      "count": 422,
+      "errors": []
+    },
+    "manifestIntegrity": {
+      "count": 78,
+      "errors": []
+    },
+    "unitJSON": {
+      "totals": {
+        "numTotalTestSuites": 922,
+        "numPassedTestSuites": 922,
+        "numFailedTestSuites": 0,
+        "numPendingTestSuites": 0,
+        "numTotalTests": 4538,
+        "numPassedTests": 4338,
+        "numFailedTests": 0,
+        "numPendingTests": 200,
+        "numTodoTests": 0,
+        "success": true
+      },
+      "actualStatuses": {
+        "passed": 4338,
+        "skipped": 200
+      }
+    },
+    "postgresJSON": {
+      "totals": {
+        "numTotalTestSuites": 87,
+        "numPassedTestSuites": 87,
+        "numFailedTestSuites": 0,
+        "numPendingTestSuites": 0,
+        "numTotalTests": 369,
+        "numPassedTests": 369,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numTodoTests": 0,
+        "success": true
+      },
+      "actualStatuses": {
+        "passed": 369
+      }
+    }
+  },
+  "telemetry": {
+    "telemetryFiles": {
+      "telemetry-api-a-before-shutdown.jsonl": {
+        "records": 1,
+        "kinds": [
+          "cvg-observability-export"
+        ],
+        "topKeys": [
+          "schemaVersion",
+          "kind",
+          "enabled",
+          "resource",
+          "exportedAt",
+          "spans",
+          "metrics",
+          "logs",
+          "redaction"
+        ],
+        "sensitiveCanaryPresent": false
+      },
+      "telemetry-api-a-periodic.jsonl": {
+        "records": 1,
+        "kinds": [
+          "cvg-observability-export"
+        ],
+        "topKeys": [
+          "schemaVersion",
+          "kind",
+          "enabled",
+          "resource",
+          "exportedAt",
+          "spans",
+          "metrics",
+          "logs",
+          "redaction"
+        ],
+        "sensitiveCanaryPresent": false
+      },
+      "telemetry-api-a-shutdown.jsonl": {
+        "records": 2,
+        "kinds": [
+          "cvg-observability-export"
+        ],
+        "topKeys": [
+          "schemaVersion",
+          "kind",
+          "enabled",
+          "resource",
+          "exportedAt",
+          "spans",
+          "metrics",
+          "logs",
+          "redaction"
+        ],
+        "sensitiveCanaryPresent": false
+      },
+      "telemetry-api-b-before-shutdown.jsonl": {
+        "records": 1,
+        "kinds": [
+          "cvg-observability-export"
+        ],
+        "topKeys": [
+          "schemaVersion",
+          "kind",
+          "enabled",
+          "resource",
+          "exportedAt",
+          "spans",
+          "metrics",
+          "logs",
+          "redaction"
+        ],
+        "sensitiveCanaryPresent": false
+      },
+      "telemetry-api-b-periodic.jsonl": {
+        "records": 1,
+        "kinds": [
+          "cvg-observability-export"
+        ],
+        "topKeys": [
+          "schemaVersion",
+          "kind",
+          "enabled",
+          "resource",
+          "exportedAt",
+          "spans",
+          "metrics",
+          "logs",
+          "redaction"
+        ],
+        "sensitiveCanaryPresent": false
+      },
+      "telemetry-api-b-shutdown.jsonl": {
+        "records": 2,
+        "kinds": [
+          "cvg-observability-export"
+        ],
+        "topKeys": [
+          "schemaVersion",
+          "kind",
+          "enabled",
+          "resource",
+          "exportedAt",
+          "spans",
+          "metrics",
+          "logs",
+          "redaction"
+        ],
+        "sensitiveCanaryPresent": false
+      },
+      "telemetry-worker-before-shutdown.jsonl": {
+        "records": 9,
+        "kinds": [
+          "cvg-observability-export"
+        ],
+        "topKeys": [
+          "schemaVersion",
+          "kind",
+          "enabled",
+          "resource",
+          "exportedAt",
+          "spans",
+          "metrics",
+          "logs",
+          "redaction"
+        ],
+        "sensitiveCanaryPresent": false
+      },
+      "telemetry-worker-periodic.jsonl": {
+        "records": 3,
+        "kinds": [
+          "cvg-observability-export"
+        ],
+        "topKeys": [
+          "schemaVersion",
+          "kind",
+          "enabled",
+          "resource",
+          "exportedAt",
+          "spans",
+          "metrics",
+          "logs",
+          "redaction"
+        ],
+        "sensitiveCanaryPresent": false
+      },
+      "telemetry-worker-shutdown.jsonl": {
+        "records": 10,
+        "kinds": [
+          "cvg-observability-export"
+        ],
+        "topKeys": [
+          "schemaVersion",
+          "kind",
+          "enabled",
+          "resource",
+          "exportedAt",
+          "spans",
+          "metrics",
+          "logs",
+          "redaction"
+        ],
+        "sensitiveCanaryPresent": false
+      }
+    },
+    "shutdownCorrelations": [
+      {
+        "commandId": "045",
+        "correlationId": "corr_6e4d604c-9c80-4ca9-b348-0622cc65bfa2",
+        "bufferedBeforeSignal": true,
+        "foundInShutdownArtifacts": true
+      },
+      {
+        "commandId": "047",
+        "correlationId": "corr_fd922346-36d4-4071-ae2d-eeafc2a00a9d",
+        "bufferedBeforeSignal": true,
+        "foundInShutdownArtifacts": true
+      }
+    ],
+    "canaryAbsentEverywhere": true
+  },
+  "critiqueBeforeAcceptancePath": "/tmp/aud06-I1-independent-01qbnf6i/critique-before-acceptance.json",
+  "items": [
+    {
+      "id": "Q01",
+      "score": 100,
+      "status": "PASS_NORMATIVE_PROJECTION",
+      "evidence": "Projeção determinística verificada: seis seções, contratos AUD06-01..14, F01..F08, dependências/ownership e gates sem redução de escopo.",
+      "missingConditions": [],
+      "artifacts": [
+        {
+          "path": "docs/03_build/0348_aud06_roadmap.md",
+          "sha256": "c7d4c589b854c5c67e999d4f4cbb9ff480f620bb2d5d55365aff7c48a4ff4392",
+          "size": 4595
+        },
+        {
+          "path": "docs/03_build/0349_aud06_backlog.md",
+          "sha256": "8757bf3a6fb45e8f4ca7318c55bdfff72088205d83fba328ba0c5df5a6e0e512",
+          "size": 10500
+        },
+        {
+          "path": "docs/03_build/tracking/aud06_tasks.json",
+          "sha256": "7ef72447378e0d2d909de814d4d4291d24ef4dacb651225634622081b5afc495",
+          "size": 13285
+        }
+      ]
+    },
+    {
+      "id": "Q02",
+      "score": 100,
+      "status": "PASS_LOCAL_BOUND",
+      "evidence": "Build-runtime original atual executou npm ci --ignore-scripts (324 packages,4s) e build:web; security atual exit0 found0 vulnerabilities; manifests/lockfile na fonte370 e candidato1256.",
+      "missingConditions": [],
+      "artifacts": [
+        {
+          "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/015-build-runtime.stderr.log",
+          "sha256": "e6394ab499f9066d365392feb589d5794e92db29adc0976c07856adccc89965d",
+          "size": 3664
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/015-build-runtime.stdout.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/security.log",
+          "sha256": "434633dc274b976147537763e8adf2cbf1aeb4cdb7434a81a263edf76792b5d8",
+          "size": 495
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/build.log",
+          "sha256": "1694274e06817d773b7e49fe31fc602fefbf8977a950a3e09fe16839e26a1f6c",
+          "size": 1018
+        }
+      ]
+    },
+    {
+      "id": "Q03",
+      "score": 100,
+      "status": "PASS_LOCAL_BOUND",
+      "evidence": "Catálogo congelado N3 para finance.write/clinical.diagnose/clinical.prescribe/patient.record.write/exam.release; engine DENY antes grants; testes atuais do runtime/policy atravessam roles/profiles/approval/disfarce e verificam zero model/executor/outbox.",
+      "missingConditions": [],
+      "artifacts": [
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/unit-report.json",
+          "sha256": "44afa539a86cf26bf63b91d4b1086e5367415b5c58a3ccb73539809e0c909eb5",
+          "size": 1551214
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/governance_redteam.log",
+          "sha256": "2ebbb2e7fbdf98ca9dbd29c4d59a6a60dca83cc13fe41bd82eac5601fcf4f0ba",
+          "size": 1754
+        }
+      ]
+    },
+    {
+      "id": "Q04",
+      "score": 100,
+      "status": "PASS_LOCAL_BOUND",
+      "evidence": "E2E raw75/75 nos três browsers, Playwright digest pinado, updateSnapshots none; baselines fazem parte do candidato sem drift HEAD/index/bytes.",
+      "missingConditions": [],
+      "artifacts": [
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/e2e.log",
+          "sha256": "1b04f9ead99767f502e536f23c3f1d24276a023cc91a97f75a1a1a955d286e27",
+          "size": 12646
+        }
+      ]
+    },
+    {
+      "id": "Q05",
+      "score": 100,
+      "status": "PASS_LOCAL_BOUND",
+      "evidence": "43 assertions atuais do runner passaram, cobrindo success/failure/deadline/signal/transport/cleanup/concurrency; raw atual preservou exit1 do certifier e remoção dos próprios2containers+1volume por IDs.",
+      "missingConditions": [],
+      "artifacts": [
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/unit-report.json",
+          "sha256": "44afa539a86cf26bf63b91d4b1086e5367415b5c58a3ccb73539809e0c909eb5",
+          "size": 1551214
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/host-local-certification-pass4-resources.json",
+          "sha256": "71eb8899a81b60be5ce14fd54f480f8238f417c2246265f75a8bca06d5f8cbd2",
+          "size": 21315
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/host-local-certification-pass4-teardown.json",
+          "sha256": "fd4f5404526f687c20a5056040d413a9f575690c20a873b9e62c3207467a30ce",
+          "size": 1814
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/host-local-certification-pass4-receipt.json",
+          "sha256": "a859f44ff1fb28906f9c4368b3d6a8ac18e9f7782e6c11748511d1bb4aa8bda6",
+          "size": 719
+        }
+      ]
+    },
+    {
+      "id": "Q06",
+      "score": 100,
+      "status": "PASS_CONTROLLED_SYNTHETIC_POLICY",
+      "evidence": "12 testes renewal aprovados vinculam receipt APPROVED CONTROLLED_LOCAL_SYNTHETIC_ONLY sem release, vigência inclusiva2027-07-01T02:59:59Z, 30dias/UNCERTAIN/aviso;13 PG retention atuais passaram.",
+      "missingConditions": [],
+      "artifacts": [
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/unit-report.json",
+          "sha256": "44afa539a86cf26bf63b91d4b1086e5367415b5c58a3ccb73539809e0c909eb5",
+          "size": 1551214
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/postgres-report.json",
+          "sha256": "56d3a2244b9e77774be683ed78b3765bf1f55b6f2ed895aabcff5e5653ab4b32",
+          "size": 136977
+        }
+      ]
+    },
+    {
+      "id": "Q07",
+      "score": 100,
+      "status": "PASS_NORMATIVE_PROJECTION_AND_CHECKER",
+      "evidence": "Projeção Q07:14 status backlog/matriz concordam; AUD06-13 WAITING_HUMAN_APPROVAL atual;11deferred,13publicationpending,14pending. docs:check via verify exit0 e state-routing negatives atuais aprovados. COMPLETED12 é estado da tarefa e não certificado do novo first-pass; novo first-pass NO_GO preservado.",
+      "missingConditions": [],
+      "artifacts": [
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/verify.log",
+          "sha256": "3b22fbf4b4a7b04d32fcee29922bdb1ca7eabe4a0fbf94de4b44bdbfeee20232",
+          "size": 388753
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/unit-report.json",
+          "sha256": "44afa539a86cf26bf63b91d4b1086e5367415b5c58a3ccb73539809e0c909eb5",
+          "size": 1551214
+        },
+        {
+          "path": "docs/03_build/tracking/aud06_tasks.json",
+          "sha256": "7ef72447378e0d2d909de814d4d4291d24ef4dacb651225634622081b5afc495",
+          "size": 13285
+        }
+      ]
+    },
+    {
+      "id": "Q08",
+      "score": 100,
+      "status": "PASS_LOCAL_BOUND",
+      "evidence": "Extração coesa request-context328linhas e request-query138; server4583; soma5049≤5050. Gate architecture preserva publicexports, imports/cycles/ownership/hookorder; regressões atuais HTTP/client/E2E aprovadas.",
+      "missingConditions": [],
+      "artifacts": [
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/unit-report.json",
+          "sha256": "44afa539a86cf26bf63b91d4b1086e5367415b5c58a3ccb73539809e0c909eb5",
+          "size": 1551214
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/e2e.log",
+          "sha256": "1b04f9ead99767f502e536f23c3f1d24276a023cc91a97f75a1a1a955d286e27",
+          "size": 12646
+        }
+      ]
+    },
+    {
+      "id": "Q09",
+      "score": 100,
+      "status": "PASS_EXISTING_SYNTHETIC_RUNTIME_BOUND",
+      "evidence": "370/370 fontes atuais coincidem; raw110 comandos incluem builds/migrations repetidas/startup/health/worker/restart/TLS1.3loopback/headers/teardown; receipts de recursos e saídas por digest conferem.",
+      "missingConditions": [],
+      "artifacts": [
+        {
+          "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/commands.jsonl",
+          "sha256": "f66721e3432111a5cd8ad97c6f3fa65cd0225a391e7a24564367116e4d2c4724",
+          "size": 69388
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/source-manifest.json",
+          "sha256": "db34a2651bbd55169585e57f3a8ed198bf35bb1b653f784dfb374724cdb02816",
+          "size": 54423
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/https-api-health.json",
+          "sha256": "57908810c3ff03c7c6ff88498b4d1d1b79beed7698d1367a1756ef198da8ecd0",
+          "size": 2405
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/worker-durability.json",
+          "sha256": "0dab96972dc654515e431eca8127483c821d8664f04fe2006ac632d7ccef0564",
+          "size": 1206
+        }
+      ]
+    },
+    {
+      "id": "Q10",
+      "score": 100,
+      "status": "PASS_EXISTING_SYNTHETIC_RUNTIME_BOUND",
+      "evidence": "302requests distribuídos em api-a/api-b:300HTTP200+2HTTP429;4HTTP503 failclosed storage, recovery200; telemetry periódica e shutdown com correlação buffered→export e canary ausente; restore digest idêntico em44tables.",
+      "missingConditions": [],
+      "artifacts": [
+        {
+          "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/shared-quota-burst.json",
+          "sha256": "03462efd02229dd114fb328ad069602f264d1aa1d5c43e0455d48e040060596c",
+          "size": 74931
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/quota-storage-failure.json",
+          "sha256": "a6be747e84cdae8b9219dc2f97d8171c0e617b070066fcc24493374ac34e3d3e",
+          "size": 10951
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/quota-storage-recovery.json",
+          "sha256": "8b9edfa41d24bd686ae90605fe02f297f1c4bff7ef6d6657790c7ff615ed4301",
+          "size": 2405
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/restore-integrity.json",
+          "sha256": "e24013d7e3a1058298e74f97895b22fbb7aea0a36d61be6a48632b6ce57a9e5a",
+          "size": 305770
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/telemetry-api-a-shutdown.jsonl",
+          "sha256": "1450af5cb7c2514b0462feeabb60c43cb912b26e248eea7c503015a66841a72e",
+          "size": 1451
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/telemetry-api-b-shutdown.jsonl",
+          "sha256": "8ebba8373568f800936a3dd0928d785cd4a243f94995c5f20cbe1102f606de76",
+          "size": 1451
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/stack/cvg-aud06-stack-1791422392227-f517287933/telemetry-worker-shutdown.jsonl",
+          "sha256": "7b3b0901d525524dd64fc55bdaabcd0017cf39a3bc7702d1ea92c691e366f22c",
+          "size": 13728
+        }
+      ]
+    },
+    {
+      "id": "Q11",
+      "score": 0,
+      "status": "DEFERRED_BY_USER / NOT_RUN",
+      "evidence": "Autoridade selada e projeção preservam espera humana do piloto11; nenhuma integração HIS real foi qualificada.",
+      "missingConditions": [
+        "Contratos/decisões reais aprovados e fluxo ponta a ponta autorizado."
+      ],
+      "artifacts": [
+        {
+          "path": "docs/03_build/tracking/aud06_tasks.json",
+          "sha256": "7ef72447378e0d2d909de814d4d4291d24ef4dacb651225634622081b5afc495",
+          "size": 13285
+        }
+      ]
+    },
+    {
+      "id": "Q12",
+      "score": 75,
+      "status": "FIRST_QUALIFICATION_FAIL / SECOND_QUALIFICATION_PENDING",
+      "evidence": "Raw first actual:33/35gatesPASS, critic/formalFAIL;unit4338pass+200exactskips→369PGpass;coverage4538pass branches94.38%. Crítica I1 atual, snapshot/370bindings/sentinels intactos; nenhum gap material de produto encontrado no escopo finito.",
+      "missingConditions": [
+        "Instalar evidência crítica atual; executar segundo ciclo completo real e observar formal closure; crítico FinalCritic distinto depois."
+      ],
+      "artifacts": [
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/phase11-result.json",
+          "sha256": "928a15508c16f0ce3abc95d24c790f1a001db3adac7641ca9b550125c966f54e",
+          "size": 357965
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/independent_critic.log",
+          "sha256": "f1fc506c5d7ba73d3f9457dba83aab037a354c23f2d8ac711dd6c6c365a2de2d",
+          "size": 3290
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/unit-report.json",
+          "sha256": "44afa539a86cf26bf63b91d4b1086e5367415b5c58a3ccb73539809e0c909eb5",
+          "size": 1551214
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/logs/postgres-report.json",
+          "sha256": "56d3a2244b9e77774be683ed78b3765bf1f55b6f2ed895aabcff5e5653ab4b32",
+          "size": 136977
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/coverage/coverage-summary.json",
+          "sha256": "863ead96ac672aecb2fc50b0ff2bf69e7188956aca086b6ac5c49050b8425df4",
+          "size": 70605
+        }
+      ]
+    },
+    {
+      "id": "Q13",
+      "score": 50,
+      "status": "LOCAL_CANDIDATE_BOUND / REMOTE_NOT_RUN_UNSATISFIED",
+      "evidence": "Candidato1256/head/index/blobs/tree/hash/Fingerprint atuais reconstruídos; qualificação local primeira NO_GO ainda. RemoteVerify/Security ausentes/não executados.",
+      "missingConditions": [
+        "Certificado completo atual e CI remotoVerify/Security de SHA correspondente com autoridade de publicação."
+      ],
+      "artifacts": [
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/manifest.json",
+          "sha256": "384a375e540f7825bdf36718e637d04de3585db0ef16ed45ffc0d12b6ebeed79",
+          "size": 27713
+        },
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/phase11-result.json",
+          "sha256": "928a15508c16f0ce3abc95d24c790f1a001db3adac7641ca9b550125c966f54e",
+          "size": 357965
+        }
+      ]
+    },
+    {
+      "id": "Q14",
+      "score": 0,
+      "status": "PENDING / NOT_RUN",
+      "evidence": "Oito gates externos permanecem NOT_VALIDATED/PENDING nos controlfields atuais; nenhuma aprovação humana sintetizada.",
+      "missingConditions": [
+        "modelProvider/channel/externalIdentity/institutionalRag/rpoRto/pilot/rollback/humanSignoff em ambiente real autorizado."
+      ],
+      "artifacts": [
+        {
+          "path": "docs/04_audit/evidence/AUD06/recovery-20261007/local-certification-v20-first-complete-final-pass4-snapshot/certification/phase11/phase11-result.json",
+          "sha256": "928a15508c16f0ce3abc95d24c790f1a001db3adac7641ca9b550125c966f54e",
+          "size": 357965
+        }
+      ]
+    }
+  ],
+  "firstActualQualification": {
+    "decision": "NO_GO",
+    "failedGates": [
+      "independent_critic",
+      "PHASE11_FORMAL_CLOSURE"
+    ],
+    "unchanged": true
+  },
+  "localAcceptance": "PASS_ARTIFACT_ONLY_FOR_CONTROLLED_LOCAL_MACHINE_RENEWAL",
+  "globalDecision": "NO_GO",
+  "authorities": {
+    "localSyntheticAudit": true,
+    "sourceOrTargetWrites": false,
+    "networkDBDockerInstalls": false,
+    "fixtureExecution": false,
+    "globalProduction": "NO_GO",
+    "N3": "DENY",
+    "pilot11": "DEFERRED_BY_USER",
+    "Q13Remote": "NOT_RUN/UNSATISFIED",
+    "Q14": "PENDING"
+  },
+  "materialIndependentProductGapsFound": [],
+  "findings": [
+    {
+      "id": "I1-LIMIT-01",
+      "severity": "P2",
+      "kind": "review-protocol-limitation",
+      "detail": "Initial current-result selector exposed 69-byte automatic invariant fact×16 plus97/94-byte current externalGates annotations; no prohibited human/historical narratives. No acceptance inferred from these annotations. Exact forensic record retained."
+    },
+    {
+      "id": "I1-LIMIT-02",
+      "severity": "P2",
+      "kind": "communication-limitation",
+      "detail": "Commentary checkpoints not delivered to lead; requirement ≤60sec not established and exceeded intervals qualified. Direct send_input thereafter."
+    }
+  ],
+  "requiredNextSteps": [
+    "Full actual second qualification after installing report; preserve original first-pass failures/artifacts.",
+    "Different fresh FinalCritic over integrated second-cycle output; Curie disqualified from that later role.",
+    "External gates remain deferred/notrun/pending; no production release."
+  ],
+  "machineReport": {
+    "path": "/tmp/aud06-I1-independent-01qbnf6i/machine-report.json",
+    "schemaSource": "scripts/lib/critic-evidence.mjs",
+    "actualSchemaSuccess": true,
+    "actualVerifierStatus": "PASS",
+    "actualVerifierChecks": 9,
+    "validationPath": "/tmp/aud06-I1-independent-01qbnf6i/machine-validation.json",
+    "artifacts": 38,
+    "checks": 6,
+    "fingerprintMatchesActualHelper": true,
+    "scope": "Only artifact acceptance for controlled-local fresh evidence renewal; original raw first-run NO_GO unchanged; no second-qualification claim."
+  },
+  "allJobsEnded": true,
+  "allTargetReadersClosed": true,
+  "wholeOwncopyFinalVerification": {
+    "entries": 30405,
+    "files": 27225,
+    "directories": 3137,
+    "symlinks": 43,
+    "everyFileDigestUnchanged": true,
+    "everyInodeIndependentIncludingDirsAndSymlinks": true,
+    "allLinkResolutionsConfined": true
+  },
+  "separateIndices": [
+    "/tmp/aud06-I1-independent-01qbnf6i/target-before.json",
+    "/tmp/aud06-I1-independent-01qbnf6i/target-after.json",
+    "/tmp/aud06-I1-independent-01qbnf6i/copy-source-index.json",
+    "/tmp/aud06-I1-independent-01qbnf6i/copy-verified-index.json",
+    "/tmp/aud06-I1-independent-01qbnf6i/owncopy-final-bytes-inodes-links-index.json",
+    "/tmp/aud06-I1-independent-01qbnf6i/candidate-before.json",
+    "/tmp/aud06-I1-independent-01qbnf6i/candidate-after.json",
+    "/tmp/aud06-I1-independent-01qbnf6i/git-head-blobs-index.json",
+    "/tmp/aud06-I1-independent-01qbnf6i/excluded-generated-index.json",
+    "/tmp/aud06-I1-independent-01qbnf6i/exact-skips-independent-index.json",
+    "/tmp/aud06-I1-independent-01qbnf6i/immutable-gate-artifacts-index.json",
+    "/tmp/aud06-I1-independent-01qbnf6i/immutable-evidence-artifacts-index.json",
+    "/tmp/aud06-I1-independent-01qbnf6i/public-path-current-assertions-index.json"
+  ]
+}

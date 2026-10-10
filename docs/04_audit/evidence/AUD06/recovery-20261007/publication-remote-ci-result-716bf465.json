@@ -1,0 +1,29 @@
+{
+  "observedAt": "2026-10-10T01:12:46.260703+00:00",
+  "headSHA": "716bf465fb17389e24fde589978fd6a31ac324c8",
+  "verify": {
+    "run": 37871362924,
+    "conclusion": "failure",
+    "durationSeconds": 956,
+    "timedOut": false,
+    "failedStep": "Verify",
+    "coverageTests": {
+      "passed": 4530,
+      "failed": 8,
+      "total": 4538
+    },
+    "rawLogBytes": 346041,
+    "rawLogSHA256": "f63881475a40561a8a365ff0bb52e474979545a65dfd1056eca363aee51e6735",
+    "rawLogPreservedPrivately": true,
+    "firstCLILogCaptureEmptyNotEvidence": true
+  },
+  "securityWorkflow": "success",
+  "codeqlAnalysisCheck": {
+    "conclusion": "failure",
+    "highAlerts": 3,
+    "checkRun": 113630539461
+  },
+  "workflowModified": false,
+  "production": "NO_GO",
+  "scope": "record-existing-remote-results; no-code-fix-in-this-commit"
+}

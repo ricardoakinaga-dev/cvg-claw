@@ -1,0 +1,31 @@
+{
+  "at": "2026-10-08T14:12:12.287452+00:00",
+  "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+  "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+  "certificationId": "phase11-f15cece0c6784845-muzjnd5e",
+  "wrapperActualExit": 1,
+  "timedOut": false,
+  "decision": "NO_GO",
+  "gatesPassed": 33,
+  "gatesTotal": 35,
+  "failedGates": [
+    "independent_critic",
+    "PHASE11_FORMAL_CLOSURE"
+  ],
+  "bindingPassed": true,
+  "source1256Stable": true,
+  "teardownPassed": true,
+  "all200SkippedReconciledByExactIdentity": true,
+  "unitPassed": 4338,
+  "unitSkipped": 200,
+  "coveragePassed": 4538,
+  "coverageSkipped": 0,
+  "postgresPassed": 369,
+  "postgresSkipped": 0,
+  "browserPassed": 75,
+  "bypass": "PASS59",
+  "originalFailedHeaderAttemptPreserved": true,
+  "partialSnapshotAttemptPreserved": true,
+  "completeSnapshot": "local-certification-v20-first-complete-final-pass4-snapshot",
+  "scope": "Actual first full local qualification only; independent integration review, renewal/full pass5/fresh FinalCritic remain required; global production NO_GO"
+}

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "kind": "aud19-documentation-check",
+  "valid": true,
+  "links": {
+    "checked": 2619,
+    "broken": []
+  },
+  "json": {
+    "checked": 815,
+    "invalid": []
+  },
+  "states": {
+    "declared": [
+      "WAITING_HUMAN_APPROVAL",
+      "READY_FOR_NEXT_STEP"
+    ],
+    "unexpected": []
+  },
+  "nextAction": {
+    "valid": true,
+    "reason": null,
+    "runtimeStateAction": "conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite.",
+    "currentIndexAction": "conferir os recibos da certificação local AUD06-13 do candidato congelado; com autoridade de publicação, validar Verify/Security remotos do mesmo SHA; manter AUD06-11 e AUD06-14 sem aceite."
+  },
+  "semantic": {
+    "valid": true,
+    "failures": [],
+    "state": {
+      "valid": true,
+      "failures": []
+    },
+    "node": {
+      "valid": true,
+      "failures": []
+    },
+    "observedNode": "v22.23.2"
+  }
+}

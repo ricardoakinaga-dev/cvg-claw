@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "kind": "phase11-verification",
+  "mode": "current",
+  "status": "FAIL",
+  "currentPointer": "certification/current.json",
+  "result": "certification/phase11/phase11-result.json",
+  "manifest": "certification/phase11/manifest.json",
+  "failures": [
+    "independent_critic_invalid:CRITIC:binding:candidateId=f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0!=ddbbce7a76b4e34c5e758372588a3d671979c9bb2dd49599bde9b273a0950497, treeHash=4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283!=43b204765fd8ebd6ee631fa13bf59cd0c7998e18550259e491b963c4249c17a7, commit=7c1fdfc488664c365b4df6423d1b81c60e27ac22!=716bf465fb17389e24fde589978fd6a31ac324c8|CRITIC:fingerprint:worktree changed after review: reported ffc25aad2f22adcf4c9a35ba58fb1e01ee57adac5a8477a182a29eb14c934a8d, current 6d9db42d2413bc557cc021be7ed195eb2cbc5a2b98e43c57840766a0bff8cbe3",
+    "mutation_report_invalid:mutation_candidate_candidateId_mismatch|mutation_candidate_treeHash_mismatch|mutation_candidate_commit_mismatch",
+    "candidate_tree_stale:4cdf59ff11007f8732b59ba8ddf1759ecaaf3e4d276fb89eff7f29d67025f283:43b204765fd8ebd6ee631fa13bf59cd0c7998e18550259e491b963c4249c17a7",
+    "candidate_branch_stale",
+    "candidate_dirty_state_changed",
+    "candidate_id_stale",
+    "candidate_file_hash_changed",
+    "candidate_scope_drift:[{\"type\":\"changed\",\"path\":\"docs/03_build/0349_aud06_backlog.md\",\"recorded\":\"8757bf3a6fb45e8f4ca7318c55bdfff72088205d83fba328ba0c5df5a6e0e512\",\"current\":\"3ab27b24749add00101f07cb16ad90db1313a926e7791efab81d0fcbe9d58fd5\"},{\"type\":\"changed\",\"path\":\"docs/03_build/tracking/aud06_tasks.json\",\"recorded\":\"7ef72447378e0d2d909de814d4d4291d24ef4dacb651225634622081b5afc495\",\"current\":\"cfaefb604d5873539baf546c482b9a5738e5d451a9a99fcfd3ec69e2f3cac1a3\"},{\"type\":\"changed\",\"path\":\"docs/03_build/tracking/current_state.json\",\"recorded\":\"2a76d7cf4ee4ae284dd9258213ced894b8b747598176997cfb769ed69b361ea4\",\"current\":\"484d673067edae67f387a5094f4d0401de89e58740d8a7874c987db6e55ccc1f\"},{\"type\":\"changed\",\"path\":\"docs/20_master_execution_log.md\",\"recorded\":\"8bb19c23e1bc4d6a5512983ee579ac81ff6d1149d76c255e7aff478aa6819807\",\"current\":\"3c264211dc5f8f42457fff8083c4561c9c9db778c9789a2aa39a9f4813df8b32\"},{\"type\":\"changed\",\"path\":\"docs/30_backlog_master.md\",\"recorded\":\"49a7e9560fc21ce85a003ebdbd419615e67a6c265cb2706db57a404b2f341e5b\",\"current\":\"c6bf65a06da57003d21d204d01ff2691ce2374dbda165dd71055ef05971d3a9f\"}]",
+    "pointer_candidateId_mismatch",
+    "pointer_treeHash_mismatch",
+    "pointer_branch_mismatch",
+    "manifest_candidate_mismatch",
+    "manifest_tree_stale",
+    "evidence_graph_candidate_mismatch",
+    "release_candidate_mismatch",
+    "release_tree_mismatch",
+    "decision_recalculation_mismatch",
+    "certification_recalculation_mismatch",
+    "eligible_profile_recalculation_mismatch",
+    "success_state_recalculation_mismatch",
+    "remaining_blockers_recalculation_mismatch",
+    "scores_recalculation_mismatch"
+  ]
+}

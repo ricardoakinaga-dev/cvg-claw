@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "decision": "APPROVE",
+  "role": "fresh integration critic NOT_FINAL_GAUNTLET; controlled-local machine evidence renewal only",
+  "criticIdentity": "01a11bf1-fc38-7ec1-a0af-8603dfea9356 / Curie",
+  "candidateId": "f15cece0c6784845acf939d7ef04fca1686fc54689b8bf5606139c31814acca0",
+  "commit": "7c1fdfc488664c365b4df6423d1b81c60e27ac22",
+  "nonMutationVerified": true,
+  "nonMutationScope": "Critic closed full sentinel and parent matching helper fingerprint BEFORE these accepted lead installations; no retroactive no-mutation claim for installation.",
+  "machineReportSha256": "8e534c67446682632ac5d17b93118ddb42d043de33a3542bef0a5798da39ca60",
+  "oldInputPreserved": {
+    "path": "aud19-08-input-before-v20-renewal.raw.json",
+    "sha256": "55f39d11fe970d403377c5e64fa58daa30ba979b60c4c94e8090dd9577ba5a10"
+  },
+  "global": "NO_GO",
+  "requiredNext": "Actual complete pass5 then different fresh FinalCritic",
+  "legacyFilenameQualification": "final-critic-v20-acceptance.json is the coordinator legacy input guard filename, NOT a FinalCritic judgment",
+  "createdAt": "2026-10-08T14:57:53.897531+00:00"
+}
